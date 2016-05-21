@@ -1,0 +1,62 @@
+﻿<Window x:Class="LS_Designer_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="MVVM Light Application"
+        Width="1360"
+        Height="720"
+        Background="#FF2D2D30"
+        DataContext="{Binding Main,
+                              Source={StaticResource Locator}}"
+        mc:Ignorable="d ignore">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid x:Name="LayoutRoot" Margin="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ToggleButton Name="Mode"
+                      Grid.Row="0"
+                      Background="#FF93F0A4"
+                      Content="Design" />
+        <Grid Name="ControlPanels"
+              Grid.Row="1"
+              Grid.Column="0">
+            <Grid Name="Panel1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"
+                       Background="#FF686868"
+                       Content="Разделы" />
+                <ListBox Name="partitions" Grid.Row="1" Background="#FFFDE7E7">
+                    
+                </ListBox>
+                <Label Grid.Row="2"
+                       Background="#FF686868"
+                       Content="ControlSpace" />
+                <ListBox Name="controlSpaces" Grid.Row="3" Background="#FFE7F2FD">
+                    
+                </ListBox>
+            </Grid>
+            <Grid Name="Panel2" />
+        </Grid>
+    </Grid>
+</Window>
