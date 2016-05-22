@@ -258,12 +258,12 @@
                 <Label Grid.Row="0"
                        Background="#FF686868"
                        Content="Partitions" Margin="0,3,0,4" />
-                <ListBox Name="partitions" Grid.Row="1" Margin="0,0,0,4" Background="#FF686868" >
+                <ListBox Name="partitions" Grid.Row="1" Margin="0,0,0,4" Background="#FF333333" BorderBrush="#FF858487" >
                 </ListBox>
                 <Label Grid.Row="2"
                        Background="#FF686868"
                        Content="Control Spaces" Margin="0,0,0,4" />
-                <ListBox Name="controlSpaces" Grid.Row="3" Background="#FF686868">
+                <ListBox Name="controlSpaces" Grid.Row="3" Background="#FF333333" BorderBrush="#FF858487">
                 </ListBox>
             </Grid>
             <Grid Name="Panel2" />
