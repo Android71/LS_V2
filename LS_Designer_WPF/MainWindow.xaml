@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="MVVM Light Application"
         Width="1360"
-        Height="720"
+        Height="760"
         DataContext="{Binding Main,
                               Source={StaticResource Locator}}"
         mc:Ignorable="d ignore">
@@ -274,6 +274,9 @@
                 Item 1
             </TabItem>
             <TabItem Header="Partitions" Style="{DynamicResource TabItemStyle1}">
+                Item2
+            </TabItem>
+            <TabItem Header="Control Channels" Style="{DynamicResource TabItemStyle1}" Background="Transparent">
                 Item2
             </TabItem>
         </TabControl>
