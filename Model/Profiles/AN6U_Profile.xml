@@ -1,0 +1,4 @@
+﻿<Params>
+  <IPAddress Value="2.0.0.2" ChCount="4"/>
+  <VirtualIP Value="2.0.0.3" ChCount="2"/>
+</Params>
