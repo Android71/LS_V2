@@ -2,36 +2,66 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             
              xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
+             xmlns:ex="clr-namespace:LS_Designer_WPF.WPF_Extras"
+             xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
              mc:Ignorable="d" 
-             d:DesignHeight="303.383" d:DesignWidth="300">
-    
+             d:DesignHeight="215" d:DesignWidth="300">
+
     <Grid x:Name="rootLayout">
         <Grid.RowDefinitions>
+            <RowDefinition/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition />
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <DockPanel x:Name="listPanel" Grid.Row="0" Background="{DynamicResource DarkBrush}" Margin="0,0,0,10">
-            <Button Name="removeButton" Style="{StaticResource ButtonStyle1}" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="1" Padding="3,1" IsEnabled="False">Remove</Button>
-            <Button Name="addButton" Style="{StaticResource ButtonStyle1}" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="1" Padding="3,1">Add</Button>
-        </DockPanel>
-        <ListBox Grid.Row="1" Style="{StaticResource ListBoxStyle1}"
-                 ItemContainerStyle="{DynamicResource ListBoxItemStyle1}">
-            <ListBoxItem Content="Кухня"/>
-            <ListBoxItem Content="Гостиная"/>
-            <ListBoxItem Content="Прихожая"/>
-            <ListBoxItem Content="Детская"/>
-        </ListBox>
-        <StackPanel x:Name="objectPanel" Grid.Row="3" Orientation="Horizontal" FlowDirection="RightToLeft">
-            <Button Name="saveButton"  HorizontalAlignment="Left">Save</Button>
-            <Button Name="cancelButton"  HorizontalAlignment="Right">Cancel</Button>
-        </StackPanel>
-        <Border Grid.Row="4" Background="{StaticResource VeryDarkBrush}" BorderBrush="{StaticResource LightGrayBrush}" BorderThickness="1"/>
-        <TextBox Grid.Row="4" Style="{StaticResource TextBoxStyle1}" Margin="10" Padding="2,2,0,2">Enter name of Partition</TextBox>
+        <Grid x:Name="list" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <DockPanel x:Name="listButtons" Grid.Row="0" Background="{StaticResource DarkBrush}" Margin="0,0,0,10">
+                <Button x:Name="removeButton" Style="{StaticResource ButtonStyle1}" DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="1" Padding="3,1" IsEnabled="False" Content="Remove"/>
+                <Button x:Name="addButton" Style="{StaticResource ButtonStyle1}" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="1" Padding="3,1" Content="Add" IsEnabled="False" />
+            </DockPanel>
+            <ListBox Grid.Row="1" Style="{StaticResource ListBoxStyle1}"
+                     ItemsSource="{Binding ListItems, Source={ex:RootExtention}}" 
+                     SelectedItem="{Binding SelectedItem, Source={ex:RootExtention}}"
+				ItemContainerStyle="{DynamicResource ListBoxItemStyle1}" MouseDoubleClick="ListBox_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <Custom:EventToCommand/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <!--<ListBoxItem Content="Кухня"/>
+                <ListBoxItem Content="Гостиная"/>
+                <ListBoxItem Content="Прихожая"/>
+                <ListBoxItem Content="Детская"/>-->
+            </ListBox>
+            <Grid Grid.Row="1" x:Name="listCurtain" Background="#334F4F4F" Visibility="Collapsed"/>
+        </Grid>
+        <Grid Grid.Row="1" x:Name="object">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="objectButtons" Grid.Row="0" Orientation="Horizontal" FlowDirection="RightToLeft" Background="{DynamicResource DarkBrush}" Margin="0,10,0,0" Visibility="Collapsed">
+                <Button x:Name="saveButton" Style="{StaticResource ButtonStyle1}" HorizontalAlignment="Left" Content="Save" Click="saveButton_Click" />
+                <Button x:Name="cancelButton"  Style="{StaticResource ButtonStyle1}" HorizontalAlignment="Right"  Content="Cancel" Click="cancelButton_Click"/>
+            </StackPanel>
+            <Border Grid.Row="1" Name="objectPanel" Background="{StaticResource VeryDarkBrush}" BorderBrush="{DynamicResource PlumbumBrush}" BorderThickness="1" Padding="10" Margin="0,10,0,0">
+                <TextBox  Name="name" Style="{StaticResource TextBoxStyle1}" Margin="0" Padding="2,2,0,2" 
+                          Text="{Binding CurrentObject.Name, Source={ex:RootExtention}}"/>
+            </Border>
+            <Grid Grid.Row="1" x:Name="objectCurtain" Background="Transparent" Margin="0,10,0,0"/>
+        </Grid>
     </Grid>
+
 </UserControl>

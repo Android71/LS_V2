@@ -99,6 +99,7 @@
     <Compile Include="GrayScale.xaml.cs">
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF_Extras\RootExtention.cs" />
     <Page Include="Controls\PartitionsUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

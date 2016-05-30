@@ -1,10 +1,10 @@
-﻿<Window
+﻿<Window x:Class="LS_Designer_WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Controls="clr-namespace:LS_Designer_WPF.Controls" x:Class="LS_Designer_WPF.MainWindow"
+        xmlns:Controls="clr-namespace:LS_Designer_WPF.Controls"
         Title="MVVM Light Application"
         Width="1360"
         Height="760"
@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>
-        <Binding Path="Main" Source="{StaticResource Locator}"/>
+        <Binding Path="Main" Source="{StaticResource Locator}" />
     </Window.DataContext>
     <Window.Background>
         <LinearGradientBrush MappingMode="RelativeToBoundingBox" StartPoint="-0.028,1.091" EndPoint="1.454,-0.347">
@@ -42,14 +42,14 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <ToggleButton x:Name="Mode"
-			Grid.Row="0"
-			Margin="0,2,5,0"
-			Background="#FF1A5525"
-			Content="Design" />
+                      Grid.Row="0"
+                      Margin="0,2,5,0"
+                      Background="#FF1A5525"
+                      Content="Design" />
         <Grid x:Name="ControlPanels"
-			Grid.Row="1"
-			Grid.Column="0"
-			Margin="0,0,5,0">
+              Grid.Row="1"
+              Grid.Column="0"
+              Margin="0,0,5,0">
             <Grid x:Name="Panel1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -58,51 +58,49 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0"
-					Margin="0,2"
-					Style="{StaticResource ControlPanelLabel}"
-					Content="Partitions" />
+                       Margin="0,2"
+                       Style="{StaticResource ControlPanelLabel}"
+                       Content="Partitions" />
                 <ListBox x:Name="partitions"
-					Grid.Row="1"
-					Margin="0,0,0,4"
-					Style="{StaticResource ListBoxStyle1}"
-					ItemContainerStyle="{DynamicResource ListBoxItemStyle1}">
-                    <ListBoxItem Content="Кухня"/>
-                    <ListBoxItem Content="Гостиная"/>
-                    <ListBoxItem Content="Прихожая"/>
-                    <ListBoxItem Content="Детская"/>
+                         Grid.Row="1"
+                         Margin="0,0,0,4"
+                         Style="{StaticResource ListBoxStyle1}"
+                         ItemContainerStyle="{DynamicResource ListBoxItemStyle1}">
+                    <ListBoxItem Content="Кухня" />
+                    <ListBoxItem Content="Гостиная" />
+                    <ListBoxItem Content="Прихожая" />
+                    <ListBoxItem Content="Детская" />
                 </ListBox>
                 <Label Grid.Row="2"
-					Margin="0,0,0,2"
-					Style="{StaticResource ControlPanelLabel}"
-					Content="Control Spaces" />
+                       Margin="0,0,0,2"
+                       Style="{StaticResource ControlPanelLabel}"
+                       Content="Control Spaces" />
                 <ListBox x:Name="controlSpaces"
-					Grid.Row="3"
-					Background="#FF333333"
-					BorderBrush="#FF858487" />
+                         Grid.Row="3"
+                         Background="#FF333333"
+                         BorderBrush="#FF858487" />
             </Grid>
             <Grid x:Name="Panel2" />
             <Grid x:Name="PanelCurtain"
-				Background="#7F000000"
-				Visibility="Collapsed" />
+                  Background="#7F000000"
+                  Visibility="Collapsed" />
         </Grid>
         <TabControl x:Name="tabControl"
-			Grid.Row="0"
-			Grid.RowSpan="2"
-			Grid.Column="1"
-			Style="{StaticResource MainTabControlStyle}">
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Style="{StaticResource MainTabControlStyle}">
             <TabItem Header="Control Spaces" Style="{StaticResource MainTabItemStyle}">
-                <TextBox HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Text="Item1"
-					IsReadOnly="True"
-					Style="{DynamicResource TextBoxInList}" />
+                <Controls:UserControl1/>
             </TabItem>
             <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
-                <Controls:PartitionsUC Margin="40,40,0,40" HorizontalAlignment="Left"/>
+                <Controls:PartitionsUC Margin="40,40,0,40" HorizontalAlignment="Left" MinWidth="200"/>
             </TabItem>
             <TabItem Header="Control Channels"
-				Style="{StaticResource MainTabItemStyle}"
-				IsEnabled="False" Content="Item3"/>
+                     Style="{StaticResource MainTabItemStyle}"
+                     IsEnabled="False"
+                     Content="Item3" 
+            />
         </TabControl>
     </Grid>
 </Window>

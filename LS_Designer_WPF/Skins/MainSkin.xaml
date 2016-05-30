@@ -356,81 +356,115 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!-- Button1 -->
-    
-    <SolidColorBrush x:Key="Button1.Static.Background" Color="{StaticResource DimGray}"/>
-    <SolidColorBrush x:Key="Button1.Static.Border" Color="{StaticResource DimGray}"/>
-    
-    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource Dark}"/>
-    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="{StaticResource BlueAccent}"/>
-    
-    <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource Gray}"/>
-    <SolidColorBrush x:Key="Button.Pressed.Border" Color="{StaticResource BlueAccent}"/>
-    
-    <SolidColorBrush x:Key="Button.Disabled.Background" Color="Transparent"/>
-    <SolidColorBrush x:Key="Button.Disabled.Border" Color="Transparent"/>
-    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="{StaticResource DimGray}"/>
+
+    <!--  Button1  -->
+
+    <SolidColorBrush x:Key="Button1.Static.Background" Color="{StaticResource DimGray}" />
+    <SolidColorBrush x:Key="Button1.Static.Border" Color="{StaticResource DimGray}" />
+
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource Dark}" />
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="{StaticResource BlueAccent}" />
+
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource Gray}" />
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="{StaticResource BlueAccent}" />
+
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="Transparent" />
+    <SolidColorBrush x:Key="Button.Disabled.Border" Color="{StaticResource Plumbum}" />
+    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="{StaticResource DimGray}" />
     <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-        <Setter Property="Background" Value="{StaticResource Button1.Static.Background}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Button1.Static.Border}"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+        <Setter Property="Background" Value="{StaticResource Button1.Static.Background}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Button1.Static.Border}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <Border x:Name="border"
+                            Padding="3,1"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Focusable="False"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
-                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource Button.MouseOver.Background}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.MouseOver.Border}" />
+                            <Setter TargetName="border" Property="BorderThickness" Value="1" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource Button.Pressed.Background}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                            <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource Button.Disabled.Background}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />
+                            <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{StaticResource Button.Disabled.Foreground}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!-- TextBo1-->
 
-    <SolidColorBrush x:Key="TextBox1.Static.Background" Color="{StaticResource DimGray}"/>
+    <!--  TextBo1  -->
+
+    <SolidColorBrush x:Key="TextBox1.Static.Background" Color="{StaticResource Dark}" />
+    <SolidColorBrush x:Key="TextBox1.Static.Border" Color="{StaticResource Plumbum}" />
+
+    <SolidColorBrush x:Key="TextBox1.MouseOver.Border" Color="{StaticResource BlueAccent}" />
+
+    <SolidColorBrush x:Key="TextBox1.Focused.Background" Color="{StaticResource Gray}" />
+    <SolidColorBrush x:Key="TextBox1.Focused.Border" Color="{StaticResource DimWhite}" />
 
     <Style x:Key="TextBoxStyle1" TargetType="{x:Type TextBox}">
-        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Grid>
-                        <Border x:Name="Border" Background="{StaticResource TextBox1.Static.Background}" BorderBrush="{DynamicResource SolidBorderBrush}" BorderThickness="1" Padding="2" CornerRadius="0">
+                        <Border x:Name="Border"
+                                Background="{StaticResource TextBox1.Static.Background}"
+                                BorderBrush="{StaticResource TextBox1.Static.Border}"
+                                BorderThickness="1"
+                                Padding="2"
+                                CornerRadius="0">
 
-                            <!-- The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function -->
-                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" Style="{DynamicResource SimpleScrollViewer}" Background="{StaticResource TextBox1.Static.Background}"/>
+                            <!--  The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function  -->
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="0"
+                                          Style="{DynamicResource SimpleScrollViewer}"
+                                          Background="{StaticResource TextBox1.Static.Background}" />
 
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Border"/>
-                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource DisabledBackgroundBrush}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource DisabledBackgroundBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource TextBox1.MouseOver.Border}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource TextBox1.Focused.Border}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource TextBox1.Focused.Background}" />
+                            <Setter TargetName="PART_ContentHost" Property="Background" Value="{StaticResource TextBox1.Focused.Background}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

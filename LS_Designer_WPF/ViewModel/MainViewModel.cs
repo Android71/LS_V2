@@ -13,6 +13,8 @@ namespace LS_Designer_WPF.ViewModel
     {
         private readonly IDataService _dataService;
 
+        #region MVVMLight default pattern
+
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
@@ -35,6 +37,8 @@ namespace LS_Designer_WPF.ViewModel
                 Set(ref _welcomeTitle, value);
             }
         }
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
