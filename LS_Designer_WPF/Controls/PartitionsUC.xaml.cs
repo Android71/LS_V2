@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 
 namespace LS_Designer_WPF.Controls
 {
-
     public class PartitionTst
     {
         public int Id { get; set; }
@@ -127,7 +126,7 @@ namespace LS_Designer_WPF.Controls
             }
         }
 
-        
+
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -148,4 +147,5 @@ namespace LS_Designer_WPF.Controls
             addButton.IsEnabled = true;
         }
     }
+
 }

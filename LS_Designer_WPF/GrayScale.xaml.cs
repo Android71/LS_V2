@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace LS_Designer_WPF
 {
     /// <summary>
-    /// Логика взаимодействия для Window1.xaml
+    /// Логика взаимодействия для GrayScale.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class GrayScale : Window
     {
-        public Window1()
+        public GrayScale()
         {
             InitializeComponent();
         }

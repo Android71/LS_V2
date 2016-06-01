@@ -91,7 +91,7 @@
                     Grid.Column="1"
                     Style="{StaticResource MainTabControlStyle}">
             <TabItem Header="Control Spaces" Style="{StaticResource MainTabItemStyle}">
-                <Controls:UserControl1 />
+                <!--<Controls:UserControl1 />-->
             </TabItem>
             <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
                 <Controls:PartitionsUC MinWidth="200"

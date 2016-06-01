@@ -58,7 +58,7 @@
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
-                        <Custom:EventToCommand />
+                        <!--<Custom:EventToCommand />-->
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <!--<ListBoxItem Content="Кухня"/>

@@ -1,7 +1,7 @@
 ﻿using System;
-using LS_Designer_WPF.Model;
+using MvvmLight1.Model;
 
-namespace LS_Designer_WPF.Design
+namespace MvvmLight1.Design
 {
     public class DesignDataService : IDataService
     {

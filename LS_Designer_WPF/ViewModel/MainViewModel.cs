@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
-using LS_Designer_WPF.Model;
+using MvvmLight1.Model;
 
-namespace LS_Designer_WPF.ViewModel
+namespace MvvmLight1.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -13,32 +13,28 @@ namespace LS_Designer_WPF.ViewModel
     {
         private readonly IDataService _dataService;
 
-        #region MVVMLight default pattern
-
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
-        //public const string WelcomeTitlePropertyName = "WelcomeTitle";
+        public const string WelcomeTitlePropertyName = "WelcomeTitle";
 
-        //private string _welcomeTitle = string.Empty;
+        private string _welcomeTitle = string.Empty;
 
         /// <summary>
         /// Gets the WelcomeTitle property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        //public string WelcomeTitle
-        //{
-        //    get
-        //    {
-        //        return _welcomeTitle;
-        //    }
-        //    set
-        //    {
-        //        Set(ref _welcomeTitle, value);
-        //    }
-        //}
-
-        #endregion
+        public string WelcomeTitle
+        {
+            get
+            {
+                return _welcomeTitle;
+            }
+            set
+            {
+                Set(ref _welcomeTitle, value);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -54,6 +50,7 @@ namespace LS_Designer_WPF.ViewModel
                         // Report error here
                         return;
                     }
+
                     WelcomeTitle = item.Title;
                 });
         }

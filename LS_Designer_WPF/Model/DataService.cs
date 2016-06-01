@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LS_Designer_WPF.Model
+namespace MvvmLight1.Model
 {
     public class DataService : IDataService
     {

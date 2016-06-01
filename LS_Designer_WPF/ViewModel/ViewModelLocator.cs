@@ -1,7 +1,7 @@
 ﻿/*
   In App.xaml:
   <Application.Resources>
-      <vm:ViewModelLocatorTemplate xmlns:vm="clr-namespace:LS_Designer_WPF.ViewModel"
+      <vm:ViewModelLocatorTemplate xmlns:vm="clr-namespace:MvvmLight1.ViewModel"
                                    x:Key="Locator" />
   </Application.Resources>
   
@@ -12,9 +12,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using LS_Designer_WPF.Model;
+using MvvmLight1.Model;
 
-namespace LS_Designer_WPF.ViewModel
+namespace MvvmLight1.ViewModel
 {
     /// <summary>
     /// This class contains static references to all the view models in the
