@@ -17,17 +17,13 @@ namespace EFData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ControlDevice()
         {
-            this.Name = "\"\"";
-            this.CanDimming = false;
-            this.Model = "\"\"";
-            this.Profile = " ";
             this.ControlChannels = new HashSet<ControlChannel>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool CanDimming { get; set; }
         public string Model { get; set; }
+        public bool HaveDimmer { get; set; }
         public string Profile { get; set; }
         public string Remark { get; set; }
     

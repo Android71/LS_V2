@@ -17,24 +17,22 @@ namespace EFData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LightElement()
         {
-            this.StartPoint = 1;
             this.CanDimming = false;
             this.LE_Proxies = new HashSet<LE_Proxy>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public int StartPoint { get; set; }
         public bool CanDimming { get; set; }
-        public string Remark { get; set; }
         public Nullable<PointTypeEnum> PointType { get; set; }
+        public string Remark { get; set; }
     
-        public virtual Gamma Gamma { get; set; }
-        public virtual ControlChannel ControlChannel { get; set; }
         public virtual Partition Partition { get; set; }
         public virtual ControlSpace ControlSpace { get; set; }
+        public virtual ControlChannel ControlChannel { get; set; }
+        public virtual Gamma Gamma { get; set; }
+        public virtual CustomGamma CustomGamma { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LE_Proxy> LE_Proxies { get; set; }
-        public virtual CustomGamma CustomGamma { get; set; }
     }
 }

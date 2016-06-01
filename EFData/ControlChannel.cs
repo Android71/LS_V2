@@ -23,11 +23,13 @@ namespace EFData
         public int Id { get; set; }
         public string Name { get; set; }
         public int ChannelNo { get; set; }
+        public Nullable<PointTypeEnum> PointType { get; set; }
         public Nullable<bool> HaveDimmer { get; set; }
-        public string DotNetChannelType { get; set; }
+        public string DotNetType { get; set; }
     
-        public virtual ControlDevice ControlDevice { get; set; }
+        public virtual ControlSpace ControlSpace { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightElement> LightElements { get; set; }
+        public virtual ControlDevice ControlDevice { get; set; }
     }
 }

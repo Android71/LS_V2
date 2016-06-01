@@ -85,9 +85,6 @@
     <Compile Include="EnvironmentItem.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Event.cs">
-      <DependentUpon>LSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="EventChannel.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
@@ -97,13 +94,16 @@
     <Compile Include="Gamma.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GenericEvent.cs">
+      <DependentUpon>LSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="LE_Proxy.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="LE_Type.cs">
+    <Compile Include="LightElement.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="LightElement.cs">
+    <Compile Include="LightPointType.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LightStrip.cs">
@@ -149,7 +149,9 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="LSModel.edmx.diagram">
       <DependentUpon>LSModel.edmx</DependentUpon>
     </None>
@@ -167,7 +169,6 @@
       <LastGenOutput>LSModel.cs</LastGenOutput>
       <DependentUpon>LSModel.edmx</DependentUpon>
     </Content>
-    <Content Include="RestoreData\LS_DDL.sql" />
     <Content Include="RestoreData\script.sql" />
   </ItemGroup>
   <ItemGroup>

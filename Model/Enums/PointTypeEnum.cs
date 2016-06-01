@@ -20,5 +20,14 @@ namespace LS_Designer_WPF.Model
         DRGBW = 8,
         DRGBWC = 9
 
+        //W = 0,
+        //WT = 1,
+        //CW = 2,
+        //RGB = 3,
+        //RGB_W = 4
+        //RGBW = 5
+        //RGBWT = 6
+        //RGBCW = 7
+
     }
 }

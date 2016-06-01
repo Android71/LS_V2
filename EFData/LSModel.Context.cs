@@ -27,9 +27,7 @@ namespace EFData
     
         public virtual DbSet<ControlSpace> ControlSpaces { get; set; }
         public virtual DbSet<ControlChannel> ControlChannels { get; set; }
-        public virtual DbSet<ControlDevice> ControlDevices { get; set; }
         public virtual DbSet<EventChannel> EventChannels { get; set; }
-        public virtual DbSet<EventDevice> EventDevices { get; set; }
         public virtual DbSet<LightElement> LightElements { get; set; }
         public virtual DbSet<LightZone> LightZones { get; set; }
         public virtual DbSet<Gamma> Gammas { get; set; }
@@ -39,11 +37,13 @@ namespace EFData
         public virtual DbSet<Scene> Scenes { get; set; }
         public virtual DbSet<Effect> Effects { get; set; }
         public virtual DbSet<EnvironmentItem> EnvironmentItems { get; set; }
-        public virtual DbSet<Event> Events { get; set; }
-        public virtual DbSet<LE_Type> LE_Types { get; set; }
+        public virtual DbSet<GenericEvent> GenericEvents { get; set; }
+        public virtual DbSet<LightPointType> LE_Types { get; set; }
         public virtual DbSet<EffectPart> EffectParts { get; set; }
         public virtual DbSet<EffectPartType> EffectPartTypes { get; set; }
         public virtual DbSet<LE_Proxy> LE_Proxies { get; set; }
         public virtual DbSet<CustomGamma> CustomGammas { get; set; }
+        public virtual DbSet<ControlDevice> ControlDevices { get; set; }
+        public virtual DbSet<EventDevice> EventDevices { get; set; }
     }
 }

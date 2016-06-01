@@ -4,66 +4,58 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" >
-        <EntityTypeShape EntityType="LSModel.ControlSpace" Width="2" PointX="7.25" PointY="0.5" />
-        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.875" PointX="12.75" PointY="0.5" />
-        <EntityTypeShape EntityType="LSModel.ArtNetControlChannel" Width="1.875" PointX="12.625" PointY="4.25" />
+      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="86" >
+        <EntityTypeShape EntityType="LSModel.ControlSpace" Width="2" PointX="7.75" PointY="3.125" />
+        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.875" PointX="13.25" PointY="3.25" />
+        <EntityTypeShape EntityType="LSModel.ArtNetControlChannel" Width="1.875" PointX="12.75" PointY="0.75" />
         <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
-        <EntityTypeShape EntityType="LSModel.ControlDevice" Width="1.75" PointX="10.25" PointY="0.5" />
+        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="1.625" PointY="3.125" />
+        <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
+        <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="7.875" PointY="6.625" />
+        <EntityTypeShape EntityType="LSModel.GenericEvent" Width="1.5" PointX="1.625" PointY="0.75" />
+        <AssociationConnector Association="LSModel.EventEventChannel" />
+        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="0.5" PointY="6.75" />
+        <EntityTypeShape EntityType="LSModel.LightPointType" Width="1.5" PointX="8.125" PointY="0.5" />
+        <AssociationConnector Association="LSModel.EnvironmentItemControlSpace" />
+        <AssociationConnector Association="LSModel.ControlSpaceControlChannel" />
+        <AssociationConnector Association="LSModel.ControlSpaceEventChannel" />
+        <AssociationConnector Association="LSModel.ControlSpaceLightPointType" />
+        <EntityTypeShape EntityType="LSModel.ControlDevice" Width="1.5" PointX="10.875" PointY="2.875" />
         <AssociationConnector Association="LSModel.ControlSpaceControlDevice" />
         <AssociationConnector Association="LSModel.ControlDeviceControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="4.125" PointY="3.875" />
-        <EntityTypeShape EntityType="LSModel.EventDevice" Width="1.5" PointX="3" PointY="0.5" />
+        <EntityTypeShape EntityType="LSModel.EventDevice" Width="1.5" PointX="4.875" PointY="2.75" />
         <AssociationConnector Association="LSModel.ControlSpaceEventDevice" />
         <AssociationConnector Association="LSModel.EventDeviceEventChannel" />
-        <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="8.875" PointY="4.5" />
-        <AssociationConnector Association="LSModel.ControlSpaceEnvironmentItem" />
-        <EntityTypeShape EntityType="LSModel.Event" Width="1.5" PointX="3.375" PointY="7" />
-        <AssociationConnector Association="LSModel.EventEventChannel" />
-        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="0.5" PointY="3.625" />
-        <AssociationConnector Association="LSModel.PartitionEventDevice" />
-        <EntityTypeShape EntityType="LSModel.LE_Type" Width="1.5" PointX="6.375" PointY="5" />
-        <AssociationConnector Association="LSModel.ControlSpaceLE_Type" />
       </Diagram>
-      <Diagram DiagramId="697527b404df462abd17d71f61170bde" Name="Diagram2" ZoomLevel="86" >
+      <Diagram DiagramId="697527b404df462abd17d71f61170bde" Name="Diagram2" ZoomLevel="74" >
         <EntityTypeShape EntityType="LSModel.LightElement" Width="1.5" PointX="11.25" PointY="1.75" />
-        <EntityTypeShape EntityType="LSModel.LightZone" Width="1.5" PointX="6.125" PointY="2" />
-        <EntityTypeShape EntityType="LSModel.Gamma" Width="1.5" PointX="13.875" PointY="3.375" />
-        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="8.75" PointY="0.875" />
+        <EntityTypeShape EntityType="LSModel.LightZone" Width="1.5" PointX="6.125" PointY="3.125" />
+        <EntityTypeShape EntityType="LSModel.Gamma" Width="1.5" PointX="13.875" PointY="3.75" />
         <EntityTypeShape EntityType="LSModel.BaseEffect" Width="1.5" PointX="0.625" PointY="7.25" />
         <EntityTypeShape EntityType="LSModel.Pattern" Width="1.5" PointX="2.625" PointY="7.25" />
-        <EntityTypeShape EntityType="LSModel.Scene" Width="1.5" PointX="2.875" PointY="0.5" />
+        <EntityTypeShape EntityType="LSModel.Scene" Width="1.5" PointX="6" PointY="0.5" />
         <AssociationConnector Association="LSModel.GammaLightElement" />
         <AssociationConnector Association="LSModel.SceneLightZone" />
-        <AssociationConnector Association="LSModel.PartitionScene" />
-        <EntityTypeShape EntityType="LSModel.Effect" Width="1.5" PointX="3.25" PointY="3.5" />
-        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.5" PointX="13.875" PointY="0.875" />
+        <EntityTypeShape EntityType="LSModel.Effect" Width="1.5" PointX="3.375" PointY="0.5" />
+        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.5" PointX="13.875" PointY="0.5" />
         <AssociationConnector Association="LSModel.LightChannelLightElement" />
-        <EntityTypeShape EntityType="LSModel.LightStrip" Width="1.5" PointX="12" PointY="6.625" />
+        <EntityTypeShape EntityType="LSModel.LightStrip" Width="1.5" PointX="10.625" PointY="6.625" />
         <InheritanceConnector EntityType="LSModel.LightStrip" />
-        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="5.125" PointY="6.5" />
+        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="6.125" PointY="7.25" />
         <AssociationConnector Association="LSModel.EventChannelLightZone" />
-        <AssociationConnector Association="LSModel.PartitionLightZone" ManuallyRouted="false" >
-        </AssociationConnector>
-        <AssociationConnector Association="LSModel.PartitionLightElement" ManuallyRouted="false" >
-        </AssociationConnector>
-        <EntityTypeShape EntityType="LSModel.ControlSpace" Width="1.5" PointX="8.75" PointY="3.75" />
-        <AssociationConnector Association="LSModel.ControlSpaceLightElement" />
         <AssociationConnector Association="LSModel.LightZoneEffect" />
-        <AssociationConnector Association="LSModel.ControlSpaceLightZone" />
         <AssociationConnector Association="LSModel.SceneEffect" />
-        <EntityTypeShape EntityType="LSModel.EffectPart" Width="1.5" PointX="0.625" PointY="3.375" />
-        <EntityTypeShape EntityType="LSModel.EffectPartType" Width="1.5" PointX="0.625" PointY="0.5" />
+        <EntityTypeShape EntityType="LSModel.EffectPart" Width="1.5" PointX="0.75" PointY="0.625" />
+        <EntityTypeShape EntityType="LSModel.EffectPartType" Width="1.5" PointX="0.75" PointY="3.5" />
         <AssociationConnector Association="LSModel.EffectPartTypeEffectPart" />
         <AssociationConnector Association="LSModel.EffectEffectPart" />
         <AssociationConnector Association="LSModel.EffectPartEffectPart" />
-        <EntityTypeShape EntityType="LSModel.LE_Proxy" Width="1.5" PointX="8.75" PointY="7.25" />
+        <EntityTypeShape EntityType="LSModel.LE_Proxy" Width="1.5" PointX="8.75" PointY="3.375" />
         <AssociationConnector Association="LSModel.LightZoneLE_Proxy" />
         <AssociationConnector Association="LSModel.LightElementLE_Proxy" />
-        <EntityTypeShape EntityType="LSModel.CustomGamma" Width="1.5" PointX="15" PointY="5.875" />
+        <EntityTypeShape EntityType="LSModel.CustomGamma" Width="1.5" PointX="13.875" PointY="6" />
         <AssociationConnector Association="LSModel.CustomGammaLightElement" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -8,9 +8,7 @@
   <EntityContainer Name="LSModelStoreContainer">
     <EntitySet Name="ControlSpaces" EntityType="LSModel.Store.ControlSpaces" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ControlChannels" EntityType="LSModel.Store.ControlChannels" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="ControlDevices" EntityType="LSModel.Store.ControlDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EventChannels" EntityType="LSModel.Store.EventChannels" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="EventDevices" EntityType="LSModel.Store.EventDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LightElements" EntityType="LSModel.Store.LightElements" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LightZones" EntityType="LSModel.Store.LightZones" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Gammas" EntityType="LSModel.Store.Gammas" store:Type="Tables" Schema="dbo" />
@@ -20,32 +18,18 @@
     <EntitySet Name="Scenes" EntityType="LSModel.Store.Scenes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Effects" EntityType="LSModel.Store.Effects" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EnvironmentItems" EntityType="LSModel.Store.EnvironmentItems" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Events" EntityType="LSModel.Store.Events" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GenericEvents" EntityType="LSModel.Store.GenericEvents" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LE_Types" EntityType="LSModel.Store.LE_Types" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EffectParts" EntityType="LSModel.Store.EffectParts" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EffectPartTypes" EntityType="LSModel.Store.EffectPartTypes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LE_Proxies" EntityType="LSModel.Store.LE_Proxies" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CustomGammas" EntityType="LSModel.Store.CustomGammas" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ControlDevices" EntityType="LSModel.Store.ControlDevices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EventDevices" EntityType="LSModel.Store.EventDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ControlChannels_ArtNetControlChannel" EntityType="LSModel.Store.ControlChannels_ArtNetControlChannel" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LightElements_LightStrip" EntityType="LSModel.Store.LightElements_LightStrip" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SceneLightZone" EntityType="LSModel.Store.SceneLightZone" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EventChannelLightZone" EntityType="LSModel.Store.EventChannelLightZone" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="ControlSpaceControlDevice" Association="LSModel.Store.ControlSpaceControlDevice">
-      <End Role="ControlSpace" EntitySet="ControlSpaces" />
-      <End Role="ControlDevice" EntitySet="ControlDevices" />
-    </AssociationSet>
-    <AssociationSet Name="ControlDeviceControlChannel" Association="LSModel.Store.ControlDeviceControlChannel">
-      <End Role="ControlDevice" EntitySet="ControlDevices" />
-      <End Role="ControlChannel" EntitySet="ControlChannels" />
-    </AssociationSet>
-    <AssociationSet Name="ControlSpaceEventDevice" Association="LSModel.Store.ControlSpaceEventDevice">
-      <End Role="ControlSpace" EntitySet="ControlSpaces" />
-      <End Role="EventDevice" EntitySet="EventDevices" />
-    </AssociationSet>
-    <AssociationSet Name="EventDeviceEventChannel" Association="LSModel.Store.EventDeviceEventChannel">
-      <End Role="EventDevice" EntitySet="EventDevices" />
-      <End Role="EventChannel" EntitySet="EventChannels" />
-    </AssociationSet>
     <AssociationSet Name="GammaLightElement" Association="LSModel.Store.GammaLightElement">
       <End Role="Gamma" EntitySet="Gammas" />
       <End Role="LightElement" EntitySet="LightElements" />
@@ -82,25 +66,13 @@
       <End Role="Partition" EntitySet="Partitions" />
       <End Role="LightElement" EntitySet="LightElements" />
     </AssociationSet>
-    <AssociationSet Name="ControlSpaceEnvironmentItem" Association="LSModel.Store.ControlSpaceEnvironmentItem">
-      <End Role="ControlSpace" EntitySet="ControlSpaces" />
-      <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
-    </AssociationSet>
     <AssociationSet Name="ControlSpaceLightElement" Association="LSModel.Store.ControlSpaceLightElement">
       <End Role="ControlSpace" EntitySet="ControlSpaces" />
       <End Role="LightElement" EntitySet="LightElements" />
     </AssociationSet>
     <AssociationSet Name="EventEventChannel" Association="LSModel.Store.EventEventChannel">
-      <End Role="Event" EntitySet="Events" />
+      <End Role="Event" EntitySet="GenericEvents" />
       <End Role="EventChannel" EntitySet="EventChannels" />
-    </AssociationSet>
-    <AssociationSet Name="PartitionEventDevice" Association="LSModel.Store.PartitionEventDevice">
-      <End Role="Partition" EntitySet="Partitions" />
-      <End Role="EventDevice" EntitySet="EventDevices" />
-    </AssociationSet>
-    <AssociationSet Name="ControlSpaceLE_Type" Association="LSModel.Store.ControlSpaceLE_Type">
-      <End Role="ControlSpace" EntitySet="ControlSpaces" />
-      <End Role="LE_Type" EntitySet="LE_Types" />
     </AssociationSet>
     <AssociationSet Name="LightZoneEffect" Association="LSModel.Store.LightZoneEffect">
       <End Role="LightZone" EntitySet="LightZones" />
@@ -138,6 +110,38 @@
       <End Role="CustomGamma" EntitySet="CustomGammas" />
       <End Role="LightElement" EntitySet="LightElements" />
     </AssociationSet>
+    <AssociationSet Name="EnvironmentItemControlSpace" Association="LSModel.Store.EnvironmentItemControlSpace">
+      <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
+      <End Role="ControlSpace" EntitySet="ControlSpaces" />
+    </AssociationSet>
+    <AssociationSet Name="ControlSpaceControlChannel" Association="LSModel.Store.ControlSpaceControlChannel">
+      <End Role="ControlSpace" EntitySet="ControlSpaces" />
+      <End Role="ControlChannel" EntitySet="ControlChannels" />
+    </AssociationSet>
+    <AssociationSet Name="ControlSpaceEventChannel" Association="LSModel.Store.ControlSpaceEventChannel">
+      <End Role="ControlSpace" EntitySet="ControlSpaces" />
+      <End Role="EventChannel" EntitySet="EventChannels" />
+    </AssociationSet>
+    <AssociationSet Name="ControlSpaceLightPointType" Association="LSModel.Store.ControlSpaceLightPointType">
+      <End Role="ControlSpace" EntitySet="ControlSpaces" />
+      <End Role="LightPointType" EntitySet="LE_Types" />
+    </AssociationSet>
+    <AssociationSet Name="ControlSpaceControlDevice" Association="LSModel.Store.ControlSpaceControlDevice">
+      <End Role="ControlSpace" EntitySet="ControlSpaces" />
+      <End Role="ControlDevice" EntitySet="ControlDevices" />
+    </AssociationSet>
+    <AssociationSet Name="ControlDeviceControlChannel" Association="LSModel.Store.ControlDeviceControlChannel">
+      <End Role="ControlDevice" EntitySet="ControlDevices" />
+      <End Role="ControlChannel" EntitySet="ControlChannels" />
+    </AssociationSet>
+    <AssociationSet Name="ControlSpaceEventDevice" Association="LSModel.Store.ControlSpaceEventDevice">
+      <End Role="ControlSpace" EntitySet="ControlSpaces" />
+      <End Role="EventDevice" EntitySet="EventDevices" />
+    </AssociationSet>
+    <AssociationSet Name="EventDeviceEventChannel" Association="LSModel.Store.EventDeviceEventChannel">
+      <End Role="EventDevice" EntitySet="EventDevices" />
+      <End Role="EventChannel" EntitySet="EventChannels" />
+    </AssociationSet>
     <AssociationSet Name="FK_ArtNetControlChannel_inherits_ControlChannel" Association="LSModel.Store.FK_ArtNetControlChannel_inherits_ControlChannel">
       <End Role="ControlChannel" EntitySet="ControlChannels" />
       <End Role="ArtNetControlChannel" EntitySet="ControlChannels_ArtNetControlChannel" />
@@ -153,8 +157,8 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ControlChCount" Type="int" Nullable="false" DefaultValue="1" />
-    <Property Name="EventChCount" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="EnvironmentItem_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ControlChannels">
     <Key>
@@ -163,21 +167,11 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ChannelNo" Type="int" Nullable="false" />
+    <Property Name="PointType" Type="int" Nullable="true" />
     <Property Name="HaveDimmer" Type="bit" Nullable="true" />
-    <Property Name="DotNetChannelType" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="ControlDevice_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ControlDevices">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
-    <Property Name="CanDimming" Type="bit" Nullable="false" DefaultValue="false" />
-    <Property Name="Model" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
-    <Property Name="Profile" Type="nvarchar(max)" Nullable="true" DefaultValue=" " />
-    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="DotNetType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
+    <Property Name="ControlDevice_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="EventChannels">
     <Key>
@@ -187,21 +181,9 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ChannelNo" Type="int" Nullable="false" />
     <Property Name="EventName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="EventDevice_Id" Type="int" Nullable="false" />
-    <Property Name="Event_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="EventDevices">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
-    <Property Name="Mode" Type="int" Nullable="false" DefaultValue="1" />
-    <Property Name="Model" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
-    <Property Name="Profile" Type="nvarchar(max)" Nullable="true" DefaultValue=" " />
-    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="GenericEvent_Id" Type="int" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
-    <Property Name="Partition_Id" Type="int" Nullable="false" />
+    <Property Name="EventDevice_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="LightElements">
     <Key>
@@ -209,10 +191,9 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="StartPoint" Type="int" Nullable="false" DefaultValue="1" />
     <Property Name="CanDimming" Type="bit" Nullable="false" DefaultValue="false" />
-    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="PointType" Type="int" Nullable="true" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Gamma_Id" Type="int" Nullable="true" />
     <Property Name="ControlChannel_Id" Type="int" Nullable="true" />
     <Property Name="Partition_Id" Type="int" Nullable="false" />
@@ -225,9 +206,9 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="IsNode" Type="bit" Nullable="false" DefaultValue="false" />
-    <Property Name="Direction" Type="int" Nullable="false" />
+    <Property Name="PointType" Type="int" Nullable="true" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Partition_Id" Type="int" Nullable="false" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -296,10 +277,9 @@
     <Property Name="Model" Type="nvarchar(max)" Nullable="false" />
     <Property Name="DeviceType" Type="int" Nullable="false" />
     <Property Name="Profile" Type="nvarchar(max)" Nullable="false" DefaultValue="&quot;&quot;" />
-    <Property Name="DotNetChannelType" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
+    <Property Name="DotNetType" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
-  <EntityType Name="Events">
+  <EntityType Name="GenericEvents">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
@@ -312,9 +292,9 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="PointType" Type="int" Nullable="false" />
-    <Property Name="IsActive" Type="bit" Nullable="true" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="EffectParts">
@@ -333,8 +313,8 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Params" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Category" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Params" Type="nvarchar(max)" Nullable="true" />
     <Property Name="PointType" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="LE_Proxies">
@@ -357,6 +337,30 @@
     <Property Name="ValueG" Type="varbinary(max)" Nullable="true" />
     <Property Name="ValueB" Type="varbinary(max)" Nullable="true" />
   </EntityType>
+  <EntityType Name="ControlDevices">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Model" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HaveDimmer" Type="bit" Nullable="false" />
+    <Property Name="Profile" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventDevices">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Model" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Mode" Type="int" Nullable="false" />
+    <Property Name="Profile" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="ControlChannels_ArtNetControlChannel">
     <Key>
       <PropertyRef Name="Id" />
@@ -369,6 +373,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
+    <Property Name="StartPoint" Type="int" Nullable="false" />
     <Property Name="PointCount" Type="int" Nullable="false" />
     <Property Name="Direction" Type="int" Nullable="false" />
     <Property Name="ColorSequence" Type="nvarchar(max)" Nullable="false" />
@@ -390,54 +395,6 @@
     <Property Name="EventChannels_Id" Type="int" Nullable="false" />
     <Property Name="LightZones_Id" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="ControlSpaceControlDevice">
-    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
-    <End Role="ControlDevice" Type="LSModel.Store.ControlDevices" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ControlSpace">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="ControlDevice">
-        <PropertyRef Name="ControlSpace_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ControlDeviceControlChannel">
-    <End Role="ControlDevice" Type="LSModel.Store.ControlDevices" Multiplicity="1" />
-    <End Role="ControlChannel" Type="LSModel.Store.ControlChannels" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ControlDevice">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="ControlChannel">
-        <PropertyRef Name="ControlDevice_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ControlSpaceEventDevice">
-    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
-    <End Role="EventDevice" Type="LSModel.Store.EventDevices" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ControlSpace">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EventDevice">
-        <PropertyRef Name="ControlSpace_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="EventDeviceEventChannel">
-    <End Role="EventDevice" Type="LSModel.Store.EventDevices" Multiplicity="1" />
-    <End Role="EventChannel" Type="LSModel.Store.EventChannels" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EventDevice">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EventChannel">
-        <PropertyRef Name="EventDevice_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="GammaLightElement">
     <End Role="Gamma" Type="LSModel.Store.Gammas" Multiplicity="0..1" />
     <End Role="LightElement" Type="LSModel.Store.LightElements" Multiplicity="*" />
@@ -498,18 +455,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="ControlSpaceEnvironmentItem">
-    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
-    <End Role="EnvironmentItem" Type="LSModel.Store.EnvironmentItems" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ControlSpace">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EnvironmentItem">
-        <PropertyRef Name="ControlSpace_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="ControlSpaceLightElement">
     <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
     <End Role="LightElement" Type="LSModel.Store.LightElements" Multiplicity="*" />
@@ -523,38 +468,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="EventEventChannel">
-    <End Role="Event" Type="LSModel.Store.Events" Multiplicity="1" />
+    <End Role="Event" Type="LSModel.Store.GenericEvents" Multiplicity="0..1" />
     <End Role="EventChannel" Type="LSModel.Store.EventChannels" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Event">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="EventChannel">
-        <PropertyRef Name="Event_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PartitionEventDevice">
-    <End Role="Partition" Type="LSModel.Store.Partitions" Multiplicity="1" />
-    <End Role="EventDevice" Type="LSModel.Store.EventDevices" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Partition">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EventDevice">
-        <PropertyRef Name="Partition_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ControlSpaceLE_Type">
-    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
-    <End Role="LE_Type" Type="LSModel.Store.LE_Types" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ControlSpace">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="LE_Type">
-        <PropertyRef Name="ControlSpace_Id" />
+        <PropertyRef Name="GenericEvent_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -666,6 +587,102 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="EnvironmentItemControlSpace">
+    <End Role="EnvironmentItem" Type="LSModel.Store.EnvironmentItems" Multiplicity="1" />
+    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EnvironmentItem">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlSpace">
+        <PropertyRef Name="EnvironmentItem_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControlSpaceControlChannel">
+    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
+    <End Role="ControlChannel" Type="LSModel.Store.ControlChannels" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControlSpace">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlChannel">
+        <PropertyRef Name="ControlSpace_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControlSpaceEventChannel">
+    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
+    <End Role="EventChannel" Type="LSModel.Store.EventChannels" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControlSpace">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventChannel">
+        <PropertyRef Name="ControlSpace_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControlSpaceLightPointType">
+    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
+    <End Role="LightPointType" Type="LSModel.Store.LE_Types" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControlSpace">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LightPointType">
+        <PropertyRef Name="ControlSpace_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControlSpaceControlDevice">
+    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
+    <End Role="ControlDevice" Type="LSModel.Store.ControlDevices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControlSpace">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlDevice">
+        <PropertyRef Name="ControlSpace_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControlDeviceControlChannel">
+    <End Role="ControlDevice" Type="LSModel.Store.ControlDevices" Multiplicity="1" />
+    <End Role="ControlChannel" Type="LSModel.Store.ControlChannels" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControlDevice">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ControlChannel">
+        <PropertyRef Name="ControlDevice_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ControlSpaceEventDevice">
+    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
+    <End Role="EventDevice" Type="LSModel.Store.EventDevices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ControlSpace">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventDevice">
+        <PropertyRef Name="ControlSpace_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventDeviceEventChannel">
+    <End Role="EventDevice" Type="LSModel.Store.EventDevices" Multiplicity="1" />
+    <End Role="EventChannel" Type="LSModel.Store.EventChannels" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EventDevice">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventChannel">
+        <PropertyRef Name="EventDevice_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SceneLightZone_Scene">
     <End Role="Scene" Type="LSModel.Store.Scenes" Multiplicity="1" />
     <End Role="SceneLightZone" Type="LSModel.Store.SceneLightZone" Multiplicity="*" />
@@ -749,25 +766,7 @@
         <EntityContainer Name="LSModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ControlSpaces" EntityType="LSModel.ControlSpace" />
           <EntitySet Name="ControlChannels" EntityType="LSModel.ControlChannel" />
-          <EntitySet Name="ControlDevices" EntityType="LSModel.ControlDevice" />
-          <AssociationSet Name="ControlSpaceControlDevice" Association="LSModel.ControlSpaceControlDevice">
-            <End Role="ControlSpace" EntitySet="ControlSpaces" />
-            <End Role="ControlDevice" EntitySet="ControlDevices" />
-          </AssociationSet>
-          <AssociationSet Name="ControlDeviceControlChannel" Association="LSModel.ControlDeviceControlChannel">
-            <End Role="ControlDevice" EntitySet="ControlDevices" />
-            <End Role="ControlChannel" EntitySet="ControlChannels" />
-          </AssociationSet>
           <EntitySet Name="EventChannels" EntityType="LSModel.EventChannel" />
-          <EntitySet Name="EventDevices" EntityType="LSModel.EventDevice" />
-          <AssociationSet Name="ControlSpaceEventDevice" Association="LSModel.ControlSpaceEventDevice">
-            <End Role="ControlSpace" EntitySet="ControlSpaces" />
-            <End Role="EventDevice" EntitySet="EventDevices" />
-          </AssociationSet>
-          <AssociationSet Name="EventDeviceEventChannel" Association="LSModel.EventDeviceEventChannel">
-            <End Role="EventDevice" EntitySet="EventDevices" />
-            <End Role="EventChannel" EntitySet="EventChannels" />
-          </AssociationSet>
           <EntitySet Name="LightElements" EntityType="LSModel.LightElement" />
           <EntitySet Name="LightZones" EntityType="LSModel.LightZone" />
           <EntitySet Name="Gammas" EntityType="LSModel.Gamma" />
@@ -805,28 +804,16 @@
             <End Role="LightElement" EntitySet="LightElements" />
           </AssociationSet>
           <EntitySet Name="EnvironmentItems" EntityType="LSModel.EnvironmentItem" />
-          <AssociationSet Name="ControlSpaceEnvironmentItem" Association="LSModel.ControlSpaceEnvironmentItem">
-            <End Role="ControlSpace" EntitySet="ControlSpaces" />
-            <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
-          </AssociationSet>
           <AssociationSet Name="ControlSpaceLightElement" Association="LSModel.ControlSpaceLightElement">
             <End Role="ControlSpace" EntitySet="ControlSpaces" />
             <End Role="LightElement" EntitySet="LightElements" />
           </AssociationSet>
-          <EntitySet Name="Events" EntityType="LSModel.Event" />
+          <EntitySet Name="GenericEvents" EntityType="LSModel.GenericEvent" />
           <AssociationSet Name="EventEventChannel" Association="LSModel.EventEventChannel">
-            <End Role="Event" EntitySet="Events" />
+            <End Role="Event" EntitySet="GenericEvents" />
             <End Role="EventChannel" EntitySet="EventChannels" />
           </AssociationSet>
-          <AssociationSet Name="PartitionEventDevice" Association="LSModel.PartitionEventDevice">
-            <End Role="Partition" EntitySet="Partitions" />
-            <End Role="EventDevice" EntitySet="EventDevices" />
-          </AssociationSet>
-          <EntitySet Name="LE_Types" EntityType="LSModel.LE_Type" />
-          <AssociationSet Name="ControlSpaceLE_Type" Association="LSModel.ControlSpaceLE_Type">
-            <End Role="ControlSpace" EntitySet="ControlSpaces" />
-            <End Role="LE_Type" EntitySet="LE_Types" />
-          </AssociationSet>
+          <EntitySet Name="LE_Types" EntityType="LSModel.LightPointType" />
           <AssociationSet Name="LightZoneEffect" Association="LSModel.LightZoneEffect">
             <End Role="LightZone" EntitySet="LightZones" />
             <End Role="Effect" EntitySet="Effects" />
@@ -867,6 +854,40 @@
             <End Role="CustomGamma" EntitySet="CustomGammas" />
             <End Role="LightElement" EntitySet="LightElements" />
           </AssociationSet>
+          <AssociationSet Name="EnvironmentItemControlSpace" Association="LSModel.EnvironmentItemControlSpace">
+            <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
+            <End Role="ControlSpace" EntitySet="ControlSpaces" />
+          </AssociationSet>
+          <AssociationSet Name="ControlSpaceControlChannel" Association="LSModel.ControlSpaceControlChannel">
+            <End Role="ControlSpace" EntitySet="ControlSpaces" />
+            <End Role="ControlChannel" EntitySet="ControlChannels" />
+          </AssociationSet>
+          <AssociationSet Name="ControlSpaceEventChannel" Association="LSModel.ControlSpaceEventChannel">
+            <End Role="ControlSpace" EntitySet="ControlSpaces" />
+            <End Role="EventChannel" EntitySet="EventChannels" />
+          </AssociationSet>
+          <AssociationSet Name="ControlSpaceLightPointType" Association="LSModel.ControlSpaceLightPointType">
+            <End Role="ControlSpace" EntitySet="ControlSpaces" />
+            <End Role="LightPointType" EntitySet="LE_Types" />
+          </AssociationSet>
+          <EntitySet Name="ControlDevices" EntityType="LSModel.ControlDevice" />
+          <AssociationSet Name="ControlSpaceControlDevice" Association="LSModel.ControlSpaceControlDevice">
+            <End Role="ControlSpace" EntitySet="ControlSpaces" />
+            <End Role="ControlDevice" EntitySet="ControlDevices" />
+          </AssociationSet>
+          <AssociationSet Name="ControlDeviceControlChannel" Association="LSModel.ControlDeviceControlChannel">
+            <End Role="ControlDevice" EntitySet="ControlDevices" />
+            <End Role="ControlChannel" EntitySet="ControlChannels" />
+          </AssociationSet>
+          <EntitySet Name="EventDevices" EntityType="LSModel.EventDevice" />
+          <AssociationSet Name="ControlSpaceEventDevice" Association="LSModel.ControlSpaceEventDevice">
+            <End Role="ControlSpace" EntitySet="ControlSpaces" />
+            <End Role="EventDevice" EntitySet="EventDevices" />
+          </AssociationSet>
+          <AssociationSet Name="EventDeviceEventChannel" Association="LSModel.EventDeviceEventChannel">
+            <End Role="EventDevice" EntitySet="EventDevices" />
+            <End Role="EventChannel" EntitySet="EventChannels" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ControlSpace">
           <Key>
@@ -874,102 +895,62 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="ControlDevices" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlSpace" ToRole="ControlDevice" />
-          <NavigationProperty Name="EventDevices" Relationship="LSModel.ControlSpaceEventDevice" FromRole="ControlSpace" ToRole="EventDevice" />
-          <Property Name="ControlChCount" Type="Int32" Nullable="false" DefaultValue="1" />
-          <Property Name="EventChCount" Type="Int32" Nullable="false" DefaultValue="0" />
-          <NavigationProperty Name="EnvironmentItems" Relationship="LSModel.ControlSpaceEnvironmentItem" FromRole="ControlSpace" ToRole="EnvironmentItem" />
           <NavigationProperty Name="LightElements" Relationship="LSModel.ControlSpaceLightElement" FromRole="ControlSpace" ToRole="LightElement" />
-          <NavigationProperty Name="LE_Types" Relationship="LSModel.ControlSpaceLE_Type" FromRole="ControlSpace" ToRole="LE_Type" />
           <NavigationProperty Name="LightZones" Relationship="LSModel.ControlSpaceLightZone" FromRole="ControlSpace" ToRole="LightZone" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="EnvironmentItem" Relationship="LSModel.EnvironmentItemControlSpace" FromRole="ControlSpace" ToRole="EnvironmentItem" />
+          <NavigationProperty Name="ControlChannels" Relationship="LSModel.ControlSpaceControlChannel" FromRole="ControlSpace" ToRole="ControlChannel" />
+          <NavigationProperty Name="EventChannel" Relationship="LSModel.ControlSpaceEventChannel" FromRole="ControlSpace" ToRole="EventChannel" />
+          <NavigationProperty Name="LightPointTypes" Relationship="LSModel.ControlSpaceLightPointType" FromRole="ControlSpace" ToRole="LightPointType" />
+          <NavigationProperty Name="ControlDevice" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlSpace" ToRole="ControlDevice" />
+          <NavigationProperty Name="EventDevice" Relationship="LSModel.ControlSpaceEventDevice" FromRole="ControlSpace" ToRole="EventDevice" />
         </EntityType>
         <EntityType Name="ControlChannel" Abstract="false">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="ControlDevice" Relationship="LSModel.ControlDeviceControlChannel" FromRole="ControlChannel" ToRole="ControlDevice" />
+          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceControlChannel" FromRole="ControlChannel" ToRole="ControlSpace" />
           <NavigationProperty Name="LightElements" Relationship="LSModel.LightChannelLightElement" FromRole="LightChannel" ToRole="LightElement" />
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="ChannelNo" Type="Int32" Nullable="false" />
+          <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="true" />
           <Property Name="HaveDimmer" Type="Boolean" />
-          <Property Name="DotNetChannelType" Type="String" Nullable="true" />
+          <Property Name="DotNetType" Type="String" Nullable="true" />
+          <NavigationProperty Name="ControlDevice" Relationship="LSModel.ControlDeviceControlChannel" FromRole="ControlChannel" ToRole="ControlDevice" />
         </EntityType>
         <EntityType Name="ArtNetControlChannel" BaseType="LSModel.ControlChannel" >
           <Property Name="IPAddress" Type="String" Nullable="false" />
           <Property Name="PortNo" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="ControlDevice">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" DefaultValue="&quot;&quot;" />
-          <Property Name="CanDimming" Type="Boolean" Nullable="false" DefaultValue="False" />
-          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlDevice" ToRole="ControlSpace" />
-          <NavigationProperty Name="ControlChannels" Relationship="LSModel.ControlDeviceControlChannel" FromRole="ControlDevice" ToRole="ControlChannel" />
-          <Property Name="Model" Type="String" Nullable="false" DefaultValue="&quot;&quot;" />
-          <Property Name="Profile" Type="String" Nullable="true" DefaultValue=" " />
-          <Property Name="Remark" Type="String" Nullable="true" />
-        </EntityType>
-        <Association Name="ControlSpaceControlDevice">
-          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
-          <End Type="LSModel.ControlDevice" Role="ControlDevice" Multiplicity="*" />
-        </Association>
-        <Association Name="ControlDeviceControlChannel">
-          <End Type="LSModel.ControlDevice" Role="ControlDevice" Multiplicity="1" />
-          <End Type="LSModel.ControlChannel" Role="ControlChannel" Multiplicity="*" />
-        </Association>
         <EntityType Name="EventChannel" Abstract="false">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="EventDevice" Relationship="LSModel.EventDeviceEventChannel" FromRole="EventChannel" ToRole="EventDevice" />
           <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceEventChannel" FromRole="EventChannel" ToRole="ControlSpace" />
           <NavigationProperty Name="LightZones" Relationship="LSModel.EventChannelLightZone" FromRole="EventChannel" ToRole="LightZone" />
           <Property Name="ChannelNo" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Event" Relationship="LSModel.EventEventChannel" FromRole="EventChannel" ToRole="Event" />
+          <NavigationProperty Name="GenericEvent" Relationship="LSModel.EventEventChannel" FromRole="EventChannel" ToRole="Event" />
           <Property Name="EventName" Type="String" Nullable="false" />
+          <NavigationProperty Name="EventDevice" Relationship="LSModel.EventDeviceEventChannel" FromRole="EventChannel" ToRole="EventDevice" />
         </EntityType>
-        <EntityType Name="EventDevice">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" DefaultValue="&quot;&quot;" />
-          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceEventDevice" FromRole="EventDevice" ToRole="ControlSpace" />
-          <NavigationProperty Name="EventChannels" Relationship="LSModel.EventDeviceEventChannel" FromRole="EventDevice" ToRole="EventChannel" />
-          <Property Name="Mode" Type="Int32" Nullable="false" DefaultValue="1" />
-          <Property Name="Model" Type="String" Nullable="false" DefaultValue="&quot;&quot;" />
-          <Property Name="Profile" Type="String" Nullable="true" DefaultValue=" " />
-          <Property Name="Remark" Type="String" Nullable="true" />
-          <NavigationProperty Name="Partition" Relationship="LSModel.PartitionEventDevice" FromRole="EventDevice" ToRole="Partition" />
-        </EntityType>
-        <Association Name="ControlSpaceEventDevice">
-          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
-          <End Type="LSModel.EventDevice" Role="EventDevice" Multiplicity="*" />
-        </Association>
-        <Association Name="EventDeviceEventChannel">
-          <End Type="LSModel.EventDevice" Role="EventDevice" Multiplicity="1" />
-          <End Type="LSModel.EventChannel" Role="EventChannel" Multiplicity="*" />
-        </Association>
         <EntityType Name="LightElement" Abstract="false">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" />
-          <NavigationProperty Name="Gamma" Relationship="LSModel.GammaLightElement" FromRole="LightElement" ToRole="Gamma" />
-          <NavigationProperty Name="ControlChannel" Relationship="LSModel.LightChannelLightElement" FromRole="LightElement" ToRole="LightChannel" />
-          <Property Name="StartPoint" Type="Int32" Nullable="false" DefaultValue="1" />
           <NavigationProperty Name="Partition" Relationship="LSModel.PartitionLightElement" FromRole="LightElement" ToRole="Partition" />
-          <Property Name="CanDimming" Type="Boolean" Nullable="false" DefaultValue="False" />
           <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLightElement" FromRole="LightElement" ToRole="ControlSpace" />
-          <Property Name="Remark" Type="String" Nullable="true" />
+          <NavigationProperty Name="ControlChannel" Relationship="LSModel.LightChannelLightElement" FromRole="LightElement" ToRole="LightChannel" />
+          <NavigationProperty Name="Gamma" Relationship="LSModel.GammaLightElement" FromRole="LightElement" ToRole="Gamma" />
+          <Property Name="CanDimming" Type="Boolean" Nullable="false" DefaultValue="False" />
           <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="true" />
-          <NavigationProperty Name="LE_Proxies" Relationship="LSModel.LightElementLE_Proxy" FromRole="LightElement" ToRole="LE_Proxy" />
+          <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="CustomGamma" Relationship="LSModel.CustomGammaLightElement" FromRole="LightElement" ToRole="CustomGamma" />
+          <NavigationProperty Name="LE_Proxies" Relationship="LSModel.LightElementLE_Proxy" FromRole="LightElement" ToRole="LE_Proxy" />
         </EntityType>
         <EntityType Name="LightZone">
           <Key>
@@ -977,14 +958,14 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Partition" Relationship="LSModel.PartitionLightZone" FromRole="LightZone" ToRole="Partition" />
+          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLightZone" FromRole="LightZone" ToRole="ControlSpace" />
           <NavigationProperty Name="Scenes" Relationship="LSModel.SceneLightZone" FromRole="LightZone" ToRole="Scene" />
           <NavigationProperty Name="EventChannels" Relationship="LSModel.EventChannelLightZone" FromRole="LightZone" ToRole="EventChannel" />
-          <NavigationProperty Name="Partition" Relationship="LSModel.PartitionLightZone" FromRole="LightZone" ToRole="Partition" />
-          <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="Effects" Relationship="LSModel.LightZoneEffect" FromRole="LightZone" ToRole="Effect" />
-          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLightZone" FromRole="LightZone" ToRole="ControlSpace" />
           <Property Name="IsNode" Type="Boolean" Nullable="false" DefaultValue="False" />
-          <Property Name="Direction" Type="LSModel.Direction" Nullable="false" />
+          <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="true" />
+          <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="LE_Proxies" Relationship="LSModel.LightZoneLE_Proxy" FromRole="LightZone" ToRole="LE_Proxy" />
         </EntityType>
         <EntityType Name="Gamma">
@@ -1005,7 +986,6 @@
           <NavigationProperty Name="Scenes" Relationship="LSModel.PartitionScene" FromRole="Partition" ToRole="Scene" />
           <NavigationProperty Name="LightZones" Relationship="LSModel.PartitionLightZone" FromRole="Partition" ToRole="LightZone" />
           <NavigationProperty Name="LightElements" Relationship="LSModel.PartitionLightElement" FromRole="Partition" ToRole="LightElement" />
-          <NavigationProperty Name="EventDevices" Relationship="LSModel.PartitionEventDevice" FromRole="Partition" ToRole="EventDevice" />
         </EntityType>
         <EntityType Name="BaseEffect">
           <Key>
@@ -1069,6 +1049,7 @@
           <End Type="LSModel.LightElement" Role="LightElement" Multiplicity="*" />
         </Association>
         <EntityType Name="LightStrip" BaseType="LSModel.LightElement" >
+          <Property Name="StartPoint" Type="Int32" Nullable="false" />
           <Property Name="PointCount" Type="Int32" Nullable="false" />
           <Property Name="Direction" Type="LSModel.Direction" Nullable="false" />
           <Property Name="ColorSequence" Type="String" Nullable="false" />
@@ -1092,23 +1073,20 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Model" Type="String" Nullable="false" />
           <Property Name="DeviceType" Type="LSModel.DeviceTypeEnum" Nullable="false" />
-          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceEnvironmentItem" FromRole="EnvironmentItem" ToRole="ControlSpace" />
           <Property Name="Profile" Type="String" Nullable="false" DefaultValue="&quot;&quot;" />
-          <Property Name="DotNetChannelType" Type="String" Nullable="true" />
+          <Property Name="DotNetType" Type="String" Nullable="true" />
+          <NavigationProperty Name="ControlSpaces" Relationship="LSModel.EnvironmentItemControlSpace" FromRole="EnvironmentItem" ToRole="ControlSpace" />
         </EntityType>
         <EnumType Name="DeviceTypeEnum">
           <Member Name="EventDevice" />
           <Member Name="ControlDevice" />
+          <Member Name="Hub" />
         </EnumType>
-        <Association Name="ControlSpaceEnvironmentItem">
-          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
-          <End Type="LSModel.EnvironmentItem" Role="EnvironmentItem" Multiplicity="*" />
-        </Association>
         <Association Name="ControlSpaceLightElement">
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
           <End Type="LSModel.LightElement" Role="LightElement" Multiplicity="*" />
         </Association>
-        <EntityType Name="Event">
+        <EntityType Name="GenericEvent">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -1117,28 +1095,20 @@
           <NavigationProperty Name="EventChannels" Relationship="LSModel.EventEventChannel" FromRole="Event" ToRole="EventChannel" />
         </EntityType>
         <Association Name="EventEventChannel">
-          <End Type="LSModel.Event" Role="Event" Multiplicity="1" />
+          <End Type="LSModel.GenericEvent" Role="Event" Multiplicity="0..1" />
           <End Type="LSModel.EventChannel" Role="EventChannel" Multiplicity="*" />
         </Association>
-        <Association Name="PartitionEventDevice">
-          <End Type="LSModel.Partition" Role="Partition" Multiplicity="1" />
-          <End Type="LSModel.EventDevice" Role="EventDevice" Multiplicity="*" />
-        </Association>
-        <EntityType Name="LE_Type">
+        <EntityType Name="LightPointType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="true" />
-          <Property Name="Remark" Type="String" Nullable="true" />
-          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLE_Type" FromRole="LE_Type" ToRole="ControlSpace" />
           <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Remark" Type="String" Nullable="true" />
+          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLightPointType" FromRole="LightPointType" ToRole="ControlSpace" />
         </EntityType>
-        <Association Name="ControlSpaceLE_Type">
-          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
-          <End Type="LSModel.LE_Type" Role="LE_Type" Multiplicity="*" />
-        </Association>
         <Association Name="LightZoneEffect">
           <End Type="LSModel.LightZone" Role="LightZone" Multiplicity="0..1" />
           <End Type="LSModel.Effect" Role="Effect" Multiplicity="*" />
@@ -1185,8 +1155,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="EffectParts" Relationship="LSModel.EffectPartTypeEffectPart" FromRole="EffectPartType" ToRole="EffectPart" />
           <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="Params" Type="String" Nullable="true" />
           <Property Name="Category" Type="String" Nullable="true" />
+          <Property Name="Params" Type="String" Nullable="true" />
           <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="false" />
         </EntityType>
         <Association Name="EffectPartTypeEffectPart">
@@ -1234,6 +1204,64 @@
           <End Type="LSModel.CustomGamma" Role="CustomGamma" Multiplicity="0..1" />
           <End Type="LSModel.LightElement" Role="LightElement" Multiplicity="*" />
         </Association>
+        <Association Name="EnvironmentItemControlSpace">
+          <End Type="LSModel.EnvironmentItem" Role="EnvironmentItem" Multiplicity="1" />
+          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="*" />
+        </Association>
+        <Association Name="ControlSpaceControlChannel">
+          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
+          <End Type="LSModel.ControlChannel" Role="ControlChannel" Multiplicity="*" />
+        </Association>
+        <Association Name="ControlSpaceEventChannel">
+          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
+          <End Type="LSModel.EventChannel" Role="EventChannel" Multiplicity="*" />
+        </Association>
+        <Association Name="ControlSpaceLightPointType">
+          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
+          <End Type="LSModel.LightPointType" Role="LightPointType" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ControlDevice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Model" Type="String" Nullable="false" />
+          <Property Name="HaveDimmer" Type="Boolean" Nullable="false" />
+          <Property Name="Profile" Type="String" Nullable="true" />
+          <Property Name="Remark" Type="String" Nullable="true" />
+          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlDevice" ToRole="ControlSpace" />
+          <NavigationProperty Name="ControlChannels" Relationship="LSModel.ControlDeviceControlChannel" FromRole="ControlDevice" ToRole="ControlChannel" />
+        </EntityType>
+        <Association Name="ControlSpaceControlDevice">
+          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
+          <End Type="LSModel.ControlDevice" Role="ControlDevice" Multiplicity="*" />
+        </Association>
+        <Association Name="ControlDeviceControlChannel">
+          <End Type="LSModel.ControlDevice" Role="ControlDevice" Multiplicity="1" />
+          <End Type="LSModel.ControlChannel" Role="ControlChannel" Multiplicity="*" />
+        </Association>
+        <EntityType Name="EventDevice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Model" Type="String" Nullable="false" />
+          <Property Name="Mode" Type="Int32" Nullable="false" />
+          <Property Name="Profile" Type="String" Nullable="false" />
+          <Property Name="Remark" Type="String" Nullable="true" />
+          <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceEventDevice" FromRole="EventDevice" ToRole="ControlSpace" />
+          <NavigationProperty Name="EventChannels" Relationship="LSModel.EventDeviceEventChannel" FromRole="EventDevice" ToRole="EventChannel" />
+        </EntityType>
+        <Association Name="ControlSpaceEventDevice">
+          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
+          <End Type="LSModel.EventDevice" Role="EventDevice" Multiplicity="*" />
+        </Association>
+        <Association Name="EventDeviceEventChannel">
+          <End Type="LSModel.EventDevice" Role="EventDevice" Multiplicity="1" />
+          <End Type="LSModel.EventChannel" Role="EventChannel" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1245,8 +1273,7 @@
         <MappingFragment StoreEntitySet="ControlSpaces">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ControlChCount" ColumnName="ControlChCount" />
-          <ScalarProperty Name="EventChCount" ColumnName="EventChCount" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1256,8 +1283,9 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ChannelNo" ColumnName="ChannelNo" />
+          <ScalarProperty Name="PointType" ColumnName="PointType" />
           <ScalarProperty Name="HaveDimmer" ColumnName="HaveDimmer" />
-          <ScalarProperty Name="DotNetChannelType" ColumnName="DotNetChannelType" />
+          <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(LSModel.ArtNetControlChannel)">
@@ -1265,18 +1293,6 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
           <ScalarProperty Name="PortNo" ColumnName="PortNo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ControlDevices">
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.ControlDevice)">
-        <MappingFragment StoreEntitySet="ControlDevices">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CanDimming" ColumnName="CanDimming" />
-          <ScalarProperty Name="Model" ColumnName="Model" />
-          <ScalarProperty Name="Profile" ColumnName="Profile" />
-          <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1290,32 +1306,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="EventDevices">
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.EventDevice)">
-        <MappingFragment StoreEntitySet="EventDevices">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Mode" ColumnName="Mode" />
-          <ScalarProperty Name="Model" ColumnName="Model" />
-          <ScalarProperty Name="Profile" ColumnName="Profile" />
-          <ScalarProperty Name="Remark" ColumnName="Remark" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="LightElements">
       <EntityTypeMapping TypeName="IsTypeOf(LSModel.LightElement)">
         <MappingFragment StoreEntitySet="LightElements">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="StartPoint" ColumnName="StartPoint" />
           <ScalarProperty Name="CanDimming" ColumnName="CanDimming" />
-          <ScalarProperty Name="Remark" ColumnName="Remark" />
           <ScalarProperty Name="PointType" ColumnName="PointType" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(LSModel.LightStrip)">
         <MappingFragment StoreEntitySet="LightElements_LightStrip">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StartPoint" ColumnName="StartPoint" />
           <ScalarProperty Name="PointCount" ColumnName="PointCount" />
           <ScalarProperty Name="Direction" ColumnName="Direction" />
           <ScalarProperty Name="ColorSequence" ColumnName="ColorSequence" />
@@ -1327,9 +1331,9 @@
         <MappingFragment StoreEntitySet="LightZones">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Remark" ColumnName="Remark" />
           <ScalarProperty Name="IsNode" ColumnName="IsNode" />
-          <ScalarProperty Name="Direction" ColumnName="Direction" />
+          <ScalarProperty Name="PointType" ColumnName="PointType" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1400,26 +1404,26 @@
           <ScalarProperty Name="Model" ColumnName="Model" />
           <ScalarProperty Name="DeviceType" ColumnName="DeviceType" />
           <ScalarProperty Name="Profile" ColumnName="Profile" />
-          <ScalarProperty Name="DotNetChannelType" ColumnName="DotNetChannelType" />
+          <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Events">
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.Event)">
-        <MappingFragment StoreEntitySet="Events">
+    <EntitySetMapping Name="GenericEvents">
+      <EntityTypeMapping TypeName="IsTypeOf(LSModel.GenericEvent)">
+        <MappingFragment StoreEntitySet="GenericEvents">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="LE_Types">
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.LE_Type)">
+      <EntityTypeMapping TypeName="IsTypeOf(LSModel.LightPointType)">
         <MappingFragment StoreEntitySet="LE_Types">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Remark" ColumnName="Remark" />
           <ScalarProperty Name="PointType" ColumnName="PointType" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1436,8 +1440,8 @@
         <MappingFragment StoreEntitySet="EffectPartTypes">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Params" ColumnName="Params" />
           <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="Params" ColumnName="Params" />
           <ScalarProperty Name="PointType" ColumnName="PointType" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1462,38 +1466,30 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="ControlSpaceControlDevice" TypeName="LSModel.ControlSpaceControlDevice" StoreEntitySet="ControlDevices">
-      <EndProperty Name="ControlSpace">
-        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
-      </EndProperty>
-      <EndProperty Name="ControlDevice">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="ControlDeviceControlChannel" TypeName="LSModel.ControlDeviceControlChannel" StoreEntitySet="ControlChannels">
-      <EndProperty Name="ControlDevice">
-        <ScalarProperty Name="Id" ColumnName="ControlDevice_Id" />
-      </EndProperty>
-      <EndProperty Name="ControlChannel">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="ControlSpaceEventDevice" TypeName="LSModel.ControlSpaceEventDevice" StoreEntitySet="EventDevices">
-      <EndProperty Name="ControlSpace">
-        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
-      </EndProperty>
-      <EndProperty Name="EventDevice">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="EventDeviceEventChannel" TypeName="LSModel.EventDeviceEventChannel" StoreEntitySet="EventChannels">
-      <EndProperty Name="EventDevice">
-        <ScalarProperty Name="Id" ColumnName="EventDevice_Id" />
-      </EndProperty>
-      <EndProperty Name="EventChannel">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
+    <EntitySetMapping Name="ControlDevices">
+      <EntityTypeMapping TypeName="IsTypeOf(LSModel.ControlDevice)">
+        <MappingFragment StoreEntitySet="ControlDevices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="HaveDimmer" ColumnName="HaveDimmer" />
+          <ScalarProperty Name="Profile" ColumnName="Profile" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventDevices">
+      <EntityTypeMapping TypeName="IsTypeOf(LSModel.EventDevice)">
+        <MappingFragment StoreEntitySet="EventDevices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="Profile" ColumnName="Profile" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GammaLightElement" TypeName="LSModel.GammaLightElement" StoreEntitySet="LightElements">
       <EndProperty Name="Gamma">
         <ScalarProperty Name="Id" ColumnName="Gamma_Id" />
@@ -1552,14 +1548,6 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="ControlSpaceEnvironmentItem" TypeName="LSModel.ControlSpaceEnvironmentItem" StoreEntitySet="EnvironmentItems">
-      <EndProperty Name="ControlSpace">
-        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
-      </EndProperty>
-      <EndProperty Name="EnvironmentItem">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="ControlSpaceLightElement" TypeName="LSModel.ControlSpaceLightElement" StoreEntitySet="LightElements">
       <EndProperty Name="ControlSpace">
         <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
@@ -1570,27 +1558,12 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="EventEventChannel" TypeName="LSModel.EventEventChannel" StoreEntitySet="EventChannels">
       <EndProperty Name="Event">
-        <ScalarProperty Name="Id" ColumnName="Event_Id" />
+        <ScalarProperty Name="Id" ColumnName="GenericEvent_Id" />
       </EndProperty>
       <EndProperty Name="EventChannel">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="PartitionEventDevice" TypeName="LSModel.PartitionEventDevice" StoreEntitySet="EventDevices">
-      <EndProperty Name="Partition">
-        <ScalarProperty Name="Id" ColumnName="Partition_Id" />
-      </EndProperty>
-      <EndProperty Name="EventDevice">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="ControlSpaceLE_Type" TypeName="LSModel.ControlSpaceLE_Type" StoreEntitySet="LE_Types">
-      <EndProperty Name="ControlSpace">
-        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
-      </EndProperty>
-      <EndProperty Name="LE_Type">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
+      <Condition ColumnName="GenericEvent_Id" IsNull="false" />
     </AssociationSetMapping>
     <AssociationSetMapping Name="LightZoneEffect" TypeName="LSModel.LightZoneEffect" StoreEntitySet="Effects">
       <EndProperty Name="LightZone">
@@ -1666,6 +1639,70 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="CustomGamma_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EnvironmentItemControlSpace" TypeName="LSModel.EnvironmentItemControlSpace" StoreEntitySet="ControlSpaces">
+      <EndProperty Name="EnvironmentItem">
+        <ScalarProperty Name="Id" ColumnName="EnvironmentItem_Id" />
+      </EndProperty>
+      <EndProperty Name="ControlSpace">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ControlSpaceControlChannel" TypeName="LSModel.ControlSpaceControlChannel" StoreEntitySet="ControlChannels">
+      <EndProperty Name="ControlSpace">
+        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
+      </EndProperty>
+      <EndProperty Name="ControlChannel">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ControlSpaceEventChannel" TypeName="LSModel.ControlSpaceEventChannel" StoreEntitySet="EventChannels">
+      <EndProperty Name="ControlSpace">
+        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
+      </EndProperty>
+      <EndProperty Name="EventChannel">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ControlSpaceLightPointType" TypeName="LSModel.ControlSpaceLightPointType" StoreEntitySet="LE_Types">
+      <EndProperty Name="ControlSpace">
+        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
+      </EndProperty>
+      <EndProperty Name="LightPointType">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ControlSpaceControlDevice" TypeName="LSModel.ControlSpaceControlDevice" StoreEntitySet="ControlDevices">
+      <EndProperty Name="ControlSpace">
+        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
+      </EndProperty>
+      <EndProperty Name="ControlDevice">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ControlDeviceControlChannel" TypeName="LSModel.ControlDeviceControlChannel" StoreEntitySet="ControlChannels">
+      <EndProperty Name="ControlDevice">
+        <ScalarProperty Name="Id" ColumnName="ControlDevice_Id" />
+      </EndProperty>
+      <EndProperty Name="ControlChannel">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ControlSpaceEventDevice" TypeName="LSModel.ControlSpaceEventDevice" StoreEntitySet="EventDevices">
+      <EndProperty Name="ControlSpace">
+        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
+      </EndProperty>
+      <EndProperty Name="EventDevice">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="EventDeviceEventChannel" TypeName="LSModel.EventDeviceEventChannel" StoreEntitySet="EventChannels">
+      <EndProperty Name="EventDevice">
+        <ScalarProperty Name="Id" ColumnName="EventDevice_Id" />
+      </EndProperty>
+      <EndProperty Name="EventChannel">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

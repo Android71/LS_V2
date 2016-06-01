@@ -14,6 +14,7 @@ namespace EFData
     public enum DeviceTypeEnum : int
     {
         EventDevice = 0,
-        ControlDevice = 1
+        ControlDevice = 1,
+        Hub = 2
     }
 }

@@ -22,8 +22,8 @@ namespace EFData
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Params { get; set; }
         public string Category { get; set; }
+        public string Params { get; set; }
         public PointTypeEnum PointType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

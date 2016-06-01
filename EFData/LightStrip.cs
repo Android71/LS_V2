@@ -14,6 +14,7 @@ namespace EFData
     
     public partial class LightStrip : LightElement
     {
+        public int StartPoint { get; set; }
         public int PointCount { get; set; }
         public Direction Direction { get; set; }
         public string ColorSequence { get; set; }

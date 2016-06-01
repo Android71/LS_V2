@@ -25,9 +25,10 @@ namespace EFData
         public int ChannelNo { get; set; }
         public string EventName { get; set; }
     
-        public virtual EventDevice EventDevice { get; set; }
+        public virtual ControlSpace ControlSpace { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightZone> LightZones { get; set; }
-        public virtual Event Event { get; set; }
+        public virtual GenericEvent GenericEvent { get; set; }
+        public virtual EventDevice EventDevice { get; set; }
     }
 }

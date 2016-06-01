@@ -20,7 +20,6 @@ namespace EFData
             this.Scenes = new HashSet<Scene>();
             this.LightZones = new HashSet<LightZone>();
             this.LightElements = new HashSet<LightElement>();
-            this.EventDevices = new HashSet<EventDevice>();
         }
     
         public int Id { get; set; }
@@ -32,7 +31,5 @@ namespace EFData
         public virtual ICollection<LightZone> LightZones { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightElement> LightElements { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EventDevice> EventDevices { get; set; }
     }
 }

@@ -18,25 +18,25 @@ namespace LS_Designer_WPF.ViewModel
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
+        //public const string WelcomeTitlePropertyName = "WelcomeTitle";
 
-        private string _welcomeTitle = string.Empty;
+        //private string _welcomeTitle = string.Empty;
 
         /// <summary>
         /// Gets the WelcomeTitle property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        public string WelcomeTitle
-        {
-            get
-            {
-                return _welcomeTitle;
-            }
-            set
-            {
-                Set(ref _welcomeTitle, value);
-            }
-        }
+        //public string WelcomeTitle
+        //{
+        //    get
+        //    {
+        //        return _welcomeTitle;
+        //    }
+        //    set
+        //    {
+        //        Set(ref _welcomeTitle, value);
+        //    }
+        //}
 
         #endregion
 
@@ -54,7 +54,6 @@ namespace LS_Designer_WPF.ViewModel
                         // Report error here
                         return;
                     }
-
                     WelcomeTitle = item.Title;
                 });
         }

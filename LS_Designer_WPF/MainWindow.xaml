@@ -91,16 +91,17 @@
                     Grid.Column="1"
                     Style="{StaticResource MainTabControlStyle}">
             <TabItem Header="Control Spaces" Style="{StaticResource MainTabItemStyle}">
-                <Controls:UserControl1/>
+                <Controls:UserControl1 />
             </TabItem>
             <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
-                <Controls:PartitionsUC Margin="40,40,0,40" HorizontalAlignment="Left" MinWidth="200"/>
+                <Controls:PartitionsUC MinWidth="200"
+                                       Margin="40,40,0,40"
+                                       HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Header="Control Channels"
                      Style="{StaticResource MainTabItemStyle}"
                      IsEnabled="False"
-                     Content="Item3" 
-            />
+                     Content="Item3" />
         </TabControl>
     </Grid>
 </Window>
