@@ -854,10 +854,6 @@
             <End Role="CustomGamma" EntitySet="CustomGammas" />
             <End Role="LightElement" EntitySet="LightElements" />
           </AssociationSet>
-          <AssociationSet Name="EnvironmentItemControlSpace" Association="LSModel.EnvironmentItemControlSpace">
-            <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
-            <End Role="ControlSpace" EntitySet="ControlSpaces" />
-          </AssociationSet>
           <AssociationSet Name="ControlSpaceControlChannel" Association="LSModel.ControlSpaceControlChannel">
             <End Role="ControlSpace" EntitySet="ControlSpaces" />
             <End Role="ControlChannel" EntitySet="ControlChannels" />
@@ -888,6 +884,15 @@
             <End Role="EventDevice" EntitySet="EventDevices" />
             <End Role="EventChannel" EntitySet="EventChannels" />
           </AssociationSet>
+          <EntitySet Name="CSEnvItems" EntityType="LSModel.CSEnvItem" />
+          <AssociationSet Name="CSEnvItemEnvironmentItem" Association="LSModel.CSEnvItemEnvironmentItem">
+            <End Role="CSEnvItem" EntitySet="CSEnvItems" />
+            <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
+          </AssociationSet>
+          <AssociationSet Name="CSEnvItemControlSpace" Association="LSModel.CSEnvItemControlSpace">
+            <End Role="CSEnvItem" EntitySet="CSEnvItems" />
+            <End Role="ControlSpace" EntitySet="ControlSpaces" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ControlSpace">
           <Key>
@@ -898,12 +903,12 @@
           <NavigationProperty Name="LightElements" Relationship="LSModel.ControlSpaceLightElement" FromRole="ControlSpace" ToRole="LightElement" />
           <NavigationProperty Name="LightZones" Relationship="LSModel.ControlSpaceLightZone" FromRole="ControlSpace" ToRole="LightZone" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="EnvironmentItem" Relationship="LSModel.EnvironmentItemControlSpace" FromRole="ControlSpace" ToRole="EnvironmentItem" />
           <NavigationProperty Name="ControlChannels" Relationship="LSModel.ControlSpaceControlChannel" FromRole="ControlSpace" ToRole="ControlChannel" />
-          <NavigationProperty Name="EventChannel" Relationship="LSModel.ControlSpaceEventChannel" FromRole="ControlSpace" ToRole="EventChannel" />
+          <NavigationProperty Name="EventChannels" Relationship="LSModel.ControlSpaceEventChannel" FromRole="ControlSpace" ToRole="EventChannel" />
           <NavigationProperty Name="LightPointTypes" Relationship="LSModel.ControlSpaceLightPointType" FromRole="ControlSpace" ToRole="LightPointType" />
-          <NavigationProperty Name="ControlDevice" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlSpace" ToRole="ControlDevice" />
-          <NavigationProperty Name="EventDevice" Relationship="LSModel.ControlSpaceEventDevice" FromRole="ControlSpace" ToRole="EventDevice" />
+          <NavigationProperty Name="ControlDevices" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlSpace" ToRole="ControlDevice" />
+          <NavigationProperty Name="EventDevices" Relationship="LSModel.ControlSpaceEventDevice" FromRole="ControlSpace" ToRole="EventDevice" />
+          <NavigationProperty Name="CSEnvItems" Relationship="LSModel.CSEnvItemControlSpace" FromRole="ControlSpace" ToRole="CSEnvItem" />
         </EntityType>
         <EntityType Name="ControlChannel" Abstract="false">
           <Key>
@@ -1075,7 +1080,7 @@
           <Property Name="DeviceType" Type="LSModel.DeviceTypeEnum" Nullable="false" />
           <Property Name="Profile" Type="String" Nullable="false" DefaultValue="&quot;&quot;" />
           <Property Name="DotNetType" Type="String" Nullable="true" />
-          <NavigationProperty Name="ControlSpaces" Relationship="LSModel.EnvironmentItemControlSpace" FromRole="EnvironmentItem" ToRole="ControlSpace" />
+          <NavigationProperty Name="CSEnvItems" Relationship="LSModel.CSEnvItemEnvironmentItem" FromRole="EnvironmentItem" ToRole="CSEnvItem" />
         </EntityType>
         <EnumType Name="DeviceTypeEnum">
           <Member Name="EventDevice" />
@@ -1115,15 +1120,13 @@
         </Association>
         <EnumType Name="PointTypeEnum">
           <Member Name="W" />
+          <Member Name="WT" />
           <Member Name="CW" />
           <Member Name="RGB" />
+          <Member Name="RGB_W" />
           <Member Name="RGBW" />
-          <Member Name="RGBWC" />
-          <Member Name="DW" />
-          <Member Name="DCW" />
-          <Member Name="DRGB" />
-          <Member Name="DRGBW" />
-          <Member Name="DRGBWC" />
+          <Member Name="RGBWT" />
+          <Member Name="RGBCW" />
         </EnumType>
         <EnumType Name="Direction">
           <Member Name="Up" />
@@ -1204,10 +1207,6 @@
           <End Type="LSModel.CustomGamma" Role="CustomGamma" Multiplicity="0..1" />
           <End Type="LSModel.LightElement" Role="LightElement" Multiplicity="*" />
         </Association>
-        <Association Name="EnvironmentItemControlSpace">
-          <End Type="LSModel.EnvironmentItem" Role="EnvironmentItem" Multiplicity="1" />
-          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="*" />
-        </Association>
         <Association Name="ControlSpaceControlChannel">
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
           <End Type="LSModel.ControlChannel" Role="ControlChannel" Multiplicity="*" />
@@ -1261,6 +1260,22 @@
         <Association Name="EventDeviceEventChannel">
           <End Type="LSModel.EventDevice" Role="EventDevice" Multiplicity="1" />
           <End Type="LSModel.EventChannel" Role="EventChannel" Multiplicity="*" />
+        </Association>
+        <EntityType Name="CSEnvItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="EnvironmentItem" Relationship="LSModel.CSEnvItemEnvironmentItem" FromRole="CSEnvItem" ToRole="EnvironmentItem" />
+          <NavigationProperty Name="ControlSpace" Relationship="LSModel.CSEnvItemControlSpace" FromRole="CSEnvItem" ToRole="ControlSpace" />
+        </EntityType>
+        <Association Name="CSEnvItemEnvironmentItem">
+          <End Type="LSModel.CSEnvItem" Role="CSEnvItem" Multiplicity="*" />
+          <End Type="LSModel.EnvironmentItem" Role="EnvironmentItem" Multiplicity="1" />
+        </Association>
+        <Association Name="CSEnvItemControlSpace">
+          <End Type="LSModel.CSEnvItem" Role="CSEnvItem" Multiplicity="*" />
+          <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1639,14 +1654,6 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="CustomGamma_Id" IsNull="false" />
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="EnvironmentItemControlSpace" TypeName="LSModel.EnvironmentItemControlSpace" StoreEntitySet="ControlSpaces">
-      <EndProperty Name="EnvironmentItem">
-        <ScalarProperty Name="Id" ColumnName="EnvironmentItem_Id" />
-      </EndProperty>
-      <EndProperty Name="ControlSpace">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="ControlSpaceControlChannel" TypeName="LSModel.ControlSpaceControlChannel" StoreEntitySet="ControlChannels">
       <EndProperty Name="ControlSpace">

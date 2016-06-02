@@ -1,110 +1,126 @@
 ﻿using System;
-using Lighting.Library;
+//using Lighting.Library;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using LS_Designer_WPF.Model.Enums;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace LS_Designer_WPF.Model
 {
     public interface IDataService
     {
-        
+        /************************************************************/
 
-        void GetControlSpaces(Action<ObservableNotifiableCollection<ControlSpace>, Exception> callback);
+        #region Partitions
+
+        void GetPartitions(Action<ObservableCollection<Partition>, Exception> callback);
+        void GetPartitionList(Action<List<Partition>, Exception> callback);
+
+        #endregion
+
+        /************************************************************/
+
+        #region ControlSpaces
+
+        void GetControlSpaces(Action<ObservableCollection<ControlSpace>, Exception> callback);
 
         void GetControlSpace(int id, Action<ControlSpace, Exception> callback);
 
         void UpdateControlSpace(ControlSpace item, Action<int, Exception> callback);
 
-        #region ControlDevice
-
-        void GetControlDevices(ControlSpace space, Action<BindingList<ControlDevice>, Exception> callback, bool includeChannels = true);
-
         #endregion
 
-        void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback);
+        /************************************************************/
 
-        void GetEnvironmentItem(string model, Action<EnvironmentItem, Exception> callback);
 
-        void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback);
 
-        #region ControlChannel
+        //#region ControlDevice
 
-        void GetControlChannels(ControlSpace space, LightElement le, FilterEnum filter, Action<List<ControlChannel>, Exception> callback, bool includeLE = true);
+        //void GetControlDevices(ControlSpace space, Action<BindingList<ControlDevice>, Exception> callback, bool includeChannels = true);
 
-        #endregion
+        //#endregion
 
-        void GetEventDevices(ControlSpace space, Partition partition, Action<ObservableNotifiableCollection<EventDevice>, Exception> callback);
+        //void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback);
 
-        void UpdateEventDevice(EventDevice item, Action<int, Exception> callback);
+        //void GetEnvironmentItem(string model, Action<EnvironmentItem, Exception> callback);
 
-        void GetPartitions(Action<ObservableNotifiableCollection<Partition>, Exception> callback);
+        //void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback);
 
-        void GetPartitionList(Action<List<Partition>, Exception> callback);
+        //#region ControlChannel
 
-        /********************************************************************/
+        //void GetControlChannels(ControlSpace space, LightElement le, FilterEnum filter, Action<List<ControlChannel>, Exception> callback, bool includeLE = true);
 
-        #region LightElement
+        //#endregion
 
-        LightElement GetLightElement(int Id);
+        //void GetEventDevices(ControlSpace space, Partition partition, Action<ObservableNotifiableCollection<EventDevice>, Exception> callback);
 
-        void GetLightElements(ControlSpace space, Partition partition, Action<ObservableNotifiableCollection<LightElement>, Exception> callback);
+        //void UpdateEventDevice(EventDevice item, Action<int, Exception> callback);
 
-        void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace,
-                                           FilterEnum filter, Action<BindingList<LightElement>, Exception> callback);
 
-        void GetLinkedLightElements(ControlSpace space, ControlChannel channel, Action<List<LightElement>, Exception> callback);
 
-        void UpdateLightElement(LightElement item, Action<int, Exception> callback);
+        ///********************************************************************/
 
-        #endregion
+        //#region LightElement
 
-        /********************************************************************/
+        //LightElement GetLightElement(int Id);
 
-        void GetLE_Types(ControlSpace space, Action<List<LE_Type>, Exception> callback);
+        //void GetLightElements(ControlSpace space, Partition partition, Action<ObservableNotifiableCollection<LightElement>, Exception> callback);
 
-        void AddLinkToLightElement(ControlChannel controlChannel, LightElement le);
+        //void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace,
+        //                                   FilterEnum filter, Action<BindingList<LightElement>, Exception> callback);
 
-        void GetUnlinkedLE_OfZone(LightZone zone, Action<BindingList<LightElement>, Exception> callback);
+        //void GetLinkedLightElements(ControlSpace space, ControlChannel channel, Action<List<LightElement>, Exception> callback);
 
-        void RemoveLinkFromLightElement(LightElement le, ControlChannel controlChannel);
+        //void UpdateLightElement(LightElement item, Action<int, Exception> callback);
 
-        bool IsLinked(LightElement le, ControlChannel controlChannel);
+        //#endregion
 
-        /********************************************************************/
+        ///********************************************************************/
 
-        #region LightZone
+        //void GetLE_Types(ControlSpace space, Action<List<LE_Type>, Exception> callback);
 
-        void GetLightZones(Partition partition, ControlSpace space, Action<BindingList<LightZone>, Exception> callback);
+        //void AddLinkToLightElement(ControlChannel controlChannel, LightElement le);
 
-        bool ZoneContainsLE(LightZone zone, LightElement lightElement);
+        //void GetUnlinkedLE_OfZone(LightZone zone, Action<BindingList<LightElement>, Exception> callback);
 
-        void UpdateLightZone(LightZone item, Action<int, Exception> callback);
+        //void RemoveLinkFromLightElement(LightElement le, ControlChannel controlChannel);
 
-        void AddLE_ToZone(LightZone zone, LE_Proxy leProxy);
+        //bool IsLinked(LightElement le, ControlChannel controlChannel);
 
-        void RemoveLE_FromZone(LightZone zone, LE_Proxy leProxy);
+        ///********************************************************************/
 
-        #endregion
+        //#region LightZone
 
-        /********************************************************************/
+        //void GetLightZones(Partition partition, ControlSpace space, Action<BindingList<LightZone>, Exception> callback);
 
-        #region LE_Proxy
+        //bool ZoneContainsLE(LightZone zone, LightElement lightElement);
 
-        void UpdateLE_Proxy(LE_Proxy leProxy, Action<int, Exception> callback);
+        //void UpdateLightZone(LightZone item, Action<int, Exception> callback);
 
-        #endregion
+        //void AddLE_ToZone(LightZone zone, LE_Proxy leProxy);
 
-        /********************************************************************/
+        //void RemoveLE_FromZone(LightZone zone, LE_Proxy leProxy);
 
-        #region Gamma
+        //#endregion
 
-        void UpdateGamma(Gamma gamma, Action<int, Exception> callback);
+        ///********************************************************************/
 
-        #endregion
+        //#region LE_Proxy
 
-        /********************************************************************/
+        //void UpdateLE_Proxy(LE_Proxy leProxy, Action<int, Exception> callback);
+
+        //#endregion
+
+        ///********************************************************************/
+
+        //#region Gamma
+
+        //void UpdateGamma(Gamma gamma, Action<int, Exception> callback);
+
+        //#endregion
+
+        ///********************************************************************/
     }
 }

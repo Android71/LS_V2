@@ -9,8 +9,13 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Model", "Model\Model.shproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LS_Designer_WPF", "LS_Designer_WPF\LS_Designer_WPF.csproj", "{B2CCF5E1-618E-429B-8F4C-31F0EDC114E8}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LS_Connect", "EF_Connect\LS_Connect.shproj", "{6386DE45-2C15-4D36-B630-81F375B56A63}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		EF_Connect\EF_Connect.projitems*{6386de45-2c15-4d36-b630-81f375b56a63}*SharedItemsImports = 13
+		Model\Model.projitems*{b2ccf5e1-618e-429b-8f4c-31f0edc114e8}*SharedItemsImports = 4
+		EF_Connect\EF_Connect.projitems*{b2ccf5e1-618e-429b-8f4c-31f0edc114e8}*SharedItemsImports = 4
 		Model\Model.projitems*{608d7607-3b9d-45d1-a1ca-05f110866515}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,16 +10,13 @@
 namespace EFData
 {
     using System;
+    using System.Collections.Generic;
     
-    public enum PointTypeEnum : int
+    public partial class CSEnvItem
     {
-        W = 0,
-        WT = 1,
-        CW = 2,
-        RGB = 3,
-        RGB_W = 4,
-        RGBW = 5,
-        RGBWT = 6,
-        RGBCW = 7
+        public int Id { get; set; }
+    
+        public virtual EnvironmentItem EnvironmentItem { get; set; }
+        public virtual ControlSpace ControlSpace { get; set; }
     }
 }

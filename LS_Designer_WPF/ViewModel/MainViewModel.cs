@@ -1,7 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
-using MvvmLight1.Model;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using LS_Designer_WPF.Model;
 
-namespace MvvmLight1.ViewModel
+namespace LS_Designer_WPF.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -13,53 +15,58 @@ namespace MvvmLight1.ViewModel
     {
         private readonly IDataService _dataService;
 
-        /// <summary>
-        /// The <see cref="WelcomeTitle" /> property's name.
-        /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
-        private string _welcomeTitle = string.Empty;
-
-        /// <summary>
-        /// Gets the WelcomeTitle property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// </summary>
-        public string WelcomeTitle
-        {
-            get
-            {
-                return _welcomeTitle;
-            }
-            set
-            {
-                Set(ref _welcomeTitle, value);
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
         public MainViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            _dataService.GetData(
-                (item, error) =>
-                {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
+            AppContext.DataSvc = dataService;
 
-                    WelcomeTitle = item.Title;
-                });
+            //Messenger.Default.Register<NotificationMessage>(this, AppContext.BlockChangeContextMsg, BlockContext);
+            //Messenger.Default.Register<NotificationMessage>(this, AppContext.UnBlockChangeContextMsg, UnBlockContext);
+            //Messenger.Default.Register<NotificationMessage>(this, AppContext.ShowPopUpMsg, ShowPopUp);
+
+            MessageVM = new EmptyPopUp();
+
+            ControlSpacesVM = new ControlSpacesVM(dataService);
+            PartitionsVM = new PartitionsVM(dataService);
+            //ControlDeviceVM = new ControlDeviceVM(dataService);
+            //EventDevicesVM = new EventDevicesVM(dataService);
+            //LightElementsVM = new LightElementsVM(dataService);
+            //LightZonesVM = new LightZonesVM(dataService);
+
+
+            //TabItems.Add(PartitionVM);
+            //TabItems.Add(ControlSpaceVM);
+            //TabItems.Add(ControlDeviceVM);
+            //TabItems.Add(EventDevicesVM);
+            //TabItems.Add(LightElementsVM);
+            //TabItems.Add(LightZonesVM);
         }
 
-        ////public override void Cleanup()
-        ////{
-        ////    // Clean up if needed
+        public PartitionsVM PartitionsVM { get; private set; }
 
-        ////    base.Cleanup();
-        ////}
+        public ControlSpacesVM ControlSpacesVM { get; private set; }
+
+        object _messageVM = null;
+        public object MessageVM { get { return _messageVM; } set { Set(ref _messageVM, value); } }
+    }
+
+    class EmptyPopUp
+    {
+        public EmptyPopUp()
+        {
+            ShowMessage = false;
+        }
+
+        //string _message = "Simple message";
+        public string Message { get; set; }      //{ get { return _message; } set { Set(ref _message, value); } }
+
+        //bool _showMessage = false;
+        public bool ShowMessage { get; set; }    //{ get { return _showMessage; } set { Set(ref _showMessage, value); } }
+
+        public RelayCommand CloseCommand
+        {
+            get;
+            private set;
+        }
     }
 }

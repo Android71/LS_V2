@@ -20,10 +20,11 @@ namespace EFData
             this.LightElements = new HashSet<LightElement>();
             this.LightZones = new HashSet<LightZone>();
             this.ControlChannels = new HashSet<ControlChannel>();
-            this.EventChannel = new HashSet<EventChannel>();
+            this.EventChannels = new HashSet<EventChannel>();
             this.LightPointTypes = new HashSet<LightPointType>();
-            this.ControlDevice = new HashSet<ControlDevice>();
-            this.EventDevice = new HashSet<EventDevice>();
+            this.ControlDevices = new HashSet<ControlDevice>();
+            this.EventDevices = new HashSet<EventDevice>();
+            this.CSEnvItems = new HashSet<CSEnvItem>();
         }
     
         public int Id { get; set; }
@@ -34,16 +35,17 @@ namespace EFData
         public virtual ICollection<LightElement> LightElements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightZone> LightZones { get; set; }
-        public virtual EnvironmentItem EnvironmentItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ControlChannel> ControlChannels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EventChannel> EventChannel { get; set; }
+        public virtual ICollection<EventChannel> EventChannels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightPointType> LightPointTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ControlDevice> ControlDevice { get; set; }
+        public virtual ICollection<ControlDevice> ControlDevices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EventDevice> EventDevice { get; set; }
+        public virtual ICollection<EventDevice> EventDevices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CSEnvItem> CSEnvItems { get; set; }
     }
 }

@@ -45,5 +45,6 @@ namespace EFData
         public virtual DbSet<CustomGamma> CustomGammas { get; set; }
         public virtual DbSet<ControlDevice> ControlDevices { get; set; }
         public virtual DbSet<EventDevice> EventDevices { get; set; }
+        public virtual DbSet<CSEnvItem> CSEnvItems { get; set; }
     }
 }

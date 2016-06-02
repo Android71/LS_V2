@@ -64,6 +64,9 @@
     <Compile Include="ControlSpace.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CSEnvItem.cs">
+      <DependentUpon>LSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="CustomGamma.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>

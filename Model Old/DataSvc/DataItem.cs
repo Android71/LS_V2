@@ -1,4 +1,4 @@
-﻿namespace MvvmLight1.Model
+﻿namespace LS_Designer_WPF.Model
 {
     public class DataItem
     {

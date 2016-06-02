@@ -18,7 +18,7 @@ namespace EFData
         public EnvironmentItem()
         {
             this.Profile = "\"\"";
-            this.ControlSpaces = new HashSet<ControlSpace>();
+            this.CSEnvItems = new HashSet<CSEnvItem>();
         }
     
         public int Id { get; set; }
@@ -28,6 +28,6 @@ namespace EFData
         public string DotNetType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ControlSpace> ControlSpaces { get; set; }
+        public virtual ICollection<CSEnvItem> CSEnvItems { get; set; }
     }
 }

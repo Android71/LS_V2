@@ -9,6 +9,10 @@
     <Import_RootNamespace>Model</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArtNetControlChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ArtNetControlDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ControlChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ControlDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlSpace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSvc\DataItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataSvc\DataService.cs" />
@@ -22,7 +26,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\PointTypeEnum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Event.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gamma.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GenericControlDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LE_Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LE_Type.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LghtZone.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LightElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LightStrip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Partition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene.cs" />
   </ItemGroup>

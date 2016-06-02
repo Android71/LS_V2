@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using MvvmLight1.ViewModel;
+using LS_Designer_WPF.ViewModel;
 
 namespace LS_Designer_WPF
 {

@@ -88,14 +88,14 @@
     <Compile Include="Controls\PartitionsUC.xaml.cs">
       <DependentUpon>PartitionsUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="GrayScale.xaml.cs">
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\DataItem.cs" />
-    <Compile Include="Model\DataService.cs" />
-    <Compile Include="Model\IDataService.cs" />
+    <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\ControlSpacesVM.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\TabItemsVM\PartitionsVM.cs" />
+    <Compile Include="ViewModel\TabItemsVM\TabItemVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
     <Page Include="Controls\PartitionsUC.xaml">
@@ -151,6 +151,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EFData\EFData.csproj">
+      <Project>{8aa9fd1b-3f18-498f-af33-0696781f33c0}</Project>
+      <Name>EFData</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+  <Import Project="..\Model\Model.projitems" Label="Shared" />
+  <Import Project="..\EF_Connect\EF_Connect.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

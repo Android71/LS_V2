@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>
-        <Binding Path="Main" Source="{StaticResource Locator}" />
+        <Binding Path="MainVM" Source="{StaticResource Locator}" />
     </Window.DataContext>
     <Window.Background>
         <LinearGradientBrush MappingMode="RelativeToBoundingBox" StartPoint="-0.028,1.091" EndPoint="1.454,-0.347">

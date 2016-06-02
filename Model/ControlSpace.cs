@@ -23,135 +23,141 @@ namespace LS_Designer_WPF.Model
         string _name = "";
         public string Name { get { return _name; } set { Set<string>(ref _name, value); } }
 
+        bool _isActive;
+        public bool IsActive { get; set; }
+
         int _controlChCount;
         public int ControlChCount { get { return _controlChCount; } set { Set<int>(ref _controlChCount, value); } }
 
         int _eventChCount;
         public int EventChCount { get { return _eventChCount; } set { Set<int>(ref _eventChCount, value); } }
 
-        public static ArtNetControlDevice CreateArtNetControlDevice(IDataService dataService, string model)
-        {
-            //int ipChCount = 0;
-            //int vipChCount = 0;
-            IPAddress ipAddr;
-            EnvironmentItem ei = null;
+        EnvironmentItem _environmentItem;
+        public virtual EnvironmentItem EnvironmentItem { get; set; }
 
-            ArtNetControlDevice an = new ArtNetControlDevice();
-            an.Name = "ArtNet";
-            an.CanDimming = true;
+        //public static ArtNetControlDevice CreateArtNetControlDevice(IDataService dataService, string model)
+        //{
+        //    //int ipChCount = 0;
+        //    //int vipChCount = 0;
+        //    IPAddress ipAddr;
+        //    EnvironmentItem ei = null;
 
-            dataService.GetEnvironmentItem(model, (data, error) =>
-            {
-                if (error != null) { return; } // Report error here
-                ei = data;
-            });
-            an.Model = ei.Model;
+        //    ArtNetControlDevice an = new ArtNetControlDevice();
+        //    an.Name = "ArtNet";
+        //    an.CanDimming = true;
 
-            XElement xdata;
-            xdata = XElement.Parse(ei.Profile);
-            var x = xdata.Element("IPAddress").Attribute("Value").Value;
-            var y = xdata.Element("VirtualIP").Attribute("Value").Value;
-            IPAddress.TryParse(x, out ipAddr);
-            an.IPAddress = ipAddr;
-            IPAddress.TryParse(y, out ipAddr);
-            an.VirtualIP = ipAddr;
-            an.IPChCount = int.Parse(xdata.Element("IPAddress").Attribute("ChCount").Value);
-            an.VIPChCount = int.Parse(xdata.Element("VirtualIP").Attribute("ChCount").Value);
+        //    dataService.GetEnvironmentItem(model, (data, error) =>
+        //    {
+        //        if (error != null) { return; } // Report error here
+        //        ei = data;
+        //    });
+        //    an.Model = ei.Model;
 
-            for (int i = 0; i < an.IPChCount; i++)
-            {
-                an.ControlChannels.Add(new ArtNetControlChannel()
-                {
-                    //Name = an.Name + "/Universe",
-                    Name = an.Name,
-                    IPAddress = an.IPAddress,
-                    ChannelNo = i,
-                    PortNo = i
-                });
-            }
-            for (int i = 0; i < an.VIPChCount; i++)
-            {
-                an.ControlChannels.Add(new ArtNetControlChannel()
-                {
-                    //Name = an.Name + "/Universe",
-                    Name = an.Name,
-                    IPAddress = an.VirtualIP,
-                    ChannelNo = i + an.IPChCount,
-                    PortNo = i + an.IPChCount
-                });
-            }
-            //an.Profile = 
-            return an;
-        }
+        //    XElement xdata;
+        //    xdata = XElement.Parse(ei.Profile);
+        //    var x = xdata.Element("IPAddress").Attribute("Value").Value;
+        //    var y = xdata.Element("VirtualIP").Attribute("Value").Value;
+        //    IPAddress.TryParse(x, out ipAddr);
+        //    an.IPAddress = ipAddr;
+        //    IPAddress.TryParse(y, out ipAddr);
+        //    an.VirtualIP = ipAddr;
+        //    an.IPChCount = int.Parse(xdata.Element("IPAddress").Attribute("ChCount").Value);
+        //    an.VIPChCount = int.Parse(xdata.Element("VirtualIP").Attribute("ChCount").Value);
 
-        public static GenericControlDevice CreateGenericControlDevice(IDataService dataService, string model)
-        {
-            EnvironmentItem ei = null;
-            dataService.GetEnvironmentItem(model, (data, error) =>
-            {
-                if (error != null) { return; } // Report error here
-                ei = data;
-            });
+        //    for (int i = 0; i < an.IPChCount; i++)
+        //    {
+        //        an.ControlChannels.Add(new ArtNetControlChannel()
+        //        {
+        //            //Name = an.Name + "/Universe",
+        //            Name = an.Name,
+        //            IPAddress = an.IPAddress,
+        //            ChannelNo = i,
+        //            PortNo = i
+        //        });
+        //    }
+        //    for (int i = 0; i < an.VIPChCount; i++)
+        //    {
+        //        an.ControlChannels.Add(new ArtNetControlChannel()
+        //        {
+        //            //Name = an.Name + "/Universe",
+        //            Name = an.Name,
+        //            IPAddress = an.VirtualIP,
+        //            ChannelNo = i + an.IPChCount,
+        //            PortNo = i + an.IPChCount
+        //        });
+        //    }
+        //    //an.Profile = 
+        //    return an;
+        //}
 
-            GenericControlDevice gcd = new GenericControlDevice();
-            gcd.Model = model;
-            gcd.Name = "Generic";
-            gcd.ChannelNo = 1;
-            XElement xdata;
-            xdata = XElement.Parse(ei.Profile);
-            gcd.CanDimming = Boolean.Parse(xdata.Attribute("HaveDimmer").Value);
-            gcd.ControlChannels.Add(new ControlChannel() { Name = gcd.Name, ChannelNo = 1 });
-            return gcd;
-        }
+        //public static GenericControlDevice CreateGenericControlDevice(IDataService dataService, string model)
+        //{
+        //    EnvironmentItem ei = null;
+        //    dataService.GetEnvironmentItem(model, (data, error) =>
+        //    {
+        //        if (error != null) { return; } // Report error here
+        //        ei = data;
+        //    });
 
-        public static EventDevice CreateEventDevice(IDataService dataService, string model)
-        {
-            EnvironmentItem ei = null;
-            EventDevice eventDevice = new EventDevice();
+        //    GenericControlDevice gcd = new GenericControlDevice();
+        //    gcd.Model = model;
+        //    gcd.Name = "Generic";
+        //    gcd.ChannelNo = 1;
+        //    XElement xdata;
+        //    xdata = XElement.Parse(ei.Profile);
+        //    gcd.CanDimming = Boolean.Parse(xdata.Attribute("HaveDimmer").Value);
+        //    gcd.ControlChannels.Add(new ControlChannel() { Name = gcd.Name, ChannelNo = 1 });
+        //    return gcd;
+        //}
 
-            dataService.GetEnvironmentItem(model, (data, error) =>
-            {
-                if (error != null) { return; } // Report error here
-                ei = data;
-            });
-            eventDevice.Mode = 1;
-            eventDevice.OldMode = 1;
-            eventDevice.Model = ei.Model;
-            eventDevice.Profile = ei.Profile;
-            
-            eventDevice.ControlSpace = AppContext.ControlSpace;
-            eventDevice.Partition = AppContext.Partition;
-            return eventDevice;
-        }
+        //public static EventDevice CreateEventDevice(IDataService dataService, string model)
+        //{
+        //    EnvironmentItem ei = null;
+        //    EventDevice eventDevice = new EventDevice();
 
-        public static LightElement CreateLightElement(PointTypeEnum elementType)
-        {
-            LightElement lightElement = null;
-            //PointTypeEnum elType = elementType;
+        //    dataService.GetEnvironmentItem(model, (data, error) =>
+        //    {
+        //        if (error != null) { return; } // Report error here
+        //        ei = data;
+        //    });
+        //    eventDevice.Mode = 1;
+        //    eventDevice.OldMode = 1;
+        //    eventDevice.Model = ei.Model;
+        //    eventDevice.Profile = ei.Profile;
 
-            if (AppContext.ControlSpace.Name == "ArtNet_DMX")
-                lightElement = new LightStrip();
-            else
-                lightElement = new LightElement();
+        //    eventDevice.ControlSpace = AppContext.ControlSpace;
+        //    eventDevice.Partition = AppContext.Partition;
+        //    return eventDevice;
+        //}
 
-            if (elementType == PointTypeEnum.DRGB)
-            {
-                (lightElement as LightStrip).ColorSequenceList = LightElement.rgbCsList;
-            }
+        //public static LightElement CreateLightElement(PointTypeEnum elementType)
+        //{
+        //    LightElement lightElement = null;
+        //    //PointTypeEnum elType = elementType;
 
-            lightElement.PointType = elementType;
-            lightElement.ControlSpace = AppContext.ControlSpace;
-            lightElement.Partition = AppContext.Partition;
-            return lightElement;
-        }
+        //    if (AppContext.ControlSpace.Name == "ArtNet_DMX")
+        //        lightElement = new LightStrip();
+        //    else
+        //        lightElement = new LightElement();
 
-        public static LightZone CreateLightZone()
-        {
-            LightZone lightZone = new LightZone();
-            lightZone.LE_Proxies = new List<LE_Proxy>();
-            lightZone.Partition = AppContext.Partition;
-            lightZone.ControlSpace = AppContext.ControlSpace;
-            return lightZone;
-        }
+        //    if (elementType == PointTypeEnum.DRGB)
+        //    {
+        //        (lightElement as LightStrip).ColorSequenceList = LightElement.rgbCsList;
+        //    }
+
+        //    lightElement.PointType = elementType;
+        //    lightElement.ControlSpace = AppContext.ControlSpace;
+        //    lightElement.Partition = AppContext.Partition;
+        //    return lightElement;
+        //}
+
+        //public static LightZone CreateLightZone()
+        //{
+        //    LightZone lightZone = new LightZone();
+        //    lightZone.LE_Proxies = new List<LE_Proxy>();
+        //    lightZone.Partition = AppContext.Partition;
+        //    lightZone.ControlSpace = AppContext.ControlSpace;
+        //    return lightZone;
+        //}
     }
 }
