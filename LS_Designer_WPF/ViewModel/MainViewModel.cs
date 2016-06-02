@@ -26,8 +26,9 @@ namespace LS_Designer_WPF.ViewModel
 
             MessageVM = new EmptyPopUp();
 
-            ControlSpacesVM = new ControlSpacesVM(dataService);
+            
             PartitionsVM = new PartitionsVM(dataService);
+            ControlSpacesVM = new ControlSpacesVM(dataService);
             //ControlDeviceVM = new ControlDeviceVM(dataService);
             //EventDevicesVM = new EventDevicesVM(dataService);
             //LightElementsVM = new LightElementsVM(dataService);

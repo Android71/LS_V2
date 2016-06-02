@@ -37,12 +37,14 @@ namespace LS_Designer_WPF.Model
         {
             dbObj.Id = obj.Id;
             dbObj.Name = obj.Name;
+            dbObj.IsActive = obj.IsActive;
         }
 
         public static void Db2O(EFData.ControlSpace dbObj, ControlSpace obj)
         {
             obj.Id = dbObj.Id;
             obj.Name = dbObj.Name;
+            obj.IsActive = dbObj.IsActive;
         }
 
         #endregion

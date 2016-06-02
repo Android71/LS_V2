@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/01/2016 13:36:06
--- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 06/02/2016 19:44:03
+-- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -80,9 +80,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_EnvironmentItemControlSpace]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlSpaces] DROP CONSTRAINT [FK_EnvironmentItemControlSpace];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EnvironmentItemControlChannel]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ControlChannels] DROP CONSTRAINT [FK_EnvironmentItemControlChannel];
-GO
 IF OBJECT_ID(N'[dbo].[FK_ControlSpaceControlChannel]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlChannels] DROP CONSTRAINT [FK_ControlSpaceControlChannel];
 GO
@@ -92,8 +89,17 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ControlSpaceLightPointType]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LE_Types] DROP CONSTRAINT [FK_ControlSpaceLightPointType];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EnvironmentItemEventChannel]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EventChannels] DROP CONSTRAINT [FK_EnvironmentItemEventChannel];
+IF OBJECT_ID(N'[dbo].[FK_ControlSpaceControlDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlDevices] DROP CONSTRAINT [FK_ControlSpaceControlDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ControlDeviceControlChannel]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlChannels] DROP CONSTRAINT [FK_ControlDeviceControlChannel];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ControlSpaceEventDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventDevices] DROP CONSTRAINT [FK_ControlSpaceEventDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventDeviceEventChannel]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventChannels] DROP CONSTRAINT [FK_EventDeviceEventChannel];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ArtNetControlChannel_inherits_ControlChannel]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlChannels_ArtNetControlChannel] DROP CONSTRAINT [FK_ArtNetControlChannel_inherits_ControlChannel];
@@ -160,6 +166,12 @@ GO
 IF OBJECT_ID(N'[dbo].[CustomGammas]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CustomGammas];
 GO
+IF OBJECT_ID(N'[dbo].[ControlDevices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ControlDevices];
+GO
+IF OBJECT_ID(N'[dbo].[EventDevices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventDevices];
+GO
 IF OBJECT_ID(N'[dbo].[ControlChannels_ArtNetControlChannel]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ControlChannels_ArtNetControlChannel];
 GO
@@ -181,8 +193,7 @@ GO
 CREATE TABLE [dbo].[ControlSpaces] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [IsActive] bit  NOT NULL,
-    [EnvironmentItem_Id] int  NOT NULL
+    [IsActive] bit  NOT NULL
 );
 GO
 
@@ -387,6 +398,14 @@ CREATE TABLE [dbo].[EventDevices] (
 );
 GO
 
+-- Creating table 'CSEnvItems'
+CREATE TABLE [dbo].[CSEnvItems] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [EnvironmentItem_Id] int  NOT NULL,
+    [ControlSpace_Id] int  NOT NULL
+);
+GO
+
 -- Creating table 'ControlChannels_ArtNetControlChannel'
 CREATE TABLE [dbo].[ControlChannels_ArtNetControlChannel] (
     [IPAddress] nvarchar(max)  NOT NULL,
@@ -540,6 +559,12 @@ GO
 -- Creating primary key on [Id] in table 'EventDevices'
 ALTER TABLE [dbo].[EventDevices]
 ADD CONSTRAINT [PK_EventDevices]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'CSEnvItems'
+ALTER TABLE [dbo].[CSEnvItems]
+ADD CONSTRAINT [PK_CSEnvItems]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -859,21 +884,6 @@ ON [dbo].[LightElements]
     ([CustomGamma_Id]);
 GO
 
--- Creating foreign key on [EnvironmentItem_Id] in table 'ControlSpaces'
-ALTER TABLE [dbo].[ControlSpaces]
-ADD CONSTRAINT [FK_EnvironmentItemControlSpace]
-    FOREIGN KEY ([EnvironmentItem_Id])
-    REFERENCES [dbo].[EnvironmentItems]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EnvironmentItemControlSpace'
-CREATE INDEX [IX_FK_EnvironmentItemControlSpace]
-ON [dbo].[ControlSpaces]
-    ([EnvironmentItem_Id]);
-GO
-
 -- Creating foreign key on [ControlSpace_Id] in table 'ControlChannels'
 ALTER TABLE [dbo].[ControlChannels]
 ADD CONSTRAINT [FK_ControlSpaceControlChannel]
@@ -977,6 +987,36 @@ GO
 CREATE INDEX [IX_FK_EventDeviceEventChannel]
 ON [dbo].[EventChannels]
     ([EventDevice_Id]);
+GO
+
+-- Creating foreign key on [EnvironmentItem_Id] in table 'CSEnvItems'
+ALTER TABLE [dbo].[CSEnvItems]
+ADD CONSTRAINT [FK_CSEnvItemEnvironmentItem]
+    FOREIGN KEY ([EnvironmentItem_Id])
+    REFERENCES [dbo].[EnvironmentItems]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CSEnvItemEnvironmentItem'
+CREATE INDEX [IX_FK_CSEnvItemEnvironmentItem]
+ON [dbo].[CSEnvItems]
+    ([EnvironmentItem_Id]);
+GO
+
+-- Creating foreign key on [ControlSpace_Id] in table 'CSEnvItems'
+ALTER TABLE [dbo].[CSEnvItems]
+ADD CONSTRAINT [FK_CSEnvItemControlSpace]
+    FOREIGN KEY ([ControlSpace_Id])
+    REFERENCES [dbo].[ControlSpaces]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CSEnvItemControlSpace'
+CREATE INDEX [IX_FK_CSEnvItemControlSpace]
+ON [dbo].[CSEnvItems]
+    ([ControlSpace_Id]);
 GO
 
 -- Creating foreign key on [Id] in table 'ControlChannels_ArtNetControlChannel'

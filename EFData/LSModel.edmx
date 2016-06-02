@@ -26,6 +26,7 @@
     <EntitySet Name="CustomGammas" EntityType="LSModel.Store.CustomGammas" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ControlDevices" EntityType="LSModel.Store.ControlDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EventDevices" EntityType="LSModel.Store.EventDevices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CSEnvItems" EntityType="LSModel.Store.CSEnvItems" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ControlChannels_ArtNetControlChannel" EntityType="LSModel.Store.ControlChannels_ArtNetControlChannel" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LightElements_LightStrip" EntityType="LSModel.Store.LightElements_LightStrip" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SceneLightZone" EntityType="LSModel.Store.SceneLightZone" store:Type="Tables" Schema="dbo" />
@@ -110,10 +111,6 @@
       <End Role="CustomGamma" EntitySet="CustomGammas" />
       <End Role="LightElement" EntitySet="LightElements" />
     </AssociationSet>
-    <AssociationSet Name="EnvironmentItemControlSpace" Association="LSModel.Store.EnvironmentItemControlSpace">
-      <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
-      <End Role="ControlSpace" EntitySet="ControlSpaces" />
-    </AssociationSet>
     <AssociationSet Name="ControlSpaceControlChannel" Association="LSModel.Store.ControlSpaceControlChannel">
       <End Role="ControlSpace" EntitySet="ControlSpaces" />
       <End Role="ControlChannel" EntitySet="ControlChannels" />
@@ -142,6 +139,14 @@
       <End Role="EventDevice" EntitySet="EventDevices" />
       <End Role="EventChannel" EntitySet="EventChannels" />
     </AssociationSet>
+    <AssociationSet Name="CSEnvItemEnvironmentItem" Association="LSModel.Store.CSEnvItemEnvironmentItem">
+      <End Role="CSEnvItem" EntitySet="CSEnvItems" />
+      <End Role="EnvironmentItem" EntitySet="EnvironmentItems" />
+    </AssociationSet>
+    <AssociationSet Name="CSEnvItemControlSpace" Association="LSModel.Store.CSEnvItemControlSpace">
+      <End Role="CSEnvItem" EntitySet="CSEnvItems" />
+      <End Role="ControlSpace" EntitySet="ControlSpaces" />
+    </AssociationSet>
     <AssociationSet Name="FK_ArtNetControlChannel_inherits_ControlChannel" Association="LSModel.Store.FK_ArtNetControlChannel_inherits_ControlChannel">
       <End Role="ControlChannel" EntitySet="ControlChannels" />
       <End Role="ArtNetControlChannel" EntitySet="ControlChannels_ArtNetControlChannel" />
@@ -158,7 +163,6 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
-    <Property Name="EnvironmentItem_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ControlChannels">
     <Key>
@@ -359,6 +363,14 @@
     <Property Name="Mode" Type="int" Nullable="false" />
     <Property Name="Profile" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CSEnvItems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EnvironmentItem_Id" Type="int" Nullable="false" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ControlChannels_ArtNetControlChannel">
@@ -587,18 +599,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="EnvironmentItemControlSpace">
-    <End Role="EnvironmentItem" Type="LSModel.Store.EnvironmentItems" Multiplicity="1" />
-    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EnvironmentItem">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="ControlSpace">
-        <PropertyRef Name="EnvironmentItem_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="ControlSpaceControlChannel">
     <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
     <End Role="ControlChannel" Type="LSModel.Store.ControlChannels" Multiplicity="*" />
@@ -680,6 +680,30 @@
       </Principal>
       <Dependent Role="EventChannel">
         <PropertyRef Name="EventDevice_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CSEnvItemEnvironmentItem">
+    <End Role="CSEnvItem" Type="LSModel.Store.CSEnvItems" Multiplicity="*" />
+    <End Role="EnvironmentItem" Type="LSModel.Store.EnvironmentItems" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="EnvironmentItem">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CSEnvItem">
+        <PropertyRef Name="EnvironmentItem_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CSEnvItemControlSpace">
+    <End Role="CSEnvItem" Type="LSModel.Store.CSEnvItems" Multiplicity="*" />
+    <End Role="ControlSpace" Type="LSModel.Store.ControlSpaces" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="ControlSpace">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CSEnvItem">
+        <PropertyRef Name="ControlSpace_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1505,6 +1529,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CSEnvItems">
+      <EntityTypeMapping TypeName="IsTypeOf(LSModel.CSEnvItem)">
+        <MappingFragment StoreEntitySet="CSEnvItems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GammaLightElement" TypeName="LSModel.GammaLightElement" StoreEntitySet="LightElements">
       <EndProperty Name="Gamma">
         <ScalarProperty Name="Id" ColumnName="Gamma_Id" />
@@ -1708,6 +1739,22 @@
         <ScalarProperty Name="Id" ColumnName="EventDevice_Id" />
       </EndProperty>
       <EndProperty Name="EventChannel">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CSEnvItemEnvironmentItem" TypeName="LSModel.CSEnvItemEnvironmentItem" StoreEntitySet="CSEnvItems">
+      <EndProperty Name="EnvironmentItem">
+        <ScalarProperty Name="Id" ColumnName="EnvironmentItem_Id" />
+      </EndProperty>
+      <EndProperty Name="CSEnvItem">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CSEnvItemControlSpace" TypeName="LSModel.CSEnvItemControlSpace" StoreEntitySet="CSEnvItems">
+      <EndProperty Name="ControlSpace">
+        <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
+      </EndProperty>
+      <EndProperty Name="CSEnvItem">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

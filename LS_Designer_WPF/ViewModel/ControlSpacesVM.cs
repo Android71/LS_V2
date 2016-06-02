@@ -51,7 +51,7 @@ namespace LS_Designer_WPF.ViewModel
                     // Report error here
                     return;
                 }
-                ControlSpacesF = data.Where(p => (p.ControlChCount != 0) || (p.EventChCount != 0)).ToList();
+                ControlSpacesF = data.Where(p => (p.IsActive)).ToList();
             });
         }
 

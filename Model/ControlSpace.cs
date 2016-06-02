@@ -12,11 +12,7 @@ namespace LS_Designer_WPF.Model
 {
     public partial class ControlSpace : ObservableObject
     {
-        public ControlSpace()
-        {
-            ControlChCount = 1;
-            EventChCount = 0;
-        }
+        public ControlSpace() { }
 
         public int Id { get; set; }
 
@@ -24,16 +20,9 @@ namespace LS_Designer_WPF.Model
         public string Name { get { return _name; } set { Set<string>(ref _name, value); } }
 
         bool _isActive;
-        public bool IsActive { get; set; }
+        public bool IsActive { get { return _isActive; } set { Set(ref _isActive, value); } }
 
-        int _controlChCount;
-        public int ControlChCount { get { return _controlChCount; } set { Set<int>(ref _controlChCount, value); } }
-
-        int _eventChCount;
-        public int EventChCount { get { return _eventChCount; } set { Set<int>(ref _eventChCount, value); } }
-
-        EnvironmentItem _environmentItem;
-        public virtual EnvironmentItem EnvironmentItem { get; set; }
+        
 
         //public static ArtNetControlDevice CreateArtNetControlDevice(IDataService dataService, string model)
         //{
