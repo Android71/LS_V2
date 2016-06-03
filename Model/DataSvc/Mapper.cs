@@ -22,8 +22,8 @@ namespace LS_Designer_WPF.Model
 
         public static void O2Db(Partition obj, EFData.Partition dbObj)
         {
-            if (obj.Id != 0)
-                dbObj.Id = obj.Id;
+            //if (obj.Id != 0)
+            //    dbObj.Id = obj.Id;
             dbObj.Name = obj.Name;
         }
 

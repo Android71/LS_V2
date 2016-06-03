@@ -1,7 +1,9 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using LS_Designer_WPF.Model;
+using System.Collections.ObjectModel;
 
 namespace LS_Designer_WPF.ViewModel
 {
@@ -20,28 +22,39 @@ namespace LS_Designer_WPF.ViewModel
             _dataService = dataService;
             AppContext.DataSvc = dataService;
 
-            //Messenger.Default.Register<NotificationMessage>(this, AppContext.BlockChangeContextMsg, BlockContext);
-            //Messenger.Default.Register<NotificationMessage>(this, AppContext.UnBlockChangeContextMsg, UnBlockContext);
-            //Messenger.Default.Register<NotificationMessage>(this, AppContext.ShowPopUpMsg, ShowPopUp);
+            Messenger.Default.Register<NotificationMessage>(this, AppContext.BlockChangeContextMsg, BlockContext);
+            Messenger.Default.Register<NotificationMessage>(this, AppContext.UnBlockChangeContextMsg, UnBlockContext);
+            Messenger.Default.Register<NotificationMessage>(this, AppContext.ShowPopUpMsg, ShowPopUp);
+
+            MessengerInstance.Register<NotificationMessage>(this, AppContext.PartitionAddedMsg, PartitionAdded);
+            MessengerInstance.Register<NotificationMessage>(this, AppContext.PartitionChangedMsg, PartitionChanged);
+            MessengerInstance.Register<NotificationMessage>(this, AppContext.PartitionRemovedMsg, PartitionRemoved);
+
+            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSAddedMsg, CSAdded);
+            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSChangedMsg, CSChanged);
+            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSRemovedMsg, CSRemoved);
+            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSIsActiveChangedMsg, CSIsActiveChanged);
 
             MessageVM = new EmptyPopUp();
-
             
+            _dataService.GetPartitions((data, error) =>
+            {
+                if (error != null) { return; } // Report error here
+                Partitions = data;
+            });
+
+            _dataService.GetActiveControlSpaces((data, error) =>
+            {
+                if (error != null) { return; } // Report error here
+                ControlSpaces = data;
+            });
+
             PartitionsVM = new PartitionsVM(dataService);
             ControlSpacesVM = new ControlSpacesVM(dataService);
-            //ControlDeviceVM = new ControlDeviceVM(dataService);
-            //EventDevicesVM = new EventDevicesVM(dataService);
-            //LightElementsVM = new LightElementsVM(dataService);
-            //LightZonesVM = new LightZonesVM(dataService);
-
-
-            //TabItems.Add(PartitionVM);
-            //TabItems.Add(ControlSpaceVM);
-            //TabItems.Add(ControlDeviceVM);
-            //TabItems.Add(EventDevicesVM);
-            //TabItems.Add(LightElementsVM);
-            //TabItems.Add(LightZonesVM);
+            
         }
+
+        
 
         public PartitionsVM PartitionsVM { get; private set; }
 
@@ -49,6 +62,67 @@ namespace LS_Designer_WPF.ViewModel
 
         object _messageVM = null;
         public object MessageVM { get { return _messageVM; } set { Set(ref _messageVM, value); } }
+
+        public ObservableCollection<Partition> Partitions { get; private set; }
+
+        public ObservableCollection<ControlSpace> ControlSpaces { get; private set; }
+
+        /************************************************************/
+
+        #region MessageHandlers
+
+
+        void PartitionChanged(NotificationMessage obj)
+        { }
+
+        private void ShowPopUp(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UnBlockContext(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BlockContext(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CSIsActiveChanged(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CSRemoved(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CSChanged(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CSAdded(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PartitionRemoved(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PartitionAdded(NotificationMessage obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        /************************************************************/
     }
 
     class EmptyPopUp

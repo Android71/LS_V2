@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/02/2016 19:44:03
--- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 06/03/2016 10:07:04
+-- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -77,9 +77,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CustomGammaLightElement]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LightElements] DROP CONSTRAINT [FK_CustomGammaLightElement];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EnvironmentItemControlSpace]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ControlSpaces] DROP CONSTRAINT [FK_EnvironmentItemControlSpace];
-GO
 IF OBJECT_ID(N'[dbo].[FK_ControlSpaceControlChannel]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlChannels] DROP CONSTRAINT [FK_ControlSpaceControlChannel];
 GO
@@ -100,6 +97,12 @@ IF OBJECT_ID(N'[dbo].[FK_ControlSpaceEventDevice]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_EventDeviceEventChannel]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[EventChannels] DROP CONSTRAINT [FK_EventDeviceEventChannel];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CSEnvItemEnvironmentItem]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CSEnvItems] DROP CONSTRAINT [FK_CSEnvItemEnvironmentItem];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CSEnvItemControlSpace]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CSEnvItems] DROP CONSTRAINT [FK_CSEnvItemControlSpace];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ArtNetControlChannel_inherits_ControlChannel]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlChannels_ArtNetControlChannel] DROP CONSTRAINT [FK_ArtNetControlChannel_inherits_ControlChannel];
@@ -171,6 +174,9 @@ IF OBJECT_ID(N'[dbo].[ControlDevices]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[EventDevices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EventDevices];
+GO
+IF OBJECT_ID(N'[dbo].[CSEnvItems]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CSEnvItems];
 GO
 IF OBJECT_ID(N'[dbo].[ControlChannels_ArtNetControlChannel]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ControlChannels_ArtNetControlChannel];

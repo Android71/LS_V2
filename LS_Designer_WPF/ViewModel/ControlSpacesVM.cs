@@ -25,7 +25,7 @@ namespace LS_Designer_WPF.ViewModel
             SaveCommand = new RelayCommand(ExecSave);
             CancelCommand = new RelayCommand(ExecCancel);
 
-            RefreshF();
+            Refresh();
         }
 
         public override void Refresh()
@@ -42,34 +42,14 @@ namespace LS_Designer_WPF.ViewModel
             //Messenger.Default.Send(new NotificationMessage("DoSomething"), messgeToken);
         }
 
-        void RefreshF()
-        {
-            _dataService.GetControlSpaces((data, error) =>
-            {
-                if (error != null)
-                {
-                    // Report error here
-                    return;
-                }
-                ControlSpacesF = data.Where(p => (p.IsActive)).ToList();
-            });
-        }
+        
 
         private ObservableCollection<ControlSpace> _controlSpaces = null;
         public ObservableCollection<ControlSpace> ControlSpaces
         {
             get { return _controlSpaces; }
-            set { Set<ObservableCollection<ControlSpace>>(ref _controlSpaces, value); }
+            set { Set(ref _controlSpaces, value); }
         }
-
-        // Отфильтрованное значение (ControlChCount != 0) && (EventChCount != 0);
-        private List<ControlSpace> _controlSpacesF = null;
-        public List<ControlSpace> ControlSpacesF
-        {
-            get { return _controlSpacesF; }
-            set { Set<List<ControlSpace>>(ref _controlSpacesF, value); }
-        }
-
 
         private ControlSpace _selectedItem = null;
         public ControlSpace SelectedItem
@@ -108,14 +88,10 @@ namespace LS_Designer_WPF.ViewModel
             if (CurrentObject != null)
                 _dataService.UpdateControlSpace(CurrentObject, (id, error) =>
                 {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
+                    if (error != null) { return; }  // Report error here
                     ix = id;
                 });
-            RefreshF();
+            Refresh();
         }
 
         #endregion

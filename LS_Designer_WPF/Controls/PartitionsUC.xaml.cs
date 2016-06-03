@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LS_Designer_WPF.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -16,11 +17,11 @@ using System.Windows.Shapes;
 
 namespace LS_Designer_WPF.Controls
 {
-    public class PartitionTst
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    //public class PartitionTst
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //}
     /// <summary>
     /// Логика взаимодействия для PartitionsUC.xaml
     /// </summary>
@@ -30,12 +31,12 @@ namespace LS_Designer_WPF.Controls
         public PartitionsUC()
         {
             InitializeComponent();
-            ObservableCollection<PartitionTst> list = new ObservableCollection<PartitionTst>();
-            list.Add(new PartitionTst() { Id = 1, Name = "Кухня" });
-            list.Add(new PartitionTst() { Id = 2, Name = "Столовая" });
-            list.Add(new PartitionTst() { Id = 3, Name = "Детская" });
-            list.Add(new PartitionTst() { Id = 4, Name = "Прихожая" });
-            ListItems = list;
+            //ObservableCollection<Partition> list = new ObservableCollection<Partition>();
+            //list.Add(new Partition() { Id = 1, Name = "Кухня" });
+            //list.Add(new Partition() { Id = 2, Name = "Столовая" });
+            //list.Add(new Partition() { Id = 3, Name = "Детская" });
+            //list.Add(new Partition() { Id = 4, Name = "Прихожая" });
+            //ListItems = list;
         }
 
         /************************************************************************/
@@ -80,14 +81,11 @@ namespace LS_Designer_WPF.Controls
         private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             PartitionsUC uc = (PartitionsUC)d;
-            PartitionTst x = (PartitionTst)uc.SelectedItem;
+            Partition x = (Partition)uc.SelectedItem;
             if (x != null)
             {
-                PartitionTst p = new PartitionTst() { Id = x.Id, Name = x.Name };
                 uc.objectPanel.Visibility = Visibility.Visible;
-                uc.CurrentObject = p;
             }
-            //ms.UpdateModel();
         }
 
         #endregion
@@ -112,39 +110,110 @@ namespace LS_Designer_WPF.Controls
 
         #endregion
 
+        #region AddModeDP
+
+        public static readonly DependencyProperty AddModeProperty =
+            DependencyProperty.Register("AddMode", typeof(bool), typeof(PartitionsUC), new PropertyMetadata(false));
+
+        public bool AddMode
+        {
+            get { return (bool)GetValue(AddModeProperty); }
+            set { SetValue(AddModeProperty, value); }
+        }
+
         #endregion
+
+        #region CommandsDP
+
+        public static readonly DependencyProperty AddCmdProperty = DependencyProperty.Register(
+                                                                    "AddCmd",
+                                                                    typeof(ICommand),
+                                                                    typeof(PartitionsUC));
+
+        public ICommand AddCmd
+        {
+            get { return (ICommand)GetValue(AddCmdProperty); }
+            set { SetValue(AddCmdProperty, value); }
+        }
+
+        public static readonly DependencyProperty SaveCmdProperty = DependencyProperty.Register(
+                                                                    "SaveCmd",
+                                                                    typeof(ICommand),
+                                                                    typeof(PartitionsUC));
+
+        public ICommand SaveCmd
+        {
+            get { return (ICommand)GetValue(SaveCmdProperty); }
+            set { SetValue(SaveCmdProperty, value); }
+        }
+
+        #endregion
+
+
+
+        #endregion
+
+        /************************************************************************/
 
         private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedItem != null)
             {
-                objectCurtain.Visibility = Visibility.Collapsed;
-                objectButtons.Visibility = Visibility.Visible;
-                listCurtain.Visibility = Visibility.Visible;
-                addButton.IsEnabled = false;
+                EditUI();
                 name.Focus();
             }
         }
 
-
-
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            int ix = (ListItems as ObservableCollection<PartitionTst>).IndexOf((PartitionTst)SelectedItem);
-            (ListItems as ObservableCollection<PartitionTst>)[ix] = (PartitionTst)CurrentObject;
-            SelectedItem = CurrentObject;
+            int ix = (ListItems as ObservableCollection<Partition>).IndexOf((Partition)SelectedItem);
+            NormalUI();
+            if (SaveCmd != null)
+            {
+                SaveCmd.Execute(null);
+            }
+        }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            NormalUI();
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddUI();
+            SelectedItem = null;
+            name.Focus();
+            AddMode = true;
+            if (AddCmd != null)
+            {
+                AddCmd.Execute(null);
+            }
+        }
+
+        void NormalUI()
+        {
             objectCurtain.Visibility = Visibility.Visible;
             objectButtons.Visibility = Visibility.Collapsed;
             listCurtain.Visibility = Visibility.Collapsed;
             addButton.IsEnabled = true;
         }
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        void AddUI()
         {
-            objectCurtain.Visibility = Visibility.Visible;
-            objectButtons.Visibility = Visibility.Collapsed;
-            listCurtain.Visibility = Visibility.Collapsed;
-            addButton.IsEnabled = true;
+            objectCurtain.Visibility = Visibility.Collapsed;
+            objectButtons.Visibility = Visibility.Visible;
+            listCurtain.Visibility = Visibility.Visible;
+            objectPanel.Visibility = Visibility.Visible;
+            addButton.IsEnabled = false;
+        }
+
+        void EditUI()
+        {
+            objectCurtain.Visibility = Visibility.Collapsed;
+            objectButtons.Visibility = Visibility.Visible;
+            listCurtain.Visibility = Visibility.Visible;
+            addButton.IsEnabled = false;
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 //using Lighting.Library;
 using LS_Designer_WPF.Model;
 using System.Collections.Generic;
@@ -6,12 +7,6 @@ using System.Collections.ObjectModel;
 
 namespace LS_Designer_WPF.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that a View can data bind to.
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class PartitionsVM : TabItemVM
     {
         /// <summary>
@@ -20,8 +15,10 @@ namespace LS_Designer_WPF.ViewModel
         public PartitionsVM(IDataService dataService) : base(dataService)
         {
             TabName = "Partitions";
-            //Refresh();
-            RefreshList();
+            AddPartitionCmd = new RelayCommand(ExecAddPartition);
+            RemovePartitionCmd = new RelayCommand(ExecRemovePartition);
+            SavePartitionCmd = new RelayCommand(ExecSavePartition);
+            Refresh();
         }
 
         private ObservableCollection<Partition> _partitions = null;
@@ -31,42 +28,88 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _partitions, value); }
         }
 
-        private List<Partition> _partitionList = null;
-        public List<Partition> PartitionList
+        private Partition _selectedItem = null;
+        public Partition SelectedItem
         {
-            get { return _partitionList; }
-            set { Set<List<Partition>>(ref _partitionList, value); }
+            get { return _selectedItem; }
+            set
+            {
+                Set(ref _selectedItem, value);
+                if (SelectedItem != null)
+                    _dataService.GetPartition(SelectedItem.Id,(data, error) =>
+                    {
+                        if (error != null) { return; } // Report error here
+                        CurrentObject = data;
+                    });
+            }
         }
+
+        private Partition _currentObject = null;
+        public Partition CurrentObject
+        {
+            get { return _currentObject; }
+            set { Set(ref _currentObject, value); }
+        }
+
+        public bool AddMode { get; set; }
+
         public override void Refresh()
         {
             _dataService.GetPartitions((data, error) =>
             {
-                if (error != null)
-                {
-                    // Report error here
-                    return;
-                }
+                if (error != null) { return; } // Report error here
                 Partitions = data;
             });
             
         }
 
-        public void RefreshList()
+        /***********************************************************/
+
+        #region Commands
+
+        #region AddPartition
+
+        public RelayCommand AddPartitionCmd { get; private set; }
+
+        void ExecAddPartition()
         {
-            List<Partition> pList = new List<Partition>();
-            _dataService.GetPartitions((data, error) =>
-            {
-                if (error != null)
-                {
-                    // Report error here
-                    return;
-                }
-                foreach (Partition p in data)
-                    pList.Add(p);
-                PartitionList = pList;
-                Partitions = new ObservableCollection<Partition>(pList);
-            });
-            
+            CurrentObject = new Partition() { Id = 0, Name = "Новый раздел" };
         }
+
+        #endregion
+
+        #region RemovePartition
+
+        public RelayCommand RemovePartitionCmd { get; private set; }
+
+        void ExecRemovePartition()
+        { }
+
+        #endregion
+
+        #region SavePartition
+
+        public RelayCommand SavePartitionCmd { get; private set; }
+
+        void ExecSavePartition()
+        {
+            int i = 0;
+            if (AddMode)
+            {
+                _dataService.UpdatePartition(CurrentObject, (data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    i = data;
+                });
+                Partitions.Add(CurrentObject);
+                SelectedItem = CurrentObject;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        /***********************************************************/
     }
 }

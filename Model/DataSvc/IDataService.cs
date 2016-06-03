@@ -16,6 +16,8 @@ namespace LS_Designer_WPF.Model
         #region Partitions
 
         void GetPartitions(Action<ObservableCollection<Partition>, Exception> callback);
+        void GetPartition(int id, Action<Partition, Exception> callback);
+        void UpdatePartition(Partition item, Action<int, Exception> callback);
         void GetPartitionList(Action<List<Partition>, Exception> callback);
 
         #endregion
@@ -25,6 +27,8 @@ namespace LS_Designer_WPF.Model
         #region ControlSpaces
 
         void GetControlSpaces(Action<ObservableCollection<ControlSpace>, Exception> callback);
+
+        void GetActiveControlSpaces(Action<ObservableCollection<ControlSpace>, Exception> callback);
 
         void GetControlSpace(int id, Action<ControlSpace, Exception> callback);
 

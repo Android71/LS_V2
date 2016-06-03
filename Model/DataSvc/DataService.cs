@@ -35,6 +35,48 @@ namespace LS_Designer_WPF.Model
             callback(x, null);
         }
 
+        public void GetPartition(int id, Action<Partition, Exception> callback)
+        {
+            EFData.Partition dbPartition;
+
+            using (var db = new LSModelContainer(LS.CS))
+                dbPartition = db.Partitions.FirstOrDefault(p => p.Id == id);
+
+            Partition partition = new Partition();
+            Mapper.Db2O(dbPartition, partition);
+            callback(partition, null);
+        }
+
+        public void UpdatePartition(Partition item, Action<int, Exception> callback)
+        {
+            EFData.Partition dbPartition;
+            int ix;
+            if (item.Id != 0)
+            {
+                // Update
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbPartition = db.Partitions.FirstOrDefault(p => p.Id == item.Id);
+                    Mapper.O2Db(item, dbPartition);
+                    ix = db.SaveChanges();
+                }
+                callback(ix, null);
+            }
+            else
+            {
+                // Create
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbPartition = new EFData.Partition();
+                    Mapper.O2Db(item, dbPartition);
+                    db.Partitions.Add(dbPartition);
+                    ix = db.SaveChanges();
+                    item.Id = dbPartition.Id;
+                }
+                callback(ix, null);
+            }
+        }
+
         public void GetPartitionList(Action<List<Partition>, Exception> callback)
         {
             var x = new List<Partition>();
@@ -67,6 +109,23 @@ namespace LS_Designer_WPF.Model
             using (var db = new LSModelContainer(LS.CS))
             {
                 foreach (EFData.ControlSpace dbControlSpace in db.ControlSpaces)
+                {
+                    controlSpace = new ControlSpace();
+                    Mapper.Db2O(dbControlSpace, controlSpace);
+                    x.Add(controlSpace);
+                }
+            }
+            callback(x, null);
+        }
+
+        public void GetActiveControlSpaces(Action<ObservableCollection<ControlSpace>, Exception> callback)
+        {
+            ControlSpace controlSpace;
+            var x = new ObservableCollection<ControlSpace>();
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                foreach (EFData.ControlSpace dbControlSpace in db.ControlSpaces.Where(p => p.IsActive))
                 {
                     controlSpace = new ControlSpace();
                     Mapper.Db2O(dbControlSpace, controlSpace);

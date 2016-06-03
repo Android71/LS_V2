@@ -75,10 +75,14 @@
                        Margin="0,0,0,2"
                        Style="{StaticResource ControlPanelLabel}"
                        Content="Control Spaces" />
-                <ListBox x:Name="controlSpaces"
-                         Grid.Row="3"
-                         Background="#FF333333"
-                         BorderBrush="#FF858487" />
+                <ListBox Grid.Row="3" x:Name="controlSpaces" Style="{StaticResource ListBoxStyle1}" ItemsSource="{Binding ControlSpaces}"
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle1}">
+                    <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
             <Grid x:Name="Panel2" />
             <Grid x:Name="PanelCurtain"
@@ -96,7 +100,14 @@
             <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
                 <Controls:PartitionsUC MinWidth="200"
                                        Margin="40,40,0,40"
-                                       HorizontalAlignment="Left" />
+                                       HorizontalAlignment="Left" 
+                                       AddCmd="{Binding PartitionsVM.AddPartitionCmd}"
+                                       SaveCmd="{Binding PartitionsVM.SavePartitionCmd}"
+                                       ListItems="{Binding PartitionsVM.Partitions}"
+                                       SelectedItem="{Binding PartitionsVM.SelectedItem, Mode=TwoWay}"
+                                       CurrentObject="{Binding PartitionsVM.CurrentObject}"
+                                       AddMode="{Binding PartitionsVM.AddMode, Mode=OneWayToSource}"
+                                       />
             </TabItem>
             <TabItem Header="Control Channels"
                      Style="{StaticResource MainTabItemStyle}"
