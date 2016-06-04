@@ -52,7 +52,9 @@
                     Grid.Column="1"
                     Style="{StaticResource MainTabControlStyle}">
             <TabItem Header="Control Spaces" Style="{StaticResource MainTabItemStyle}">
-                <!--<Controls:UserControl1 />-->
+                <Controls:ControlSpacesUC MinWidth="200"
+                                       Margin="40,40,0,40"
+                                       HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
                 <Controls:PartitionsUC MinWidth="200"
@@ -82,12 +84,15 @@
                 <ListBox x:Name="partitions"
                          Grid.Row="1"
                          Margin="0,0,0,4"
-                         ItemContainerStyle="{DynamicResource ListBoxItemStyle1}"
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                         ItemsSource="{Binding Partitions}"
+                         SelectedItem="{Binding SelectedPartition}"
                          Style="{StaticResource ListBoxStyle1}">
-                    <ListBoxItem Content="Кухня" />
-                    <ListBoxItem Content="Гостиная" />
-                    <ListBoxItem Content="Прихожая" />
-                    <ListBoxItem Content="Детская" />
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
                 <Label Grid.Row="2"
                        Margin="0,0,0,2"
@@ -97,7 +102,9 @@
                          Grid.Row="3"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                          ItemsSource="{Binding ControlSpaces}"
+                         SelectedItem="{Binding SelectedSpace}"
                          Style="{StaticResource ListBoxStyle1}">
+                    
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" />

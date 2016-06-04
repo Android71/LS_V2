@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 //using Lighting.Library;
 using LS_Designer_WPF.Model;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace LS_Designer_WPF.ViewModel
         {
             TabName = "Partitions";
             AddCmd = new RelayCommand(ExecAdd, CanExecAdd);
-            RemoveCmd = new RelayCommand(ExecRemove);
+            RemoveCmd = new RelayCommand(ExecRemove, CanExecRemove);
             EditCmd = new RelayCommand(ExecEdit);
             SaveCmd = new RelayCommand(ExecSave);
             CancelCmd = new RelayCommand(ExecCancel);
@@ -50,6 +51,7 @@ namespace LS_Designer_WPF.ViewModel
                         CurrentObject = data;
                      });
                     ObjectPanelVisibility = Visibility.Visible;
+                    RemoveCmd.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -107,7 +109,10 @@ namespace LS_Designer_WPF.ViewModel
         {
             ListCurtainVisibility = Visibility.Collapsed;
             ObjectButtonsVisibility = Visibility.Collapsed;
-            ObjectPanelVisibility = Visibility.Collapsed;
+            if (SelectedItem == null)
+                ObjectPanelVisibility = Visibility.Collapsed;
+            else
+                ObjectPanelVisibility = Visibility.Visible;
             ObjectCurtainVisibility = Visibility.Visible;
         }
 
@@ -115,7 +120,8 @@ namespace LS_Designer_WPF.ViewModel
         {
             ListCurtainVisibility = Visibility.Visible;
             ObjectButtonsVisibility = Visibility.Visible;
-            ObjectCurtainVisibility = Visibility.Collapsed; 
+            ObjectCurtainVisibility = Visibility.Collapsed;
+            ObjectPanelVisibility = Visibility.Visible;
         }
 
         void EditUIState()
@@ -126,6 +132,8 @@ namespace LS_Designer_WPF.ViewModel
         bool AddMode { get; set; } = false;
 
         bool EditMode { get; set; } = false;
+
+        Partition Temp { get; set; } = null;
 
         #endregion
 
@@ -140,10 +148,14 @@ namespace LS_Designer_WPF.ViewModel
         void ExecAdd()
         {
             AddMode = true;
+            if (SelectedItem != null)
+                Temp = SelectedItem;
             AddCmd.RaiseCanExecuteChanged();
+            RemoveCmd.RaiseCanExecuteChanged();
             SelectedItem = null;
             AddUIState();
             CurrentObject = new Partition() { Id = 0, Name = "Новый раздел" };
+            MessengerInstance.Send("focus", "PartitionFocus");
         }
 
         bool CanExecAdd()
@@ -160,6 +172,11 @@ namespace LS_Designer_WPF.ViewModel
         void ExecRemove()
         { }
 
+        bool CanExecRemove()
+        {
+            return !AddMode && !EditMode && SelectedItem != null;
+        }
+
         #endregion
 
         #region Edit Command
@@ -167,7 +184,16 @@ namespace LS_Designer_WPF.ViewModel
         public RelayCommand EditCmd { get; private set; }
 
         void ExecEdit()
-        { }
+        {
+            if (SelectedItem != null)
+            {
+                EditMode = true;
+                AddCmd.RaiseCanExecuteChanged();
+                RemoveCmd.RaiseCanExecuteChanged();
+                AddUIState();
+                MessengerInstance.Send("focus", "PartitionFocus");
+            }
+        }
 
         #endregion
 
@@ -180,6 +206,9 @@ namespace LS_Designer_WPF.ViewModel
             int i = 0;
             if (AddMode)
             {
+                AddMode = false;
+                AddCmd.RaiseCanExecuteChanged();
+                RemoveCmd.RaiseCanExecuteChanged();
                 _dataService.UpdatePartition(CurrentObject, (data, error) =>
                 {
                     if (error != null) { return; } // Report error here
@@ -187,6 +216,28 @@ namespace LS_Designer_WPF.ViewModel
                 });
                 Partitions.Add(CurrentObject);
                 SelectedItem = CurrentObject;
+                NormalUIState();
+                MessengerInstance.Send(SelectedItem, AppContext.PartitionAddedMsg);
+                return;
+            }
+            if (EditMode)
+            {
+                EditMode = false;
+                AddCmd.RaiseCanExecuteChanged();
+                RemoveCmd.RaiseCanExecuteChanged();
+                _dataService.UpdatePartition(CurrentObject, (data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    i = data;
+                });
+
+                int ix = Partitions.IndexOf(SelectedItem);
+                Partitions[ix] = CurrentObject;
+                SelectedItem = CurrentObject;
+
+                NormalUIState();
+                MessengerInstance.Send(SelectedItem, AppContext.PartitionChangedMsg);
+                return;
             }
         }
 
@@ -202,8 +253,28 @@ namespace LS_Designer_WPF.ViewModel
             {
                 AddMode = false;
                 AddCmd.RaiseCanExecuteChanged();
+                RemoveCmd.RaiseCanExecuteChanged();
                 NormalUIState();
-                CurrentObject = null;
+                if (Temp != null)
+                {
+                    SelectedItem = Temp;
+                    Temp = null;
+                }
+                else
+                    CurrentObject = null;
+                return;
+            }
+            if (EditMode)
+            {
+                EditMode = false;
+                AddCmd.RaiseCanExecuteChanged();
+                RemoveCmd.RaiseCanExecuteChanged();
+                NormalUIState();
+                _dataService.GetPartition(SelectedItem.Id, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                         CurrentObject = data;
+                     });
             }
         }
 
