@@ -43,109 +43,109 @@ namespace LS_Designer_WPF.Controls
 
         #region DP Properties
 
-        #region ListItemsDP
+        //#region ListItemsDP
 
-        public static readonly DependencyProperty ListItemsProperty =
-            DependencyProperty.Register("ListItems", typeof(Object), typeof(PartitionsUC), new PropertyMetadata(null, OnListItemsChanged));
+        //public static readonly DependencyProperty ListItemsProperty =
+        //    DependencyProperty.Register("ListItems", typeof(Object), typeof(PartitionsUC), new PropertyMetadata(null, OnListItemsChanged));
 
-        public Object ListItems
-        {
-            get { return GetValue(ListItemsProperty); }
-            set { SetValue(ListItemsProperty, value); }
-        }
+        //public Object ListItems
+        //{
+        //    get { return GetValue(ListItemsProperty); }
+        //    set { SetValue(ListItemsProperty, value); }
+        //}
 
-        private static void OnListItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            PartitionsUC uc = (PartitionsUC)d;
-            if (uc.ListItems != null)
-            {
-                uc.objectPanel.Visibility = Visibility.Collapsed;
-                uc.addButton.IsEnabled = true;
-            }
-            //ms.UpdateModel();
-        }
+        //private static void OnListItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    PartitionsUC uc = (PartitionsUC)d;
+        //    if (uc.ListItems != null)
+        //    {
+        //        uc.objectPanel.Visibility = Visibility.Collapsed;
+        //        uc.addButton.IsEnabled = true;
+        //    }
+        //    //ms.UpdateModel();
+        //}
 
-        #endregion
+        //#endregion
 
-        #region SelectedItemDP
+        //#region SelectedItemDP
 
-        public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register("SelectedItem", typeof(Object), typeof(PartitionsUC), new PropertyMetadata(null, OnSelectedItemChanged));
+        //public static readonly DependencyProperty SelectedItemProperty =
+        //    DependencyProperty.Register("SelectedItem", typeof(Object), typeof(PartitionsUC), new PropertyMetadata(null, OnSelectedItemChanged));
 
-        public Object SelectedItem
-        {
-            get { return GetValue(SelectedItemProperty); }
-            set { SetValue(SelectedItemProperty, value); }
-        }
+        //public Object SelectedItem
+        //{
+        //    get { return GetValue(SelectedItemProperty); }
+        //    set { SetValue(SelectedItemProperty, value); }
+        //}
 
-        private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            PartitionsUC uc = (PartitionsUC)d;
-            Partition x = (Partition)uc.SelectedItem;
-            if (x != null)
-            {
-                uc.objectPanel.Visibility = Visibility.Visible;
-            }
-        }
+        //private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    PartitionsUC uc = (PartitionsUC)d;
+        //    Partition x = (Partition)uc.SelectedItem;
+        //    if (x != null)
+        //    {
+        //        uc.objectPanel.Visibility = Visibility.Visible;
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region CurrentObjectDP
+        //#region CurrentObjectDP
 
-        public static readonly DependencyProperty CurrentObjectProperty =
-            DependencyProperty.Register("CurrentObject", typeof(Object), typeof(PartitionsUC), new PropertyMetadata(null, OnCurrentObjectChanged));
+        //public static readonly DependencyProperty CurrentObjectProperty =
+        //    DependencyProperty.Register("CurrentObject", typeof(Object), typeof(PartitionsUC), new PropertyMetadata(null, OnCurrentObjectChanged));
 
-        public Object CurrentObject
-        {
-            get { return GetValue(CurrentObjectProperty); }
-            set { SetValue(CurrentObjectProperty, value); }
-        }
+        //public Object CurrentObject
+        //{
+        //    get { return GetValue(CurrentObjectProperty); }
+        //    set { SetValue(CurrentObjectProperty, value); }
+        //}
 
-        private static void OnCurrentObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            PartitionsUC uc = (PartitionsUC)d;
-            var x = uc.CurrentObject;
-            //ms.UpdateModel();
-        }
+        //private static void OnCurrentObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    PartitionsUC uc = (PartitionsUC)d;
+        //    var x = uc.CurrentObject;
+        //    //ms.UpdateModel();
+        //}
 
-        #endregion
+        //#endregion
 
-        #region AddModeDP
+        //#region AddModeDP
 
-        public static readonly DependencyProperty AddModeProperty =
-            DependencyProperty.Register("AddMode", typeof(bool), typeof(PartitionsUC), new PropertyMetadata(false));
+        //public static readonly DependencyProperty AddModeProperty =
+        //    DependencyProperty.Register("AddMode", typeof(bool), typeof(PartitionsUC), new PropertyMetadata(false));
 
-        public bool AddMode
-        {
-            get { return (bool)GetValue(AddModeProperty); }
-            set { SetValue(AddModeProperty, value); }
-        }
+        //public bool AddMode
+        //{
+        //    get { return (bool)GetValue(AddModeProperty); }
+        //    set { SetValue(AddModeProperty, value); }
+        //}
 
-        #endregion
+        //#endregion
 
         #region CommandsDP
 
-        public static readonly DependencyProperty AddCmdProperty = DependencyProperty.Register(
-                                                                    "AddCmd",
-                                                                    typeof(ICommand),
-                                                                    typeof(PartitionsUC));
+        //public static readonly DependencyProperty AddCmdProperty = DependencyProperty.Register(
+        //                                                            "AddCmd",
+        //                                                            typeof(ICommand),
+        //                                                            typeof(PartitionsUC));
 
-        public ICommand AddCmd
-        {
-            get { return (ICommand)GetValue(AddCmdProperty); }
-            set { SetValue(AddCmdProperty, value); }
-        }
+        //public ICommand AddCmd
+        //{
+        //    get { return (ICommand)GetValue(AddCmdProperty); }
+        //    set { SetValue(AddCmdProperty, value); }
+        //}
 
-        public static readonly DependencyProperty SaveCmdProperty = DependencyProperty.Register(
-                                                                    "SaveCmd",
-                                                                    typeof(ICommand),
-                                                                    typeof(PartitionsUC));
+        //public static readonly DependencyProperty SaveCmdProperty = DependencyProperty.Register(
+        //                                                            "SaveCmd",
+        //                                                            typeof(ICommand),
+        //                                                            typeof(PartitionsUC));
 
-        public ICommand SaveCmd
-        {
-            get { return (ICommand)GetValue(SaveCmdProperty); }
-            set { SetValue(SaveCmdProperty, value); }
-        }
+        //public ICommand SaveCmd
+        //{
+        //    get { return (ICommand)GetValue(SaveCmdProperty); }
+        //    set { SetValue(SaveCmdProperty, value); }
+        //}
 
         #endregion
 
@@ -157,64 +157,64 @@ namespace LS_Designer_WPF.Controls
 
         private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectedItem != null)
-            {
-                EditUI();
-                name.Focus();
-            }
+            //if (SelectedItem != null)
+            //{
+            //    EditUI();
+            //    name.Focus();
+            //}
         }
 
-        private void saveButton_Click(object sender, RoutedEventArgs e)
-        {
-            int ix = (ListItems as ObservableCollection<Partition>).IndexOf((Partition)SelectedItem);
-            NormalUI();
-            if (SaveCmd != null)
-            {
-                SaveCmd.Execute(null);
-            }
-        }
+        //private void saveButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    int ix = (ListItems as ObservableCollection<Partition>).IndexOf((Partition)SelectedItem);
+        //    NormalUI();
+        //    if (SaveCmd != null)
+        //    {
+        //        SaveCmd.Execute(null);
+        //    }
+        //}
 
-        private void cancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            NormalUI();
-        }
+        //private void cancelButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    NormalUI();
+        //}
 
-        private void addButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddUI();
-            SelectedItem = null;
-            name.Focus();
-            AddMode = true;
-            if (AddCmd != null)
-            {
-                AddCmd.Execute(null);
-            }
-        }
+        //private void addButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    AddUI();
+        //    SelectedItem = null;
+        //    name.Focus();
+        //    AddMode = true;
+        //    if (AddCmd != null)
+        //    {
+        //        AddCmd.Execute(null);
+        //    }
+        //}
 
-        void NormalUI()
-        {
-            objectCurtain.Visibility = Visibility.Visible;
-            objectButtons.Visibility = Visibility.Collapsed;
-            listCurtain.Visibility = Visibility.Collapsed;
-            addButton.IsEnabled = true;
-        }
+        //void NormalUI()
+        //{
+        //    objectCurtain.Visibility = Visibility.Visible;
+        //    objectButtons.Visibility = Visibility.Collapsed;
+        //    listCurtain.Visibility = Visibility.Collapsed;
+        //    addButton.IsEnabled = true;
+        //}
 
-        void AddUI()
-        {
-            objectCurtain.Visibility = Visibility.Collapsed;
-            objectButtons.Visibility = Visibility.Visible;
-            listCurtain.Visibility = Visibility.Visible;
-            objectPanel.Visibility = Visibility.Visible;
-            addButton.IsEnabled = false;
-        }
+        //void AddUI()
+        //{
+        //    objectCurtain.Visibility = Visibility.Collapsed;
+        //    objectButtons.Visibility = Visibility.Visible;
+        //    listCurtain.Visibility = Visibility.Visible;
+        //    objectPanel.Visibility = Visibility.Visible;
+        //    addButton.IsEnabled = false;
+        //}
 
-        void EditUI()
-        {
-            objectCurtain.Visibility = Visibility.Collapsed;
-            objectButtons.Visibility = Visibility.Visible;
-            listCurtain.Visibility = Visibility.Visible;
-            addButton.IsEnabled = false;
-        }
+        //void EditUI()
+        //{
+        //    objectCurtain.Visibility = Visibility.Collapsed;
+        //    objectButtons.Visibility = Visibility.Visible;
+        //    listCurtain.Visibility = Visibility.Visible;
+        //    addButton.IsEnabled = false;
+        //}
     }
 
 }

@@ -1,10 +1,10 @@
 ﻿<Window x:Class="LS_Designer_WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:LS_Designer_WPF.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:ignore="http://www.galasoft.ch/ignore"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Controls="clr-namespace:LS_Designer_WPF.Controls"
         Title="MVVM Light Application"
         Width="1360"
         Height="760"
@@ -46,6 +46,24 @@
                       Margin="0,2,5,0"
                       Background="#FF1A5525"
                       Content="Design" />
+        <TabControl x:Name="tabControl"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Style="{StaticResource MainTabControlStyle}">
+            <TabItem Header="Control Spaces" Style="{StaticResource MainTabItemStyle}">
+                <!--<Controls:UserControl1 />-->
+            </TabItem>
+            <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
+                <Controls:PartitionsUC MinWidth="200"
+                                       Margin="40,40,0,40"
+                                       HorizontalAlignment="Left" />
+            </TabItem>
+            <TabItem Content="Item3"
+                     Header="Control Channels"
+                     IsEnabled="False"
+                     Style="{StaticResource MainTabItemStyle}" />
+        </TabControl>
         <Grid x:Name="ControlPanels"
               Grid.Row="1"
               Grid.Column="0"
@@ -59,13 +77,13 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0"
                        Margin="0,2"
-                       Style="{StaticResource ControlPanelLabel}"
-                       Content="Partitions" />
+                       Content="Partitions"
+                       Style="{StaticResource ControlPanelLabel}" />
                 <ListBox x:Name="partitions"
                          Grid.Row="1"
                          Margin="0,0,0,4"
-                         Style="{StaticResource ListBoxStyle1}"
-                         ItemContainerStyle="{DynamicResource ListBoxItemStyle1}">
+                         ItemContainerStyle="{DynamicResource ListBoxItemStyle1}"
+                         Style="{StaticResource ListBoxStyle1}">
                     <ListBoxItem Content="Кухня" />
                     <ListBoxItem Content="Гостиная" />
                     <ListBoxItem Content="Прихожая" />
@@ -73,15 +91,18 @@
                 </ListBox>
                 <Label Grid.Row="2"
                        Margin="0,0,0,2"
-                       Style="{StaticResource ControlPanelLabel}"
-                       Content="Control Spaces" />
-                <ListBox Grid.Row="3" x:Name="controlSpaces" Style="{StaticResource ListBoxStyle1}" ItemsSource="{Binding ControlSpaces}"
-                         ItemContainerStyle="{StaticResource ListBoxItemStyle1}">
+                       Content="Control Spaces"
+                       Style="{StaticResource ControlPanelLabel}" />
+                <ListBox x:Name="controlSpaces"
+                         Grid.Row="3"
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                         ItemsSource="{Binding ControlSpaces}"
+                         Style="{StaticResource ListBoxStyle1}">
                     <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
             <Grid x:Name="Panel2" />
@@ -89,30 +110,5 @@
                   Background="#7F000000"
                   Visibility="Collapsed" />
         </Grid>
-        <TabControl x:Name="tabControl"
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="1"
-                    Style="{StaticResource MainTabControlStyle}">
-            <TabItem Header="Control Spaces" Style="{StaticResource MainTabItemStyle}">
-                <!--<Controls:UserControl1 />-->
-            </TabItem>
-            <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
-                <Controls:PartitionsUC MinWidth="200"
-                                       Margin="40,40,0,40"
-                                       HorizontalAlignment="Left" 
-                                       AddCmd="{Binding PartitionsVM.AddPartitionCmd}"
-                                       SaveCmd="{Binding PartitionsVM.SavePartitionCmd}"
-                                       ListItems="{Binding PartitionsVM.Partitions}"
-                                       SelectedItem="{Binding PartitionsVM.SelectedItem, Mode=TwoWay}"
-                                       CurrentObject="{Binding PartitionsVM.CurrentObject}"
-                                       AddMode="{Binding PartitionsVM.AddMode, Mode=OneWayToSource}"
-                                       />
-            </TabItem>
-            <TabItem Header="Control Channels"
-                     Style="{StaticResource MainTabItemStyle}"
-                     IsEnabled="False"
-                     Content="Item3" />
-        </TabControl>
     </Grid>
 </Window>

@@ -25,7 +25,15 @@ namespace LS_Designer_WPF.ViewModel
             SaveCommand = new RelayCommand(ExecSave);
             CancelCommand = new RelayCommand(ExecCancel);
 
-            Refresh();
+            _dataService.GetControlSpaces((data, error) =>
+            {
+                if (error != null)
+                {
+                    // Report error here
+                    return;
+                }
+                ControlSpaces = data;
+            });
         }
 
         public override void Refresh()
