@@ -16,6 +16,7 @@
                     <!--  Global View Model Locator  -->
                     <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
                 </ResourceDictionary>
+                <!--<ResourceDictionary Source="Simple Styles.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -419,7 +419,7 @@
         </Setter>
     </Style>
 
-    <!--  TextBo1  -->
+    <!--  TextBox1  -->
 
     <SolidColorBrush x:Key="TextBox1.Static.Background" Color="{StaticResource Dark}" />
     <SolidColorBrush x:Key="TextBox1.Static.Border" Color="{StaticResource Plumbum}" />

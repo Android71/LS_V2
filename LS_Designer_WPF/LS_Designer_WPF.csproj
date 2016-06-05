@@ -104,6 +104,7 @@
     <Compile Include="ViewModel\TabItemsVM\TabItemVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
+    <Compile Include="WPF_Extras\Extentions\WaterMarkExtention.cs" />
     <Page Include="Controls\ControlSpacesUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

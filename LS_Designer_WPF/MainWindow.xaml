@@ -65,6 +65,11 @@
                      Header="Control Channels"
                      IsEnabled="False"
                      Style="{StaticResource MainTabItemStyle}" />
+            <TabItem Header="Test" Style="{StaticResource MainTabItemStyle}">
+                <Controls:UserControl1 MinWidth="200"
+                                       Margin="40,40,0,40"
+                                       HorizontalAlignment="Left" />
+            </TabItem>
         </TabControl>
         <Grid x:Name="ControlPanels"
               Grid.Row="1"
