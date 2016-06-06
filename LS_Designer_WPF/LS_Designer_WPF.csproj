@@ -91,6 +91,9 @@
     <Compile Include="Controls\PartitionsUC.xaml.cs">
       <DependentUpon>PartitionsUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PopUp\AttentionUC.xaml.cs">
+      <DependentUpon>AttentionUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -98,6 +101,8 @@
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\PopUpVM\AttentionVM.cs" />
+    <Compile Include="ViewModel\PopUpVM\EmptyPopUpVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\ControlSpacesVM.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TabItemsVM\PartitionsVM.cs" />
@@ -110,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PartitionsUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PopUp\AttentionUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -458,9 +458,18 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource DisabledBackgroundBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}" />
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                                <Condition Property="IsReadOnly" Value="false"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource TextBox1.MouseOver.Border}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <!--<Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource TextBox1.MouseOver.Border}" />
-                        </Trigger>
+                        </Trigger>-->
                         <Trigger Property="IsFocused" Value="true">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource TextBox1.Focused.Border}" />
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource TextBox1.Focused.Background}" />

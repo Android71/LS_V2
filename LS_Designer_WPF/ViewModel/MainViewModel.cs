@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using LS_Designer_WPF.Model;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace LS_Designer_WPF.ViewModel
 {
@@ -24,7 +25,7 @@ namespace LS_Designer_WPF.ViewModel
 
             Messenger.Default.Register<NotificationMessage>(this, AppContext.BlockChangeContextMsg, BlockContext);
             Messenger.Default.Register<NotificationMessage>(this, AppContext.UnBlockChangeContextMsg, UnBlockContext);
-            Messenger.Default.Register<NotificationMessage>(this, AppContext.ShowPopUpMsg, ShowPopUp);
+            MessengerInstance.Register<EmptyPopUpVM>(this, AppContext.ShowPopUpMsg, ShowPopUp);
 
             MessengerInstance.Register<Partition>(this, AppContext.PartitionAddedMsg, PartitionAdded);
             MessengerInstance.Register<Partition>(this, AppContext.PartitionChangedMsg, PartitionChanged);
@@ -35,7 +36,7 @@ namespace LS_Designer_WPF.ViewModel
             MessengerInstance.Register<NotificationMessage>(this, AppContext.CSRemovedMsg, CSRemoved);
             MessengerInstance.Register<NotificationMessage>(this, AppContext.CSIsActiveChangedMsg, CSIsActiveChanged);
 
-            MessageVM = new EmptyPopUp();
+            PopUpVM = new EmptyPopUpVM();
             
             _dataService.GetPartitions((data, error) =>
             {
@@ -54,14 +55,14 @@ namespace LS_Designer_WPF.ViewModel
             
         }
 
-        
-
         public PartitionsVM PartitionsVM { get; private set; }
 
         public ControlSpacesVM ControlSpacesVM { get; private set; }
 
-        object _messageVM = null;
-        public object MessageVM { get { return _messageVM; } set { Set(ref _messageVM, value); } }
+        object _popupVM = null;
+        public object PopUpVM { get { return _popupVM; } set { Set(ref _popupVM, value); } }
+
+        
 
         public ObservableCollection<Partition> Partitions { get; private set; }
 
@@ -128,9 +129,10 @@ namespace LS_Designer_WPF.ViewModel
                 Partitions[ix] = partition;
         }
 
-        private void ShowPopUp(NotificationMessage obj)
+        private void ShowPopUp(EmptyPopUpVM obj)
         {
-            throw new NotImplementedException();
+            PopUpVM = obj;
+            obj.PopUpVisibility = Visibility.Visible;
         }
 
         private void UnBlockContext(NotificationMessage obj)
@@ -179,23 +181,5 @@ namespace LS_Designer_WPF.ViewModel
         public bool Enabled { get; set; }
     }
 
-    class EmptyPopUp
-    {
-        public EmptyPopUp()
-        {
-            ShowMessage = false;
-        }
-
-        //string _message = "Simple message";
-        public string Message { get; set; }      //{ get { return _message; } set { Set(ref _message, value); } }
-
-        //bool _showMessage = false;
-        public bool ShowMessage { get; set; }    //{ get { return _showMessage; } set { Set(ref _showMessage, value); } }
-
-        public RelayCommand CloseCommand
-        {
-            get;
-            private set;
-        }
-    }
+    
 }

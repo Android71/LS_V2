@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace LS_Designer_WPF.ViewModel
 {
@@ -24,33 +25,30 @@ namespace LS_Designer_WPF.ViewModel
             //Messenger.Default.Register<NotificationMessage<Type>>(this, HandlePersonalMessage);
             SaveCommand = new RelayCommand(ExecSave);
             CancelCommand = new RelayCommand(ExecCancel);
+            EditCmd = new RelayCommand(ExecEdit);
 
-            _dataService.GetControlSpaces((data, error) =>
-            {
-                if (error != null)
-                {
-                    // Report error here
-                    return;
-                }
-                ControlSpaces = data;
-            });
+            LoadData();
         }
 
         public override void Refresh()
         {
-            _dataService.GetControlSpaces((data, error) =>
-            {
-                if (error != null)
-                {
-                    // Report error here
-                    return;
-                }
-                ControlSpaces = data;
-            });
+            LoadData();   
             //Messenger.Default.Send(new NotificationMessage("DoSomething"), messgeToken);
         }
 
         
+        void LoadData()
+        {
+            _dataService.GetControlSpaces((data, error) =>
+           {
+               if (error != null)
+               {
+                    // Report error here
+                    return;
+               }
+               ControlSpaces = data;
+           });
+        }
 
         private ObservableCollection<ControlSpace> _controlSpaces = null;
         public ObservableCollection<ControlSpace> ControlSpaces
@@ -67,7 +65,10 @@ namespace LS_Designer_WPF.ViewModel
             {
                 Set<ControlSpace>(ref _selectedItem, value);
                 if (SelectedItem != null)
+                {
                     CurrentObject = SelectedItem;
+                    ObjectPanelVisibility = Visibility.Visible;
+                }
             }
         }
 
@@ -78,6 +79,67 @@ namespace LS_Designer_WPF.ViewModel
             set { Set<ControlSpace>(ref _currentObject, value); }
         }
 
+        #region UI State
+
+        Visibility _listCurttainVisibility = Visibility.Collapsed;
+        public Visibility ListCurtainVisibility
+        {
+            get { return _listCurttainVisibility; }
+            set { Set(ref _listCurttainVisibility, value); }
+        }
+
+        Visibility _objectButtonsVisibility = Visibility.Collapsed;
+        public Visibility ObjectButtonsVisibility
+        {
+            get { return _objectButtonsVisibility; }
+            set { Set(ref _objectButtonsVisibility, value); }
+        }
+
+        Visibility _objectCurtainVisibility = Visibility.Visible;
+        public Visibility ObjectCurtainVisibility
+        {
+            get { return _objectCurtainVisibility; }
+            set { Set(ref _objectCurtainVisibility, value); }
+        }
+
+        Visibility _objectPanelVisibility = Visibility.Collapsed;
+        public Visibility ObjectPanelVisibility
+        {
+            get { return _objectPanelVisibility; }
+            set { Set(ref _objectPanelVisibility, value); }
+        }
+
+        void NormalUIState()
+        {
+            ListCurtainVisibility = Visibility.Collapsed;
+            ObjectButtonsVisibility = Visibility.Collapsed;
+            if (SelectedItem == null)
+                ObjectPanelVisibility = Visibility.Collapsed;
+            else
+                ObjectPanelVisibility = Visibility.Visible;
+            ObjectCurtainVisibility = Visibility.Visible;
+        }
+
+        void AddUIState()
+        {
+            ListCurtainVisibility = Visibility.Visible;
+            ObjectButtonsVisibility = Visibility.Visible;
+            ObjectCurtainVisibility = Visibility.Collapsed;
+            ObjectPanelVisibility = Visibility.Visible;
+        }
+
+        void EditUIState()
+        {
+
+        }
+
+        //bool AddMode { get; set; } = false;
+
+        bool EditMode { get; set; } = false;
+
+        ControlSpace Temp { get; set; } = null;
+
+        #endregion
 
         /*************************************************************/
 
@@ -92,14 +154,52 @@ namespace LS_Designer_WPF.ViewModel
 
         void ExecSave()
         {
-            int ix = -1;
-            if (CurrentObject != null)
-                _dataService.UpdateControlSpace(CurrentObject, (id, error) =>
-                {
-                    if (error != null) { return; }  // Report error here
-                    ix = id;
-                });
-            Refresh();
+            AttentionVM vm = new AttentionVM("Внимание", CancelAction, OKAction);
+            MessengerInstance.Send<EmptyPopUpVM>(vm, AppContext.ShowPopUpMsg);
+            //int i = 0;
+            //if (AddMode)
+            //{
+            //    AddMode = false;
+            //    AddCmd.RaiseCanExecuteChanged();
+            //    RemoveCmd.RaiseCanExecuteChanged();
+            //    _dataService.UpdatePartition(CurrentObject, (data, error) =>
+            //    {
+            //        if (error != null) { return; } // Report error here
+            //        i = data;
+            //    });
+            //    Partitions.Add(CurrentObject);
+            //    SelectedItem = CurrentObject;
+            //    NormalUIState();
+            //    MessengerInstance.Send(SelectedItem, AppContext.PartitionAddedMsg);
+            //    return;
+            //}
+            //if (EditMode)
+            //{
+            //    EditMode = false;
+            //    AddCmd.RaiseCanExecuteChanged();
+            //    RemoveCmd.RaiseCanExecuteChanged();
+            //    _dataService.UpdatePartition(CurrentObject, (data, error) =>
+            //    {
+            //        if (error != null) { return; } // Report error here
+            //        i = data;
+            //    });
+
+            //    int ix = Partitions.IndexOf(SelectedItem);
+            //    Partitions[ix] = CurrentObject;
+            //    SelectedItem = CurrentObject;
+
+            //    NormalUIState();
+            //    MessengerInstance.Send(SelectedItem, AppContext.PartitionChangedMsg);
+            //    return;
+            //}
+        }
+
+        private void OKAction(Object obj)
+        {
+        }
+
+        private void CancelAction(Object obj)
+        {
         }
 
         #endregion
@@ -116,17 +216,29 @@ namespace LS_Designer_WPF.ViewModel
             if (CurrentObject != null && CurrentObject.Id != 0)
                 _dataService.GetControlSpace(CurrentObject.Id, (item, error) =>
                 {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
+                    if (error != null) { return; }  // Report error here
                     var x = ControlSpaces.FirstOrDefault(p => p.Id == item.Id);
                     int i = ControlSpaces.IndexOf(x);
                     ControlSpaces.Remove(x);
                     ControlSpaces.Insert(i, item);
-                    SelectedItem = item;
+                    SelectedItem = item;    // Activate Normal UI
                 });
+        }
+
+        #endregion
+
+        #region Edit Command
+
+        public RelayCommand EditCmd { get; private set; }
+
+        void ExecEdit()
+        {
+            if (SelectedItem != null)
+            {
+                EditMode = true;
+                AddUIState();
+                MessengerInstance.Send("focus", "CSFocus");
+            }
         }
 
         #endregion

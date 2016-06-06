@@ -48,6 +48,7 @@
             <ListBox Grid.Row="1"
                      ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                      ItemsSource="{Binding ControlSpacesVM.ControlSpaces}"
+                     SelectedItem="{Binding ControlSpacesVM.SelectedItem}"
                      Style="{StaticResource ListBoxStyle1}">
                 <!--ItemsSource="{Binding ControlSpacesVM.ControlSpaces}"-->
                      <!--SelectedItem="{Binding ControlSpacesVM.SelectedItem}"-->
@@ -80,7 +81,7 @@
             <Grid x:Name="listCurtain"
                   Grid.Row="1"
                   Background="#334F4F4F"
-                  Visibility="Collapsed" />
+                  Visibility="{Binding ControlSpacesVM.ListCurtainVisibility}" />
         </Grid>
         <Grid x:Name="object" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -93,15 +94,15 @@
                         Background="{StaticResource DarkBrush}"
                         FlowDirection="RightToLeft"
                         Orientation="Horizontal"
-                        Visibility="Visible">
+                        Visibility="{Binding ControlSpacesVM.ObjectButtonsVisibility}">
                 <Button x:Name="saveButton"
                         HorizontalAlignment="Left"
-                        Command="{Binding ControlSpacesVM.SaveCmd}"
+                        Command="{Binding ControlSpacesVM.SaveCommand}"
                         Content="Save"
                         Style="{StaticResource ButtonStyle1}" />
                 <Button x:Name="cancelButton"
                         HorizontalAlignment="Right"
-                        Command="{Binding ControlSpacesVM.CancelCmd}"
+                        Command="{Binding ControlSpacesVM.CancelCommand}"
                         Content="Cancel"
                         Style="{StaticResource ButtonStyle1}" />
             </StackPanel>
@@ -112,7 +113,7 @@
                     BorderBrush="{StaticResource PlumbumBrush}"
                     BorderThickness="1"
                     Padding="10"
-                    Visibility="Visible">
+                    Visibility="{Binding ControlSpacesVM.ObjectPanelVisibility}">
                 <Grid Name="csObject">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -132,7 +133,7 @@
                              Grid.Column="1"
                              VerticalAlignment="Center"
                              Style="{StaticResource TextBoxStyle1}"
-                             Text="ArtNet" />
+                             Text="{Binding ControlSpacesVM.CurrentObject.Name}" IsReadOnly="True" />
                     <Label Grid.Row="1"
                            Grid.Column="0"
                            Margin="0,0,10,0">
