@@ -66,7 +66,11 @@ namespace LS_Designer_WPF.ViewModel
                 Set<ControlSpace>(ref _selectedItem, value);
                 if (SelectedItem != null)
                 {
-                    CurrentObject = SelectedItem;
+                    _dataService.GetControlSpace(SelectedItem.Id,(data, error) =>
+                    {
+                        if (error != null) { return; }   // Report error here
+                        CurrentObject = data;
+                    });
                     ObjectPanelVisibility = Visibility.Visible;
                 }
             }
@@ -78,6 +82,8 @@ namespace LS_Designer_WPF.ViewModel
             get { return _currentObject; }
             set { Set<ControlSpace>(ref _currentObject, value); }
         }
+
+        /*************************************************************/
 
         #region UI State
 
@@ -152,10 +158,18 @@ namespace LS_Designer_WPF.ViewModel
             private set;
         }
 
+        AttentionVM attentionVM;
+
         void ExecSave()
         {
-            AttentionVM vm = new AttentionVM("Внимание", CancelAction, OKAction);
-            MessengerInstance.Send<EmptyPopUpVM>(vm, AppContext.ShowPopUpMsg);
+            if (CurrentObject.IsActive != SelectedItem.IsActive)
+            {
+                if (SelectedItem.IsActive)  // Изъятие ControlSpace из модели
+                {
+                    attentionVM = new AttentionVM("Внимание", CancelAction, OKAction);
+                    MessengerInstance.Send<EmptyPopUpVM>(attentionVM, AppContext.ShowPopUpMsg);
+                }
+            }
             //int i = 0;
             //if (AddMode)
             //{
@@ -196,6 +210,13 @@ namespace LS_Designer_WPF.ViewModel
 
         private void OKAction(Object obj)
         {
+            // Пользователь подтвердил изъятие ControlSpace из модели
+
+            // Операция удаления объектов ссылающихся на ControlSpace
+            // DeleteAllEntities(CurrentObject);
+            attentionVM.PopUpVisibility = Visibility.Collapsed;
+            //Console.WriteLine("OKAction");
+            MessengerInstance.Send(CurrentObject, AppContext.CSRemovedMsg);
         }
 
         private void CancelAction(Object obj)

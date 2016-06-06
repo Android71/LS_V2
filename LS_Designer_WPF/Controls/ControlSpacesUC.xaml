@@ -145,7 +145,7 @@
                     <CheckBox Grid.Row="1"
                               Grid.Column="1"
                               VerticalAlignment="Center"
-                              IsChecked="True" />
+                              IsChecked="{Binding ControlSpacesVM.CurrentObject.IsActive}" />
                 </Grid>
             </Border>
             <Grid x:Name="objectCurtain"

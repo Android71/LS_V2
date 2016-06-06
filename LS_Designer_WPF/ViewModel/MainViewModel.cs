@@ -31,10 +31,8 @@ namespace LS_Designer_WPF.ViewModel
             MessengerInstance.Register<Partition>(this, AppContext.PartitionChangedMsg, PartitionChanged);
             MessengerInstance.Register<NotificationMessage>(this, AppContext.PartitionRemovedMsg, PartitionRemoved);
 
-            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSAddedMsg, CSAdded);
-            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSChangedMsg, CSChanged);
-            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSRemovedMsg, CSRemoved);
-            MessengerInstance.Register<NotificationMessage>(this, AppContext.CSIsActiveChangedMsg, CSIsActiveChanged);
+            MessengerInstance.Register<ControlSpace>(this, AppContext.CSRemovedMsg, CSRemoved);
+            MessengerInstance.Register<ControlSpace>(this, AppContext.CSIsActiveChangedMsg, CSIsActiveChanged);
 
             PopUpVM = new EmptyPopUpVM();
             
@@ -145,14 +143,14 @@ namespace LS_Designer_WPF.ViewModel
             throw new NotImplementedException();
         }
 
-        private void CSIsActiveChanged(NotificationMessage obj)
+        private void CSIsActiveChanged(ControlSpace obj)
         {
             throw new NotImplementedException();
         }
 
-        private void CSRemoved(NotificationMessage obj)
+        private void CSRemoved(ControlSpace obj)
         {
-            throw new NotImplementedException();
+            var x = 5;
         }
 
         private void CSChanged(NotificationMessage obj)
