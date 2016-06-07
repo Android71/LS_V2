@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LS_Designer_WPF
+namespace CStyles
 {
     /// <summary>
-    /// Логика взаимодействия для GrayScale.xaml
+    /// Логика взаимодействия для Window1.xaml
     /// </summary>
-    public partial class GrayScale : Window
+    public partial class Window1 : Window
     {
-        public GrayScale()
+        public Window1()
         {
             InitializeComponent();
         }

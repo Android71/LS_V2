@@ -13,8 +13,8 @@
             <!-- This must be named as PART_ContentHost -->
             <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}"/>
         </ControlTemplate>
-        
-        
+
+
         <Style x:Key="ScrollViewerStyle1" TargetType="{x:Type ScrollViewer}" BasedOn="{x:Null}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -58,9 +58,17 @@
                             <TextBox  x:Name="PART_EditableTextBox" Visibility="Hidden" Template="{DynamicResource CBTextBoxTemplate}" HorizontalAlignment="Left" Margin="3,3,23,3" Style="{x:Null}" VerticalAlignment="Center" Focusable="True" Background="Transparent" IsReadOnly="{TemplateBinding IsReadOnly}"/>
 
                             <!-- The Popup shows the list of items in the ComboBox. IsOpen is databound to IsDropDownOpen which is toggled via the ComboBoxToggleButton -->
-                            <Popup IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" x:Name="Popup" Focusable="False" AllowsTransparency="True" PopupAnimation="Slide">
+                            <Popup IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   x:Name="Popup"
+                                   Focusable="False" AllowsTransparency="True" 
+                                   PopupAnimation="Slide" >
                                 <Grid  MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{TemplateBinding ActualWidth}" x:Name="DropDown" SnapsToDevicePixels="True">
-                                    <Border x:Name="DropDownBorder" Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource SolidBorderBrush}" BorderThickness="1"/>
+                                    <Border x:Name="DropDownBorder" 
+                                            Background="{DynamicResource WindowBackgroundBrush}" 
+                                            BorderBrush="{DynamicResource SolidBorderBrush}" 
+                                            
+                                            BorderThickness="1"/>
                                     <ScrollViewer Margin="4,6,4,6" Style="{DynamicResource ScrollViewerStyle1}" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
 
                                         <!-- The StackPanel is used to display the children by setting IsItemsHost to be True -->
@@ -94,6 +102,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="OverridesDefaultStyle" Value="False"/>
         </Style>
 
         <ControlTemplate x:Key="CBToggleButtonTemplate1" TargetType="{x:Type ToggleButton}">
@@ -102,16 +111,19 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="20"/>
                 </Grid.ColumnDefinitions>
-                <Rectangle Grid.ColumnSpan="2" HorizontalAlignment="Stretch" x:Name="Rectangle" VerticalAlignment="Stretch" Width="Auto" Height="Auto" RadiusX="0" RadiusY="0" Fill="{DynamicResource DimGrayBrush}" Stroke="{DynamicResource GrayBrush}"/>
-                <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" RadiusX="0" RadiusY="0" Fill="{DynamicResource DimGrayBrush}" Stroke="{DynamicResource GrayBrush}"/>
-                <Path Grid.Column="1" HorizontalAlignment="Center" x:Name="Arrow" VerticalAlignment="Center" Fill="{DynamicResource DarkBrush}" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                <Rectangle Grid.ColumnSpan="2" HorizontalAlignment="Stretch" x:Name="Rectangle" VerticalAlignment="Stretch" Width="Auto" Height="Auto" RadiusX="0" RadiusY="0" Fill="{DynamicResource DarkBrush}" Stroke="{DynamicResource LightGrayBrush}"/>
+                <!--<Border Name="border" Grid.Column="0" BorderBrush="Transparent" BorderThickness="0,0,1,0"/>-->
+                <!--<Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" RadiusX="0" RadiusY="0" Fill="{DynamicResource DarkBrush}" Stroke="{DynamicResource LightGrayBrush}"/>-->
+                <Path Grid.Column="1" HorizontalAlignment="Center" x:Name="Arrow" VerticalAlignment="Center" Fill="{DynamicResource LightGrayBrush}" Data="M 0 0 L 4 4 L 8 0 Z"/>
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Fill" Value="{DynamicResource MouseOverBrush}" TargetName="Rectangle"/>
+                    <Setter Property="Stroke" Value="{DynamicResource BlueAccentBrush}" TargetName="Rectangle"/>
+                    <!--<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource BlueAccentBrush}"/>-->
+                    <Setter Property="Fill" TargetName="Arrow" Value="{DynamicResource BlueAccentBrush}"/>
                 </Trigger>
                 <Trigger Property="IsChecked" Value="true">
-                    <Setter Property="Fill" Value="{DynamicResource PressedBrush}" TargetName="Rectangle"/>
+                    <!--<Setter Property="Fill" Value="{DynamicResource PressedBrush}" TargetName="Rectangle"/>-->
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Fill" Value="{DynamicResource DisabledBackgroundBrush}" TargetName="Rectangle"/>
@@ -127,7 +139,7 @@
 
     <Grid Background="{DynamicResource VeryDarkBrush}">
         <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="85,50,0,0" Style="{DynamicResource ComboBoxStyle1}"
-                 MaxDropDownHeight="100" VerticalAlignment="Top" Width="120" IsReadOnly="True">
+                 MaxDropDownHeight="150" VerticalAlignment="Top" Width="120" IsReadOnly="True">
             <ComboBoxItem>Item1</ComboBoxItem>
             <ComboBoxItem>Item1</ComboBoxItem>
             <ComboBoxItem>Item1</ComboBoxItem>
