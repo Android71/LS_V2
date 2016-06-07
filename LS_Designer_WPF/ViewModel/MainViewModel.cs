@@ -25,6 +25,7 @@ namespace LS_Designer_WPF.ViewModel
 
             Messenger.Default.Register<NotificationMessage>(this, AppContext.BlockChangeContextMsg, BlockContext);
             Messenger.Default.Register<NotificationMessage>(this, AppContext.UnBlockChangeContextMsg, UnBlockContext);
+
             MessengerInstance.Register<EmptyPopUpVM>(this, AppContext.ShowPopUpMsg, ShowPopUp);
 
             MessengerInstance.Register<Partition>(this, AppContext.PartitionAddedMsg, PartitionAdded);
@@ -32,7 +33,7 @@ namespace LS_Designer_WPF.ViewModel
             MessengerInstance.Register<NotificationMessage>(this, AppContext.PartitionRemovedMsg, PartitionRemoved);
 
             MessengerInstance.Register<ControlSpace>(this, AppContext.CSRemovedMsg, CSRemoved);
-            MessengerInstance.Register<ControlSpace>(this, AppContext.CSIsActiveChangedMsg, CSIsActiveChanged);
+            MessengerInstance.Register<ControlSpace>(this, AppContext.CSAddedMsg, CSAdded);
 
             PopUpVM = new EmptyPopUpVM();
             
@@ -143,24 +144,16 @@ namespace LS_Designer_WPF.ViewModel
             throw new NotImplementedException();
         }
 
-        private void CSIsActiveChanged(ControlSpace obj)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         private void CSRemoved(ControlSpace obj)
         {
-            var x = 5;
+            //var x = 5;
         }
 
-        private void CSChanged(NotificationMessage obj)
+        private void CSAdded(ControlSpace obj)
         {
-            throw new NotImplementedException();
-        }
-
-        private void CSAdded(NotificationMessage obj)
-        {
-            throw new NotImplementedException();
+            ControlSpaces.Add(obj);
         }
 
         private void BlockUI()

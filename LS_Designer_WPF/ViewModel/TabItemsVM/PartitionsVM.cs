@@ -14,8 +14,9 @@ namespace LS_Designer_WPF.ViewModel
         /// <summary>
         /// Initializes a new instance of the PartitionVM class.
         /// </summary>
-        public PartitionsVM(IDataService dataService) : base(dataService)
+        public PartitionsVM(IDataService dataService)
         {
+            _dataService = dataService;
             TabName = "Partitions";
             AddCmd = new RelayCommand(ExecAdd, CanExecAdd);
             RemoveCmd = new RelayCommand(ExecRemove, CanExecRemove);

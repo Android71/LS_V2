@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ControlChannelsUC.xaml.cs">
+      <DependentUpon>ControlChannelsUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ControlSpacesUC.xaml.cs">
       <DependentUpon>ControlSpacesUC.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,10 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
     <Compile Include="WPF_Extras\Extentions\WaterMarkExtention.cs" />
+    <Page Include="ControlChannelsUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ControlSpacesUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

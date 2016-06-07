@@ -15,39 +15,30 @@ namespace LS_Designer_WPF.ViewModel
 {
     public class ControlSpacesVM : TabItemVM
     {
-        public ControlSpacesVM(IDataService dataService) : base(dataService)
+        public ControlSpacesVM(IDataService dataService)
         {
+            _dataService = dataService;
             TabName = "ControlSpaces";
-            //myType = GetType();
-
-            //RequireControlSpace = true;
-
-            //Messenger.Default.Register<NotificationMessage<Type>>(this, HandlePersonalMessage);
             SaveCommand = new RelayCommand(ExecSave);
             CancelCommand = new RelayCommand(ExecCancel);
             EditCmd = new RelayCommand(ExecEdit);
-
             LoadData();
         }
 
-        public override void Refresh()
-        {
-            LoadData();   
-            //Messenger.Default.Send(new NotificationMessage("DoSomething"), messgeToken);
-        }
+        public override void Refresh() { LoadData(); }
 
-        
         void LoadData()
         {
             _dataService.GetControlSpaces((data, error) =>
            {
-               if (error != null)
-               {
-                    // Report error here
-                    return;
-               }
+               if (error != null) { return; }   // Report error here
                ControlSpaces = data;
            });
+        }
+
+        protected override void ContextChanged(string obj)
+        {
+            
         }
 
         private ObservableCollection<ControlSpace> _controlSpaces = null;
@@ -126,7 +117,7 @@ namespace LS_Designer_WPF.ViewModel
             ObjectCurtainVisibility = Visibility.Visible;
         }
 
-        void AddUIState()
+        void EditUIState()
         {
             ListCurtainVisibility = Visibility.Visible;
             ObjectButtonsVisibility = Visibility.Visible;
@@ -134,14 +125,7 @@ namespace LS_Designer_WPF.ViewModel
             ObjectPanelVisibility = Visibility.Visible;
         }
 
-        void EditUIState()
-        {
-
-        }
-
-        //bool AddMode { get; set; } = false;
-
-        bool EditMode { get; set; } = false;
+        
 
         ControlSpace Temp { get; set; } = null;
 
@@ -152,98 +136,74 @@ namespace LS_Designer_WPF.ViewModel
         #region Commands
 
         #region SaveCommand
-        public RelayCommand SaveCommand
-        {
-            get;
-            private set;
-        }
+        public RelayCommand SaveCommand { get;  private set;}
 
         AttentionVM attentionVM;
 
         void ExecSave()
         {
+            int ix = -1;
             if (CurrentObject.IsActive != SelectedItem.IsActive)
             {
                 if (SelectedItem.IsActive)  // Изъятие ControlSpace из модели
                 {
-                    attentionVM = new AttentionVM("Внимание", CancelAction, OKAction);
+                    attentionVM = new AttentionVM("Внимание", CancelCallbackAction, OKCallbackAction);
                     MessengerInstance.Send<EmptyPopUpVM>(attentionVM, AppContext.ShowPopUpMsg);
                 }
+                else  // Добавление ControlSpace в модель
+                {
+                    _dataService.UpdateControlSpace(CurrentObject, (data, error) =>
+                    {
+                        if (error != null) { return; } // Report error here
+                        ix = data;
+                    });
+                    ix = ControlSpaces.IndexOf(SelectedItem);
+                    ControlSpaces[ix] = CurrentObject;
+                    SelectedItem = CurrentObject;
+                    NormalUIState();
+                    MessengerInstance.Send<ControlSpace>(CurrentObject, AppContext.CSAddedMsg);
+                }
             }
-            //int i = 0;
-            //if (AddMode)
-            //{
-            //    AddMode = false;
-            //    AddCmd.RaiseCanExecuteChanged();
-            //    RemoveCmd.RaiseCanExecuteChanged();
-            //    _dataService.UpdatePartition(CurrentObject, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        i = data;
-            //    });
-            //    Partitions.Add(CurrentObject);
-            //    SelectedItem = CurrentObject;
-            //    NormalUIState();
-            //    MessengerInstance.Send(SelectedItem, AppContext.PartitionAddedMsg);
-            //    return;
-            //}
-            //if (EditMode)
-            //{
-            //    EditMode = false;
-            //    AddCmd.RaiseCanExecuteChanged();
-            //    RemoveCmd.RaiseCanExecuteChanged();
-            //    _dataService.UpdatePartition(CurrentObject, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        i = data;
-            //    });
-
-            //    int ix = Partitions.IndexOf(SelectedItem);
-            //    Partitions[ix] = CurrentObject;
-            //    SelectedItem = CurrentObject;
-
-            //    NormalUIState();
-            //    MessengerInstance.Send(SelectedItem, AppContext.PartitionChangedMsg);
-            //    return;
-            //}
         }
 
-        private void OKAction(Object obj)
+        private void OKCallbackAction(Object obj)
         {
             // Пользователь подтвердил изъятие ControlSpace из модели
+            // DeleteAllEntities(CurrentObject); // Операция удаления объектов ссылающихся на ControlSpace
 
-            // Операция удаления объектов ссылающихся на ControlSpace
-            // DeleteAllEntities(CurrentObject);
             attentionVM.PopUpVisibility = Visibility.Collapsed;
-            //Console.WriteLine("OKAction");
-            MessengerInstance.Send(CurrentObject, AppContext.CSRemovedMsg);
+            MessengerInstance.Send(CurrentObject, AppContext.CSRemovedMsg); // обновление ControlSpaces в MainViewModel
         }
 
-        private void CancelAction(Object obj)
+        private void CancelCallbackAction(Object obj)
         {
+            attentionVM.PopUpVisibility = Visibility.Collapsed;
+            ExecCancel();
         }
 
         #endregion
 
         #region CancelCommand
-        public RelayCommand CancelCommand
-        {
-            get;
-            private set;
-        }
+        public RelayCommand CancelCommand { get; private set; }
 
         void ExecCancel()
         {
-            if (CurrentObject != null && CurrentObject.Id != 0)
+            if (CurrentObject != null)
+            {
+                ControlSpace cs = null;
                 _dataService.GetControlSpace(CurrentObject.Id, (item, error) =>
                 {
                     if (error != null) { return; }  // Report error here
-                    var x = ControlSpaces.FirstOrDefault(p => p.Id == item.Id);
-                    int i = ControlSpaces.IndexOf(x);
-                    ControlSpaces.Remove(x);
-                    ControlSpaces.Insert(i, item);
-                    SelectedItem = item;    // Activate Normal UI
+                    cs = item;
                 });
+                if (cs != null)
+                {
+                    int i = ControlSpaces.IndexOf(SelectedItem);
+                    ControlSpaces[i] = cs;
+                    SelectedItem = cs;
+                }
+                NormalUIState();
+            }
         }
 
         #endregion
@@ -256,9 +216,7 @@ namespace LS_Designer_WPF.ViewModel
         {
             if (SelectedItem != null)
             {
-                EditMode = true;
-                AddUIState();
-                MessengerInstance.Send("focus", "CSFocus");
+                EditUIState();
             }
         }
 

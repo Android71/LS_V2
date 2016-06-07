@@ -7,11 +7,11 @@ namespace LS_Designer_WPF.ViewModel
     public class AttentionVM : EmptyPopUpVM
     {
         
-        public AttentionVM(string body, Action<Object> cancelAction, Action<Object> okAction )
+        public AttentionVM(string body, Action<Object> cancelCallBackAction, Action<Object> okCallBackAction )
         {
             AttentionBody = body;
-            CancelAction = cancelAction;
-            OKAction = okAction;
+            CancelAction = cancelCallBackAction;
+            OKAction = okCallBackAction;
             Title = "Примите решение";
         }
 
@@ -25,6 +25,7 @@ namespace LS_Designer_WPF.ViewModel
 
         public override void ExecOK()
         {
+            // Close PoUp
             PopUpVisibility = Visibility.Collapsed; 
             OKAction("OK");
         }

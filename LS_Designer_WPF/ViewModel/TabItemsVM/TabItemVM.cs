@@ -16,17 +16,17 @@ namespace LS_Designer_WPF.ViewModel
         protected IDataService _dataService;
         //protected Guid messageToken = MainViewModel.MessageToken;
         
-        public TabItemVM(IDataService dataService)
+        public TabItemVM()
         {
-            _dataService = dataService;
-            RequireControlSpace = false;
-            RequirePartition = false;
-            Messenger.Default.Register<NotificationMessage>(this, AppContext.ChanngeContextMsg, ContextChanged);
+            
+            //RequireControlSpace = false;
+            //RequirePartition = false;
+            MessengerInstance.Register<String>(this, AppContext.ChanngeContextMsg, ContextChanged);
         }
 
         public virtual void Refresh() { }
 
-        protected virtual void ContextChanged(NotificationMessage obj)
+        protected virtual void ContextChanged(String obj)
         {
         }
 
@@ -38,9 +38,9 @@ namespace LS_Designer_WPF.ViewModel
         public bool TabItemEnabled
         { get { return _tabItemEnabled; } set { Set(ref _tabItemEnabled, value); } }
 
-        public bool RequireControlSpace { get; set; }
+        //public bool RequireControlSpace { get; set; }
 
-        public bool RequirePartition { get; set; }
+        //public bool RequirePartition { get; set; }
 
         
     }
