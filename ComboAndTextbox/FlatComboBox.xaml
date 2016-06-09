@@ -1,9 +1,165 @@
-﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+﻿<Window x:Class="CStyles.FlatComboBox" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:CStyles"
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="CStyles.Window2"
-        Title="Window2" Width="300" Height="400"
+        Title="Window1" Width="300" Height="300"
         mc:Ignorable="d">
     <Window.Resources>
+        <!--  Flat ComboBox  -->
+        <!--  https://gist.github.com/hansmaad/9187633#file-gistfile1-xml  -->
+        
+        <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#e3e9ef" />
+        <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#fff" />
+        <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#888" />
+        <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="#eee" />
+        <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="#888" />
+
+        <Style x:Key="comboItemStyle" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border x:Name="border" BorderThickness="1" BorderBrush="Transparent" Background="Transparent" Padding="0,2" >
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource PlumbumBrush}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource BlueAccentBrush}"/>
+                                <Setter Property="Foreground" Value="LightGray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="false">
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border Name="Border" Grid.ColumnSpan="2"
+                        BorderBrush="{DynamicResource LightGrayBrush}"
+                        CornerRadius="0" BorderThickness="1, 1, 1, 1"
+                        Background="{DynamicResource DarkBrush}" />
+                <Border Name="ButtonBorder" Grid.Column="1" Margin="1, 1, 1, 1"
+                        BorderBrush="{DynamicResource LightGrayBrush}"
+                        CornerRadius="0, 0, 0, 0" BorderThickness="0, 0, 0, 0"
+                        Background="{DynamicResource DarkBrush}" />
+                <Path x:Name="Arrow" Grid.Column="1" HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Fill="{DynamicResource LightGrayBrush}"
+                      Data="M 0 0 L 4 4 L 8 0 Z" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True" />
+                        <Condition Property="IsChecked" Value="false" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BlueAccentBrush}" />
+                        <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource BlueAccentBrush}" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+                <!--<Trigger Property="UIElement.IsMouseOver" Value="True">
+                    <Setter TargetName="ButtonBorder" Property="Panel.Background" Value="WhiteSmoke" />
+                </Trigger>-->
+                <!--<Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter TargetName="ButtonBorder" Property="Panel.Background" Value="WhiteSmoke" />
+                    <Setter TargetName="Arrow" Property="Shape.Fill" Value="#FF8D979E" />
+                </Trigger>-->
+                <Trigger Property="UIElement.IsEnabled" Value="False">
+                    <Setter TargetName="Border" Property="Panel.Background" Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
+                    <Setter TargetName="ButtonBorder" Property="Panel.Background" Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
+                    <Setter TargetName="ButtonBorder" Property="Border.BorderBrush" Value="{StaticResource ComboBoxDisabledBorderBrush}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}" />
+                    <Setter TargetName="Arrow" Property="Shape.Fill" Value="#999" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style x:Key="ComboBoxFlatStyle" TargetType="{x:Type ComboBox}">
+            <Setter Property="ItemContainerStyle" Value="{StaticResource comboItemStyle}"/>
+            <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
+            <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="True" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+            <Setter Property="TextElement.Foreground" Value="{StaticResource LightGrayBrush}" />
+            <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton" Grid.Column="2" ClickMode="Press"
+                                          Focusable="False"
+                                          IsChecked="{Binding Path=IsDropDownOpen,
+                                                              RelativeSource={RelativeSource TemplatedParent},
+                                                              Mode=TwoWay}"
+                                          Template="{StaticResource ComboBoxToggleButtonTemplate}" />
+
+                            <ContentPresenter Name="ContentSite" Margin="5, 3, 23, 3" HorizontalAlignment="Left"
+                                              VerticalAlignment="Center" IsHitTestVisible="False"
+                                              Content="{TemplateBinding ComboBox.SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
+                            <TextBox Name="PART_EditableTextBox" Margin="3, 3, 23, 3" HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"
+                                     Visibility="Hidden" Background="Transparent" Focusable="True">
+                                <TextBox.Template>
+                                    <ControlTemplate TargetType="TextBox">
+                                        <Border Name="PART_ContentHost" Focusable="False" />
+                                    </ControlTemplate>
+                                </TextBox.Template>
+                            </TextBox>
+                            <!--  Popup showing items  -->
+                            <Popup Name="Popup" Placement="Bottom" Focusable="False"
+                                   AllowsTransparency="True"
+                                   IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}"
+                                   PopupAnimation="Slide" VerticalOffset="10">
+                                <Grid Name="DropDown"
+                                      MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
+                                      MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}"
+                                      SnapsToDevicePixels="True">
+                                    <Border Name="DropDownBorder" Margin="0" Background="{DynamicResource DimGrayBrush}"
+                                            CornerRadius="0" BorderThickness="1,1,1,1"
+                                            BorderBrush="{DynamicResource GrayBrush}" />
+                                    <ScrollViewer Margin="0" SnapsToDevicePixels="True">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="ItemsControl.HasItems" Value="False">
+                                <Setter TargetName="DropDownBorder" Property="FrameworkElement.MinHeight" Value="95" />
+                            </Trigger>
+                            <Trigger Property="UIElement.IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}" />
+                            </Trigger>
+                            <Trigger Property="ItemsControl.IsGrouping" Value="True">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                            </Trigger>
+                            <Trigger Property="ComboBox.IsEditable" Value="True">
+                                <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
+                                <Setter TargetName="PART_EditableTextBox" Property="UIElement.Visibility" Value="Visible" />
+                                <Setter TargetName="ContentSite" Property="UIElement.Visibility" Value="Hidden" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+                            
+        <!--  End of Flat ComboBox  -->
+        
+        <!-- ScrollViewer -->
+        
         <ControlTemplate x:Key="ScrollViewerControlTemplate" TargetType="ScrollViewer">
             <Grid x:Name="Grid" Background="{TemplateBinding Background}">
                 <Grid.ColumnDefinitions>
@@ -20,12 +176,15 @@
                 <ScrollBar x:Name="PART_HorizontalScrollBar" AutomationProperties.AutomationId="HorizontalScrollBar" Cursor="Arrow" Grid.Column="0" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Grid.Row="1" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" Style="{DynamicResource ScrollBarStyle}"/>
             </Grid>
         </ControlTemplate>
-        <SolidColorBrush x:Key="ScrollBar.Static.Background" Color="#F0F0F0"/>
-        <SolidColorBrush x:Key="ScrollBar.Static.Border" Color="#F0F0F0"/>
+        <!--<SolidColorBrush x:Key="ScrollBar.Static.Background" Color="#F0F0F0"/>-->
+        <SolidColorBrush x:Key="ScrollBar.Static.Background" Color="{StaticResource DimGray}"/>
+        <!--<SolidColorBrush x:Key="ScrollBar.Static.Border" Color="#F0F0F0"/>-->
+        <SolidColorBrush x:Key="ScrollBar.Static.Border" Color="{StaticResource DimGray}"/>
         <SolidColorBrush x:Key="ScrollBar.Pressed.Glyph" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="ScrollBar.MouseOver.Glyph" Color="#000000"/>
         <SolidColorBrush x:Key="ScrollBar.Disabled.Glyph" Color="#BFBFBF"/>
-        <SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="#606060"/>
+        <!--<SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="#606060"/>-->
+        <SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="{StaticResource VeryDark}"/>
         <SolidColorBrush x:Key="ScrollBar.MouseOver.Background" Color="#DADADA"/>
         <SolidColorBrush x:Key="ScrollBar.MouseOver.Border" Color="#DADADA"/>
         <SolidColorBrush x:Key="ScrollBar.Pressed.Background" Color="#606060"/>
@@ -49,17 +208,17 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource ScrollBar.MouseOver.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ScrollBar.MouseOver.Border}"/>
+                                <!--<Setter Property="Background" TargetName="border" Value="{StaticResource ScrollBar.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ScrollBar.MouseOver.Border}"/>-->
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource ScrollBar.Pressed.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ScrollBar.Pressed.Border}"/>
+                                <!--<Setter Property="Background" TargetName="border" Value="{StaticResource ScrollBar.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ScrollBar.Pressed.Border}"/>-->
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Opacity" TargetName="contentPresenter" Value="0.56"/>
+                                <!--<Setter Property="Opacity" TargetName="contentPresenter" Value="0.56"/>
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource ScrollBar.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ScrollBar.Disabled.Border}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ScrollBar.Disabled.Border}"/>-->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -72,7 +231,7 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Focusable" Value="false"/>
             <Setter Property="IsTabStop" Value="false"/>
-            
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -106,7 +265,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="ScrollBarThumbHorizontal" TargetType="{x:Type Thumb}">
             <Setter Property="OverridesDefaultStyle" Value="true"/>
             <Setter Property="IsTabStop" Value="false"/>
@@ -127,7 +286,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="ScrollBarStyle" TargetType="{x:Type ScrollBar}">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
             <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
@@ -199,6 +358,9 @@
                                 <Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource ScrollBar.Disabled.Glyph}"/>
                                 <Setter Property="Fill" TargetName="ArrowBottom" Value="{StaticResource ScrollBar.Disabled.Glyph}"/>
                             </Trigger>
+                            <DataTrigger Binding="{Binding ElementName=PART_LineUpButton, Path=IsMouseOver}" Value="True">
+                                <Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource BlueAccentBrush}"/>
+                            </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -285,25 +447,25 @@
             <Setter Property="Template" Value="{DynamicResource ScrollViewerControlTemplate}"/>
         </Style>
 
+        <!--  End of Flat ScrollViewer  -->
+
     </Window.Resources>
-    <StackPanel Background="{DynamicResource VeryDarkBrush}">
-        <ScrollViewer  Width="100" Height="100" Template="{DynamicResource ScrollViewerControlTemplate1}" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,26,10,0"/>
-        <!--Template="{DynamicResource ScrollViewerControlTemplate1}"-->
-        <ListBox x:Name="listBox" Width="100" Height="150" 
-                 HorizontalAlignment="Left">
-            <ListBoxItem Content="Item1 Item1 Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-            <ListBoxItem Content="Item1" />
-        </ListBox>
-        <RepeatButton Width="17" Height="17" BorderThickness="0" Style="{StaticResource ScrollBarButton}">
-            <Path x:Name="ArrowRight" Data="M0,7 C0,7 0,0 0,0 0,0 5,3.5 5,3.5 5,3.5 0,7 0,7 z" Fill="{StaticResource ScrollBar.Static.Glyph}" Stretch="Uniform" Height="7" Width="5"/>
-        </RepeatButton>
-    </StackPanel>
+    <Grid Background="Black">
+        <ComboBox x:Name="comboBox" Width="120" Margin="85,50,0,0"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Style="{DynamicResource ComboBoxFlatStyle}"
+                  IsReadOnly="True">
+            <ComboBoxItem>Item1</ComboBoxItem>
+            <ComboBoxItem>Item2</ComboBoxItem>
+            <ComboBoxItem>Item3</ComboBoxItem>
+            <ComboBoxItem>Item4</ComboBoxItem>
+            <ComboBoxItem>Item5</ComboBoxItem>
+            <ComboBoxItem>Item6</ComboBoxItem>
+            <ComboBoxItem>Item7</ComboBoxItem>
+            <ComboBoxItem>Item8</ComboBoxItem>
+            <ComboBoxItem>Item9</ComboBoxItem>
+            <ComboBoxItem>Item10</ComboBoxItem>
+            <ComboBoxItem>Item11</ComboBoxItem>
+        </ComboBox>
+    </Grid>
 </Window>
