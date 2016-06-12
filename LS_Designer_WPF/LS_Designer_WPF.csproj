@@ -88,6 +88,9 @@
     <Compile Include="ControlChannelsUC.xaml.cs">
       <DependentUpon>ControlChannelsUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ControlChannelsUC.xaml.cs">
+      <DependentUpon>ControlChannelsUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ControlSpacesUC.xaml.cs">
       <DependentUpon>ControlSpacesUC.xaml</DependentUpon>
     </Compile>
@@ -100,10 +103,14 @@
     <Compile Include="Controls\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UserControl2.xaml.cs">
+      <DependentUpon>UserControl2.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GrayScale.xaml.cs">
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\TabItemsVM\ControlChannelsVM.cs" />
     <Compile Include="ViewModel\PopUpVM\AttentionVM.cs" />
     <Compile Include="ViewModel\PopUpVM\EmptyPopUpVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\ControlSpacesVM.cs" />
@@ -114,6 +121,10 @@
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
     <Compile Include="WPF_Extras\Extentions\WaterMarkExtention.cs" />
     <Page Include="ControlChannelsUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ControlChannelsUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\UserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\UserControl2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,6 +204,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls\CSDevices\" />
     <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="..\Model\Model.projitems" Label="Shared" />
