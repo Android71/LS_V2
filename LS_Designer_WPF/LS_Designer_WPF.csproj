@@ -85,8 +85,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ControlChannelsUC.xaml.cs">
-      <DependentUpon>ControlChannelsUC.xaml</DependentUpon>
+    <Compile Include="Controls\ControlDevicesUC.xaml.cs">
+      <DependentUpon>ControlDevicesUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ControlSpacesUC.xaml.cs">
       <DependentUpon>ControlSpacesUC.xaml</DependentUpon>
@@ -103,7 +103,10 @@
     <Compile Include="GrayScale.xaml.cs">
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\CChannelsVM\ArtNetControlChannelVM.cs" />
+    <Compile Include="ViewModel\DevicesVM\AN6USPI_VM.cs" />
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\TabItemsVM\ControlDevicesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\AttentionVM.cs" />
     <Compile Include="ViewModel\PopUpVM\EmptyPopUpVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\ControlSpacesVM.cs" />
@@ -113,7 +116,7 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
     <Compile Include="WPF_Extras\Extentions\WaterMarkExtention.cs" />
-    <Page Include="ControlChannelsUC.xaml">
+    <Page Include="Controls\ControlDevicesUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

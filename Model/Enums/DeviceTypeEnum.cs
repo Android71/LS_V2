@@ -9,6 +9,7 @@ namespace LS_Designer_WPF.Model
     public enum DeviceTypeEnum : int
     {
         EventDevice = 0,
-        ControlDevice = 1
+        ControlDevice = 1,
+        Hub = 2
     }
 }

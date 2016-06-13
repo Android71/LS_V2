@@ -46,10 +46,10 @@
             <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
                 <Controls:PartitionsUC MinWidth="200" Margin="40,40,0,40" HorizontalAlignment="Left" />
             </TabItem>
-            <TabItem Content="Item3" Header="Control Channels" IsEnabled="False"
-                     Style="{StaticResource MainTabItemStyle}" />
-            <TabItem Header="Test" Style="{StaticResource MainTabItemStyle}">
-                <Controls:UserControl1 MinWidth="200" Margin="40,40,0,40" HorizontalAlignment="Left" />
+            <!--<TabItem Content="Item3" Header="Control Devices" 
+                     Style="{StaticResource MainTabItemStyle}" />-->
+            <TabItem Header="ControlDevices" Style="{StaticResource MainTabItemStyle}">
+                <Controls:ControlDevicesUC  Margin="40,40,0,40" HorizontalAlignment="Left" />
             </TabItem>
         </TabControl>
         <Grid x:Name="ControlPanels" Grid.Row="1" Grid.Column="0"

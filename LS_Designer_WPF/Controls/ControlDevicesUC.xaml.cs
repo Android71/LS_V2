@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LS_Designer_WPF
+namespace LS_Designer_WPF.Controls
 {
     /// <summary>
     /// Логика взаимодействия для ControlChannelsUC.xaml
     /// </summary>
-    public partial class ControlChannelsUC : UserControl
+    public partial class ControlDevicesUC : UserControl
     {
-        public ControlChannelsUC()
+        public ControlDevicesUC()
         {
             InitializeComponent();
         }

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/03/2016 10:07:04
+-- Date Created: 06/13/2016 15:35:02
 -- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
@@ -388,6 +388,9 @@ CREATE TABLE [dbo].[ControlDevices] (
     [HaveDimmer] bit  NOT NULL,
     [Profile] nvarchar(max)  NULL,
     [Remark] nvarchar(max)  NULL,
+    [MultiChannel] bit  NOT NULL,
+    [CanAddChannel] bit  NOT NULL,
+    [DotNetType] nvarchar(max)  NULL,
     [ControlSpace_Id] int  NOT NULL
 );
 GO
@@ -400,6 +403,9 @@ CREATE TABLE [dbo].[EventDevices] (
     [Mode] int  NOT NULL,
     [Profile] nvarchar(max)  NOT NULL,
     [Remark] nvarchar(max)  NULL,
+    [MultiChannel] bit  NOT NULL,
+    [CanAddChannel] bit  NOT NULL,
+    [DotNetType] nvarchar(max)  NOT NULL,
     [ControlSpace_Id] int  NOT NULL
 );
 GO

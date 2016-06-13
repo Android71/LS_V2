@@ -14,6 +14,7 @@ namespace LS_Designer_WPF.ViewModel
         public static Partition Partition = null;
 
         public static Guid ChanngeContextMsg = Guid.NewGuid();
+
         public static Guid BlockChangeContextMsg = Guid.NewGuid();
         public static Guid UnBlockChangeContextMsg = Guid.NewGuid();
         public static Guid ShowPopUpMsg = Guid.NewGuid();

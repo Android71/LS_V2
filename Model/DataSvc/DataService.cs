@@ -181,17 +181,14 @@ namespace LS_Designer_WPF.Model
 
         /****************************************************************/
 
-        //#region ControlSpaces
+        //        #region 
 
 
-        ///****************************************************************/
+        /****************************************************************/
+
+        #region ControlDevices
 
 
-
-
-        //#endregion
-
-        //#region ControlDevices
 
         //public void GetControlDevices(ControlSpace space, Action<BindingList<ControlDevice>, Exception> callback, bool includeChannels = true)
         //{
@@ -324,29 +321,30 @@ namespace LS_Designer_WPF.Model
         //}
 
 
-        //#endregion
+        #endregion
 
-        ///****************************************************************/
+        /****************************************************************/
 
-        //#region EnvironmentItems
+        #region EnvironmentItems
 
-        //public void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback)
-        //{
-        //    var x = new List<EnvironmentItem>();
-        //    EnvironmentItem environmentItem = null;
+        public void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback)
+        {
+            var x = new List<EnvironmentItem>();
+            EnvironmentItem environmentItem = null;
 
-        //    using (var db = new LSModelContainer(LS.CS))
-        //    {
-        //        foreach (EFData.EnvironmentItem dbEnvironmentItem in db.EnvironmentItems.
-        //                       Where(p => (p.ControlSpace.Id == controlSpaceId) && ((int)p.DeviceType == (int)deviceType)))
-        //        {
-        //            environmentItem = new EnvironmentItem();
-        //            Mapper.Db2O(dbEnvironmentItem, environmentItem);
-        //            x.Add(environmentItem);
-        //        }
-        //    }
-        //    callback(x, null);
-        //}
+            using (var db = new LSModelContainer(LS.CS))
+            {
+
+                foreach (EFData.CSEnvItem dbCSEnvItem in db.CSEnvItems.
+                               Where(p => (p.ControlSpace.Id == controlSpaceId) && ((int)p.EnvironmentItem.DeviceType == (int)deviceType)))
+                {
+                    environmentItem = new EnvironmentItem();
+                    Mapper.Db2O(dbCSEnvItem.EnvironmentItem, environmentItem);
+                    x.Add(environmentItem);
+                }
+            }
+            callback(x, null);
+        }
 
         //public void GetEnvironmentItem(string model, Action<EnvironmentItem, Exception> callback)
         //{
@@ -362,7 +360,7 @@ namespace LS_Designer_WPF.Model
         //    callback(item, null);
         //}
 
-        //#endregion
+        #endregion
 
         ///****************************************************************/
 

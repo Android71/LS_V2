@@ -51,12 +51,15 @@ namespace LS_Designer_WPF.ViewModel
 
             PartitionsVM = new PartitionsVM(dataService);
             ControlSpacesVM = new ControlSpacesVM(dataService);
+            ControlDevicesVM = new ControlDevicesVM(dataService);
             
         }
 
         public PartitionsVM PartitionsVM { get; private set; }
 
         public ControlSpacesVM ControlSpacesVM { get; private set; }
+
+        public ControlDevicesVM ControlDevicesVM { get; private set; }
 
         object _popupVM = null;
         public object PopUpVM { get { return _popupVM; } set { Set(ref _popupVM, value); } }

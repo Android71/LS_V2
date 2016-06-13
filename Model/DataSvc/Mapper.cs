@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -51,117 +52,120 @@ namespace LS_Designer_WPF.Model
 
         /****************************************************************/
 
-        //#region ControlDevice
+        #region ControlDevice
 
-        //public static void O2Db(ControlDevice obj, EFData.ControlDevice dbObj)
-        //{
-        //    XElement data;
-        //    dbObj.CanDimming = obj.CanDimming;
-        //    if (dbObj.Id == 0)
-        //        dbObj.Id = obj.Id;
-        //    dbObj.Model = obj.Model;
-        //    dbObj.Name = obj.Name;
-        //    if (obj is ArtNetControlDevice)
-        //    {
-        //        data = new XElement
-        //        ("Params",
-        //            new XElement("IPAddress", 
-        //                         new XAttribute("Value", (obj as ArtNetControlDevice).IPAddress.ToString()),
-        //                         new XAttribute("ChCount", (obj as ArtNetControlDevice).IPChCount.ToString())),
-        //            new XElement("VirtualIP", 
-        //                         new XAttribute("Value", (obj as ArtNetControlDevice).VirtualIP.ToString()),
-        //                         new XAttribute("ChCount", (obj as ArtNetControlDevice).VIPChCount.ToString()))
-        //        );
-        //        dbObj.Profile = data.ToString();
-        //    }
+        public static void O2Db(ControlDevice obj, EFData.ControlDevice dbObj)
+        {
+            XElement data;
+            dbObj.HaveDimmer = obj.HaveDimmer;
+            if (dbObj.Id == 0)
+                dbObj.Id = obj.Id;
+            dbObj.Model = obj.Model;
+            dbObj.Name = obj.Name;
+            //if (obj is ArtNetControlDevice)
+            //{
+            //    data = new XElement
+            //    ("Params",
+            //        new XElement("IPAddress",
+            //                     new XAttribute("Value", (obj as ArtNetControlDevice).IPAddress.ToString()),
+            //                     new XAttribute("ChCount", (obj as ArtNetControlDevice).IPChCount.ToString())),
+            //        new XElement("VirtualIP",
+            //                     new XAttribute("Value", (obj as ArtNetControlDevice).VirtualIP.ToString()),
+            //                     new XAttribute("ChCount", (obj as ArtNetControlDevice).VIPChCount.ToString()))
+            //    );
+            //    dbObj.Profile = data.ToString();
+            //}
 
-        //}
+        }
 
-        //public static void Db2O(EFData.ControlDevice dbObj, ControlDevice obj)
-        //{
-        //    IPAddress adr;
-        //    XElement data;
+        public static void Db2O(EFData.ControlDevice dbObj, ControlDevice obj)
+        {
+            IPAddress adr;
+            XElement data;
 
-        //    obj.CanDimming = dbObj.CanDimming;
-        //    obj.Id = dbObj.Id;
-        //    obj.Model = dbObj.Model;
-        //    obj.Name = dbObj.Name;
-        //    if (obj is ArtNetControlDevice)
-        //    {
-        //        data = XElement.Parse(dbObj.Profile);
-        //        var x = data.Element("IPAddress").Attribute("Value").Value;
-        //        var y = data.Element("VirtualIP").Attribute("Value").Value;
-        //        IPAddress.TryParse(x, out adr);
-        //        (obj as ArtNetControlDevice).IPAddress = adr;
-        //        IPAddress.TryParse(y, out adr);
-        //        (obj as ArtNetControlDevice).VirtualIP = adr;
-        //        (obj as ArtNetControlDevice).IPChCount = int.Parse(data.Element("IPAddress").Attribute("ChCount").Value);
-        //        (obj as ArtNetControlDevice).VIPChCount = int.Parse(data.Element("VirtualIP").Attribute("ChCount").Value);
-        //    }
-        //    //if (obj is GenericControlDevice)
-        //    //{
-        //    //    data = XElement.Parse(dbObj.Profile);
-        //    //    obj.CanDimming = Boolean.Parse(data.Attribute("HaveDimmer").Value);
-        //    //}
-        //    obj.ControlSpace = new ControlSpace();
-        //    Db2O(dbObj.ControlSpace, obj.ControlSpace);
-        //}
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.Model = dbObj.Model;
+            obj.HaveDimmer = dbObj.HaveDimmer;
+            obj.Profile = dbObj.Profile;
 
-        //#endregion
+            //if (obj is ArtNetControlDevice)
+            //{
+            //    data = XElement.Parse(dbObj.Profile);
+            //    var x = data.Element("IPAddress").Attribute("Value").Value;
+            //    var y = data.Element("VirtualIP").Attribute("Value").Value;
+            //    IPAddress.TryParse(x, out adr);
+            //    (obj as ArtNetControlDevice).IPAddress = adr;
+            //    IPAddress.TryParse(y, out adr);
+            //    (obj as ArtNetControlDevice).VirtualIP = adr;
+            //    (obj as ArtNetControlDevice).IPChCount = int.Parse(data.Element("IPAddress").Attribute("ChCount").Value);
+            //    (obj as ArtNetControlDevice).VIPChCount = int.Parse(data.Element("VirtualIP").Attribute("ChCount").Value);
+            //}
+            //if (obj is GenericControlDevice)
+            //{
+            //    data = XElement.Parse(dbObj.Profile);
+            //    obj.CanDimming = Boolean.Parse(data.Attribute("HaveDimmer").Value);
+            //}
+//            (Data.ControlChannel)Activator.CreateInstance(Type.GetType(dbLE_Proxy.LightElement.ControlChannel.DotNetChannelType));
+            obj.ControlSpace = new EFData.ControlSpace();
+            //Db2O(dbObj.ControlSpace, obj.ControlSpace);
+        }
 
-        ///****************************************************************/
-
-        //#region Control Channel
-
-        //public static void O2Db(ControlChannel obj, EFData.ControlChannel dbObj)
-        //{
-        //    dbObj.ChannelNo = obj.ChannelNo;
-        //    if (dbObj.Id == 0)
-        //        dbObj.Id = obj.Id;
-        //    dbObj.Name = obj.Name;
-        //    dbObj.HaveDimmer = obj.HaveDimmer;
-        //    if (obj is ArtNetControlChannel)
-        //    {
-        //        (dbObj as EFData.ArtNetControlChannel).IPAddress = (obj as ArtNetControlChannel).IPAddress.ToString();
-        //        (dbObj as EFData.ArtNetControlChannel).PortNo = (obj as ArtNetControlChannel).PortNo;
-        //        //if ((obj as ArtNetControlChannel).LS_Assignmets != null)
-        //        //    (dbObj as EFData.ArtNetControlChannel).LS_Assignments = (obj as ArtNetControlChannel).LS_Assignmets;
-        //    }
-        //}
-
-        //public static void Db2O(EFData.ControlChannel dbObj, ControlChannel obj)
-        //{
-        //    obj.ChannelNo = dbObj.ChannelNo;
-        //    obj.Id = dbObj.Id;
-        //    obj.Name = dbObj.Name;
-        //    obj.HaveDimmer = (bool)dbObj.HaveDimmer;
-        //    if (dbObj is EFData.ArtNetControlChannel)
-        //    {
-        //        IPAddress adr;
-        //        IPAddress.TryParse((dbObj as EFData.ArtNetControlChannel).IPAddress, out adr);
-        //        (obj as ArtNetControlChannel).IPAddress = adr;
-        //        (obj as ArtNetControlChannel).PortNo = (dbObj as EFData.ArtNetControlChannel).PortNo;
-        //        //(obj as ArtNetControlChannel).LS_Assignmets = (dbObj as EFData.ArtNetControlChannel).LS_Assignments;
-        //    }
-        //}
-
-        //#endregion
+        #endregion
 
         ///****************************************************************/
 
-        //#region EnvironmentItem
+        #region Control Channel
 
-        //public static void Db2O(EFData.EnvironmentItem dbObj, EnvironmentItem obj)
-        //{
-        //    obj.Id = dbObj.Id;
-        //    obj.Model = dbObj.Model;
-        //    obj.Profile = dbObj.Profile;
-        //    obj.DeviceType = (DeviceTypeEnum)dbObj.DeviceType;
-        //    obj.ControlSpace = new ControlSpace();
-        //    Mapper.Db2O(dbObj.ControlSpace, obj.ControlSpace);
-        //}
+        public static void O2Db(ControlChannel obj, EFData.ControlChannel dbObj)
+        {
+            dbObj.ChannelNo = obj.ChannelNo;
+            if (dbObj.Id == 0)
+                dbObj.Id = obj.Id;
+            dbObj.Name = obj.Name;
+            dbObj.HaveDimmer = obj.HaveDimmer;
+            if (obj is ArtNetControlChannel)
+            {
+                (dbObj as EFData.ArtNetControlChannel).IPAddress = (obj as ArtNetControlChannel).IPAddress.ToString();
+                (dbObj as EFData.ArtNetControlChannel).PortNo = (obj as ArtNetControlChannel).PortNo;
+                //if ((obj as ArtNetControlChannel).LS_Assignmets != null)
+                //    (dbObj as EFData.ArtNetControlChannel).LS_Assignments = (obj as ArtNetControlChannel).LS_Assignmets;
+            }
+        }
 
-        //#endregion
+        public static void Db2O(EFData.ControlChannel dbObj, ControlChannel obj)
+        {
+            obj.ChannelNo = dbObj.ChannelNo;
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.HaveDimmer = (bool)dbObj.HaveDimmer;
+            //if (dbObj is EFData.ArtNetControlChannel)
+            //{
+            //    IPAddress adr;
+            //    IPAddress.TryParse((dbObj as EFData.ArtNetControlChannel).IPAddress, out adr);
+            //    (obj as ArtNetControlChannel).IPAddress = adr;
+            //    (obj as ArtNetControlChannel).PortNo = (dbObj as EFData.ArtNetControlChannel).PortNo;
+            //    //(obj as ArtNetControlChannel).LS_Assignmets = (dbObj as EFData.ArtNetControlChannel).LS_Assignments;
+            //}
+        }
+
+        #endregion
+
+        ///****************************************************************/
+
+        #region EnvironmentItem
+
+        public static void Db2O(EFData.EnvironmentItem dbObj, EnvironmentItem obj)
+        {
+            obj.Id = dbObj.Id;
+            obj.Model = dbObj.Model;
+            obj.Profile = dbObj.Profile;
+            obj.DeviceType = (DeviceTypeEnum)dbObj.DeviceType;
+            obj.DotNetType = dbObj.DotNetType;
+            //Mapper.Db2O(dbObj.ControlSpace, obj.ControlSpace);
+        }
+
+        #endregion
 
         ///****************************************************************/
 

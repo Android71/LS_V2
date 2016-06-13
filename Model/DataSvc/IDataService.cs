@@ -38,7 +38,13 @@ namespace LS_Designer_WPF.Model
 
         /************************************************************/
 
+        #region EnvironmentItems
 
+        void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback);
+
+        #endregion
+
+        /************************************************************/
 
         //#region ControlDevice
 

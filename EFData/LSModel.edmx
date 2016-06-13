@@ -351,6 +351,9 @@
     <Property Name="HaveDimmer" Type="bit" Nullable="false" />
     <Property Name="Profile" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="MultiChannel" Type="bit" Nullable="false" />
+    <Property Name="CanAddChannel" Type="bit" Nullable="false" />
+    <Property Name="DotNetType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="EventDevices">
@@ -363,6 +366,9 @@
     <Property Name="Mode" Type="int" Nullable="false" />
     <Property Name="Profile" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="MultiChannel" Type="bit" Nullable="false" />
+    <Property Name="CanAddChannel" Type="bit" Nullable="false" />
+    <Property Name="DotNetType" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="CSEnvItems">
@@ -1255,6 +1261,9 @@
           <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlDevice" ToRole="ControlSpace" />
           <NavigationProperty Name="ControlChannels" Relationship="LSModel.ControlDeviceControlChannel" FromRole="ControlDevice" ToRole="ControlChannel" />
+          <Property Name="MultiChannel" Type="Boolean" Nullable="false" />
+          <Property Name="CanAddChannel" Type="Boolean" Nullable="false" />
+          <Property Name="DotNetType" Type="String" Nullable="true" />
         </EntityType>
         <Association Name="ControlSpaceControlDevice">
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
@@ -1276,6 +1285,9 @@
           <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceEventDevice" FromRole="EventDevice" ToRole="ControlSpace" />
           <NavigationProperty Name="EventChannels" Relationship="LSModel.EventDeviceEventChannel" FromRole="EventDevice" ToRole="EventChannel" />
+          <Property Name="MultiChannel" Type="Boolean" Nullable="false" />
+          <Property Name="CanAddChannel" Type="Boolean" Nullable="false" />
+          <Property Name="DotNetType" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="ControlSpaceEventDevice">
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
@@ -1514,6 +1526,9 @@
           <ScalarProperty Name="HaveDimmer" ColumnName="HaveDimmer" />
           <ScalarProperty Name="Profile" ColumnName="Profile" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="MultiChannel" ColumnName="MultiChannel" />
+          <ScalarProperty Name="CanAddChannel" ColumnName="CanAddChannel" />
+          <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1526,6 +1541,9 @@
           <ScalarProperty Name="Mode" ColumnName="Mode" />
           <ScalarProperty Name="Profile" ColumnName="Profile" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="MultiChannel" ColumnName="MultiChannel" />
+          <ScalarProperty Name="CanAddChannel" ColumnName="CanAddChannel" />
+          <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
