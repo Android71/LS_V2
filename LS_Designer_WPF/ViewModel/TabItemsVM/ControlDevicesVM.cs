@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Windows;
 using EFData;
 using LS_Designer_WPF.Model;
+using Model;
 
 namespace LS_Designer_WPF.ViewModel
 {
@@ -31,6 +32,8 @@ namespace LS_Designer_WPF.ViewModel
             DetailSaveCmd = new RelayCommand(DetailExecSave);
             DetailCancelCmd = new RelayCommand(DetailExecCancel);
 
+            TabItemEnabled = false;
+
             Load();
             
         }
@@ -42,19 +45,24 @@ namespace LS_Designer_WPF.ViewModel
 
         void Load()
         {
-            _dataService.GetEnvironmentItems(1, Model.DeviceTypeEnum.ControlDevice, (data, error) =>
+            if (AppContext.ControlSpace != null)
             {
-                if (error != null) { return; } // Report error here
+                _dataService.GetEnvironmentItems(AppContext.ControlSpace.Id, Model.DeviceTypeEnum.ControlDevice, (data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
                 MasterSelectorList = data;
-            });
+                });
+            }
         }
 
         protected override void ContextChanged(string obj)
         {
             if (AppContext.ControlSpace != null)
+            {
                 TabItemEnabled = true;
-            if (IsSelected)
+                //if (IsSelected)
                 Refresh();
+            }
         }
 
         Object TempDetailObject { get; set; } = null;
@@ -107,6 +115,39 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _masterSelectorSelectedItem, value); }
         }
 
+        bool _isMasterSelectorOpen = false;
+        public bool IsMasterSelectorOpen
+        {
+            get { return _isMasterSelectorOpen; }
+            set
+            {
+                Set(ref _isMasterSelectorOpen, value);
+                if (!IsMasterSelectorOpen && MasterSelectorSelectedItem != null)
+                {
+                    //var t = typeof(AN6USPI).AssemblyQualifiedName;
+                    MasterAddMode = true;
+                    dynamic d = MasterSelectorSelectedItem;
+                    dynamic x = Activator.CreateInstance(Type.GetType(d.DotNetType));
+                    x.ControlSpace = AppContext.ControlSpace;
+                    x.Profile = d.Profile;
+                    //ControlDevice cd = (ControlChannel)Activator.CreateInstance(Type.GetType(dbLE_Proxy.LightElement.ControlChannel.DotNetChannelType));
+                    //}
+                    //    Temp = SelectedItem;
+                    //AddCmd.RaiseCanExecuteChanged();
+                    //RemoveCmd.RaiseCanExecuteChanged();
+                    //SelectedItem = null;
+                    //AddUIState();
+                    //CurrentObject = new Partition() { Id = 0, Name = "Новый раздел" };
+                    //MessengerInstance.Send("focus", "PartitionFocus");
+                }
+                else
+                {
+                    MasterListButtonsVisibility = Visibility.Visible;
+                    MasterSelectorVisibility = Visibility.Hidden;
+                }
+            }
+        }
+
         #endregion
 
         /*************************************************************/
@@ -139,6 +180,27 @@ namespace LS_Designer_WPF.ViewModel
         /*************************************************************/
 
         #region Master UI State
+
+        //Visibility _masterListPanelVisibility = Visibility.Collapsed;
+        //public Visibility MasterListPanelVisibility
+        //{
+        //    get { return _masterListPanelVisibility; }
+        //    set { Set(ref _masterListPanelVisibility, value); }
+        //}
+
+        Visibility _masterListButtonsVisibility = Visibility.Visible;
+        public Visibility MasterListButtonsVisibility
+        {
+            get { return _masterListButtonsVisibility; }
+            set { Set(ref _masterListButtonsVisibility, value); }
+        }
+
+        Visibility _masterSelectorVisibility = Visibility.Hidden;
+        public Visibility MasterSelectorVisibility
+        {
+            get { return _masterSelectorVisibility; }
+            set { Set(ref _masterSelectorVisibility, value); }
+        }
 
         Visibility _masterListCurtainVisibility = Visibility.Collapsed;
         public Visibility MasterListCurtainVisibility
@@ -192,6 +254,9 @@ namespace LS_Designer_WPF.ViewModel
         /*************************************************************/
 
         #region Master Commands
+
+        bool MasterAddMode { get; set; } = false;
+        bool MasterEditMode { get; set; } = false;
 
         #region Master Save Command
         public RelayCommand MasterSaveCmd { get; private set; }
@@ -287,21 +352,16 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecAdd()
         {
-            //AddMode = true;
-            //if (SelectedItem != null)
-            //    Temp = SelectedItem;
-            //AddCmd.RaiseCanExecuteChanged();
-            //RemoveCmd.RaiseCanExecuteChanged();
-            //SelectedItem = null;
-            //AddUIState();
-            //CurrentObject = new Partition() { Id = 0, Name = "Новый раздел" };
-            //MessengerInstance.Send("focus", "PartitionFocus");
+            IsMasterSelectorOpen = true;
+            
+            MasterListButtonsVisibility = Visibility.Collapsed;
+            MasterSelectorVisibility = Visibility.Visible;
         }
 
         bool MasterCanExecAdd()
         {
             //return !AddMode && !EditMode;
-            return false;
+            return true;
         }
 
         #endregion

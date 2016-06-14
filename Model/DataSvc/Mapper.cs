@@ -88,6 +88,10 @@ namespace LS_Designer_WPF.Model
             obj.Model = dbObj.Model;
             obj.HaveDimmer = dbObj.HaveDimmer;
             obj.Profile = dbObj.Profile;
+            obj.Remark = dbObj.Remark;
+            obj.MultiChannel = dbObj.MultiChannel;
+            obj.CanAddChannel = dbObj.CanAddChannel;
+            obj.DotNetType = dbObj.DotNetType;
 
             //if (obj is ArtNetControlDevice)
             //{

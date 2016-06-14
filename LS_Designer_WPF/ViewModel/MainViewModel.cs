@@ -90,7 +90,7 @@ namespace LS_Designer_WPF.ViewModel
             {
                 Set<ControlSpace>(ref _selectedSpace, value);
                 AppContext.ControlSpace = value;
-                //Messenger.Default.Send(new NotificationMessage(""), AppContext.ChanngeContextMsg);
+                MessengerInstance.Send("", AppContext.ChanngeContextMsg);
             }
         }
 

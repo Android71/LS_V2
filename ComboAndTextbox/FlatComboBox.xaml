@@ -6,8 +6,11 @@
         <!--  Flat ComboBox  -->
         <!--  https://gist.github.com/hansmaad/9187633#file-gistfile1-xml  -->
         
-        <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#e3e9ef" />
-        <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#fff" />
+        <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{StaticResource LightGray}" />
+        <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{StaticResource Dark}" />
+
+        <SolidColorBrush x:Key="ComboBox.MouseOverBrush" Color="{StaticResource BlueAccent}"/>
+
         <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#888" />
         <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="#eee" />
         <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="#888" />
@@ -22,7 +25,7 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource PlumbumBrush}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource BlueAccentBrush}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource ComboBox.MouseOverBrush}"/>
                                 <Setter Property="Foreground" Value="LightGray"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="false">
@@ -42,16 +45,16 @@
                     <ColumnDefinition Width="20" />
                 </Grid.ColumnDefinitions>
                 <Border Name="Border" Grid.ColumnSpan="2"
-                        BorderBrush="{DynamicResource LightGrayBrush}"
+                        BorderBrush="{DynamicResource ComboBoxNormalBorderBrush}"
                         CornerRadius="0" BorderThickness="1, 1, 1, 1"
-                        Background="{DynamicResource DarkBrush}" />
+                        Background="{DynamicResource ComboBoxNormalBackgroundBrush}" />
                 <Border Name="ButtonBorder" Grid.Column="1" Margin="1, 1, 1, 1"
-                        BorderBrush="{DynamicResource LightGrayBrush}"
+                        BorderBrush="{DynamicResource ComboBoxNormalBorderBrush}"
                         CornerRadius="0, 0, 0, 0" BorderThickness="0, 0, 0, 0"
-                        Background="{DynamicResource DarkBrush}" />
+                        Background="{DynamicResource ComboBoxNormalBackgroundBrush}" />
                 <Path x:Name="Arrow" Grid.Column="1" HorizontalAlignment="Center"
                       VerticalAlignment="Center"
-                      Fill="{DynamicResource LightGrayBrush}"
+                      Fill="{DynamicResource ComboBoxNormalBorderBrush}"
                       Data="M 0 0 L 4 4 L 8 0 Z" />
             </Grid>
             <ControlTemplate.Triggers>
@@ -61,8 +64,8 @@
                         <Condition Property="IsChecked" Value="false" />
                     </MultiTrigger.Conditions>
                     <MultiTrigger.Setters>
-                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BlueAccentBrush}" />
-                        <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource BlueAccentBrush}" />
+                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource ComboBox.MouseOverBrush}" />
+                        <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ComboBox.MouseOverBrush}" />
                     </MultiTrigger.Setters>
                 </MultiTrigger>
                 <!--<Trigger Property="UIElement.IsMouseOver" Value="True">

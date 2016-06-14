@@ -174,6 +174,7 @@
     <Property Name="PointType" Type="int" Nullable="true" />
     <Property Name="HaveDimmer" Type="bit" Nullable="true" />
     <Property Name="DotNetType" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Profile" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
     <Property Name="ControlDevice_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -953,6 +954,7 @@
           <Property Name="HaveDimmer" Type="Boolean" />
           <Property Name="DotNetType" Type="String" Nullable="true" />
           <NavigationProperty Name="ControlDevice" Relationship="LSModel.ControlDeviceControlChannel" FromRole="ControlChannel" ToRole="ControlDevice" />
+          <Property Name="Profile" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="ArtNetControlChannel" BaseType="LSModel.ControlChannel" >
           <Property Name="IPAddress" Type="String" Nullable="false" />
@@ -1337,6 +1339,7 @@
           <ScalarProperty Name="PointType" ColumnName="PointType" />
           <ScalarProperty Name="HaveDimmer" ColumnName="HaveDimmer" />
           <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
+          <ScalarProperty Name="Profile" ColumnName="Profile" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(LSModel.ArtNetControlChannel)">

@@ -9,6 +9,7 @@
     <Import_RootNamespace>Model</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ControlChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlSpace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CSEnvItem.cs" />
@@ -26,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Event.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gamma.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Partition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RT\AN6UControlChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\AN6USPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene.cs" />
   </ItemGroup>

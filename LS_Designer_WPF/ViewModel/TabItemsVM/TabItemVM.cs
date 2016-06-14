@@ -28,6 +28,10 @@ namespace LS_Designer_WPF.ViewModel
 
         protected virtual void ContextChanged(String obj)
         {
+            //if (AppContext.ControlSpace != null)
+            //    TabItemEnabled = true;
+            //if (IsSelected)
+            //    Refresh();
         }
 
         public bool IsSelected { get; set; }

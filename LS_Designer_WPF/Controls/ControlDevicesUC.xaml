@@ -33,6 +33,7 @@
                             Margin="1"
                             HorizontalAlignment="Left"
                             Command="{Binding ControlDevicesVM.MasterRemoveCmd}"
+                            Visibility="{Binding ControlDevicesVM.MasterListButtonsVisibility}"
                             Content="Remove"
                             DockPanel.Dock="Left"
                             Padding="3,1"
@@ -42,12 +43,15 @@
                             HorizontalAlignment="Right"
                             Background="DimGray"
                             Command="{Binding ControlDevicesVM.MasterAddCmd}"
+                            Visibility="{Binding ControlDevicesVM.MasterListButtonsVisibility}"
                             Content="Add"
                             DockPanel.Dock="Right"
                             Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
                     <ComboBox Name="masterSelector" ItemsSource="{Binding ControlDevicesVM.MasterSelectorList}" SelectedItem="{Binding ControlDevicesVM.MasterSelectorSelectedItem}"
-                              DisplayMemberPath="Model"/>
+                              DisplayMemberPath="Model" 
+                              Visibility="{Binding ControlDevicesVM.MasterSelectorVisibility}"
+                              IsDropDownOpen="{Binding ControlDevicesVM.IsMasterSelectorOpen}"/>
                 </DockPanel>
                 <ListBox Grid.Row="1"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
