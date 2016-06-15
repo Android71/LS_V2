@@ -17,7 +17,10 @@ namespace LS_Designer_WPF.Controls
         void DoFocus(string msg)
         {
             if (msg == "focus")
+            {
                 nameTb.Focus();
+                nameTb.CaretIndex = nameTb.Text.Length;
+            }
         }
     }
 

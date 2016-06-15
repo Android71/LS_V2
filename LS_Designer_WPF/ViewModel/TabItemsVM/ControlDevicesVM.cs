@@ -126,10 +126,15 @@ namespace LS_Designer_WPF.ViewModel
                 {
                     //var t = typeof(AN6USPI).AssemblyQualifiedName;
                     MasterAddMode = true;
+                    
                     dynamic d = MasterSelectorSelectedItem;
                     dynamic x = Activator.CreateInstance(Type.GetType(d.DotNetType));
                     x.ControlSpace = AppContext.ControlSpace;
                     x.Profile = d.Profile;
+                    MasterCurrentObject = x;
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectCurtainVisibility = Visibility.Collapsed;
+                    MasterObjectButtonsVisibility = Visibility.Visible;
                     //ControlDevice cd = (ControlChannel)Activator.CreateInstance(Type.GetType(dbLE_Proxy.LightElement.ControlChannel.DotNetChannelType));
                     //}
                     //    Temp = SelectedItem;
@@ -139,11 +144,13 @@ namespace LS_Designer_WPF.ViewModel
                     //AddUIState();
                     //CurrentObject = new Partition() { Id = 0, Name = "Новый раздел" };
                     //MessengerInstance.Send("focus", "PartitionFocus");
+                    return;
                 }
-                else
+                if (!IsMasterSelectorOpen)
                 {
                     MasterListButtonsVisibility = Visibility.Visible;
                     MasterSelectorVisibility = Visibility.Hidden;
+                    MessengerInstance.Send("", AppContext.UnBlockUIMsg);
                 }
             }
         }
@@ -356,6 +363,7 @@ namespace LS_Designer_WPF.ViewModel
             
             MasterListButtonsVisibility = Visibility.Collapsed;
             MasterSelectorVisibility = Visibility.Visible;
+            MessengerInstance.Send("", AppContext.BlockUIMsg);
         }
 
         bool MasterCanExecAdd()

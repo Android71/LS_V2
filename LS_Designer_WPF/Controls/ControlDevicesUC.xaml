@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Model"
              d:DesignHeight="300"
              d:DesignWidth="480.451"
              mc:Ignorable="d">
@@ -32,8 +33,8 @@
                     <Button x:Name="masterRemoveButton"
                             Margin="1"
                             HorizontalAlignment="Left"
-                            Command="{Binding ControlDevicesVM.MasterRemoveCmd}"
-                            Visibility="{Binding ControlDevicesVM.MasterListButtonsVisibility}"
+                            Command="{Binding MasterRemoveCmd}"
+                            Visibility="{Binding MasterListButtonsVisibility}"
                             Content="Remove"
                             DockPanel.Dock="Left"
                             Padding="3,1"
@@ -42,25 +43,26 @@
                             Margin="1"
                             HorizontalAlignment="Right"
                             Background="DimGray"
-                            Command="{Binding ControlDevicesVM.MasterAddCmd}"
-                            Visibility="{Binding ControlDevicesVM.MasterListButtonsVisibility}"
+                            Command="{Binding MasterAddCmd}"
+                            Visibility="{Binding MasterListButtonsVisibility}"
                             Content="Add"
                             DockPanel.Dock="Right"
                             Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
-                    <ComboBox Name="masterSelector" ItemsSource="{Binding ControlDevicesVM.MasterSelectorList}" SelectedItem="{Binding ControlDevicesVM.MasterSelectorSelectedItem}"
+                    <ComboBox Name="masterSelector" Style="{StaticResource ComboBoxFlatStyle}"
+                              ItemsSource="{Binding MasterSelectorList}" SelectedItem="{Binding MasterSelectorSelectedItem}"
                               DisplayMemberPath="Model" 
-                              Visibility="{Binding ControlDevicesVM.MasterSelectorVisibility}"
-                              IsDropDownOpen="{Binding ControlDevicesVM.IsMasterSelectorOpen}"/>
+                              Visibility="{Binding MasterSelectorVisibility}"
+                              IsDropDownOpen="{Binding IsMasterSelectorOpen}"/>
                 </DockPanel>
                 <ListBox Grid.Row="1"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
-                         ItemsSource="{Binding ControlDevicesVM.MasterList}"
-                         SelectedItem="{Binding ControlDevicesVM.MasterSelectedItem}"
+                         ItemsSource="{Binding MasterList}"
+                         SelectedItem="{Binding MasterSelectedItem}"
                          Style="{StaticResource ListBoxStyle1}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <Custom:EventToCommand Command="{Binding ControlDevicesVM.MasterEditCmd}" />
+                            <Custom:EventToCommand Command="{Binding MasterEditCmd}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <ListBox.ItemTemplate>
@@ -72,7 +74,7 @@
                 <Grid x:Name="masterListCurtain"
                       Grid.Row="1"
                       Background="#334F4F4F"
-                      Visibility="{Binding ControlDevicesVM.MasterListCurtainVisibility}" />
+                      Visibility="{Binding MasterListCurtainVisibility}" />
             </Grid>
             <Grid x:Name="masterObject" Grid.Row="1">
                 <Grid.RowDefinitions>
@@ -85,15 +87,15 @@
                             Background="{DynamicResource DarkBrush}"
                             FlowDirection="RightToLeft"
                             Orientation="Horizontal"
-                            Visibility="{Binding ControlDevicesVM.MasterObjectButtonsVisibility}">
+                            Visibility="{Binding MasterObjectButtonsVisibility}">
                     <Button x:Name="masterSaveButton"
                             HorizontalAlignment="Left"
-                            Command="{Binding ControlDevicesVM.MasterSaveCmd}"
+                            Command="{Binding MasterSaveCmd}"
                             Content="Save"
                             Style="{StaticResource ButtonStyle1}" />
                     <Button x:Name="masterCancelButton"
                             HorizontalAlignment="Right"
-                            Command="{Binding ControlDevicesVM.MasterCancelCmd}"
+                            Command="{Binding MasterCancelCmd}"
                             Content="Cancel"
                             Style="{StaticResource ButtonStyle1}" />
                 </StackPanel>
@@ -104,18 +106,21 @@
                         BorderBrush="{DynamicResource PlumbumBrush}"
                         BorderThickness="1"
                         Padding="10"
-                        Visibility="{Binding ControlDevicesVM.MasterObjectPanelVisibility}">
-                    <TextBox Name="nameTb"
-                             Margin="0"
-                             Padding="2,2,0,2"
-                             Style="{StaticResource TextBoxStyle1}"
-                             Text="{Binding PartitionsVM.CurrentObject.Name}" />
+                        Visibility="{Binding MasterObjectPanelVisibility}">
+                    <Border.Resources>
+                        <DataTemplate DataType="{x:Type model:AN6USPI}">
+                    <local:AN6USPI_UC />
+                </DataTemplate>
+                    </Border.Resources>
+                    <ContentControl Name="masterCurrentObject"
+                            Margin="0,5,0,0"
+                            Content="{Binding MasterCurrentObject}" />
                 </Border>
                 <Grid x:Name="masterObjectCurtain"
                       Grid.Row="1"
                       Margin="0,10,0,0"
                       Background="Transparent"
-                      Visibility="{Binding ControlDevicesVM.MasterObjectCurtainVisibility}" />
+                      Visibility="{Binding MasterObjectCurtainVisibility}" />
             </Grid>
         </Grid>
         <Grid x:Name="detailLayout" Grid.Column="2">
@@ -125,7 +130,7 @@
             </Grid.RowDefinitions>
             <Grid x:Name="detailList"
                   Grid.Row="0"
-                  Visibility="{Binding ControlDevicesVM.DetailContentVisibility}">
+                  Visibility="{Binding DetailContentVisibility}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
@@ -137,7 +142,7 @@
                     <Button x:Name="detailRemoveButton"
                             Margin="1"
                             HorizontalAlignment="Left"
-                            Command="{Binding ControlDevicesVM.DetailRemoveCmd}"
+                            Command="{Binding DetailRemoveCmd}"
                             Content="Remove"
                             DockPanel.Dock="Left"
                             Padding="3,1"
@@ -146,7 +151,7 @@
                             Margin="1"
                             HorizontalAlignment="Right"
                             Background="DimGray"
-                            Command="{Binding ControlDevicesVM.DetailAddCmd}"
+                            Command="{Binding DetailAddCmd}"
                             Content="Add"
                             DockPanel.Dock="Right"
                             Padding="3,1"
@@ -154,12 +159,12 @@
                 </DockPanel>
                 <ListBox Grid.Row="1"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
-                         ItemsSource="{Binding ControlDevicesVM.DetailList}"
-                         SelectedItem="{Binding ControlDevicesVM.DetailSelectedItem}"
+                         ItemsSource="{Binding DetailList}"
+                         SelectedItem="{Binding DetailSelectedItem}"
                          Style="{StaticResource ListBoxStyle1}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
-                            <Custom:EventToCommand Command="{Binding ControlDevicesVM.DetailEditCmd}" />
+                            <Custom:EventToCommand Command="{Binding DetailEditCmd}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <ListBox.ItemTemplate>
@@ -171,7 +176,7 @@
                 <Grid x:Name="detailListCurtain"
                       Grid.Row="1"
                       Background="#334F4F4F"
-                      Visibility="{Binding ControlDevicesVM.DetailListCurtainVisibility}" />
+                      Visibility="{Binding DetailListCurtainVisibility}" />
             </Grid>
             <Grid x:Name="detailObject" Grid.Row="1">
                 <Grid.RowDefinitions>
@@ -184,15 +189,15 @@
                             Background="{DynamicResource DarkBrush}"
                             FlowDirection="RightToLeft"
                             Orientation="Horizontal"
-                            Visibility="{Binding ControlDevicesVM.DetailObjectButtonsVisibility}">
+                            Visibility="{Binding DetailObjectButtonsVisibility}">
                     <Button x:Name="detailSaveButton"
                             HorizontalAlignment="Left"
-                            Command="{Binding ControlDevicesVM.DetailSaveCmd}"
+                            Command="{Binding DetailSaveCmd}"
                             Content="Save"
                             Style="{StaticResource ButtonStyle1}" />
                     <Button x:Name="detailCancelButton"
                             HorizontalAlignment="Right"
-                            Command="{Binding ControlDevicesVM.DetailCancelCmd}"
+                            Command="{Binding DetailCancelCmd}"
                             Content="Cancel"
                             Style="{StaticResource ButtonStyle1}" />
                 </StackPanel>
@@ -203,18 +208,18 @@
                         BorderBrush="{DynamicResource PlumbumBrush}"
                         BorderThickness="1"
                         Padding="10"
-                        Visibility="{Binding ControlDevicesVM.DetailObjectPanelVisibility}">
+                        Visibility="{Binding DetailObjectPanelVisibility}">
                     <TextBox Name="name1Tb"
                              Margin="0"
                              Padding="2,2,0,2"
                              Style="{StaticResource TextBoxStyle1}"
-                             Text="{Binding ControlDevicesVM.CurrentObject.Name}" />
+                             Text="{Binding CurrentObject.Name}" />
                 </Border>
                 <Grid x:Name="detailObjectCurtain"
                       Grid.Row="1"
                       Margin="0,10,0,0"
                       Background="Transparent"
-                      Visibility="{Binding ControlDevicesVM.DetailObjectCurtainVisibility}" />
+                      Visibility="{Binding DetailObjectCurtainVisibility}" />
             </Grid>
         </Grid>
 

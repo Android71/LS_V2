@@ -3,6 +3,7 @@
         Title="Window1" Width="300" Height="300"
         mc:Ignorable="d">
     <Window.Resources>
+        
         <!--  Flat ComboBox  -->
         <!--  https://gist.github.com/hansmaad/9187633#file-gistfile1-xml  -->
         
@@ -161,7 +162,7 @@
                             
         <!--  End of Flat ComboBox  -->
         
-        <!-- ScrollViewer -->
+        <!-- Flat ScrollViewer -->
         
         <ControlTemplate x:Key="ScrollViewerControlTemplate" TargetType="ScrollViewer">
             <Grid x:Name="Grid" Background="{TemplateBinding Background}">

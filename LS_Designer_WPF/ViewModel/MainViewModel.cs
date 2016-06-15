@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Messaging;
 using LS_Designer_WPF.Model;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace LS_Designer_WPF.ViewModel
 {
@@ -25,6 +26,9 @@ namespace LS_Designer_WPF.ViewModel
 
             Messenger.Default.Register<NotificationMessage>(this, AppContext.BlockChangeContextMsg, BlockContext);
             Messenger.Default.Register<NotificationMessage>(this, AppContext.UnBlockChangeContextMsg, UnBlockContext);
+
+            MessengerInstance.Register<String>(this, AppContext.BlockUIMsg, BlockUI);
+            MessengerInstance.Register<String>(this, AppContext.UnBlockUIMsg, UnBlockUI);
 
             MessengerInstance.Register<EmptyPopUpVM>(this, AppContext.ShowPopUpMsg, ShowPopUp);
 
@@ -52,8 +56,17 @@ namespace LS_Designer_WPF.ViewModel
             PartitionsVM = new PartitionsVM(dataService);
             ControlSpacesVM = new ControlSpacesVM(dataService);
             ControlDevicesVM = new ControlDevicesVM(dataService);
-            
+
+            TabItems.Add(PartitionsVM);
+            TabItems.Add(ControlSpacesVM);
+            TabItems.Add(ControlDevicesVM);
+            //TabItems.Add(EventDevicesVM);
+            //TabItems.Add(LightElementsVM);
+            //TabItems.Add(LightZonesVM);
+
         }
+
+        
 
         public PartitionsVM PartitionsVM { get; private set; }
 
@@ -94,7 +107,35 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
-        
+        ObservableCollection<ViewModelBase> _tabItems = new ObservableCollection<ViewModelBase>();
+        public ObservableCollection<ViewModelBase> TabItems
+        {
+            get
+            {
+                return _tabItems;
+            }
+            private set
+            {
+                _tabItems = value;
+                Set(ref _tabItems, value);
+            }
+        }
+
+        private TabItemVM _selectedTabItem = null;
+        public TabItemVM SelectedTabItem
+        {
+            get { return _selectedTabItem; }
+            set
+            {
+                if (_selectedTabItem != null)
+                    _selectedTabItem.IsSelected = false;
+                Set(ref _selectedTabItem, value);
+                value.IsSelected = true;
+                value.Refresh();
+            }
+        }
+
+
 
         /************************************************************/
 
@@ -137,6 +178,8 @@ namespace LS_Designer_WPF.ViewModel
             obj.PopUpVisibility = Visibility.Visible;
         }
 
+        
+
         private void UnBlockContext(NotificationMessage obj)
         {
             throw new NotImplementedException();
@@ -159,9 +202,35 @@ namespace LS_Designer_WPF.ViewModel
             ControlSpaces.Add(obj);
         }
 
-        private void BlockUI()
+        Visibility _contextCurtainVisibility = Visibility.Collapsed;
+        public Visibility ContextCurtainVisibility
         {
-            //foreach (TabItemVM tabItem in )
+            get { return _contextCurtainVisibility; }
+            set { Set(ref _contextCurtainVisibility, value); }
+        }
+
+        List<bool> tabItemsEnabledState;
+        private void BlockUI(string obj)
+        {
+            tabItemsEnabledState = new List<bool>();
+            foreach(TabItemVM ti in TabItems)
+            {
+                tabItemsEnabledState.Add(ti.TabItemEnabled);
+                if (ti.TabName != SelectedTabItem.TabName)
+                    ti.TabItemEnabled = false;
+            }
+            ContextCurtainVisibility = Visibility.Visible;
+        }
+
+        private void UnBlockUI(string obj)
+        {
+            int i = 0;
+            foreach (TabItemVM ti in TabItems)
+            {
+                ti.TabItemEnabled = tabItemsEnabledState[i];
+                i++;
+            }
+            ContextCurtainVisibility = Visibility.Collapsed;
         }
 
         #endregion

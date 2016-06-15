@@ -263,62 +263,62 @@ namespace LS_Designer_WPF.Model
         //    callback(controlDevice, null);
         //}
 
-        //public void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback)
-        //{
-        //    EFData.ControlDevice dbControlDevice;
-        //    //EFData.ControlSpace dbControlSpace;
-        //    EFData.ControlChannel dbControlChannel;
-        //    //ControlDevice controlDevice = null;
-        //    //if (item.ControlSpace.Name == )
-        //    int ix = -1;
-        //    if (item.Id != 0)
-        //    {
-        //        // Update
-        //        using (var db = new LSModelContainer(LS.CS))
-        //        {
-        //            dbControlDevice = db.ControlDevices.FirstOrDefault(p => p.Id == item.Id);
-        //            var x = dbControlDevice.ControlChannels.ToList();
-        //            Mapper.O2Db(item, dbControlDevice);
-        //            for ( int i = 0; i < item.ControlChannels.Count; i++)
-        //            {
-        //                Mapper.O2Db(item.ControlChannels[i], x[i]);
-        //            }
-        //            ix = db.SaveChanges();
-        //        }                        
-        //        callback(ix, null);
-        //    }
-        //    else
-        //    {
-        //        // Create
-        //        using (var db = new LSModelContainer(LS.CS))
-        //        {
-        //            dbControlDevice = new EFData.ControlDevice();
-        //            try
-        //            {
-        //                Mapper.O2Db(item, dbControlDevice);
-        //                dbControlDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
-        //                foreach (ControlChannel ch in item.ControlChannels)
-        //                {
-        //                    if (ch is ArtNetControlChannel)
-        //                        dbControlChannel = new EFData.ArtNetControlChannel();
-        //                    else
-        //                        dbControlChannel = new EFData.ControlChannel();
-        //                    Mapper.O2Db(ch, dbControlChannel);
-        //                    dbControlDevice.ControlChannels.Add(dbControlChannel);
-        //                }
+        public void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback)
+        {
+            EFData.ControlDevice dbControlDevice;
+            //EFData.ControlSpace dbControlSpace;
+            EFData.ControlChannel dbControlChannel;
+            //ControlDevice controlDevice = null;
+            //if (item.ControlSpace.Name == )
+            int ix = -1;
+            if (item.Id != 0)
+            {
+                // Update
+                //using (var db = new LSModelContainer(LS.CS))
+                //{
+                //    dbControlDevice = db.ControlDevices.FirstOrDefault(p => p.Id == item.Id);
+                //    var x = dbControlDevice.ControlChannels.ToList();
+                //    Mapper.O2Db(item, dbControlDevice);
+                //    for (int i = 0; i < item.ControlChannels.Count; i++)
+                //    {
+                //        Mapper.O2Db(item.ControlChannels[i], x[i]);
+                //    }
+                //    ix = db.SaveChanges();
+                //}
+                //callback(ix, null);
+            }
+            else
+            {
+                // Create
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbControlDevice = new EFData.ControlDevice();
+                    try
+                    {
+                        Mapper.O2Db(item, dbControlDevice);
+                        dbControlDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
+                        foreach (ControlChannel ch in item.ControlChannels)
+                        {
+                            if (ch is ArtNetControlChannel)
+                                dbControlChannel = new EFData.ArtNetControlChannel();
+                            else
+                                dbControlChannel = new EFData.ControlChannel();
+                            Mapper.O2Db(ch, dbControlChannel);
+                            dbControlDevice.ControlChannels.Add(dbControlChannel);
+                        }
 
-        //            }
-        //            catch (Exception)
-        //            {
+                    }
+                    catch (Exception)
+                    {
 
-        //            }
-        //            db.ControlDevices.Add(dbControlDevice);
-        //            ix = db.SaveChanges();
-        //            item.Id = dbControlDevice.Id;
-        //        }
-        //        callback(ix, null);
-        //    }
-        //}
+                    }
+                    db.ControlDevices.Add(dbControlDevice);
+                    ix = db.SaveChanges();
+                    item.Id = dbControlDevice.Id;
+                }
+                callback(ix, null);
+            }
+        }
 
 
         #endregion

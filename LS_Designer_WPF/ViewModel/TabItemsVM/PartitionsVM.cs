@@ -171,7 +171,8 @@ namespace LS_Designer_WPF.ViewModel
         public RelayCommand RemoveCmd { get; private set; }
 
         void ExecRemove()
-        { }
+        {
+        }
 
         bool CanExecRemove()
         {

@@ -85,6 +85,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\AN6USPI_UC.xaml.cs">
+      <DependentUpon>AN6USPI_UC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ControlDevicesUC.xaml.cs">
       <DependentUpon>ControlDevicesUC.xaml</DependentUpon>
     </Compile>
@@ -114,8 +117,13 @@
     <Compile Include="ViewModel\TabItemsVM\PartitionsVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\TabItemVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="WPF_Extras\Converters\IP2String.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
     <Compile Include="WPF_Extras\Extentions\WaterMarkExtention.cs" />
+    <Page Include="Controls\AN6USPI_UC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ControlDevicesUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

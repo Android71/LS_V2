@@ -19,6 +19,9 @@ namespace LS_Designer_WPF.ViewModel
         public static Guid UnBlockChangeContextMsg = Guid.NewGuid();
         public static Guid ShowPopUpMsg = Guid.NewGuid();
 
+        public static Guid BlockUIMsg = Guid.NewGuid();
+        public static Guid UnBlockUIMsg = Guid.NewGuid();
+
         public static Guid PartitionAddedMsg = Guid.NewGuid();
         public static Guid PartitionChangedMsg = Guid.NewGuid();
         public static Guid PartitionRemovedMsg = Guid.NewGuid();

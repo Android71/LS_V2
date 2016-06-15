@@ -57,26 +57,43 @@ namespace LS_Designer_WPF.Model
         public static void O2Db(ControlDevice obj, EFData.ControlDevice dbObj)
         {
             XElement data;
-            dbObj.HaveDimmer = obj.HaveDimmer;
-            if (dbObj.Id == 0)
-                dbObj.Id = obj.Id;
+            EFData.ControlSpace dbCS = new EFData.ControlSpace();
+            ControlSpace cs = obj.ControlSpace;
+            
+            //if (dbObj.Id == 0)
+            //    dbObj.Id = obj.Id;
             dbObj.Model = obj.Model;
             dbObj.Name = obj.Name;
-            //if (obj is ArtNetControlDevice)
-            //{
-            //    data = new XElement
-            //    ("Params",
-            //        new XElement("IPAddress",
-            //                     new XAttribute("Value", (obj as ArtNetControlDevice).IPAddress.ToString()),
-            //                     new XAttribute("ChCount", (obj as ArtNetControlDevice).IPChCount.ToString())),
-            //        new XElement("VirtualIP",
-            //                     new XAttribute("Value", (obj as ArtNetControlDevice).VirtualIP.ToString()),
-            //                     new XAttribute("ChCount", (obj as ArtNetControlDevice).VIPChCount.ToString()))
-            //    );
-            //    dbObj.Profile = data.ToString();
-            //}
+            dbObj.HaveDimmer = obj.HaveDimmer;
+            dbObj.Remark = obj.Remark;
+            dbObj.MultiChannel = obj.MultiChannel;
+            dbObj.CanAddChannel = obj.CanAddChannel;
+            dbObj.DotNetType = obj.DotNetType;
+            dbObj.Profile = obj.Profile;
+            dbObj.ControlSpace = new EFData.ControlSpace();
+            Mapper.O2Db(obj.ControlSpace, dbObj.ControlSpace);
+            EFData.ControlChannel dbCh;
+            foreach(ControlChannel ch in obj.ControlChannels)
+            {
+                dbCh = new EFData.ControlChannel();
+                O2Db(ch, dbCh);
+                dbObj.ControlChannels.Add(dbCh);
+            }
+        //if (obj is ArtNetControlDevice)
+        //{
+        //    data = new XElement
+        //    ("Params",
+        //        new XElement("IPAddress",
+        //                     new XAttribute("Value", (obj as ArtNetControlDevice).IPAddress.ToString()),
+        //                     new XAttribute("ChCount", (obj as ArtNetControlDevice).IPChCount.ToString())),
+        //        new XElement("VirtualIP",
+        //                     new XAttribute("Value", (obj as ArtNetControlDevice).VirtualIP.ToString()),
+        //                     new XAttribute("ChCount", (obj as ArtNetControlDevice).VIPChCount.ToString()))
+        //    );
+        //    dbObj.Profile = data.ToString();
+        //}
 
-        }
+    }
 
         public static void Db2O(EFData.ControlDevice dbObj, ControlDevice obj)
         {
@@ -111,7 +128,7 @@ namespace LS_Designer_WPF.Model
             //    obj.CanDimming = Boolean.Parse(data.Attribute("HaveDimmer").Value);
             //}
 //            (Data.ControlChannel)Activator.CreateInstance(Type.GetType(dbLE_Proxy.LightElement.ControlChannel.DotNetChannelType));
-            obj.ControlSpace = new EFData.ControlSpace();
+            //obj.ControlSpace = new EFData.ControlSpace();
             //Db2O(dbObj.ControlSpace, obj.ControlSpace);
         }
 
@@ -123,18 +140,24 @@ namespace LS_Designer_WPF.Model
 
         public static void O2Db(ControlChannel obj, EFData.ControlChannel dbObj)
         {
-            dbObj.ChannelNo = obj.ChannelNo;
-            if (dbObj.Id == 0)
-                dbObj.Id = obj.Id;
             dbObj.Name = obj.Name;
             dbObj.HaveDimmer = obj.HaveDimmer;
-            if (obj is ArtNetControlChannel)
-            {
-                (dbObj as EFData.ArtNetControlChannel).IPAddress = (obj as ArtNetControlChannel).IPAddress.ToString();
-                (dbObj as EFData.ArtNetControlChannel).PortNo = (obj as ArtNetControlChannel).PortNo;
-                //if ((obj as ArtNetControlChannel).LS_Assignmets != null)
-                //    (dbObj as EFData.ArtNetControlChannel).LS_Assignments = (obj as ArtNetControlChannel).LS_Assignmets;
-            }
+            dbObj.ChannelNo = obj.ChannelNo;
+            dbObj.PointType = (EFData.PointTypeEnum)obj.PointType;
+            dbObj.HaveDimmer = obj.HaveDimmer;
+            dbObj.DotNetType = obj.DotNetType;
+            dbObj.Profile = obj.Profile;
+            dbObj.ControlSpace = new EFData.ControlSpace();
+            O2Db(obj.ControlSpace, dbObj.ControlSpace);
+
+           
+            //if (obj is ArtNetControlChannel)
+            //{
+            //    (dbObj as EFData.ArtNetControlChannel).IPAddress = (obj as ArtNetControlChannel).IPAddress.ToString();
+            //    (dbObj as EFData.ArtNetControlChannel).PortNo = (obj as ArtNetControlChannel).PortNo;
+            //    //if ((obj as ArtNetControlChannel).LS_Assignmets != null)
+            //    //    (dbObj as EFData.ArtNetControlChannel).LS_Assignments = (obj as ArtNetControlChannel).LS_Assignmets;
+            //}
         }
 
         public static void Db2O(EFData.ControlChannel dbObj, ControlChannel obj)

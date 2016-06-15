@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Model
+namespace LS_Designer_WPF.Model
 {
     public class ControlChannel
     {

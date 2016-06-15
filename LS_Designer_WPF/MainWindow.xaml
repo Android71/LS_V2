@@ -39,18 +39,55 @@
                       Background="#FF1A5525" Content="Design" />
         <TabControl x:Name="tabControl" Grid.Row="0" Grid.RowSpan="2"
                     Grid.Column="1"
-                    Style="{StaticResource MainTabControlStyle}">
-            <TabItem Header="Control Spaces" Style="{StaticResource MainTabItemStyle}">
-                <Controls:ControlSpacesUC MinWidth="200" Margin="40,40,0,40" HorizontalAlignment="Left" />
-            </TabItem>
-            <TabItem Header="Partitions" Style="{StaticResource MainTabItemStyle}">
-                <Controls:PartitionsUC MinWidth="200" Margin="40,40,0,40" HorizontalAlignment="Left" />
-            </TabItem>
-            <!--<TabItem Content="Item3" Header="Control Devices" 
-                     Style="{StaticResource MainTabItemStyle}" />-->
-            <TabItem Header="ControlDevices" Style="{StaticResource MainTabItemStyle}">
-                <Controls:ControlDevicesUC  Margin="40,40,0,40" HorizontalAlignment="Left" />
-            </TabItem>
+                    Style="{StaticResource MainTabControlStyle}"
+                    ItemsSource="{Binding TabItems}"
+                    SelectedItem="{Binding SelectedTabItem}"
+                    ItemContainerStyle="{StaticResource MainTabItemStyle}">
+            <TabControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:ControlSpacesVM}">
+                        <Controls:ControlSpacesUC MinWidth="200" Margin="40,40,0,40" HorizontalAlignment="Left" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:PartitionsVM}">
+                        <Controls:PartitionsUC MinWidth="200" Margin="40,40,0,40" HorizontalAlignment="Left"/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ControlDevicesVM}">
+                        <Controls:ControlDevicesUC Margin="40,40,0,40" HorizontalAlignment="Left"/>
+                    </DataTemplate>
+                    <!--<DataTemplate DataType="{x:Type vm:EventDevicesVM}">
+                        <Controls:EventDevicesUC Width="370" Margin="3" HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top" />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type vm:LightElementsVM}">
+                        <Controls:LE_LinkUC Margin="3" HorizontalAlignment="Left" />
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type vm:LightZonesVM}">
+                        <Controls:ZoneLinkUC Margin="3" HorizontalAlignment="Left" />
+                    </DataTemplate>-->
+                </TabControl.Resources>
+                <!--<TabControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="IsEnabled" Value="{Binding TabItemEnabled}" />
+                    </Style>
+                </TabControl.ItemContainerStyle>-->
+                <TabControl.ItemTemplate>
+                    <!--  this is the header template  -->
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TabName}" />
+                        <!--<DataTemplate.Triggers>
+                            <DataTrigger "{Binding TabItemEnabled}" Value="false">
+                                <Setter Property="IsEnabled" Value="false"
+                            </DataTrigger>
+                        </DataTemplate.Triggers>-->
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <ContentControl Name="selectedTabItem"
+                            Content="{Binding}" />
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
         </TabControl>
         <Grid x:Name="ControlPanels" Grid.Row="1" Grid.Column="0"
               Margin="0,0,5,0">
@@ -89,8 +126,8 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid x:Name="Panel2" />
-            <Grid x:Name="PanelCurtain" Background="#7F000000" Visibility="Collapsed" />
+            <!--<Grid x:Name="Panel2" />-->
+            <Grid x:Name="PanelCurtain" Background="#7F000000" Visibility="{Binding ContextCurtainVisibility}" />
         </Grid>
         <Grid x:Name="popUp" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="#3F000000"
               Visibility="{Binding PopUpVM.PopUpVisibility}">
