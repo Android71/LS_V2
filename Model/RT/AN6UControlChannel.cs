@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 
-namespace Model
+namespace LS_Designer_WPF.Model
 {
     public class AN6UControlChannel : ControlChannel
     {

@@ -70,15 +70,15 @@ namespace LS_Designer_WPF.Model
             dbObj.CanAddChannel = obj.CanAddChannel;
             dbObj.DotNetType = obj.DotNetType;
             dbObj.Profile = obj.Profile;
-            dbObj.ControlSpace = new EFData.ControlSpace();
-            Mapper.O2Db(obj.ControlSpace, dbObj.ControlSpace);
-            EFData.ControlChannel dbCh;
-            foreach(ControlChannel ch in obj.ControlChannels)
-            {
-                dbCh = new EFData.ControlChannel();
-                O2Db(ch, dbCh);
-                dbObj.ControlChannels.Add(dbCh);
-            }
+            //dbObj.ControlSpace = new EFData.ControlSpace();
+            //Mapper.O2Db(obj.ControlSpace, dbObj.ControlSpace);
+            //EFData.ControlChannel dbCh;
+            //foreach(ControlChannel ch in obj.ControlChannels)
+            //{
+            //    dbCh = new EFData.ControlChannel();
+            //    O2Db(ch, dbCh);
+            //    dbObj.ControlChannels.Add(dbCh);
+            //}
         //if (obj is ArtNetControlDevice)
         //{
         //    data = new XElement
@@ -147,33 +147,14 @@ namespace LS_Designer_WPF.Model
             dbObj.HaveDimmer = obj.HaveDimmer;
             dbObj.DotNetType = obj.DotNetType;
             dbObj.Profile = obj.Profile;
-            dbObj.ControlSpace = new EFData.ControlSpace();
-            O2Db(obj.ControlSpace, dbObj.ControlSpace);
-
-           
-            //if (obj is ArtNetControlChannel)
-            //{
-            //    (dbObj as EFData.ArtNetControlChannel).IPAddress = (obj as ArtNetControlChannel).IPAddress.ToString();
-            //    (dbObj as EFData.ArtNetControlChannel).PortNo = (obj as ArtNetControlChannel).PortNo;
-            //    //if ((obj as ArtNetControlChannel).LS_Assignmets != null)
-            //    //    (dbObj as EFData.ArtNetControlChannel).LS_Assignments = (obj as ArtNetControlChannel).LS_Assignmets;
-            //}
         }
 
         public static void Db2O(EFData.ControlChannel dbObj, ControlChannel obj)
         {
-            obj.ChannelNo = dbObj.ChannelNo;
             obj.Id = dbObj.Id;
             obj.Name = dbObj.Name;
+            obj.ChannelNo = dbObj.ChannelNo;
             obj.HaveDimmer = (bool)dbObj.HaveDimmer;
-            //if (dbObj is EFData.ArtNetControlChannel)
-            //{
-            //    IPAddress adr;
-            //    IPAddress.TryParse((dbObj as EFData.ArtNetControlChannel).IPAddress, out adr);
-            //    (obj as ArtNetControlChannel).IPAddress = adr;
-            //    (obj as ArtNetControlChannel).PortNo = (dbObj as EFData.ArtNetControlChannel).PortNo;
-            //    //(obj as ArtNetControlChannel).LS_Assignmets = (dbObj as EFData.ArtNetControlChannel).LS_Assignments;
-            //}
         }
 
         #endregion

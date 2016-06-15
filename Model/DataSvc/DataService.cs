@@ -293,24 +293,14 @@ namespace LS_Designer_WPF.Model
                 using (var db = new LSModelContainer(LS.CS))
                 {
                     dbControlDevice = new EFData.ControlDevice();
-                    try
+                    Mapper.O2Db(item, dbControlDevice);
+                    dbControlDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
+                    foreach (ControlChannel ch in item.ControlChannels)
                     {
-                        Mapper.O2Db(item, dbControlDevice);
-                        dbControlDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
-                        foreach (ControlChannel ch in item.ControlChannels)
-                        {
-                            if (ch is ArtNetControlChannel)
-                                dbControlChannel = new EFData.ArtNetControlChannel();
-                            else
-                                dbControlChannel = new EFData.ControlChannel();
-                            Mapper.O2Db(ch, dbControlChannel);
-                            dbControlDevice.ControlChannels.Add(dbControlChannel);
-                        }
-
-                    }
-                    catch (Exception)
-                    {
-
+                        dbControlChannel = new EFData.ControlChannel();
+                        Mapper.O2Db(ch, dbControlChannel);
+                        dbControlChannel.ControlSpace = dbControlDevice.ControlSpace;
+                        dbControlDevice.ControlChannels.Add(dbControlChannel);
                     }
                     db.ControlDevices.Add(dbControlDevice);
                     ix = db.SaveChanges();

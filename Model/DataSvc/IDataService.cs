@@ -46,11 +46,12 @@ namespace LS_Designer_WPF.Model
 
         /************************************************************/
 
-        //#region ControlDevice
+        #region ControlDevice
 
+        void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback);
         //void GetControlDevices(ControlSpace space, Action<BindingList<ControlDevice>, Exception> callback, bool includeChannels = true);
 
-        //#endregion
+        #endregion
 
         //void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback);
 

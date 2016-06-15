@@ -272,28 +272,12 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecSave()
         {
-            //int ix = -1;
-            //if (CurrentObject.IsActive != SelectedItem.IsActive)
-            //{
-            //    if (SelectedItem.IsActive)  // Изъятие ControlSpace из модели
-            //    {
-            //        attentionVM = new AttentionVM("Внимание", CancelCallbackAction, OKCallbackAction);
-            //        MessengerInstance.Send<EmptyPopUpVM>(attentionVM, AppContext.ShowPopUpMsg);
-            //    }
-            //    else  // Добавление ControlSpace в модель
-            //    {
-            //        _dataService.UpdateControlSpace(CurrentObject, (data, error) =>
-            //        {
-            //            if (error != null) { return; } // Report error here
-            //            ix = data;
-            //        });
-            //        ix = ControlSpaces.IndexOf(SelectedItem);
-            //        ControlSpaces[ix] = CurrentObject;
-            //        SelectedItem = CurrentObject;
-            //        NormalUIState();
-            //        MessengerInstance.Send<ControlSpace>(CurrentObject, AppContext.CSAddedMsg);
-            //    }
-            //}
+            int i = -1;
+            _dataService.UpdateControlDevice(MasterCurrentObject as Model.ControlDevice, (objCnt, error) =>
+            {
+                if (error != null) { return; } // Report error here
+                i = objCnt;
+            });
         }
 
         private void OKCallbackAction(Object obj)

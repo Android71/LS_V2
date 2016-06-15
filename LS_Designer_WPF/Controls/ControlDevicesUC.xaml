@@ -6,7 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:model="clr-namespace:Model"
+             xmlns:model="clr-namespace:LS_Designer_WPF.Model"
              d:DesignHeight="300"
              d:DesignWidth="480.451"
              mc:Ignorable="d">

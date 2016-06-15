@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 
-namespace Model
+namespace LS_Designer_WPF.Model
 {
     public class AN6USPI : ControlDevice
     {
@@ -29,15 +29,23 @@ namespace Model
 
         public IPAddress VirtualIP { get; set; }
 
-        string CreateProfile()
-        {
-            return "";
-        }
-
         //<Params>
         //  <IPAddress Value = "2.0.0.2" ChCount="4"/>
         //  <VirtualIP Value = "2.0.0.3" ChCount="2"/>
         //</Params>
+
+        string CreateProfile()
+        {
+            XElement profile =
+                new XElement("Params",
+                    new XElement("IPAddress", new XAttribute("Value", IPAddress.ToString())),
+                    new XElement("VirtualIP", new XAttribute("Value", VirtualIP.ToString()))
+                    );
+            string s = profile.ToString();
+            return s; 
+        }
+
+        
 
         void ParseProfile(string profile)
         {
