@@ -239,29 +239,27 @@ namespace LS_Designer_WPF.Model
         //    callback(x, null);
         //}
 
-        //public void GetControlDevice(int id, Action<ControlDevice, Exception> callback)
-        //{
-        //    EFData.ControlDevice dbControlDevice;
-        //    ControlDevice controlDevice = null;
-        //    ControlChannel controlChannel = null;
+        public void GetControlDevice(int id, Action<ControlDevice, Exception> callback)
+        {
+            EFData.ControlDevice dbControlDevice;
+            ControlDevice controlDevice = new ControlDevice();
+            ControlChannel controlChannel = new ControlChannel();
 
-        //    using (var db = new LSModelContainer(LS.CS))
-        //    {
-        //        dbControlDevice = db.ControlDevices.FirstOrDefault(p => p.Id == id);
-        //    }
-
-        //    if (dbControlDevice.ControlSpace.Name == "ArtNet_DMX")
-        //        controlDevice = new ArtNetControlDevice();
-        //    Mapper.Db2O(dbControlDevice, controlDevice);
-        //    foreach(EFData.ControlChannel ch in dbControlDevice.ControlChannels)
-        //    {
-        //        if (ch is EFData.ArtNetControlChannel)
-        //            controlChannel = new ArtNetControlChannel();
-        //        Mapper.Db2O(ch, controlChannel);
-        //        controlDevice.ControlChannels.Add(controlChannel);
-        //    }
-        //    callback(controlDevice, null);
-        //}
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                dbControlDevice = db.ControlDevices.Include("ControlChannels").FirstOrDefault(p => p.Id == id);
+            }
+            
+            Mapper.Db2O(dbControlDevice, out controlDevice);
+            foreach (EFData.ControlChannel ch in dbControlDevice.ControlChannels)
+            {
+                //if (ch is EFData.ArtNetControlChannel)
+                //    controlChannel = new ArtNetControlChannel();
+                Mapper.Db2O(ch, out controlChannel);
+                controlDevice.ControlChannels.Add(controlChannel);
+            }
+            callback(controlDevice, null);
+        }
 
         public void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback)
         {
@@ -305,6 +303,13 @@ namespace LS_Designer_WPF.Model
                     db.ControlDevices.Add(dbControlDevice);
                     ix = db.SaveChanges();
                     item.Id = dbControlDevice.Id;
+                    
+                    int i = 0;
+                    foreach (EFData.ControlChannel dbCh in dbControlDevice.ControlChannels)
+                    {
+                        item.ControlChannels[i].Id = dbCh.Id;
+                        i++;
+                    }
                 }
                 callback(ix, null);
             }
@@ -312,6 +317,88 @@ namespace LS_Designer_WPF.Model
 
 
         #endregion
+
+        /****************************************************************/
+
+        #region ControlChannel
+
+        public void GetControlChannel(int id, Action<ControlChannel, Exception> callback)
+        {
+            EFData.ControlChannel dbControlChannel = null;
+            ControlChannel ch = new ControlChannel();
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                dbControlChannel = db.ControlChannels.FirstOrDefault(p => p.Id == id);
+                Mapper.Db2O(dbControlChannel, out ch);
+            }
+            callback(ch, null);
+        }
+
+        //public void GetControlChannels(ControlSpace space, LightElement le, FilterEnum filter, Action<List<ControlChannel>, Exception> callback, bool includeLE = true)
+        //{
+        //    ControlChannel controlChannel;
+        //    var x = new List<ControlChannel>();
+
+        //    using (var db = new LSModelContainer(LS.CS))
+        //    {
+        //        foreach (EFData.ControlChannel dbControlChannel in db.ControlChannels.Where(p => p.ControlDevice.ControlSpace.Id == space.Id))
+        //        {
+        //            if (dbControlChannel is EFData.ArtNetControlChannel)
+        //                controlChannel = new ArtNetControlChannel();
+        //            else
+        //                controlChannel = new ControlChannel();
+        //            Mapper.Db2O(dbControlChannel, controlChannel);
+        //            if (dbControlChannel.ControlDevice.ControlSpace.Name == "ArtNet_DMX")
+        //                controlChannel.ControlDevice = new ArtNetControlDevice();
+        //            else
+        //                controlChannel.ControlDevice = new GenericControlDevice();
+        //            Mapper.Db2O(dbControlChannel.ControlDevice, controlChannel.ControlDevice);
+        //            controlChannel.LinkCount = dbControlChannel.LightElements.Count;
+        //            if (filter == FilterEnum.Linked)
+        //            {
+        //                if (controlChannel.LinkCount != 0)
+        //                {
+        //                    controlChannel.IsLinked = true;
+        //                }
+        //            }
+        //            if (filter == FilterEnum.All)
+        //            {
+        //                if (controlChannel.LinkCount != 0)
+        //                    controlChannel.IsLinked = true;
+
+        //                x.Add(controlChannel);
+        //                continue;
+        //            }
+        //            if (filter == FilterEnum.Linked)
+        //            {
+        //                if (le != null)
+        //                {
+        //                    EFData.LightElement dbLightElement = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
+        //                    if (dbLightElement != null)
+        //                    {
+        //                        if (dbControlChannel.LightElements.Contains(dbLightElement))
+        //                        {
+        //                            controlChannel.IsLinked = true;
+        //                            x.Add(controlChannel);
+        //                        }
+        //                        continue;
+        //                    }
+        //                }
+        //            }
+        //            if (filter == FilterEnum.Unlinked)
+        //            {
+        //                if (controlChannel.LinkCount == 0)
+        //                    x.Add(controlChannel);
+        //            }
+        //        }
+
+        //    }
+        //    callback(x, null);
+        //}
+
+        #endregion
+
 
         /****************************************************************/
 

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace LS_Designer_WPF.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для ControlChannelsUC.xaml
+    /// Логика взаимодействия для ArtNetControlChannelUC.xaml
     /// </summary>
-    public partial class ControlDevicesUC : UserControl
+    public partial class AN6UControlChannelUC : UserControl
     {
-        public ControlDevicesUC()
+        public AN6UControlChannelUC()
         {
             InitializeComponent();
         }

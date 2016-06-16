@@ -85,16 +85,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\AN6UControlChannelUC.xaml.cs">
+      <DependentUpon>AN6UControlChannelUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AN6USPI_UC.xaml.cs">
       <DependentUpon>AN6USPI_UC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ControlDevicesUC.xaml.cs">
+    <Compile Include="Controls\TabItemsUC\ControlDevicesUC.xaml.cs">
       <DependentUpon>ControlDevicesUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ControlSpacesUC.xaml.cs">
+    <Compile Include="Controls\TabItemsUC\ControlSpacesUC.xaml.cs">
       <DependentUpon>ControlSpacesUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PartitionsUC.xaml.cs">
+    <Compile Include="Controls\TabItemsUC\PartitionsUC.xaml.cs">
       <DependentUpon>PartitionsUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PopUp\AttentionUC.xaml.cs">
@@ -106,8 +109,6 @@
     <Compile Include="GrayScale.xaml.cs">
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\CChannelsVM\ArtNetControlChannelVM.cs" />
-    <Compile Include="ViewModel\DevicesVM\AN6USPI_VM.cs" />
     <Compile Include="ViewModel\AppContext.cs" />
     <Compile Include="ViewModel\TabItemsVM\ControlDevicesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\AttentionVM.cs" />
@@ -120,19 +121,23 @@
     <Compile Include="WPF_Extras\Converters\IP2String.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
     <Compile Include="WPF_Extras\Extentions\WaterMarkExtention.cs" />
+    <Page Include="Controls\AN6UControlChannelUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\AN6USPI_UC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ControlDevicesUC.xaml">
+    <Page Include="Controls\TabItemsUC\ControlDevicesUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ControlSpacesUC.xaml">
+    <Page Include="Controls\TabItemsUC\ControlSpacesUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PartitionsUC.xaml">
+    <Page Include="Controls\TabItemsUC\PartitionsUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

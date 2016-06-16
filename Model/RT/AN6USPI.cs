@@ -11,6 +11,7 @@ namespace LS_Designer_WPF.Model
     {
         public AN6USPI()
         {
+            Name = "AN_Dev";
             HaveDimmer = true;
             Model = "AN6USPI";
             MultiChannel = true;
@@ -61,7 +62,7 @@ namespace LS_Designer_WPF.Model
                 {
                     IPAddress.TryParse(xel.Attribute("Value").Value, out ip);
                     IPAddress = ip;
-                    baseChCount = int.Parse(xel.Attribute("ChCount").Value);
+                    //baseChCount = int.Parse(xel.Attribute("ChCount").Value);
                     continue;
                 }
 
@@ -69,7 +70,7 @@ namespace LS_Designer_WPF.Model
                 {
                     IPAddress.TryParse(xel.Attribute("Value").Value, out ip);
                     VirtualIP = ip;
-                    additionalChCount = int.Parse(xel.Attribute("ChCount").Value);
+                    //additionalChCount = int.Parse(xel.Attribute("ChCount").Value);
                 }
             }
             for (int i = 0; i < 4; i++)
@@ -79,6 +80,7 @@ namespace LS_Designer_WPF.Model
                 cc.IPAddress = IPAddress;
                 string s = cc.Profile;
                 cc.PortNo = i;
+                cc.ChannelNo = i;
                 ControlChannels.Add(cc);
             }
             for (int i = 4; i < 6; i++)
@@ -86,6 +88,7 @@ namespace LS_Designer_WPF.Model
                 cc = new AN6UControlChannel();
                 cc.IPAddress = VirtualIP;
                 cc.PortNo = i;
+                cc.ChannelNo = i;
                 ControlChannels.Add(cc);
             }
         }

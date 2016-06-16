@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,28 @@ namespace LS_Designer_WPF.Controls
         public AN6USPI_UC()
         {
             InitializeComponent();
+            //Messenger.Default.Register<string>(this, "DeviceControlFocus", SetNameFocus);
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //Messenger.Default.Unregister<string>(this);
+        }
+
+        void SetNameFocus(string msg)
+        {
+            if (msg == "focus")
+            {
+                nameTb.Focus();
+                nameTb.CaretIndex = nameTb.Text.Length;
+            }
         }
     }
+
+    
 }

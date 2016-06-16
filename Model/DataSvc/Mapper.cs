@@ -95,11 +95,12 @@ namespace LS_Designer_WPF.Model
 
     }
 
-        public static void Db2O(EFData.ControlDevice dbObj, ControlDevice obj)
+        public static void Db2O(EFData.ControlDevice dbObj, out ControlDevice obj)
         {
             IPAddress adr;
             XElement data;
 
+            obj = (ControlDevice)Activator.CreateInstance(Type.GetType(dbObj.DotNetType));
             obj.Id = dbObj.Id;
             obj.Name = dbObj.Name;
             obj.Model = dbObj.Model;
@@ -149,12 +150,16 @@ namespace LS_Designer_WPF.Model
             dbObj.Profile = obj.Profile;
         }
 
-        public static void Db2O(EFData.ControlChannel dbObj, ControlChannel obj)
+        public static void Db2O(EFData.ControlChannel dbObj, out ControlChannel obj)
         {
+            obj = (ControlChannel)Activator.CreateInstance(Type.GetType(dbObj.DotNetType));
             obj.Id = dbObj.Id;
-            obj.Name = dbObj.Name;
-            obj.ChannelNo = dbObj.ChannelNo;
             obj.HaveDimmer = (bool)dbObj.HaveDimmer;
+            obj.ChannelNo = dbObj.ChannelNo;
+            obj.PointType = (PointTypeEnum)dbObj.PointType;
+            obj.HaveDimmer = (bool)dbObj.HaveDimmer;
+            obj.DotNetType = dbObj.DotNetType;
+            obj.Profile = dbObj.Profile;
         }
 
         #endregion

@@ -945,7 +945,7 @@
                         <Popup Name="Popup" Placement="Bottom" Focusable="False"
                                AllowsTransparency="True"
                                IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}"
-                               PopupAnimation="Slide" VerticalOffset="10">
+                               PopupAnimation="Slide" VerticalOffset="5">
                             <Grid Name="DropDown"
                                   MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
                                   MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}"
