@@ -18,7 +18,7 @@ namespace LS_Designer_WPF.Model
 
         public override string Name
         {
-            get { return String.Format("Universe_{0}", PortNo); }
+            get { return String.Format("Universe_{0}", ChannelNo); }
         }
 
         public int PortNo { get; set; }

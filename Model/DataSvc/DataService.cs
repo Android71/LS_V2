@@ -190,54 +190,36 @@ namespace LS_Designer_WPF.Model
 
 
 
-        //public void GetControlDevices(ControlSpace space, Action<BindingList<ControlDevice>, Exception> callback, bool includeChannels = true)
-        //{
-        //    IEnumerable<EFData.ControlDevice> query = null;
-        //    var x = new BindingList<ControlDevice>();
-        //    ControlDevice controlDevice = null;
-        //    ControlChannel controlChannel = null;
+        public void GetControlDevices(int csId, Action<ObservableCollection<ControlDevice>, Exception> callback)
+        {
+            //    IEnumerable<EFData.ControlDevice> query = null;
+            ObservableCollection<ControlDevice> list = new ObservableCollection<ControlDevice>();
+            ControlDevice controlDevice = null;
+            ControlChannel controlChannel = null;
 
-        //    using (var db = new LSModelContainer(LS.CS))
-        //    {
-        //        if (space != null)
-        //            if (includeChannels)
-        //                query = db.ControlDevices.Include("ControlChannels").Where(p => p.ControlSpace.Id == space.Id);
-        //            else
-        //                query = db.ControlDevices.Where(p => p.ControlSpace.Id == space.Id);
-        //        else
-        //        {
-        //            if (includeChannels)
-        //                query = db.ControlDevices.Include("ControlChannels");
-        //            else
-        //                query = db.ControlDevices;
-        //        }
-        //        foreach (EFData.ControlDevice dbControlDevice in query)
-        //        {
-        //            if (dbControlDevice.ControlSpace.Name == "ArtNet_DMX")
-        //                controlDevice = new ArtNetControlDevice();
-        //            if (dbControlDevice.ControlSpace.Name == "NooLite")
-        //                controlDevice = new GenericControlDevice();
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                //var x = 
+                foreach (EFData.ControlDevice dbControlDevice in
+                               db.ControlDevices.Include("ControlChannels").Where(p => p.ControlSpace.Id == csId))
+                {
+                    controlDevice = new ControlDevice();
+                    Mapper.Db2O(dbControlDevice, out controlDevice);
+                    controlDevice.ControlSpace = new ControlSpace();
+                    Mapper.Db2O(dbControlDevice.ControlSpace, controlDevice.ControlSpace);
 
-        //            Mapper.Db2O(dbControlDevice, controlDevice);
-
-        //            if (includeChannels)
-        //            {
-        //                foreach (EFData.ControlChannel ch in dbControlDevice.ControlChannels)
-        //                {
-        //                    if (ch is EFData.ArtNetControlChannel)
-        //                        controlChannel = new ArtNetControlChannel();
-        //                    else
-        //                        controlChannel = new ControlChannel();
-        //                    Mapper.Db2O(ch, controlChannel);
-        //                    controlDevice.ControlChannels.Add(controlChannel);
-        //                }
-        //            }
-
-        //            x.Add(controlDevice);
-        //        }
-        //    }
-        //    callback(x, null);
-        //}
+                    foreach (EFData.ControlChannel dbCh in dbControlDevice.ControlChannels)
+                    {
+                        controlChannel = new ControlChannel();
+                        Mapper.Db2O(dbCh, out controlChannel);
+                        controlChannel.ControlSpace = controlDevice.ControlSpace;
+                        controlDevice.ControlChannels.Add(controlChannel);
+                    }
+                    list.Add(controlDevice);
+                }
+            }
+            callback(list, null);
+        }
 
         public void GetControlDevice(int id, Action<ControlDevice, Exception> callback)
         {
@@ -248,9 +230,11 @@ namespace LS_Designer_WPF.Model
             using (var db = new LSModelContainer(LS.CS))
             {
                 dbControlDevice = db.ControlDevices.Include("ControlChannels").FirstOrDefault(p => p.Id == id);
+                Mapper.Db2O(dbControlDevice, out controlDevice);
+                controlDevice.ControlSpace = new ControlSpace();
+                Mapper.Db2O(dbControlDevice.ControlSpace, controlDevice.ControlSpace);
             }
-            
-            Mapper.Db2O(dbControlDevice, out controlDevice);
+
             foreach (EFData.ControlChannel ch in dbControlDevice.ControlChannels)
             {
                 //if (ch is EFData.ArtNetControlChannel)
@@ -333,6 +317,22 @@ namespace LS_Designer_WPF.Model
                 Mapper.Db2O(dbControlChannel, out ch);
             }
             callback(ch, null);
+        }
+
+        public void UpdateControlChannel(ControlChannel ch, Action<int, Exception> callback)
+        {
+            int updateCount = -1;
+            EFData.ControlChannel dbControlChannel = null;
+            if (ch.Id != 0)
+            {
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbControlChannel = db.ControlChannels.FirstOrDefault(p => p.Id == ch.Id);
+                    Mapper.O2Db(ch, dbControlChannel);
+                    updateCount = db.SaveChanges();
+                }
+                callback(updateCount, null);
+            }
         }
 
         //public void GetControlChannels(ControlSpace space, LightElement le, FilterEnum filter, Action<List<ControlChannel>, Exception> callback, bool includeLE = true)

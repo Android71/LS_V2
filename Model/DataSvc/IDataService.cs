@@ -51,6 +51,8 @@ namespace LS_Designer_WPF.Model
         void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback);
 
         void GetControlDevice(int id, Action<ControlDevice, Exception> callback);
+
+        void GetControlDevices(int csId, Action<ObservableCollection<ControlDevice>, Exception> callback);
         //void GetControlDevices(ControlSpace space, Action<BindingList<ControlDevice>, Exception> callback, bool includeChannels = true);
 
         #endregion
@@ -60,6 +62,8 @@ namespace LS_Designer_WPF.Model
         #region ControlChannel
 
         void GetControlChannel(int ControlDeviceId, Action<ControlChannel, Exception> callback);
+
+        void UpdateControlChannel(ControlChannel ch, Action<int, Exception> callback);
 
         #endregion
 

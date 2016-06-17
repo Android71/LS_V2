@@ -102,13 +102,13 @@
                       Visibility="{Binding MasterObjectCurtainVisibility}" />
             </Grid>
         </Grid>
-        <Grid x:Name="detailLayout" Grid.Column="2">
+        <Grid x:Name="detailLayout" Grid.Column="2" Visibility="{Binding DetailContentVisibility}">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid x:Name="detailList" Grid.Row="0"
-                  Visibility="{Binding DetailContentVisibility}">
+            <Grid x:Name="detailList" Grid.Row="0">
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />

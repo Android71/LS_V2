@@ -26,9 +26,33 @@ namespace LS_Designer_WPF.Model
             set { ParseProfile(value); }
         }
 
-        public IPAddress IPAddress { get; set; }
+        IPAddress _ipAddress;
+        public IPAddress IPAddress
+        {
+            get { return _ipAddress; }
+            set
+            {
+                _ipAddress = value;
+                for (int i = 0; i < 4; i++)
+                {
+                    (ControlChannels[i] as AN6UControlChannel).IPAddress = value;
+                }
+            }
+        }
 
-        public IPAddress VirtualIP { get; set; }
+        IPAddress _virtualIP;
+        public IPAddress VirtualIP
+        {
+            get { return _virtualIP; }
+            set
+            {
+                _virtualIP = value;
+                for (int i = 4; i < 6; i++)
+                {
+                    (ControlChannels[i] as AN6UControlChannel).IPAddress = value;
+                }
+            }
+        }
 
         //<Params>
         //  <IPAddress Value = "2.0.0.2" ChCount="4"/>
@@ -61,7 +85,7 @@ namespace LS_Designer_WPF.Model
                 if (xel.Name == "IPAddress")
                 {
                     IPAddress.TryParse(xel.Attribute("Value").Value, out ip);
-                    IPAddress = ip;
+                    _ipAddress = ip;
                     //baseChCount = int.Parse(xel.Attribute("ChCount").Value);
                     continue;
                 }
@@ -69,27 +93,30 @@ namespace LS_Designer_WPF.Model
                 if (xel.Name == "VirtualIP")
                 {
                     IPAddress.TryParse(xel.Attribute("Value").Value, out ip);
-                    VirtualIP = ip;
+                    _virtualIP = ip;
                     //additionalChCount = int.Parse(xel.Attribute("ChCount").Value);
                 }
             }
-            for (int i = 0; i < 4; i++)
+            if (Id == 0)
             {
-                cc = new AN6UControlChannel();
-                //cc.Profile = "<Params IP = \"2.0.0.2\" ChNum = \"2\" Port = \"0\"/>";
-                cc.IPAddress = IPAddress;
-                string s = cc.Profile;
-                cc.PortNo = i;
-                cc.ChannelNo = i;
-                ControlChannels.Add(cc);
-            }
-            for (int i = 4; i < 6; i++)
-            {
-                cc = new AN6UControlChannel();
-                cc.IPAddress = VirtualIP;
-                cc.PortNo = i;
-                cc.ChannelNo = i;
-                ControlChannels.Add(cc);
+                for (int i = 0; i < 4; i++)
+                {
+                    cc = new AN6UControlChannel();
+                    //cc.Profile = "<Params IP = \"2.0.0.2\" ChNum = \"2\" Port = \"0\"/>";
+                    cc.IPAddress = IPAddress;
+                    string s = cc.Profile;
+                    cc.PortNo = i;
+                    cc.ChannelNo = i;
+                    ControlChannels.Add(cc);
+                }
+                for (int i = 4; i < 6; i++)
+                {
+                    cc = new AN6UControlChannel();
+                    cc.IPAddress = VirtualIP;
+                    cc.PortNo = i;
+                    cc.ChannelNo = i;
+                    ControlChannels.Add(cc);
+                }
             }
         }
     }
