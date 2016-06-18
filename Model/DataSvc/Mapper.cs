@@ -36,7 +36,7 @@ namespace LS_Designer_WPF.Model
 
         public static void O2Db(ControlSpace obj, EFData.ControlSpace dbObj)
         {
-            dbObj.Id = obj.Id;
+            //dbObj.Id = obj.Id;
             dbObj.Name = obj.Name;
             dbObj.IsActive = obj.IsActive;
         }
@@ -56,9 +56,9 @@ namespace LS_Designer_WPF.Model
 
         public static void O2Db(ControlDevice obj, EFData.ControlDevice dbObj)
         {
-            XElement data;
-            EFData.ControlSpace dbCS = new EFData.ControlSpace();
-            ControlSpace cs = obj.ControlSpace;
+            //XElement data;
+            //EFData.ControlSpace dbCS = new EFData.ControlSpace();
+            //ControlSpace cs = obj.ControlSpace;
             
             //if (dbObj.Id == 0)
             //    dbObj.Id = obj.Id;
@@ -97,8 +97,8 @@ namespace LS_Designer_WPF.Model
 
         public static void Db2O(EFData.ControlDevice dbObj, out ControlDevice obj)
         {
-            IPAddress adr;
-            XElement data;
+            //IPAddress adr;
+            //XElement data;
 
             obj = (ControlDevice)Activator.CreateInstance(Type.GetType(dbObj.DotNetType));
             obj.Id = dbObj.Id;

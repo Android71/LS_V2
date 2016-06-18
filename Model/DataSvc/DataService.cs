@@ -233,15 +233,18 @@ namespace LS_Designer_WPF.Model
                 Mapper.Db2O(dbControlDevice, out controlDevice);
                 controlDevice.ControlSpace = new ControlSpace();
                 Mapper.Db2O(dbControlDevice.ControlSpace, controlDevice.ControlSpace);
+                foreach (EFData.ControlChannel dbCh in dbControlDevice.ControlChannels)
+                {
+                    //if (ch is EFData.ArtNetControlChannel)
+                    //    controlChannel = new ArtNetControlChannel();
+                    Mapper.Db2O(dbCh, out controlChannel);
+                    controlChannel.ControlSpace = new ControlSpace();
+                    Mapper.Db2O(dbCh.ControlSpace, controlChannel.ControlSpace);
+                    controlDevice.ControlChannels.Add(controlChannel);
+                }
             }
 
-            foreach (EFData.ControlChannel ch in dbControlDevice.ControlChannels)
-            {
-                //if (ch is EFData.ArtNetControlChannel)
-                //    controlChannel = new ArtNetControlChannel();
-                Mapper.Db2O(ch, out controlChannel);
-                controlDevice.ControlChannels.Add(controlChannel);
-            }
+            
             callback(controlDevice, null);
         }
 
@@ -255,19 +258,19 @@ namespace LS_Designer_WPF.Model
             int ix = -1;
             if (item.Id != 0)
             {
-                // Update
-                //using (var db = new LSModelContainer(LS.CS))
-                //{
-                //    dbControlDevice = db.ControlDevices.FirstOrDefault(p => p.Id == item.Id);
-                //    var x = dbControlDevice.ControlChannels.ToList();
-                //    Mapper.O2Db(item, dbControlDevice);
-                //    for (int i = 0; i < item.ControlChannels.Count; i++)
-                //    {
-                //        Mapper.O2Db(item.ControlChannels[i], x[i]);
-                //    }
-                //    ix = db.SaveChanges();
-                //}
-                //callback(ix, null);
+                //Update
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbControlDevice = db.ControlDevices.FirstOrDefault(p => p.Id == item.Id);
+                    var x = dbControlDevice.ControlChannels.ToList();
+                    Mapper.O2Db(item, dbControlDevice);
+                    for (int i = 0; i < item.ControlChannels.Count; i++)
+                    {
+                        Mapper.O2Db(item.ControlChannels[i], x[i]);
+                    }
+                    ix = db.SaveChanges();
+                }
+                callback(ix, null);
             }
             else
             {
@@ -279,6 +282,7 @@ namespace LS_Designer_WPF.Model
                     dbControlDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
                     foreach (ControlChannel ch in item.ControlChannels)
                     {
+                        ch.ControlSpace = item.ControlSpace;
                         dbControlChannel = new EFData.ControlChannel();
                         Mapper.O2Db(ch, dbControlChannel);
                         dbControlChannel.ControlSpace = dbControlDevice.ControlSpace;

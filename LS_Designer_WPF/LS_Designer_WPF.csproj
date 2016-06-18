@@ -91,6 +91,9 @@
     <Compile Include="Controls\AN6USPI_UC.xaml.cs">
       <DependentUpon>AN6USPI_UC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NLPowerBlockUC.xaml.cs">
+      <DependentUpon>NLPowerBlockUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabItemsUC\ControlDevicesUC.xaml.cs">
       <DependentUpon>ControlDevicesUC.xaml</DependentUpon>
     </Compile>
@@ -126,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\AN6USPI_UC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NLPowerBlockUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

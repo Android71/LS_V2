@@ -29,6 +29,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Partition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\AN6UControlChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\AN6USPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RT\NLPowerBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RT\NLPowerChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -77,8 +77,8 @@ namespace LS_Designer_WPF.Model
             IPAddress ip;
             AN6UControlChannel cc;
             XElement xdata = XElement.Parse(profile);
-            int baseChCount;
-            int additionalChCount;
+            //int baseChCount;
+            //int additionalChCount;
 
             foreach (XElement xel in xdata.Elements())
             {
