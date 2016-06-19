@@ -49,11 +49,11 @@ namespace LS_Designer_WPF.Model
             XElement xdata = XElement.Parse(profile);
             Model = xdata.Attribute("Model").Value;
             HaveDimmer = bool.Parse(xdata.Attribute("HaveDimmer").Value);
-            if (xdata.Attribute("PoinType") != null)
-            {
-                Enum.TryParse(xdata.Attribute("PoinType").Value, out pt);
+            //if (xdata.Attribute("PoinType") != null)
+            //{
+                Enum.TryParse(xdata.Attribute("PointType").Value, out pt);
                 PointType = pt;
-            }
+            //}
             if (Id == 0)
                 ControlChannels.Add(new NLPowerChannel() { HaveDimmer = HaveDimmer, PointType = PointType });
         }

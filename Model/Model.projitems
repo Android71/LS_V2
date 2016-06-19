@@ -38,4 +38,7 @@
     <None Include="$(MSBuildThisFileDirectory)Profiles\EventDeviceProfile.xml" />
     <None Include="$(MSBuildThisFileDirectory)Profiles\PB411_profile.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)RT\NL_Pult.xml" />
+  </ItemGroup>
 </Project>

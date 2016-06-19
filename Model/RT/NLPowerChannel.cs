@@ -27,15 +27,20 @@ namespace LS_Designer_WPF.Model
 
         void ParseProfile(string profile)
         {
+            PointTypeEnum pt = PointTypeEnum.W;
             XElement xdata = XElement.Parse(profile);
             HaveDimmer = bool.Parse(xdata.Attribute("HaveDimmer").Value);
-            
+            Enum.TryParse(xdata.Attribute("PointType").Value, out pt);
+            PointType = pt;
         }
 
         string CreateProfile()
         {
             XElement profile =
-                new XElement("Params", new XAttribute("HaveDimmer", HaveDimmer.ToString()));
+                new XElement("Params", 
+                            new XAttribute("HaveDimmer", HaveDimmer.ToString()),
+                            new XAttribute("PointType", PointType.ToString())
+                            );
             return profile.ToString();
         }
     }
