@@ -147,6 +147,10 @@
       <End Role="CSEnvItem" EntitySet="CSEnvItems" />
       <End Role="ControlSpace" EntitySet="ControlSpaces" />
     </AssociationSet>
+    <AssociationSet Name="PartitionEventDevice" Association="LSModel.Store.PartitionEventDevice">
+      <End Role="Partition" EntitySet="Partitions" />
+      <End Role="EventDevice" EntitySet="EventDevices" />
+    </AssociationSet>
     <AssociationSet Name="FK_ArtNetControlChannel_inherits_ControlChannel" Association="LSModel.Store.FK_ArtNetControlChannel_inherits_ControlChannel">
       <End Role="ControlChannel" EntitySet="ControlChannels" />
       <End Role="ArtNetControlChannel" EntitySet="ControlChannels_ArtNetControlChannel" />
@@ -371,6 +375,7 @@
     <Property Name="CanAddChannel" Type="bit" Nullable="false" />
     <Property Name="DotNetType" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
+    <Property Name="Partition_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="CSEnvItems">
     <Key>
@@ -714,6 +719,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="PartitionEventDevice">
+    <End Role="Partition" Type="LSModel.Store.Partitions" Multiplicity="1" />
+    <End Role="EventDevice" Type="LSModel.Store.EventDevices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Partition">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventDevice">
+        <PropertyRef Name="Partition_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SceneLightZone_Scene">
     <End Role="Scene" Type="LSModel.Store.Scenes" Multiplicity="1" />
     <End Role="SceneLightZone" Type="LSModel.Store.SceneLightZone" Multiplicity="*" />
@@ -924,6 +941,10 @@
             <End Role="CSEnvItem" EntitySet="CSEnvItems" />
             <End Role="ControlSpace" EntitySet="ControlSpaces" />
           </AssociationSet>
+          <AssociationSet Name="PartitionEventDevice" Association="LSModel.PartitionEventDevice">
+            <End Role="Partition" EntitySet="Partitions" />
+            <End Role="EventDevice" EntitySet="EventDevices" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ControlSpace">
           <Key>
@@ -1023,6 +1044,7 @@
           <NavigationProperty Name="Scenes" Relationship="LSModel.PartitionScene" FromRole="Partition" ToRole="Scene" />
           <NavigationProperty Name="LightZones" Relationship="LSModel.PartitionLightZone" FromRole="Partition" ToRole="LightZone" />
           <NavigationProperty Name="LightElements" Relationship="LSModel.PartitionLightElement" FromRole="Partition" ToRole="LightElement" />
+          <NavigationProperty Name="EventDevices" Relationship="LSModel.PartitionEventDevice" FromRole="Partition" ToRole="EventDevice" />
         </EntityType>
         <EntityType Name="BaseEffect">
           <Key>
@@ -1290,6 +1312,7 @@
           <Property Name="MultiChannel" Type="Boolean" Nullable="false" />
           <Property Name="CanAddChannel" Type="Boolean" Nullable="false" />
           <Property Name="DotNetType" Type="String" Nullable="false" />
+          <NavigationProperty Name="Partition" Relationship="LSModel.PartitionEventDevice" FromRole="EventDevice" ToRole="Partition" />
         </EntityType>
         <Association Name="ControlSpaceEventDevice">
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
@@ -1314,6 +1337,10 @@
         <Association Name="CSEnvItemControlSpace">
           <End Type="LSModel.CSEnvItem" Role="CSEnvItem" Multiplicity="*" />
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
+        </Association>
+        <Association Name="PartitionEventDevice">
+          <End Type="LSModel.Partition" Role="Partition" Multiplicity="1" />
+          <End Type="LSModel.EventDevice" Role="EventDevice" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1776,6 +1803,14 @@
         <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
       </EndProperty>
       <EndProperty Name="CSEnvItem">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="PartitionEventDevice" TypeName="LSModel.PartitionEventDevice" StoreEntitySet="EventDevices">
+      <EndProperty Name="Partition">
+        <ScalarProperty Name="Id" ColumnName="Partition_Id" />
+      </EndProperty>
+      <EndProperty Name="EventDevice">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

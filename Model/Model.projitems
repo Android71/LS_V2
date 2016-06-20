@@ -24,11 +24,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\LinkFilterEnum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\PointTypeEnum.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentItem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Event.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gamma.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Partition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\AN6UControlChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\AN6USPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RT\NLEventDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\NLPowerBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\NLPowerChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene.cs" />

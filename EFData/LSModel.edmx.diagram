@@ -5,16 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="98" >
-        <EntityTypeShape EntityType="LSModel.ControlSpace" Width="2" PointX="7.75" PointY="3.125" />
-        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.875" PointX="13.25" PointY="3.25" />
+        <EntityTypeShape EntityType="LSModel.ControlSpace" Width="2" PointX="7.75" PointY="4.375" />
+        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.875" PointX="13.25" PointY="3.875" />
         <EntityTypeShape EntityType="LSModel.ArtNetControlChannel" Width="1.875" PointX="12.75" PointY="0.75" />
         <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="1.625" PointY="3.125" />
+        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="1.375" PointY="4.75" />
         <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="5.5" PointY="6.625" />
-        <EntityTypeShape EntityType="LSModel.GenericEvent" Width="1.5" PointX="1.625" PointY="0.75" />
+        <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="5.5" PointY="8" />
+        <EntityTypeShape EntityType="LSModel.GenericEvent" Width="1.5" PointX="1.375" PointY="2.375" />
         <AssociationConnector Association="LSModel.EventEventChannel" />
-        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="0.5" PointY="6.75" />
+        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="4.75" PointY="0.5" />
         <EntityTypeShape EntityType="LSModel.LightPointType" Width="1.5" PointX="8.125" PointY="0.5" />
         <AssociationConnector Association="LSModel.ControlSpaceControlChannel" />
         <AssociationConnector Association="LSModel.ControlSpaceEventChannel" />
@@ -22,12 +22,13 @@
         <EntityTypeShape EntityType="LSModel.ControlDevice" Width="1.5" PointX="10.875" PointY="2.625" />
         <AssociationConnector Association="LSModel.ControlSpaceControlDevice" />
         <AssociationConnector Association="LSModel.ControlDeviceControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EventDevice" Width="1.5" PointX="4.875" PointY="2.75" />
+        <EntityTypeShape EntityType="LSModel.EventDevice" Width="1.5" PointX="4.75" PointY="3.375" />
         <AssociationConnector Association="LSModel.ControlSpaceEventDevice" />
         <AssociationConnector Association="LSModel.EventDeviceEventChannel" />
-        <EntityTypeShape EntityType="LSModel.CSEnvItem" Width="1.625" PointX="8.25" PointY="7" />
+        <EntityTypeShape EntityType="LSModel.CSEnvItem" Width="1.625" PointX="8.25" PointY="8.375" />
         <AssociationConnector Association="LSModel.CSEnvItemEnvironmentItem" />
         <AssociationConnector Association="LSModel.CSEnvItemControlSpace" />
+        <AssociationConnector Association="LSModel.PartitionEventDevice" />
       </Diagram>
       <Diagram DiagramId="697527b404df462abd17d71f61170bde" Name="Diagram2" ZoomLevel="74" >
         <EntityTypeShape EntityType="LSModel.LightElement" Width="1.5" PointX="11.25" PointY="1.75" />

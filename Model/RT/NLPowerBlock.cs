@@ -11,7 +11,7 @@ namespace LS_Designer_WPF.Model
     {
         public NLPowerBlock()
         {
-            Name = "NL_PB";
+            Name = "";
             MultiChannel = false;
             CanAddChannel = false;
             DotNetType = typeof(NLPowerBlock).AssemblyQualifiedName;
@@ -47,13 +47,17 @@ namespace LS_Designer_WPF.Model
         {
             PointTypeEnum pt = PointTypeEnum.W;
             XElement xdata = XElement.Parse(profile);
-            Model = xdata.Attribute("Model").Value;
+            if (xdata.Attribute("Model") != null)
+            {
+                Model = xdata.Attribute("Model").Value;
+            }
             HaveDimmer = bool.Parse(xdata.Attribute("HaveDimmer").Value);
-            //if (xdata.Attribute("PoinType") != null)
-            //{
-                Enum.TryParse(xdata.Attribute("PointType").Value, out pt);
-                PointType = pt;
-            //}
+            if (xdata.Attribute("Name") != null)
+            {
+                Name = xdata.Attribute("Name").Value;
+            }
+            Enum.TryParse(xdata.Attribute("PointType").Value, out pt);
+            PointType = pt;
             if (Id == 0)
                 ControlChannels.Add(new NLPowerChannel() { HaveDimmer = HaveDimmer, PointType = PointType });
         }

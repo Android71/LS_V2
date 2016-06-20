@@ -53,10 +53,10 @@
                     <DataTemplate DataType="{x:Type vm:ControlDevicesVM}">
                         <Controls:ControlDevicesUC Margin="40,40,0,40" HorizontalAlignment="Left"/>
                     </DataTemplate>
-                    <!--<DataTemplate DataType="{x:Type vm:EventDevicesVM}">
-                        <Controls:EventDevicesUC Width="370" Margin="3" HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top" />
+                    <DataTemplate DataType="{x:Type vm:EventDevicesVM}">
+                        <Controls:EventDevicesUC Margin="40,40,0,40" HorizontalAlignment="Left"/>
                     </DataTemplate>
+                    <!--
 
                     <DataTemplate DataType="{x:Type vm:LightElementsVM}">
                         <Controls:LE_LinkUC Margin="3" HorizontalAlignment="Left" />

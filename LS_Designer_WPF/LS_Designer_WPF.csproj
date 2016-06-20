@@ -91,8 +91,11 @@
     <Compile Include="Controls\AN6USPI_UC.xaml.cs">
       <DependentUpon>AN6USPI_UC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\NLEventDevice.xaml.cs">
-      <DependentUpon>NLEventDevice.xaml</DependentUpon>
+    <Compile Include="Controls\TabItemsUC\EventDevicesUC.xaml.cs">
+      <DependentUpon>EventDevicesUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NLEventDeviceUC.xaml.cs">
+      <DependentUpon>NLEventDeviceUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NLPowerBlockUC.xaml.cs">
       <DependentUpon>NLPowerBlockUC.xaml</DependentUpon>
@@ -121,6 +124,7 @@
     <Compile Include="ViewModel\PopUpVM\EmptyPopUpVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\ControlSpacesVM.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\TabItemsVM\EventDevicesVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\PartitionsVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\TabItemVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -135,7 +139,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\NLEventDevice.xaml">
+    <Page Include="Controls\TabItemsUC\EventDevicesUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NLEventDeviceUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

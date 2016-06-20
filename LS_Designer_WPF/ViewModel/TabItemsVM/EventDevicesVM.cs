@@ -1,18 +1,19 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System.Windows;
 using LS_Designer_WPF.Model;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace LS_Designer_WPF.ViewModel
 {
-    public class ControlDevicesVM : TabItemVM
+    public class EventDevicesVM : TabItemVM
     {
 
-        public ControlDevicesVM(IDataService dataService)
+        public EventDevicesVM(IDataService dataService)
         {
             _dataService = dataService;
-            TabName = "Control Devices";
+            TabName = "Event Devices";
 
             MasterAddCmd = new RelayCommand(MasterExecAdd, MasterCanExecAdd);
             MasterRemoveCmd = new RelayCommand(MasterExecRemove, MasterCanExecRemove);
@@ -27,29 +28,21 @@ namespace LS_Designer_WPF.ViewModel
             DetailCancelCmd = new RelayCommand(DetailExecCancel);
 
             TabItemEnabled = false;
-
-            //Load();
-            
         }
 
-        public override void Refresh()
-        {
-            MasterSelectedItem = null;
-            DetailSelectedItem = null;
-            Load();
-        }
+        public override void Refresh() { Load(); }
 
         void Load()
         {
             if (AppContext.ControlSpace != null)
             {
-                _dataService.GetEnvironmentItems(AppContext.ControlSpace.Id, Model.DeviceTypeEnum.ControlDevice, (data, error) =>
+                _dataService.GetEnvironmentItems(AppContext.ControlSpace.Id, Model.DeviceTypeEnum.EventDevice, (data, error) =>
                 {
                     if (error != null) { return; } // Report error here
                     MasterSelectorList = data;
                 });
 
-                _dataService.GetControlDevices(AppContext.ControlSpace.Id, (data, error) =>
+                _dataService.GetEventDevices(AppContext.ControlSpace, AppContext.Partition,(data, error) =>
                 {
                     if (error != null) { return; } // Report error here
                     MasterList = data;
@@ -61,7 +54,7 @@ namespace LS_Designer_WPF.ViewModel
 
         protected override void ContextChanged(string obj)
         {
-            if (AppContext.ControlSpace != null)
+            if (AppContext.ControlSpace != null && AppContext.Partition != null)
             {
                 TabItemEnabled = true;
                 if (IsSelected)
@@ -69,20 +62,12 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
-
-        Visibility _detailContentVisibility = Visibility.Collapsed;
-        public Visibility DetailContentVisibility
-        {
-            get { return _detailContentVisibility; }
-            set { Set(ref _detailContentVisibility, value); }
-        }
-
         /*************************************************************/
 
         #region Master Properties
 
-        ObservableCollection<ControlDevice> _masterList = new ObservableCollection<ControlDevice>();
-        public ObservableCollection<ControlDevice> MasterList
+        ObservableCollection<EventDevice> _masterList = new ObservableCollection<EventDevice>();
+        public ObservableCollection<EventDevice> MasterList
         {
             get { return _masterList; }
             set { Set(ref _masterList, value); }
@@ -91,8 +76,8 @@ namespace LS_Designer_WPF.ViewModel
 
         int msix = -1; //MasterSelectedItem ix;
 
-        ControlDevice _masterSelectedItem;
-        public ControlDevice MasterSelectedItem 
+        EventDevice _masterSelectedItem;
+        public EventDevice MasterSelectedItem 
         {
             get { return _masterSelectedItem; }
             set
@@ -101,34 +86,34 @@ namespace LS_Designer_WPF.ViewModel
                 if (MasterSelectedItem != null)
                 {
                     msix = MasterList.IndexOf(value);
-                    _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-                     {
-                         if (error != null) { return; } // Report error here
-                         MasterCurrentObject = data;
-                     });
+                    //_dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
+                    // {
+                    //     if (error != null) { return; } // Report error here
+                    //     MasterCurrentObject = data;
+                    // });
 
-                    if (MasterSelectedItem.MultiChannel)
-                    {
-                        DetailContentVisibility = Visibility.Visible;
-                        DetailList = MasterCurrentObject.ControlChannels;
-                    }
-                    else
-                        DetailContentVisibility = Visibility.Hidden;
+                    //if (MasterSelectedItem.MultiChannel)
+                    //{
+                    //    DetailContentVisibility = Visibility.Visible;
+                    //    DetailList = MasterCurrentObject.ControlChannels;
+                    //}
+                    //else
+                    //    DetailContentVisibility = Visibility.Hidden;
 
-                    MasterObjectPanelVisibility = Visibility.Visible;
-                    MasterObjectCurtainVisibility = Visibility.Visible;
-                    MasterRemoveCmd.RaiseCanExecuteChanged();
+                    //MasterObjectPanelVisibility = Visibility.Visible;
+                    //MasterObjectCurtainVisibility = Visibility.Visible;
+                    //MasterRemoveCmd.RaiseCanExecuteChanged();
                 }
                 else
                 {
                     msix = -1;
-                    MasterObjectPanelVisibility = Visibility.Collapsed;
+                    //MasterObjectPanelVisibility = Visibility.Collapsed;
                 }
             }
         }
 
-        ControlDevice _masterCurrentObject;
-        public ControlDevice MasterCurrentObject
+        EventDevice _masterCurrentObject;
+        public EventDevice MasterCurrentObject
         {
             get { return _masterCurrentObject; }
             set { Set(ref _masterCurrentObject, value); }
@@ -185,21 +170,21 @@ namespace LS_Designer_WPF.ViewModel
                 }
                 if (!IsMasterSelectorOpen)
                 {
-                    MasterListButtonsVisibility = Visibility.Visible;
-                    MasterSelectorVisibility = Visibility.Hidden;
-                    MasterListVisibility = Visibility.Visible;
-                    if (MasterSelectedItem != null)
-                    {
-                        MasterObjectPanelVisibility = Visibility.Visible;
-                        if (MasterSelectedItem.MultiChannel)
-                        {
-                            DetailContentVisibility = Visibility.Visible;
-                            if (DetailSelectedItem != null)
-                                DetailObjectPanelVisibility = Visibility.Visible;
-                        }
-                    }
-                    else
-                        MasterObjectPanelVisibility = Visibility.Collapsed;
+                    //MasterListButtonsVisibility = Visibility.Visible;
+                    //MasterSelectorVisibility = Visibility.Hidden;
+                    //MasterListVisibility = Visibility.Visible;
+                    //if (MasterSelectedItem != null)
+                    //{
+                    //    MasterObjectPanelVisibility = Visibility.Visible;
+                    //    if (MasterSelectedItem.MultiChannel)
+                    //    {
+                    //        DetailContentVisibility = Visibility.Visible;
+                    //        if (DetailSelectedItem != null)
+                    //            DetailObjectPanelVisibility = Visibility.Visible;
+                    //    }
+                    //}
+                    //else
+                    //    MasterObjectPanelVisibility = Visibility.Collapsed;
                     MessengerInstance.Send("", AppContext.UnBlockUIMsg);
                 }
             }
@@ -211,8 +196,8 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Detail Properties
 
-        ObservableCollection<ControlChannel> _detailList;
-        public ObservableCollection<ControlChannel> DetailList
+        ObservableCollection<EventChannel> _detailList;
+        public ObservableCollection<EventChannel> DetailList
         {
             get { return _detailList; }
             set { Set(ref _detailList, value); }
@@ -220,8 +205,8 @@ namespace LS_Designer_WPF.ViewModel
 
         int dsix = -1; //DetailSelectedItem ix
 
-        ControlChannel _detailSelectedItem;
-        public ControlChannel DetailSelectedItem
+        EventChannel _detailSelectedItem;
+        public EventChannel DetailSelectedItem
         {
             get { return _detailSelectedItem; }
             set
@@ -257,7 +242,7 @@ namespace LS_Designer_WPF.ViewModel
         /*************************************************************/
 
         #region Master UI State
-        
+
         Visibility _masterListButtonsVisibility = Visibility.Visible;
         public Visibility MasterListButtonsVisibility
         {
@@ -307,25 +292,6 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _masterObjectPanelVisibility, value); }
         }
 
-        void MasterNormalUIState()
-        {
-            MasterListCurtainVisibility = Visibility.Collapsed;
-            MasterObjectButtonsVisibility = Visibility.Collapsed;
-            if (MasterSelectedItem == null)
-                MasterObjectPanelVisibility = Visibility.Collapsed;
-            else
-                MasterObjectPanelVisibility = Visibility.Visible;
-            MasterObjectCurtainVisibility = Visibility.Visible;
-        }
-
-        void MasterEditUIState()
-        {
-            MasterListCurtainVisibility = Visibility.Visible;
-            MasterObjectButtonsVisibility = Visibility.Visible;
-            MasterObjectCurtainVisibility = Visibility.Collapsed;
-            MasterObjectPanelVisibility = Visibility.Visible;
-        }
-
         #endregion
 
         /*************************************************************/
@@ -342,41 +308,40 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecSave()
         {
-            int i = -1;
-            //int dsi = -1;
-            _dataService.UpdateControlDevice(MasterCurrentObject, (updatedCount, error) =>
-            {
-                if (error != null) { return; } // Report error here
-                i = updatedCount;
-            });
+            //int i = -1;
+            //_dataService.UpdateControlDevice(MasterCurrentObject, (updatedCount, error) =>
+            //{
+            //    if (error != null) { return; } // Report error here
+            //    i = updatedCount;
+            //});
 
-            MasterObjectButtonsVisibility = Visibility.Collapsed;
-            MasterListCurtainVisibility = Visibility.Collapsed;
-            DetailListCurtainVisibility = Visibility.Collapsed;
+            //MasterObjectButtonsVisibility = Visibility.Collapsed;
+            //MasterListCurtainVisibility = Visibility.Collapsed;
+            //DetailListCurtainVisibility = Visibility.Collapsed;
 
 
-            if (MasterAddMode)
-            {
-                MasterSelectorSelectedItem = null;
+            //if (MasterAddMode)
+            //{
+            //    MasterSelectorSelectedItem = null;
 
-                MasterList.Add(MasterCurrentObject);
-                MasterSelectedItem = MasterCurrentObject;
-                MasterListVisibility = Visibility.Visible;
-            }
-            if (MasterEditMode) //in EditMode MasterSelectedItem always not null
-            {
-                MasterList[msix] = MasterCurrentObject;
-                MasterSelectedItem = MasterCurrentObject;
-                if (savedDsix != -1)
-                    DetailSelectedItem = DetailList[savedDsix];
-            }
+            //    MasterList.Add(MasterCurrentObject);
+            //    MasterSelectedItem = MasterCurrentObject;
+            //    MasterListVisibility = Visibility.Visible;
+            //}
+            //if (MasterEditMode) //in EditMode MasterSelectedItem always not null
+            //{
+            //    MasterList[msix] = MasterCurrentObject;
+            //    MasterSelectedItem = MasterCurrentObject;
+            //    if (savedDsix != -1)
+            //        DetailSelectedItem = DetailList[savedDsix];
+            //}
 
-            MasterAddMode = false;
-            MasterEditMode = false;
-            MasterRemoveCmd.RaiseCanExecuteChanged();
-            MasterAddCmd.RaiseCanExecuteChanged();
+            //MasterAddMode = false;
+            //MasterEditMode = false;
+            //MasterRemoveCmd.RaiseCanExecuteChanged();
+            //MasterAddCmd.RaiseCanExecuteChanged();
 
-            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         private void OKCallbackAction(Object obj)
@@ -401,43 +366,43 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecCancel()
         {
-            if (MasterEditMode)
-            {
-                _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-                     {
-                         if (error != null) { return; } // Report error here
-                         MasterCurrentObject = data;
-                     });
-            }
-            MasterAddMode = false;
-            MasterEditMode = false;
-            MasterAddCmd.RaiseCanExecuteChanged();
-            MasterRemoveCmd.RaiseCanExecuteChanged();
+            //if (MasterEditMode)
+            //{
+            //    _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
+            //         {
+            //             if (error != null) { return; } // Report error here
+            //             MasterCurrentObject = data;
+            //         });
+            //}
+            //MasterAddMode = false;
+            //MasterEditMode = false;
+            //MasterAddCmd.RaiseCanExecuteChanged();
+            //MasterRemoveCmd.RaiseCanExecuteChanged();
 
-            MasterListCurtainVisibility = Visibility.Collapsed;
-            MasterObjectCurtainVisibility = Visibility.Visible;
-            DetailListCurtainVisibility = Visibility.Collapsed;
+            //MasterListCurtainVisibility = Visibility.Collapsed;
+            //MasterObjectCurtainVisibility = Visibility.Visible;
+            //DetailListCurtainVisibility = Visibility.Collapsed;
 
-            MasterObjectButtonsVisibility = Visibility.Collapsed;
-            MasterListVisibility = Visibility.Visible;
+            //MasterObjectButtonsVisibility = Visibility.Collapsed;
+            //MasterListVisibility = Visibility.Visible;
 
-            if (MasterSelectedItem != null)
-            {
-                _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-                {
-                    if (error != null) { return; } // Report error here
-                    MasterCurrentObject = data;
-                });
-                if (MasterSelectedItem.MultiChannel)
-                {
-                    DetailContentVisibility = Visibility.Visible;
-                    if (DetailSelectedItem != null)
-                        DetailObjectPanelVisibility = Visibility.Visible;
-                }
-            }
-            else
-                MasterObjectPanelVisibility = Visibility.Collapsed;
-            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+            //if (MasterSelectedItem != null)
+            //{
+            //    _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
+            //    {
+            //        if (error != null) { return; } // Report error here
+            //        MasterCurrentObject = data;
+            //    });
+            //    if (MasterSelectedItem.MultiChannel)
+            //    {
+            //        DetailContentVisibility = Visibility.Visible;
+            //        if (DetailSelectedItem != null)
+            //            DetailObjectPanelVisibility = Visibility.Visible;
+            //    }
+            //}
+            //else
+            //    MasterObjectPanelVisibility = Visibility.Collapsed;
+            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         #endregion
@@ -509,6 +474,13 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Detail UI State
 
+        Visibility _detailContentVisibility = Visibility.Collapsed;
+        public Visibility DetailContentVisibility
+        {
+            get { return _detailContentVisibility; }
+            set { Set(ref _detailContentVisibility, value); }
+        }
+
         Visibility _detailListButtonsVisibility = Visibility.Hidden;
         public Visibility DetailListButtonsVisibility
         {
@@ -544,29 +516,7 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _detailObjectPanelVisibility, value); }
         }
 
-        void DetailNormalUIState()
-        {
-            DetailListCurtainVisibility = Visibility.Collapsed;
-            DetailObjectButtonsVisibility = Visibility.Collapsed;
-            if (DetailSelectedItem == null)
-                DetailObjectPanelVisibility = Visibility.Collapsed;
-            else
-                DetailObjectPanelVisibility = Visibility.Visible;
-            DetailObjectCurtainVisibility = Visibility.Visible;
-        }
-
-        void DetailEditUIState()
-        {
-            DetailListCurtainVisibility = Visibility.Visible;
-            DetailObjectButtonsVisibility = Visibility.Visible;
-            DetailObjectCurtainVisibility = Visibility.Collapsed;
-            DetailObjectPanelVisibility = Visibility.Visible;
-        }
-
-
-
         #endregion
-
 
         /*************************************************************/
 
@@ -580,26 +530,25 @@ namespace LS_Designer_WPF.ViewModel
 
         void DetailExecSave()
         {
-            int updateCount = 0;
-            _dataService.UpdateControlChannel(DetailCurrentObject, (data, error) =>
-                     {
-                         if (error != null) { return; } // Report error here
-                         updateCount = data;
-                     });
-            DetailEditMode = false;
-            MasterAddCmd.RaiseCanExecuteChanged();
-            MasterRemoveCmd.RaiseCanExecuteChanged();
+            //int updateCount = 0;
+            //_dataService.UpdateControlChannel(DetailCurrentObject, (data, error) =>
+            //         {
+            //             if (error != null) { return; } // Report error here
+            //             updateCount = data;
+            //         });
+            //DetailEditMode = false;
+            //MasterAddCmd.RaiseCanExecuteChanged();
+            //MasterRemoveCmd.RaiseCanExecuteChanged();
 
-            //int i = DetailList.IndexOf(DetailSelectedItem);
-            DetailList[dsix] = DetailCurrentObject;
-            DetailSelectedItem = DetailCurrentObject;
+            //DetailList[dsix] = DetailCurrentObject;
+            //DetailSelectedItem = DetailCurrentObject;
 
-            DetailObjectButtonsVisibility = Visibility.Collapsed;
-            DetailListCurtainVisibility = Visibility.Collapsed;
+            //DetailObjectButtonsVisibility = Visibility.Collapsed;
+            //DetailListCurtainVisibility = Visibility.Collapsed;
 
-            MasterListCurtainVisibility = Visibility.Collapsed;
+            //MasterListCurtainVisibility = Visibility.Collapsed;
 
-            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         private void DetailOKCallbackAction(Object obj)
@@ -639,7 +588,7 @@ namespace LS_Designer_WPF.ViewModel
             DetailObjectCurtainVisibility = Visibility.Visible;
 
             DetailObjectButtonsVisibility = Visibility.Collapsed;
-            
+
         }
 
         #endregion
@@ -652,7 +601,7 @@ namespace LS_Designer_WPF.ViewModel
         void DetailExecEdit()
         {
             DetailEditMode = true;
-            
+
             DetailObjectCurtainVisibility = Visibility.Collapsed;
             DetailObjectButtonsVisibility = Visibility.Visible;
             DetailListCurtainVisibility = Visibility.Visible;
@@ -672,15 +621,6 @@ namespace LS_Designer_WPF.ViewModel
 
         void DetailExecAdd()
         {
-            //AddMode = true;
-            //if (SelectedItem != null)
-            //    Temp = SelectedItem;
-            //AddCmd.RaiseCanExecuteChanged();
-            //RemoveCmd.RaiseCanExecuteChanged();
-            //SelectedItem = null;
-            //AddUIState();
-            //CurrentObject = new Partition() { Id = 0, Name = "Новый раздел" };
-            //MessengerInstance.Send("focus", "PartitionFocus");
         }
 
         bool DetailCanExecAdd()
@@ -709,6 +649,7 @@ namespace LS_Designer_WPF.ViewModel
 
 
         #endregion
+
 
     }
 }

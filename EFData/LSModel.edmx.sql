@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/18/2016 09:36:38
+-- Date Created: 06/20/2016 11:36:41
 -- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
@@ -407,7 +407,8 @@ CREATE TABLE [dbo].[EventDevices] (
     [MultiChannel] bit  NOT NULL,
     [CanAddChannel] bit  NOT NULL,
     [DotNetType] nvarchar(max)  NOT NULL,
-    [ControlSpace_Id] int  NOT NULL
+    [ControlSpace_Id] int  NOT NULL,
+    [Partition_Id] int  NOT NULL
 );
 GO
 
@@ -1030,6 +1031,21 @@ GO
 CREATE INDEX [IX_FK_CSEnvItemControlSpace]
 ON [dbo].[CSEnvItems]
     ([ControlSpace_Id]);
+GO
+
+-- Creating foreign key on [Partition_Id] in table 'EventDevices'
+ALTER TABLE [dbo].[EventDevices]
+ADD CONSTRAINT [FK_PartitionEventDevice]
+    FOREIGN KEY ([Partition_Id])
+    REFERENCES [dbo].[Partitions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PartitionEventDevice'
+CREATE INDEX [IX_FK_PartitionEventDevice]
+ON [dbo].[EventDevices]
+    ([Partition_Id]);
 GO
 
 -- Creating foreign key on [Id] in table 'ControlChannels_ArtNetControlChannel'

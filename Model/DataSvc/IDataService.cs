@@ -69,6 +69,14 @@ namespace LS_Designer_WPF.Model
 
         /************************************************************/
 
+        #region EventDevices
+
+        void GetEventDevices(ControlSpace space, Partition partition, Action<ObservableCollection<EventDevice>, Exception> callback);
+
+        #endregion
+
+        /************************************************************/
+
         //void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback);
 
         //void GetEnvironmentItem(string model, Action<EnvironmentItem, Exception> callback);

@@ -511,128 +511,128 @@ namespace LS_Designer_WPF.Model
 
         //#endregion
 
-        ///****************************************************************/
+        /****************************************************************/
 
-        //#region EventDevice
+        #region EventDevice
 
-        //public void GetEventDevices(ControlSpace space, Partition partition, Action<ObservableNotifiableCollection<EventDevice>, Exception> callback)
-        //{
-        //    IEnumerable<EFData.EventDevice> y = null;
-        //    var x = new ObservableNotifiableCollection<EventDevice>();
-        //    EventDevice eventDevice = null;
-        //    EventChannel eventChannel = null;
+        public void GetEventDevices(ControlSpace space, Partition partition, Action<ObservableCollection<EventDevice>, Exception> callback)
+        {
+            IEnumerable<EFData.EventDevice> y = null;
+            var x = new ObservableCollection<EventDevice>();
+            EventDevice eventDevice = null;
+            EventChannel eventChannel = null;
 
-        //    using (var db = new LSModelContainer(LS.CS))
-        //    {
-        //        if (space != null)
-        //            y = db.EventDevices.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
-        //        else
-        //            y = db.EventDevices;
-        //        foreach (EFData.EventDevice dbEventDevice in y)
-        //        {
-        //            eventDevice = new EventDevice();
+            //using (var db = new LSModelContainer(LS.CS))
+            //{
+            //    if (space != null)
+            //        y = db.EventDevices.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
+            //    else
+            //        y = db.EventDevices;
+            //    foreach (EFData.EventDevice dbEventDevice in y)
+            //    {
+            //        eventDevice = new EventDevice();
 
-        //            Mapper.Db2O(dbEventDevice, eventDevice);
-        //            foreach (EFData.EventChannel ch in dbEventDevice.EventChannels)
-        //            {
+            //        Mapper.Db2O(dbEventDevice, eventDevice);
+            //        foreach (EFData.EventChannel ch in dbEventDevice.EventChannels)
+            //        {
 
-        //                eventChannel = new EventChannel();
-        //                Mapper.Db2O(ch, eventChannel);
-        //                eventDevice.EventChannels.Add(eventChannel);
-        //            }
+            //            eventChannel = new EventChannel();
+            //            Mapper.Db2O(ch, eventChannel);
+            //            eventDevice.EventChannels.Add(eventChannel);
+            //        }
 
-        //            x.Add(eventDevice);
-        //        }
-        //    }
-        //    callback(x, null);
+            //        x.Add(eventDevice);
+            //    }
+            //}
+            callback(x, null);
 
-        //}
+        }
 
-        //public void UpdateEventDevice(EventDevice item, Action<int, Exception> callback)
-        //{
-        //    EFData.EventDevice dbEventDevice;
-        //    ////EFData.ControlSpace dbControlSpace;
-        //    EFData.EventChannel dbEventChannel;
-        //    //EventSource eventSource = null;
-        //    ////EventDevice eventDevice = null;
-        //    ////if (item.ControlSpace.Name == )
-        //    int ix = -1;
-        //    if (item.Id != 0)
-        //    {
-        //        // Update if !IsModeChanged 
-        //        if (item.NewEventChannels.Count == 0)
-        //        {
-        //            using (var db = new LSModelContainer(LS.CS))
-        //            {
-        //                dbEventDevice = db.EventDevices.FirstOrDefault(p => p.Id == item.Id);
-        //                var x = dbEventDevice.EventChannels.ToList();
-        //                Mapper.O2Db(item, dbEventDevice);
-        //                //db.Entry(dbEventDevice).State = EntityState.Modified;
-        //                for (int i = 0; i < item.EventChannels.Count; i++)
-        //                {
-        //                    Mapper.O2Db(item.EventChannels[i], x[i]);
-        //                }
-        //                ix = db.SaveChanges();
-        //            }
-        //        }
-        //        else
-        //        {
-        //            // Update if IsModeChanged 
-        //            using (var db = new LSModelContainer(LS.CS))
-        //            {
-        //                dbEventDevice = db.EventDevices.FirstOrDefault(p => p.Id == item.Id);
-        //                var x = dbEventDevice.EventChannels.ToList();
-        //                foreach (EFData.EventChannel eCh in x)
-        //                    db.Entry(eCh).State = EntityState.Deleted;
-        //                Mapper.O2Db(item, dbEventDevice);
-        //                for (int i = 0; i < item.NewEventChannels.Count; i++)
-        //                {
-        //                    dbEventChannel = new EFData.EventChannel();
-        //                    Mapper.O2Db(item.NewEventChannels[i], dbEventChannel);
+        public void UpdateEventDevice(EventDevice item, Action<int, Exception> callback)
+        {
+            EFData.EventDevice dbEventDevice;
+            ////EFData.ControlSpace dbControlSpace;
+            EFData.EventChannel dbEventChannel;
+            //EventSource eventSource = null;
+            ////EventDevice eventDevice = null;
+            ////if (item.ControlSpace.Name == )
+            int ix = -1;
+            //if (item.Id != 0)
+            //{
+            //    // Update if !IsModeChanged 
+            //    if (item.NewEventChannels.Count == 0)
+            //    {
+            //        using (var db = new LSModelContainer(LS.CS))
+            //        {
+            //            dbEventDevice = db.EventDevices.FirstOrDefault(p => p.Id == item.Id);
+            //            var x = dbEventDevice.EventChannels.ToList();
+            //            Mapper.O2Db(item, dbEventDevice);
+            //            //db.Entry(dbEventDevice).State = EntityState.Modified;
+            //            for (int i = 0; i < item.EventChannels.Count; i++)
+            //            {
+            //                Mapper.O2Db(item.EventChannels[i], x[i]);
+            //            }
+            //            ix = db.SaveChanges();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        // Update if IsModeChanged 
+            //        using (var db = new LSModelContainer(LS.CS))
+            //        {
+            //            dbEventDevice = db.EventDevices.FirstOrDefault(p => p.Id == item.Id);
+            //            var x = dbEventDevice.EventChannels.ToList();
+            //            foreach (EFData.EventChannel eCh in x)
+            //                db.Entry(eCh).State = EntityState.Deleted;
+            //            Mapper.O2Db(item, dbEventDevice);
+            //            for (int i = 0; i < item.NewEventChannels.Count; i++)
+            //            {
+            //                dbEventChannel = new EFData.EventChannel();
+            //                Mapper.O2Db(item.NewEventChannels[i], dbEventChannel);
 
-        //                    dbEventChannel.Event = db.Events.FirstOrDefault(p => p.Name == dbEventChannel.EventName);
-        //                    dbEventDevice.EventChannels.Add(dbEventChannel);
-        //                }
-        //                ix = db.SaveChanges();
-        //            }
-        //        }
-        //        callback(ix, null);
-        //    }
-        //    else
-        //    {
-        //        // Create
-        //        using (var db = new LSModelContainer(LS.CS))
-        //        {
-        //            dbEventDevice = new EFData.EventDevice();
+            //                dbEventChannel.Event = db.Events.FirstOrDefault(p => p.Name == dbEventChannel.EventName);
+            //                dbEventDevice.EventChannels.Add(dbEventChannel);
+            //            }
+            //            ix = db.SaveChanges();
+            //        }
+            //    }
+            //    callback(ix, null);
+            //}
+            //else
+            //{
+            //    // Create
+            //    using (var db = new LSModelContainer(LS.CS))
+            //    {
+            //        dbEventDevice = new EFData.EventDevice();
 
-        //            Mapper.O2Db(item, dbEventDevice);
-        //            dbEventDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
-        //            dbEventDevice.Partition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
+            //        Mapper.O2Db(item, dbEventDevice);
+            //        dbEventDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
+            //        dbEventDevice.Partition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
 
-        //            foreach (EventChannel ch in item.EventChannels)
-        //            {
-        //                dbEventChannel = new EFData.EventChannel();
-        //                Mapper.O2Db(ch, dbEventChannel);
-        //                dbEventChannel.Event = db.Events.FirstOrDefault(p => p.Name == ch.EventName);
-        //                dbEventDevice.EventChannels.Add(dbEventChannel);
-        //            }
-        //            db.EventDevices.Add(dbEventDevice);
-        //            try
-        //            {
-        //                ix = db.SaveChanges();
-        //            }
-        //            catch (Exception)
-        //            {
-        //                //var x = 5;
-        //            }
-        //            item.Id = dbEventDevice.Id;
-        //        }
-        //            callback(ix, null);
-        //    }
-        //}
+            //        foreach (EventChannel ch in item.EventChannels)
+            //        {
+            //            dbEventChannel = new EFData.EventChannel();
+            //            Mapper.O2Db(ch, dbEventChannel);
+            //            dbEventChannel.Event = db.Events.FirstOrDefault(p => p.Name == ch.EventName);
+            //            dbEventDevice.EventChannels.Add(dbEventChannel);
+            //        }
+            //        db.EventDevices.Add(dbEventDevice);
+            //        try
+            //        {
+            //            ix = db.SaveChanges();
+            //        }
+            //        catch (Exception)
+            //        {
+            //            //var x = 5;
+            //        }
+            //        item.Id = dbEventDevice.Id;
+            //    }
+            //    callback(ix, null);
+            //}
+        }
 
 
-        //#endregion
+        #endregion
 
 
 

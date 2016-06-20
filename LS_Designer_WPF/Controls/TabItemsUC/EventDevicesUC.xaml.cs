@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace LS_Designer_WPF.Controls
 {
     /// <summary>
-    /// Логика взаимодействия для NLEventDevice.xaml
+    /// Логика взаимодействия для EventDevicesUC.xaml
     /// </summary>
-    public partial class NLEventDevice : UserControl
+    public partial class EventDevicesUC : UserControl
     {
-        public NLEventDevice()
+        public EventDevicesUC()
         {
             InitializeComponent();
         }
