@@ -41,6 +41,7 @@
     <None Include="$(MSBuildThisFileDirectory)Profiles\PB411_profile.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)RT\NL_Pult.xml" />
+    <Content Include="$(MSBuildThisFileDirectory)RT\NL_PB211.xml" />
+    <Content Include="$(MSBuildThisFileDirectory)RT\NL_PB411.xml" />
   </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@ namespace LS_Designer_WPF.Model
             MultiChannel = true;
             CanAddChannel = false;
             Name = "NL_EventDev";
+            Modes = new List<string>();
         }
         public override string Profile
         {
@@ -23,7 +24,15 @@ namespace LS_Designer_WPF.Model
 
         List<XElement> modes;
         List<XElement> channels;
-        string currentMode;
+        string currentModeS;
+        int currentModeInt;
+
+        public List<String> Modes { get; set; }
+
+        public string CurrentMode { get; set; }
+
+        public int ChannelCount { get; set; }
+
 
         string CreateProfile()
         {
@@ -40,12 +49,22 @@ namespace LS_Designer_WPF.Model
         {
             XElement root = XElement.Parse(profile);
             EventChannel ech;
-            currentMode = root.Attribute("CurrentMode").Value;
+            currentModeS = root.Attribute("CurrentMode").Value;
+            currentModeInt = int.Parse(currentModeS);
             modes = new List<XElement>(root.Elements());
-            channels = new List<XElement>(modes.Find(p => p.Attribute("Value").Value == currentMode).Elements());
+            int i = 1;
+            foreach (XElement xel in modes)
+            {
+                Modes.Add(String.Format("Mode_{0}", i));
+                i++;
+            }
+            CurrentMode = Modes[currentModeInt];
+            channels = new List<XElement>(modes.Find(p => p.Attribute("Value").Value == currentModeS).Elements());
             //Mode = int.Parse(modes.Find(p => p.Attribute("Value").Value == currentMode).Attribute("Value").Value);
-            Mode = int.Parse(currentMode);
-            foreach(XElement ch in channels)
+            Mode = int.Parse(currentModeS);
+            ChannelCount = channels.Count;
+
+            foreach (XElement ch in channels)
             {
                 foreach(XElement evnt in ch.Elements())
                 {
@@ -83,6 +102,65 @@ namespace LS_Designer_WPF.Model
             }
         }
 
+        // UI Staff
+
+        public int Channel_1
+        {
+            get
+            {
+                XElement xel = channels[0];
+                return int.Parse(xel.Attribute("ChannelNo").Value);
+            }
+            set
+            {
+                channels[0].Attribute("ChannelNo").Value = value.ToString();
+            }
+        }
+
+        public int Channel_2
+        {
+            get
+            {
+                XElement xel = channels[1];
+                return int.Parse(xel.Attribute("ChannelNo").Value);
+            }
+            set
+            {
+                channels[1].Attribute("ChannelNo").Value = value.ToString();
+            }
+        }
+
+        public int Channel_3
+        {
+            get
+            {
+                if (channels.Count > 2)
+                    return int.Parse(channels[2].Attribute("ChannelNo").Value);
+                else
+                    return 0;
+            }
+            set
+            {
+                if (channels.Count > 2)
+                    channels[2].Attribute("ChannelNo").Value = value.ToString();
+            }
+        }
+
+        public int Channel_4
+        {
+            get
+            {
+                if (channels.Count > 3)
+                    return int.Parse(channels[3].Attribute("ChannelNo").Value);
+                else
+                    return 0;
+            }
+            set
+            {
+                if (channels.Count >3)
+                    channels[3].Attribute("ChannelNo").Value = value.ToString();
+            }
+        }
     }
 
 }

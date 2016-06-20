@@ -41,6 +41,27 @@ namespace LS_Designer_WPF.Controls
             if (d != null)
             {
                 uc = (NLEventDeviceUC)d;
+                uc.channel2.Visibility = Visibility.Visible;
+                uc.channel3.Visibility = Visibility.Visible;
+                uc.channel4.Visibility = Visibility.Visible;
+                if (uc.ChCount == 1)
+                {
+                    uc.channel2.Visibility = Visibility.Hidden;
+                    uc.channel3.Visibility = Visibility.Collapsed;
+                    uc.channel4.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                if (uc.ChCount == 2)
+                {
+                    uc.channel3.Visibility = Visibility.Collapsed;
+                    uc.channel4.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                if (uc.ChCount == 3)
+                {
+                    uc.channel4.Visibility = Visibility.Hidden;
+                    return;
+                }
             }
         }
     }

@@ -170,21 +170,21 @@ namespace LS_Designer_WPF.ViewModel
                 }
                 if (!IsMasterSelectorOpen)
                 {
-                    //MasterListButtonsVisibility = Visibility.Visible;
-                    //MasterSelectorVisibility = Visibility.Hidden;
-                    //MasterListVisibility = Visibility.Visible;
-                    //if (MasterSelectedItem != null)
-                    //{
-                    //    MasterObjectPanelVisibility = Visibility.Visible;
-                    //    if (MasterSelectedItem.MultiChannel)
-                    //    {
-                    //        DetailContentVisibility = Visibility.Visible;
-                    //        if (DetailSelectedItem != null)
-                    //            DetailObjectPanelVisibility = Visibility.Visible;
-                    //    }
-                    //}
-                    //else
-                    //    MasterObjectPanelVisibility = Visibility.Collapsed;
+                    MasterListButtonsVisibility = Visibility.Visible;
+                    MasterSelectorVisibility = Visibility.Hidden;
+                    MasterListVisibility = Visibility.Visible;
+                    if (MasterSelectedItem != null)
+                    {
+                        MasterObjectPanelVisibility = Visibility.Visible;
+                        if (MasterSelectedItem.MultiChannel)
+                        {
+                            DetailContentVisibility = Visibility.Visible;
+                            if (DetailSelectedItem != null)
+                                DetailObjectPanelVisibility = Visibility.Visible;
+                        }
+                    }
+                    else
+                        MasterObjectPanelVisibility = Visibility.Collapsed;
                     MessengerInstance.Send("", AppContext.UnBlockUIMsg);
                 }
             }
@@ -366,43 +366,43 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecCancel()
         {
-            //if (MasterEditMode)
-            //{
-            //    _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-            //         {
-            //             if (error != null) { return; } // Report error here
-            //             MasterCurrentObject = data;
-            //         });
-            //}
-            //MasterAddMode = false;
-            //MasterEditMode = false;
-            //MasterAddCmd.RaiseCanExecuteChanged();
-            //MasterRemoveCmd.RaiseCanExecuteChanged();
+            if (MasterEditMode)
+            {
+                ////_dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
+                ////     {
+                ////         if (error != null) { return; } // Report error here
+                ////         MasterCurrentObject = data;
+                ////     });
+            }
+            MasterAddMode = false;
+            MasterEditMode = false;
+            MasterAddCmd.RaiseCanExecuteChanged();
+            MasterRemoveCmd.RaiseCanExecuteChanged();
 
-            //MasterListCurtainVisibility = Visibility.Collapsed;
-            //MasterObjectCurtainVisibility = Visibility.Visible;
-            //DetailListCurtainVisibility = Visibility.Collapsed;
+            MasterListCurtainVisibility = Visibility.Collapsed;
+            MasterObjectCurtainVisibility = Visibility.Visible;
+            DetailListCurtainVisibility = Visibility.Collapsed;
 
-            //MasterObjectButtonsVisibility = Visibility.Collapsed;
-            //MasterListVisibility = Visibility.Visible;
+            MasterObjectButtonsVisibility = Visibility.Collapsed;
+            MasterListVisibility = Visibility.Visible;
 
-            //if (MasterSelectedItem != null)
-            //{
-            //    _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        MasterCurrentObject = data;
-            //    });
-            //    if (MasterSelectedItem.MultiChannel)
-            //    {
-            //        DetailContentVisibility = Visibility.Visible;
-            //        if (DetailSelectedItem != null)
-            //            DetailObjectPanelVisibility = Visibility.Visible;
-            //    }
-            //}
-            //else
-            //    MasterObjectPanelVisibility = Visibility.Collapsed;
-            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+            if (MasterSelectedItem != null)
+            {
+                //_dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
+                //{
+                //    if (error != null) { return; } // Report error here
+                //    MasterCurrentObject = data;
+                //});
+                //if (MasterSelectedItem.MultiChannel)
+                //{
+                //    DetailContentVisibility = Visibility.Visible;
+                //    if (DetailSelectedItem != null)
+                //        DetailObjectPanelVisibility = Visibility.Visible;
+                //}
+            }
+            else
+                MasterObjectPanelVisibility = Visibility.Collapsed;
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         #endregion

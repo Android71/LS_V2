@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/20/2016 11:36:41
--- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 06/20/2016 19:30:19
+-- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -103,6 +103,9 @@ IF OBJECT_ID(N'[dbo].[FK_CSEnvItemEnvironmentItem]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_CSEnvItemControlSpace]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[CSEnvItems] DROP CONSTRAINT [FK_CSEnvItemControlSpace];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartitionEventDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventDevices] DROP CONSTRAINT [FK_PartitionEventDevice];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ArtNetControlChannel_inherits_ControlChannel]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlChannels_ArtNetControlChannel] DROP CONSTRAINT [FK_ArtNetControlChannel_inherits_ControlChannel];
