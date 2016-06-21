@@ -35,7 +35,8 @@
         <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,2,0,2"
                   VerticalAlignment="Center"
                   Style="{StaticResource ComboBoxFlatStyle}"
-                  ItemsSource="{Binding Modes}" SelectedItem="{Binding CurrentMode}"/>
+                  ItemsSource="{Binding ModeList}"
+                  SelectedItem="{Binding SelectedModeListItem}" />
 
         <Grid Name="channels" Grid.Row="3" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>

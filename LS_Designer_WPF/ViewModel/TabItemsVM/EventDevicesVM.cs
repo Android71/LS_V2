@@ -148,6 +148,7 @@ namespace LS_Designer_WPF.ViewModel
                     x.ControlSpace = AppContext.ControlSpace;
                     x.Profile = d.Profile;
                     x.Model = d.Model;
+                    x.Partition = AppContext.Partition;
                     MasterCurrentObject = x;
 
                     MasterAddMode = true;
@@ -308,26 +309,26 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecSave()
         {
-            //int i = -1;
-            //_dataService.UpdateControlDevice(MasterCurrentObject, (updatedCount, error) =>
-            //{
-            //    if (error != null) { return; } // Report error here
-            //    i = updatedCount;
-            //});
+            int i = -1;
+            _dataService.UpdateEventDevice(MasterCurrentObject, (updatedCount, error) =>
+            {
+                if (error != null) { return; } // Report error here
+                i = updatedCount;
+            });
 
-            //MasterObjectButtonsVisibility = Visibility.Collapsed;
-            //MasterListCurtainVisibility = Visibility.Collapsed;
-            //DetailListCurtainVisibility = Visibility.Collapsed;
+            MasterObjectButtonsVisibility = Visibility.Collapsed;
+            MasterListCurtainVisibility = Visibility.Collapsed;
+            DetailListCurtainVisibility = Visibility.Collapsed;
 
 
-            //if (MasterAddMode)
-            //{
-            //    MasterSelectorSelectedItem = null;
+            if (MasterAddMode)
+            {
+                MasterSelectorSelectedItem = null;
 
-            //    MasterList.Add(MasterCurrentObject);
-            //    MasterSelectedItem = MasterCurrentObject;
-            //    MasterListVisibility = Visibility.Visible;
-            //}
+                MasterList.Add(MasterCurrentObject);
+                MasterSelectedItem = MasterCurrentObject;
+                MasterListVisibility = Visibility.Visible;
+            }
             //if (MasterEditMode) //in EditMode MasterSelectedItem always not null
             //{
             //    MasterList[msix] = MasterCurrentObject;
@@ -336,12 +337,12 @@ namespace LS_Designer_WPF.ViewModel
             //        DetailSelectedItem = DetailList[savedDsix];
             //}
 
-            //MasterAddMode = false;
-            //MasterEditMode = false;
-            //MasterRemoveCmd.RaiseCanExecuteChanged();
-            //MasterAddCmd.RaiseCanExecuteChanged();
+            MasterAddMode = false;
+            MasterEditMode = false;
+            MasterRemoveCmd.RaiseCanExecuteChanged();
+            MasterAddCmd.RaiseCanExecuteChanged();
 
-            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         private void OKCallbackAction(Object obj)

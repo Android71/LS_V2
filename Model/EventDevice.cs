@@ -9,11 +9,13 @@ namespace LS_Designer_WPF.Model
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         public string Model { get; set; }
 
-        public int Mode { get; set; }
+        public virtual int Mode { get; set; }
+
+        public int OldMode { get; set; }
 
         public virtual string Profile { get; set; }
 
@@ -26,12 +28,28 @@ namespace LS_Designer_WPF.Model
         public string DotNetType { get; set; }
 
         public ControlSpace ControlSpace { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public Collection<EventChannel> EventChannels { get; set; }
+
+        public Partition Partition { get; set; }
+
+        public List<EventChannel> EventChannels { get; set; }
 
         // UI related
-        int ChCount { get; set; }
-        List<string> ModeList { get; set; }
-        int SelectedMode { get; set; }
+
+        protected List<int> channelNumbers;
+
+        public int ChCount { get; set; }
+
+        public List<string> ModeList { get; set; }
+
+        string _selectedModeListItem;
+        public string SelectedModeListItem
+        {
+            get { return _selectedModeListItem; }
+            set
+            {
+                _selectedModeListItem = value;
+                Mode = ModeList.IndexOf(value);
+            }
+        }
     }
 }

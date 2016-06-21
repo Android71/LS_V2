@@ -73,6 +73,8 @@ namespace LS_Designer_WPF.Model
 
         void GetEventDevices(ControlSpace space, Partition partition, Action<ObservableCollection<EventDevice>, Exception> callback);
 
+        void UpdateEventDevice(EventDevice item, Action<int, Exception> callback);
+
         #endregion
 
         /************************************************************/

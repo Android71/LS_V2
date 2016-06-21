@@ -180,78 +180,68 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
-        ///****************************************************************/
+        /****************************************************************/
 
-        //#region EventDevice
+        #region EventDevice
 
-        //public static void O2Db(EventDevice obj, EFData.EventDevice dbObj)
-        //{
-        //    //XElement root;
-        //    //XElement profile;
-        //    dbObj.Mode = obj.SelectedMode.ModeNo;
-        //    if (dbObj.Id == 0)
-        //        dbObj.Id = obj.Id;
-        //    dbObj.Model = obj.Model;
-        //    dbObj.Name = obj.Name;
-        //    dbObj.Profile = obj.Profile;
-        //    //if (obj is ArtNetControlDevice)
-        //    //{
-        //    //root = new XElement("Params");
-        //    //profile = new XElement("Profile");
-        //    //profile.Value = obj.Profile;
-        //    //root.Add(profile);
-        //    //root.Add(new XElement("CurrentMode", XAttribute("Value",
-        //        //("Params",
-        //        //    new XElement("IPAddress",
-        //        //                 new XAttribute("Value", (obj as ArtNetControlDevice).IPAddress.ToString()),
-        //        //                 new XAttribute("ChCount", (obj as ArtNetControlDevice).IPChCount.ToString())),
-        //        //    new XElement("VirtualIP",
-        //        //                 new XAttribute("Value", (obj as ArtNetControlDevice).VirtualIP.ToString()),
-        //        //                 new XAttribute("ChCount", (obj as ArtNetControlDevice).VIPChCount.ToString()))
-        //        //);
-        //        //dbObj.Profile = data.ToString();
-        //    //}
-        //}
+        public static void O2Db(EventDevice obj, EFData.EventDevice dbObj)
+        {
+            dbObj.Name = obj.Name;
+            dbObj.Model = obj.Model;
+            dbObj.Mode = obj.Mode;
+            dbObj.Profile = obj.Profile;
+            dbObj.Remark = obj.Remark;
+            dbObj.MultiChannel = obj.MultiChannel;
+            dbObj.CanAddChannel = obj.CanAddChannel;
+            dbObj.DotNetType = obj.DotNetType;
+        }
 
-        //public static void Db2O(EFData.EventDevice dbObj, EventDevice obj)
-        //{
+        public static void Db2O(EFData.EventDevice dbObj, EventDevice obj)
+        {
 
-        //    obj.Id = dbObj.Id;
-        //    obj.Mode = dbObj.Mode;
-        //    obj.OldMode = dbObj.Mode;
-        //    obj.Model = dbObj.Model;
-        //    obj.Name = dbObj.Name;
-        //    obj.Profile = dbObj.Profile;
-        //    obj.ControlSpace = new ControlSpace();
-        //    Db2O(dbObj.ControlSpace, obj.ControlSpace);
-        //    obj.Partition = new Partition();
-        //    Db2O(dbObj.Partition, obj.Partition);
-        //}
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.Model = dbObj.Model;
+            obj.OldMode = dbObj.Mode;
+            obj.Mode = dbObj.Mode;
+            obj.Profile = dbObj.Profile;
+            obj.Remark = dbObj.Remark;
+            obj.MultiChannel = dbObj.MultiChannel;
+            obj.CanAddChannel = dbObj.CanAddChannel;
+            obj.DotNetType = dbObj.DotNetType;
+            //obj.Mode = dbObj.Mode;
+            //obj.OldMode = dbObj.Mode;
+            //obj.Model = dbObj.Model;
+            //obj.Name = dbObj.Name;
+            //obj.Profile = dbObj.Profile;
+            //obj.ControlSpace = new ControlSpace();
+            //Db2O(dbObj.ControlSpace, obj.ControlSpace);
+            //obj.Partition = new Partition();
+            //Db2O(dbObj.Partition, obj.Partition);
+        }
 
-        //#endregion
+        #endregion
 
-        ///****************************************************************/
+        /****************************************************************/
 
-        //#region EventChannel
+        #region EventChannel
 
-        //public static void O2Db(EventChannel obj, EFData.EventChannel dbObj)
-        //{
-        //    dbObj.ChannelNo = obj.ChannelNo;
-        //    if (dbObj.Id == 0)
-        //        dbObj.Id = obj.Id;
-        //    dbObj.Name = obj.Name;
-        //    dbObj.EventName = obj.EventName;
-        //}
+        public static void O2Db(EventChannel obj, EFData.EventChannel dbObj)
+        {
+            dbObj.Name = obj.Name;
+            dbObj.ChannelNo = obj.ChannelNo;
+            dbObj.EventName = obj.EventName;
+        }
 
-        //public static void Db2O(EFData.EventChannel dbObj, EventChannel obj)
-        //{
-        //    obj.ChannelNo = dbObj.ChannelNo;
-        //    obj.Id = dbObj.Id;
-        //    obj.Name = dbObj.Name;
-        //    obj.EventName = dbObj.EventName;
-        //}
+        public static void Db2O(EFData.EventChannel dbObj, EventChannel obj)
+        {
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.ChannelNo = dbObj.ChannelNo;
+            obj.EventName = dbObj.EventName;
+        }
 
-        //#endregion
+        #endregion
 
 
 
