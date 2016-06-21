@@ -97,9 +97,6 @@
     <Compile Include="Gamma.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="GenericEvent.cs">
-      <DependentUpon>LSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="LE_Proxy.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>

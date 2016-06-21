@@ -9,11 +9,11 @@ namespace LS_Designer_WPF.Model
     {
         public int Id { get; set; }
 
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         public string Model { get; set; }
 
-        public virtual int Mode { get; set; }
+        public virtual int Mode { get; set; } = 0;
 
         public int OldMode { get; set; }
 

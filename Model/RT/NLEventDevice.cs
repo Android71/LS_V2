@@ -16,32 +16,8 @@ namespace LS_Designer_WPF.Model
             CanAddChannel = false;
             Name = "NL_EDev";
             ModeList = new List<string>();
-            Mode = 0;
             DotNetType = typeof(NLEventDevice).AssemblyQualifiedName;
         }
-
-        //public override string Name
-        //{
-        //    get
-        //    {
-        //        return base.Name;
-        //    }
-
-        //    set
-        //    {
-
-        //        base.Name = value;
-        //        if (EventChannels.Count != 0)
-        //    }
-        //}
-
-        //public void UpdateNames()
-        //{
-        //    foreach(EventChannel ech in EventChannels)
-        //    {
-        //        ech.Name = string.Format($"{Name}/{ech.EventName} [{ech.ChannelNo}]");
-        //    }
-        //}
 
         public override string Profile
         {

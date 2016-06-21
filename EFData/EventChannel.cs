@@ -24,11 +24,13 @@ namespace EFData
         public string Name { get; set; }
         public int ChannelNo { get; set; }
         public string EventName { get; set; }
+        public string DotNetType { get; set; }
+        public string Profile { get; set; }
     
         public virtual ControlSpace ControlSpace { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightZone> LightZones { get; set; }
-        public virtual GenericEvent GenericEvent { get; set; }
         public virtual EventDevice EventDevice { get; set; }
+        public virtual Partition Partition { get; set; }
     }
 }

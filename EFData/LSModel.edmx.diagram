@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="98" >
+      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="71" >
         <EntityTypeShape EntityType="LSModel.ControlSpace" Width="2" PointX="7.75" PointY="4.375" />
         <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.875" PointX="13.25" PointY="3.875" />
         <EntityTypeShape EntityType="LSModel.ArtNetControlChannel" Width="1.875" PointX="12.75" PointY="0.75" />
@@ -12,8 +12,6 @@
         <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="1.375" PointY="4.75" />
         <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
         <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="5.5" PointY="8" />
-        <EntityTypeShape EntityType="LSModel.GenericEvent" Width="1.5" PointX="1.375" PointY="2.375" />
-        <AssociationConnector Association="LSModel.EventEventChannel" />
         <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="4.75" PointY="0.5" />
         <EntityTypeShape EntityType="LSModel.LightPointType" Width="1.5" PointX="8.125" PointY="0.5" />
         <AssociationConnector Association="LSModel.ControlSpaceControlChannel" />
@@ -29,6 +27,9 @@
         <AssociationConnector Association="LSModel.CSEnvItemEnvironmentItem" />
         <AssociationConnector Association="LSModel.CSEnvItemControlSpace" />
         <AssociationConnector Association="LSModel.PartitionEventDevice" />
+        <AssociationConnector Association="LSModel.PartitionEventChannel" />
+        <AssociationConnector Association="LSModel.PartitionControlChannel" />
+        <AssociationConnector Association="LSModel.PartitionControlDevice" />
       </Diagram>
       <Diagram DiagramId="697527b404df462abd17d71f61170bde" Name="Diagram2" ZoomLevel="74" >
         <EntityTypeShape EntityType="LSModel.LightElement" Width="1.5" PointX="11.25" PointY="1.75" />

@@ -32,5 +32,6 @@ namespace EFData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightElement> LightElements { get; set; }
         public virtual ControlDevice ControlDevice { get; set; }
+        public virtual Partition Partition { get; set; }
     }
 }

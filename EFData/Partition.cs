@@ -21,6 +21,9 @@ namespace EFData
             this.LightZones = new HashSet<LightZone>();
             this.LightElements = new HashSet<LightElement>();
             this.EventDevices = new HashSet<EventDevice>();
+            this.EventChannels = new HashSet<EventChannel>();
+            this.ControlChannels = new HashSet<ControlChannel>();
+            this.ControlDevices = new HashSet<ControlDevice>();
         }
     
         public int Id { get; set; }
@@ -34,5 +37,11 @@ namespace EFData
         public virtual ICollection<LightElement> LightElements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EventDevice> EventDevices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EventChannel> EventChannels { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ControlChannel> ControlChannels { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ControlDevice> ControlDevices { get; set; }
     }
 }

@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/21/2016 07:40:16
--- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 06/21/2016 19:20:01
+-- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -46,9 +46,6 @@ IF OBJECT_ID(N'[dbo].[FK_PartitionLightElement]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ControlSpaceLightElement]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LightElements] DROP CONSTRAINT [FK_ControlSpaceLightElement];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EventEventChannel]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EventChannels] DROP CONSTRAINT [FK_EventEventChannel];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LightZoneEffect]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Effects] DROP CONSTRAINT [FK_LightZoneEffect];
@@ -154,9 +151,6 @@ GO
 IF OBJECT_ID(N'[dbo].[EnvironmentItems]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EnvironmentItems];
 GO
-IF OBJECT_ID(N'[dbo].[GenericEvents]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[GenericEvents];
-GO
 IF OBJECT_ID(N'[dbo].[LE_Types]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LE_Types];
 GO
@@ -216,7 +210,8 @@ CREATE TABLE [dbo].[ControlChannels] (
     [DotNetType] nvarchar(max)  NULL,
     [Profile] nvarchar(max)  NULL,
     [ControlSpace_Id] int  NOT NULL,
-    [ControlDevice_Id] int  NOT NULL
+    [ControlDevice_Id] int  NOT NULL,
+    [Partition_Id] int  NOT NULL
 );
 GO
 
@@ -226,9 +221,11 @@ CREATE TABLE [dbo].[EventChannels] (
     [Name] nvarchar(max)  NOT NULL,
     [ChannelNo] int  NOT NULL,
     [EventName] nvarchar(max)  NOT NULL,
-    [GenericEvent_Id] int  NULL,
+    [DotNetType] nvarchar(max)  NOT NULL,
+    [Profile] nvarchar(max)  NOT NULL,
     [ControlSpace_Id] int  NOT NULL,
-    [EventDevice_Id] int  NOT NULL
+    [EventDevice_Id] int  NOT NULL,
+    [Partition_Id] int  NOT NULL
 );
 GO
 
@@ -326,13 +323,6 @@ CREATE TABLE [dbo].[EnvironmentItems] (
 );
 GO
 
--- Creating table 'GenericEvents'
-CREATE TABLE [dbo].[GenericEvents] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
-);
-GO
-
 -- Creating table 'LE_Types'
 CREATE TABLE [dbo].[LE_Types] (
     [Id] int IDENTITY(1,1) NOT NULL,
@@ -395,7 +385,8 @@ CREATE TABLE [dbo].[ControlDevices] (
     [MultiChannel] bit  NOT NULL,
     [CanAddChannel] bit  NOT NULL,
     [DotNetType] nvarchar(max)  NULL,
-    [ControlSpace_Id] int  NOT NULL
+    [ControlSpace_Id] int  NOT NULL,
+    [Partition_Id] int  NOT NULL
 );
 GO
 
@@ -528,12 +519,6 @@ GO
 -- Creating primary key on [Id] in table 'EnvironmentItems'
 ALTER TABLE [dbo].[EnvironmentItems]
 ADD CONSTRAINT [PK_EnvironmentItems]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'GenericEvents'
-ALTER TABLE [dbo].[GenericEvents]
-ADD CONSTRAINT [PK_GenericEvents]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -749,21 +734,6 @@ GO
 CREATE INDEX [IX_FK_ControlSpaceLightElement]
 ON [dbo].[LightElements]
     ([ControlSpace_Id]);
-GO
-
--- Creating foreign key on [GenericEvent_Id] in table 'EventChannels'
-ALTER TABLE [dbo].[EventChannels]
-ADD CONSTRAINT [FK_EventEventChannel]
-    FOREIGN KEY ([GenericEvent_Id])
-    REFERENCES [dbo].[GenericEvents]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventEventChannel'
-CREATE INDEX [IX_FK_EventEventChannel]
-ON [dbo].[EventChannels]
-    ([GenericEvent_Id]);
 GO
 
 -- Creating foreign key on [LightZone_Id] in table 'Effects'
@@ -1048,6 +1018,51 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_PartitionEventDevice'
 CREATE INDEX [IX_FK_PartitionEventDevice]
 ON [dbo].[EventDevices]
+    ([Partition_Id]);
+GO
+
+-- Creating foreign key on [Partition_Id] in table 'EventChannels'
+ALTER TABLE [dbo].[EventChannels]
+ADD CONSTRAINT [FK_PartitionEventChannel]
+    FOREIGN KEY ([Partition_Id])
+    REFERENCES [dbo].[Partitions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PartitionEventChannel'
+CREATE INDEX [IX_FK_PartitionEventChannel]
+ON [dbo].[EventChannels]
+    ([Partition_Id]);
+GO
+
+-- Creating foreign key on [Partition_Id] in table 'ControlChannels'
+ALTER TABLE [dbo].[ControlChannels]
+ADD CONSTRAINT [FK_PartitionControlChannel]
+    FOREIGN KEY ([Partition_Id])
+    REFERENCES [dbo].[Partitions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PartitionControlChannel'
+CREATE INDEX [IX_FK_PartitionControlChannel]
+ON [dbo].[ControlChannels]
+    ([Partition_Id]);
+GO
+
+-- Creating foreign key on [Partition_Id] in table 'ControlDevices'
+ALTER TABLE [dbo].[ControlDevices]
+ADD CONSTRAINT [FK_PartitionControlDevice]
+    FOREIGN KEY ([Partition_Id])
+    REFERENCES [dbo].[Partitions]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PartitionControlDevice'
+CREATE INDEX [IX_FK_PartitionControlDevice]
+ON [dbo].[ControlDevices]
     ([Partition_Id]);
 GO
 
