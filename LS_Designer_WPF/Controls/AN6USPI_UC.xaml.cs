@@ -38,21 +38,20 @@ namespace LS_Designer_WPF.Controls
         //    //Messenger.Default.Unregister<string>(this);
         //}
 
-        //void SetNameFocus(string msg)
-        //{
-        //    if (msg == "focus")
-        //    {
-        //        nameTb.Focus();
-        //        nameTb.CaretIndex = nameTb.Text.Length;
-        //    }
-        //}
+        void SetNameFocus()
+        {
+            //if (msg == "focus")
+            //{
+                nameTb.Focus();
+                nameTb.CaretIndex = nameTb.Text.Length;
+            //}
+        }
         public bool IsEditMode
         {
             get { return (bool)GetValue(IsEditModeProperty); }
             set { SetValue(IsEditModeProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for IsEditMode.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsEditModeProperty =
             DependencyProperty.Register("IsEditMode", typeof(bool), typeof(AN6USPI_UC), new PropertyMetadata(false, IsEditModeChanged));
 
@@ -62,7 +61,10 @@ namespace LS_Designer_WPF.Controls
             {
                 AN6USPI_UC uc = (AN6USPI_UC)d;
                 if ((bool)e.NewValue)
+                {
                     uc.partition.Visibility = Visibility.Visible;
+                    uc.SetNameFocus();
+                }
                 else
                     uc.partition.Visibility = Visibility.Collapsed;
             }
