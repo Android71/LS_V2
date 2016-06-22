@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using System.Windows;
 using LS_Designer_WPF.Model;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace LS_Designer_WPF.ViewModel
 {
@@ -43,13 +44,21 @@ namespace LS_Designer_WPF.ViewModel
         {
             if (AppContext.ControlSpace != null)
             {
-                _dataService.GetEnvironmentItems(AppContext.ControlSpace.Id, Model.DeviceTypeEnum.ControlDevice, (data, error) =>
+                _dataService.GetEnvironmentItems(AppContext.ControlSpace.Id, DeviceTypeEnum.ControlDevice, (data, error) =>
                 {
                     if (error != null) { return; } // Report error here
                     MasterSelectorList = data;
                 });
+                
+                _dataService.GetPartitions((data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    Partitions = new List<Partition>(data);
+                });
+                
 
-                _dataService.GetControlDevices(AppContext.ControlSpace.Id, (data, error) =>
+
+                _dataService.GetControlDevices(AppContext.ControlSpace, AppContext.Partition, (data, error) =>
                 {
                     if (error != null) { return; } // Report error here
                     MasterList = data;
@@ -61,7 +70,7 @@ namespace LS_Designer_WPF.ViewModel
 
         protected override void ContextChanged(string obj)
         {
-            if (AppContext.ControlSpace != null)
+            if (AppContext.ControlSpace != null && AppContext.Partition != null)
             {
                 TabItemEnabled = true;
                 if (IsSelected)
@@ -81,12 +90,27 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Master Properties
 
+        List<Partition> _partitions;
+        public List<Partition> Partitions
+        {
+            get { return _partitions; }
+            set { Set(ref _partitions, value); }
+        }
+
+        bool MasterAddMode { get; set; } = false;
+
+        //bool _masterEditMode = false;
+        public bool MasterEditMode { get; set; } = false;
+        //{
+        //    get { return _masterEditMode; }
+        //    set { Set(ref _masterEditMode, value); }
+        //}
+
         ObservableCollection<ControlDevice> _masterList = new ObservableCollection<ControlDevice>();
         public ObservableCollection<ControlDevice> MasterList
         {
             get { return _masterList; }
             set { Set(ref _masterList, value); }
-            
         }
 
         int msix = -1; //MasterSelectedItem ix;
@@ -161,6 +185,11 @@ namespace LS_Designer_WPF.ViewModel
                     dynamic d = MasterSelectorSelectedItem;
                     dynamic x = Activator.CreateInstance(Type.GetType(d.DotNetType));
                     x.ControlSpace = AppContext.ControlSpace;
+
+                    //MasterObjectPanelVisibility = Visibility.Visible;
+
+                    x.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id); 
+                    x.Partitions = Partitions;
                     x.Profile = d.Profile;
                     x.Model = d.Model;
                     MasterCurrentObject = x;
@@ -236,12 +265,16 @@ namespace LS_Designer_WPF.ViewModel
                          DetailCurrentObject = data;
                      });
                     DetailObjectPanelVisibility = Visibility.Visible;
+
+                    DetailCurrentObject.Partitions = Partitions;
+                    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
                 }
                 else
                 {
                     dsix = -1;
                     DetailObjectPanelVisibility = Visibility.Collapsed;
                 }
+
             }
         }
 
@@ -332,8 +365,7 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Master Commands
 
-        bool MasterAddMode { get; set; } = false;
-        bool MasterEditMode { get; set; } = false;
+        
 
         #region Master Save Command
         public RelayCommand MasterSaveCmd { get; private set; }
@@ -343,7 +375,19 @@ namespace LS_Designer_WPF.ViewModel
         void MasterExecSave()
         {
             int i = -1;
+            bool partitionChanged = false;
             //int dsi = -1;
+            if (MasterEditMode)
+            {
+                if(MasterCurrentObject.Partition.Id != MasterSelectedItem.Partition.Id)
+                {
+                    partitionChanged = true;
+                    foreach(ControlChannel ch in MasterCurrentObject.ControlChannels)
+                    {
+                        ch.Partition = MasterCurrentObject.Partition;
+                    }
+                }
+            }
             _dataService.UpdateControlDevice(MasterCurrentObject, (updatedCount, error) =>
             {
                 if (error != null) { return; } // Report error here
@@ -365,14 +409,24 @@ namespace LS_Designer_WPF.ViewModel
             }
             if (MasterEditMode) //in EditMode MasterSelectedItem always not null
             {
-                MasterList[msix] = MasterCurrentObject;
-                MasterSelectedItem = MasterCurrentObject;
-                if (savedDsix != -1)
-                    DetailSelectedItem = DetailList[savedDsix];
+                if (!partitionChanged)
+                {
+                    MasterList[msix] = MasterCurrentObject;
+                    MasterSelectedItem = MasterCurrentObject;
+                    if (savedDsix != -1)
+                        DetailSelectedItem = DetailList[savedDsix];
+                }
+                else
+                {
+                    MasterList.Remove(MasterSelectedItem);
+                    DetailContentVisibility = Visibility.Hidden;
+                    partitionChanged = false;
+                }
             }
 
             MasterAddMode = false;
             MasterEditMode = false;
+            MasterCurrentObject.IsEditMode=false;
             MasterRemoveCmd.RaiseCanExecuteChanged();
             MasterAddCmd.RaiseCanExecuteChanged();
 
@@ -411,6 +465,8 @@ namespace LS_Designer_WPF.ViewModel
             }
             MasterAddMode = false;
             MasterEditMode = false;
+            MasterCurrentObject.IsEditMode = false;
+
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
 
@@ -452,6 +508,10 @@ namespace LS_Designer_WPF.ViewModel
             savedDsix = dsix;
 
             MasterEditMode = true;
+            MasterCurrentObject.IsEditMode = true;
+            MasterCurrentObject.Partitions = Partitions;
+            MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
+
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
             MasterListCurtainVisibility = Visibility.Visible;
@@ -596,6 +656,7 @@ namespace LS_Designer_WPF.ViewModel
 
             DetailObjectButtonsVisibility = Visibility.Collapsed;
             DetailListCurtainVisibility = Visibility.Collapsed;
+            DetailObjectCurtainVisibility = Visibility.Visible;
 
             MasterListCurtainVisibility = Visibility.Collapsed;
 
@@ -630,6 +691,9 @@ namespace LS_Designer_WPF.ViewModel
                 DetailCurrentObject = data;
             });
 
+            DetailCurrentObject.Partitions = Partitions;
+            DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
+
             DetailEditMode = false;
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
@@ -639,7 +703,10 @@ namespace LS_Designer_WPF.ViewModel
             DetailObjectCurtainVisibility = Visibility.Visible;
 
             DetailObjectButtonsVisibility = Visibility.Collapsed;
-            
+
+
+
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         #endregion

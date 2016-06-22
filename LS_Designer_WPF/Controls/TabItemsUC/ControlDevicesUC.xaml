@@ -90,8 +90,9 @@
                         Visibility="{Binding MasterObjectPanelVisibility}">
                     <Border.Resources>
                         <DataTemplate DataType="{x:Type model:AN6USPI}">
-                            <local:AN6USPI_UC />
+                            <local:AN6USPI_UC IsEditMode="{Binding IsEditMode}"/>
                         </DataTemplate>
+                        <!--IsEditMode="{Binding IsEditMode}"-->
                         <DataTemplate DataType="{x:Type model:NLPowerBlock}">
                             <local:NLPowerBlockUC />
                         </DataTemplate>
@@ -184,6 +185,6 @@
                       Visibility="{Binding DetailObjectCurtainVisibility}" />
             </Grid>
         </Grid>
-
+        
     </Grid>
 </UserControl>

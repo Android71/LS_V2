@@ -49,9 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArtNetControlChannel.cs">
-      <DependentUpon>LSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="BaseEffect.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>

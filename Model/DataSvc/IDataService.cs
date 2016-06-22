@@ -52,7 +52,7 @@ namespace LS_Designer_WPF.Model
 
         void GetControlDevice(int id, Action<ControlDevice, Exception> callback);
 
-        void GetControlDevices(int csId, Action<ObservableCollection<ControlDevice>, Exception> callback);
+        void GetControlDevices(ControlSpace space, Partition partition, Action<ObservableCollection<ControlDevice>, Exception> callback);
         //void GetControlDevices(ControlSpace space, Action<BindingList<ControlDevice>, Exception> callback, bool includeChannels = true);
 
         #endregion

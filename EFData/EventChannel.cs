@@ -24,7 +24,6 @@ namespace EFData
         public string Name { get; set; }
         public int ChannelNo { get; set; }
         public string EventName { get; set; }
-        public string DotNetType { get; set; }
         public string Profile { get; set; }
     
         public virtual ControlSpace ControlSpace { get; set; }

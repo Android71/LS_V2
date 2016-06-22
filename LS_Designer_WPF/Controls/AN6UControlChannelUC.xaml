@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Name" />
         <TextBox Name="nameTb" Grid.Row="0" Grid.Column="1"
@@ -45,6 +46,17 @@
                  Text="{Binding IPAddress,
                                 Converter={StaticResource IPConverter}}"
                  IsReadOnly="True" />
+        <Label Grid.Row="4" Grid.Column="0" Content="Partition" />
+        <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,2,0,2"
+                  Style="{StaticResource ComboBoxFlatStyle}"
+                  ItemsSource="{Binding Partitions}"
+                  DisplayMemberPath="Name"
+                  SelectedItem="{Binding Partition}"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="Remark" />
+        <TextBox Grid.Row="5" Grid.Column="1" Margin="0,2,0,2"
+                 VerticalAlignment="Center"
+                 Style="{StaticResource TextBoxStyle1}"
+                 Text="{Binding Remark}" />
 
     </Grid>
 </UserControl>

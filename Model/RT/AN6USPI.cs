@@ -104,9 +104,11 @@ namespace LS_Designer_WPF.Model
                     cc = new AN6UControlChannel();
                     //cc.Profile = "<Params IP = \"2.0.0.2\" ChNum = \"2\" Port = \"0\"/>";
                     cc.IPAddress = IPAddress;
-                    string s = cc.Profile;
+                    //string s = cc.Profile;
                     cc.PortNo = i;
                     cc.ChannelNo = i;
+                    cc.ControlSpace = ControlSpace;
+                    cc.Partition = Partition;
                     ControlChannels.Add(cc);
                 }
                 for (int i = 4; i < 6; i++)
@@ -115,6 +117,8 @@ namespace LS_Designer_WPF.Model
                     cc.IPAddress = VirtualIP;
                     cc.PortNo = i;
                     cc.ChannelNo = i;
+                    cc.ControlSpace = ControlSpace;
+                    cc.Partition = Partition;
                     ControlChannels.Add(cc);
                 }
             }

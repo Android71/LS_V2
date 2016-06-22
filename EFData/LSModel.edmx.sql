@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/21/2016 19:20:01
--- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 06/22/2016 15:57:13
+-- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -104,8 +104,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PartitionEventDevice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[EventDevices] DROP CONSTRAINT [FK_PartitionEventDevice];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ArtNetControlChannel_inherits_ControlChannel]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ControlChannels_ArtNetControlChannel] DROP CONSTRAINT [FK_ArtNetControlChannel_inherits_ControlChannel];
+IF OBJECT_ID(N'[dbo].[FK_PartitionEventChannel]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventChannels] DROP CONSTRAINT [FK_PartitionEventChannel];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartitionControlChannel]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlChannels] DROP CONSTRAINT [FK_PartitionControlChannel];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PartitionControlDevice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ControlDevices] DROP CONSTRAINT [FK_PartitionControlDevice];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LightStrip_inherits_LightElement]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LightElements_LightStrip] DROP CONSTRAINT [FK_LightStrip_inherits_LightElement];
@@ -175,9 +181,6 @@ GO
 IF OBJECT_ID(N'[dbo].[CSEnvItems]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CSEnvItems];
 GO
-IF OBJECT_ID(N'[dbo].[ControlChannels_ArtNetControlChannel]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ControlChannels_ArtNetControlChannel];
-GO
 IF OBJECT_ID(N'[dbo].[LightElements_LightStrip]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LightElements_LightStrip];
 GO
@@ -221,7 +224,6 @@ CREATE TABLE [dbo].[EventChannels] (
     [Name] nvarchar(max)  NOT NULL,
     [ChannelNo] int  NOT NULL,
     [EventName] nvarchar(max)  NOT NULL,
-    [DotNetType] nvarchar(max)  NOT NULL,
     [Profile] nvarchar(max)  NOT NULL,
     [ControlSpace_Id] int  NOT NULL,
     [EventDevice_Id] int  NOT NULL,
@@ -414,14 +416,6 @@ CREATE TABLE [dbo].[CSEnvItems] (
 );
 GO
 
--- Creating table 'ControlChannels_ArtNetControlChannel'
-CREATE TABLE [dbo].[ControlChannels_ArtNetControlChannel] (
-    [IPAddress] nvarchar(max)  NOT NULL,
-    [PortNo] int  NOT NULL,
-    [Id] int  NOT NULL
-);
-GO
-
 -- Creating table 'LightElements_LightStrip'
 CREATE TABLE [dbo].[LightElements_LightStrip] (
     [StartPoint] int  NOT NULL,
@@ -567,12 +561,6 @@ GO
 -- Creating primary key on [Id] in table 'CSEnvItems'
 ALTER TABLE [dbo].[CSEnvItems]
 ADD CONSTRAINT [PK_CSEnvItems]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'ControlChannels_ArtNetControlChannel'
-ALTER TABLE [dbo].[ControlChannels_ArtNetControlChannel]
-ADD CONSTRAINT [PK_ControlChannels_ArtNetControlChannel]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1064,15 +1052,6 @@ GO
 CREATE INDEX [IX_FK_PartitionControlDevice]
 ON [dbo].[ControlDevices]
     ([Partition_Id]);
-GO
-
--- Creating foreign key on [Id] in table 'ControlChannels_ArtNetControlChannel'
-ALTER TABLE [dbo].[ControlChannels_ArtNetControlChannel]
-ADD CONSTRAINT [FK_ArtNetControlChannel_inherits_ControlChannel]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[ControlChannels]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'LightElements_LightStrip'

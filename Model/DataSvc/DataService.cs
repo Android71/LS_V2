@@ -190,7 +190,7 @@ namespace LS_Designer_WPF.Model
 
 
 
-        public void GetControlDevices(int csId, Action<ObservableCollection<ControlDevice>, Exception> callback)
+        public void GetControlDevices(ControlSpace space, Partition partition, Action<ObservableCollection<ControlDevice>, Exception> callback)
         {
             //    IEnumerable<EFData.ControlDevice> query = null;
             ObservableCollection<ControlDevice> list = new ObservableCollection<ControlDevice>();
@@ -201,18 +201,23 @@ namespace LS_Designer_WPF.Model
             {
                 //var x = 
                 foreach (EFData.ControlDevice dbControlDevice in
-                               db.ControlDevices.Include("ControlChannels").Where(p => p.ControlSpace.Id == csId))
+                               db.ControlDevices.Include("ControlChannels")
+                                          .Where(p => (p.ControlSpace.Id == space.Id) && (p.Partition.Id == partition.Id)))
                 {
                     controlDevice = new ControlDevice();
                     Mapper.Db2O(dbControlDevice, out controlDevice);
                     controlDevice.ControlSpace = new ControlSpace();
                     Mapper.Db2O(dbControlDevice.ControlSpace, controlDevice.ControlSpace);
+                    controlDevice.Partition = new Partition();
+                    Mapper.Db2O(dbControlDevice.Partition, controlDevice.Partition);
 
                     foreach (EFData.ControlChannel dbCh in dbControlDevice.ControlChannels)
                     {
                         controlChannel = new ControlChannel();
                         Mapper.Db2O(dbCh, out controlChannel);
                         controlChannel.ControlSpace = controlDevice.ControlSpace;
+                        controlChannel.Partition = new Partition();
+                        Mapper.Db2O(dbCh.Partition, controlChannel.Partition);
                         controlDevice.ControlChannels.Add(controlChannel);
                     }
                     list.Add(controlDevice);
@@ -240,6 +245,8 @@ namespace LS_Designer_WPF.Model
                     Mapper.Db2O(dbCh, out controlChannel);
                     controlChannel.ControlSpace = new ControlSpace();
                     Mapper.Db2O(dbCh.ControlSpace, controlChannel.ControlSpace);
+                    controlChannel.Partition = new Partition();
+                    Mapper.Db2O(dbCh.Partition, controlChannel.Partition);
                     controlDevice.ControlChannels.Add(controlChannel);
                 }
             }
@@ -251,22 +258,31 @@ namespace LS_Designer_WPF.Model
         public void UpdateControlDevice(ControlDevice item, Action<int, Exception> callback)
         {
             EFData.ControlDevice dbControlDevice;
-            //EFData.ControlSpace dbControlSpace;
             EFData.ControlChannel dbControlChannel;
-            //ControlDevice controlDevice = null;
-            //if (item.ControlSpace.Name == )
             int ix = -1;
+            int pid = -1;
             if (item.Id != 0)
             {
                 //Update
                 using (var db = new LSModelContainer(LS.CS))
                 {
                     dbControlDevice = db.ControlDevices.FirstOrDefault(p => p.Id == item.Id);
+                    if (dbControlDevice.Partition.Id != item.Partition.Id)
+                    {
+                        dbControlDevice.Partition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
+                        db.Entry(dbControlDevice).State = EntityState.Modified;
+                    }
                     var x = dbControlDevice.ControlChannels.ToList();
                     Mapper.O2Db(item, dbControlDevice);
                     for (int i = 0; i < item.ControlChannels.Count; i++)
                     {
                         Mapper.O2Db(item.ControlChannels[i], x[i]);
+                        pid = item.ControlChannels[i].Partition.Id;
+                        if (x[i].Partition.Id != pid)
+                        {
+                            x[i].Partition = db.Partitions.FirstOrDefault(p => p.Id == pid);
+                            db.Entry(x[i]).State = EntityState.Modified;
+                        }
                     }
                     ix = db.SaveChanges();
                 }
@@ -280,12 +296,15 @@ namespace LS_Designer_WPF.Model
                     dbControlDevice = new EFData.ControlDevice();
                     Mapper.O2Db(item, dbControlDevice);
                     dbControlDevice.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
+                    dbControlDevice.Partition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
                     foreach (ControlChannel ch in item.ControlChannels)
                     {
-                        ch.ControlSpace = item.ControlSpace;
+                        //ch.ControlSpace = item.ControlSpace;
+                        //ch.Partition = item.Partition;
                         dbControlChannel = new EFData.ControlChannel();
                         Mapper.O2Db(ch, dbControlChannel);
                         dbControlChannel.ControlSpace = dbControlDevice.ControlSpace;
+                        dbControlChannel.Partition = dbControlDevice.Partition;
                         dbControlDevice.ControlChannels.Add(dbControlChannel);
                     }
                     db.ControlDevices.Add(dbControlDevice);
@@ -296,6 +315,8 @@ namespace LS_Designer_WPF.Model
                     foreach (EFData.ControlChannel dbCh in dbControlDevice.ControlChannels)
                     {
                         item.ControlChannels[i].Id = dbCh.Id;
+                        //ch.ControlSpace = item.ControlSpace;
+                        //ch.Partition = item.Partition;
                         i++;
                     }
                 }
@@ -319,6 +340,8 @@ namespace LS_Designer_WPF.Model
             {
                 dbControlChannel = db.ControlChannels.FirstOrDefault(p => p.Id == id);
                 Mapper.Db2O(dbControlChannel, out ch);
+                ch.Partition = new Partition();
+                Mapper.Db2O(dbControlChannel.Partition, ch.Partition);
             }
             callback(ch, null);
         }
@@ -333,6 +356,11 @@ namespace LS_Designer_WPF.Model
                 {
                     dbControlChannel = db.ControlChannels.FirstOrDefault(p => p.Id == ch.Id);
                     Mapper.O2Db(ch, dbControlChannel);
+                    if (dbControlChannel.Partition.Id != ch.Partition.Id)
+                    {
+                        dbControlChannel.Partition = db.Partitions.FirstOrDefault(p => p.Id == ch.Partition.Id);
+                        db.Entry(dbControlChannel).State = EntityState.Modified;
+                    }
                     updateCount = db.SaveChanges();
                 }
                 callback(updateCount, null);
@@ -517,10 +545,10 @@ namespace LS_Designer_WPF.Model
 
         public void GetEventDevices(ControlSpace space, Partition partition, Action<ObservableCollection<EventDevice>, Exception> callback)
         {
-            IEnumerable<EFData.EventDevice> y = null;
+            //IEnumerable<EFData.EventDevice> y = null;
             var x = new ObservableCollection<EventDevice>();
-            EventDevice eventDevice = null;
-            EventChannel eventChannel = null;
+            //EventDevice eventDevice = null;
+            //EventChannel eventChannel = null;
 
             //using (var db = new LSModelContainer(LS.CS))
             //{

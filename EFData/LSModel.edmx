@@ -26,7 +26,6 @@
     <EntitySet Name="ControlDevices" EntityType="LSModel.Store.ControlDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EventDevices" EntityType="LSModel.Store.EventDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CSEnvItems" EntityType="LSModel.Store.CSEnvItems" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="ControlChannels_ArtNetControlChannel" EntityType="LSModel.Store.ControlChannels_ArtNetControlChannel" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LightElements_LightStrip" EntityType="LSModel.Store.LightElements_LightStrip" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SceneLightZone" EntityType="LSModel.Store.SceneLightZone" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EventChannelLightZone" EntityType="LSModel.Store.EventChannelLightZone" store:Type="Tables" Schema="dbo" />
@@ -158,10 +157,6 @@
       <End Role="Partition" EntitySet="Partitions" />
       <End Role="ControlDevice" EntitySet="ControlDevices" />
     </AssociationSet>
-    <AssociationSet Name="FK_ArtNetControlChannel_inherits_ControlChannel" Association="LSModel.Store.FK_ArtNetControlChannel_inherits_ControlChannel">
-      <End Role="ControlChannel" EntitySet="ControlChannels" />
-      <End Role="ArtNetControlChannel" EntitySet="ControlChannels_ArtNetControlChannel" />
-    </AssociationSet>
     <AssociationSet Name="FK_LightStrip_inherits_LightElement" Association="LSModel.Store.FK_LightStrip_inherits_LightElement">
       <End Role="LightElement" EntitySet="LightElements" />
       <End Role="LightStrip" EntitySet="LightElements_LightStrip" />
@@ -198,7 +193,6 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ChannelNo" Type="int" Nullable="false" />
     <Property Name="EventName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="DotNetType" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Profile" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
     <Property Name="EventDevice_Id" Type="int" Nullable="false" />
@@ -388,14 +382,6 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="EnvironmentItem_Id" Type="int" Nullable="false" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ControlChannels_ArtNetControlChannel">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="IPAddress" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="PortNo" Type="int" Nullable="false" />
-    <Property Name="Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="LightElements_LightStrip">
     <Key>
@@ -807,20 +793,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_ArtNetControlChannel_inherits_ControlChannel">
-    <End Role="ControlChannel" Type="LSModel.Store.ControlChannels" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="ArtNetControlChannel" Type="LSModel.Store.ControlChannels_ArtNetControlChannel" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="ControlChannel">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="ArtNetControlChannel">
-        <PropertyRef Name="Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_LightStrip_inherits_LightElement">
     <End Role="LightElement" Type="LSModel.Store.LightElements" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -1013,10 +985,6 @@
           <Property Name="Profile" Type="String" Nullable="true" />
           <NavigationProperty Name="Partition" Relationship="LSModel.PartitionControlChannel" FromRole="ControlChannel" ToRole="Partition" />
         </EntityType>
-        <EntityType Name="ArtNetControlChannel" BaseType="LSModel.ControlChannel" >
-          <Property Name="IPAddress" Type="String" Nullable="false" />
-          <Property Name="PortNo" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="EventChannel" Abstract="false">
           <Key>
             <PropertyRef Name="Id" />
@@ -1029,7 +997,6 @@
           <Property Name="EventName" Type="String" Nullable="false" />
           <NavigationProperty Name="EventDevice" Relationship="LSModel.EventDeviceEventChannel" FromRole="EventChannel" ToRole="EventDevice" />
           <NavigationProperty Name="Partition" Relationship="LSModel.PartitionEventChannel" FromRole="EventChannel" ToRole="Partition" />
-          <Property Name="DotNetType" Type="String" Nullable="false" />
           <Property Name="Profile" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="LightElement" Abstract="false">
@@ -1411,13 +1378,6 @@
           <ScalarProperty Name="Profile" ColumnName="Profile" />
         </MappingFragment>
       </EntityTypeMapping>
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.ArtNetControlChannel)">
-        <MappingFragment StoreEntitySet="ControlChannels_ArtNetControlChannel">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
-          <ScalarProperty Name="PortNo" ColumnName="PortNo" />
-        </MappingFragment>
-      </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="EventChannels">
       <EntityTypeMapping TypeName="IsTypeOf(LSModel.EventChannel)">
@@ -1426,7 +1386,6 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ChannelNo" ColumnName="ChannelNo" />
           <ScalarProperty Name="EventName" ColumnName="EventName" />
-          <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
           <ScalarProperty Name="Profile" ColumnName="Profile" />
         </MappingFragment>
       </EntityTypeMapping>

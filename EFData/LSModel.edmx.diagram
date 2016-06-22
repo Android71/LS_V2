@@ -4,30 +4,28 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="71" >
-        <EntityTypeShape EntityType="LSModel.ControlSpace" Width="2" PointX="7.75" PointY="4.375" />
-        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.875" PointX="13.25" PointY="3.875" />
-        <EntityTypeShape EntityType="LSModel.ArtNetControlChannel" Width="1.875" PointX="12.75" PointY="0.75" />
-        <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="1.375" PointY="4.75" />
-        <InheritanceConnector EntityType="LSModel.ArtNetControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="5.5" PointY="8" />
-        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="4.75" PointY="0.5" />
-        <EntityTypeShape EntityType="LSModel.LightPointType" Width="1.5" PointX="8.125" PointY="0.5" />
+      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="86" >
+        <EntityTypeShape EntityType="LSModel.ControlSpace" Width="2" PointX="5.875" PointY="4.375" />
+        <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.875" PointX="11.375" PointY="3.875" />
+        <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="0.5" PointY="4.5" />
+        <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="8.875" PointY="7" />
+        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="6.375" PointY="0.5" />
+        <EntityTypeShape EntityType="LSModel.LightPointType" Width="1.5" PointX="2.875" PointY="7.125" />
         <AssociationConnector Association="LSModel.ControlSpaceControlChannel" />
         <AssociationConnector Association="LSModel.ControlSpaceEventChannel" />
         <AssociationConnector Association="LSModel.ControlSpaceLightPointType" />
-        <EntityTypeShape EntityType="LSModel.ControlDevice" Width="1.5" PointX="10.875" PointY="2.625" />
+        <EntityTypeShape EntityType="LSModel.ControlDevice" Width="1.5" PointX="9" PointY="2.25" />
         <AssociationConnector Association="LSModel.ControlSpaceControlDevice" />
         <AssociationConnector Association="LSModel.ControlDeviceControlChannel" />
-        <EntityTypeShape EntityType="LSModel.EventDevice" Width="1.5" PointX="4.75" PointY="3.375" />
+        <EntityTypeShape EntityType="LSModel.EventDevice" Width="1.5" PointX="3.25" PointY="2.125" />
         <AssociationConnector Association="LSModel.ControlSpaceEventDevice" />
         <AssociationConnector Association="LSModel.EventDeviceEventChannel" />
-        <EntityTypeShape EntityType="LSModel.CSEnvItem" Width="1.625" PointX="8.25" PointY="8.375" />
+        <EntityTypeShape EntityType="LSModel.CSEnvItem" Width="1.625" PointX="6.375" PointY="8.375" />
         <AssociationConnector Association="LSModel.CSEnvItemEnvironmentItem" />
         <AssociationConnector Association="LSModel.CSEnvItemControlSpace" />
         <AssociationConnector Association="LSModel.PartitionEventDevice" />
-        <AssociationConnector Association="LSModel.PartitionEventChannel" />
+        <AssociationConnector Association="LSModel.PartitionEventChannel" ManuallyRouted="false" >
+        </AssociationConnector>
         <AssociationConnector Association="LSModel.PartitionControlChannel" />
         <AssociationConnector Association="LSModel.PartitionControlDevice" />
       </Diagram>

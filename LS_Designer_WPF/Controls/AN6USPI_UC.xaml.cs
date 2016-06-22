@@ -24,25 +24,47 @@ namespace LS_Designer_WPF.Controls
         public AN6USPI_UC()
         {
             InitializeComponent();
+            partition.Visibility = Visibility.Collapsed;
             //Messenger.Default.Register<string>(this, "DeviceControlFocus", SetNameFocus);
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        //private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        //{
 
+        //}
+
+        //private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        //{
+        //    //Messenger.Default.Unregister<string>(this);
+        //}
+
+        //void SetNameFocus(string msg)
+        //{
+        //    if (msg == "focus")
+        //    {
+        //        nameTb.Focus();
+        //        nameTb.CaretIndex = nameTb.Text.Length;
+        //    }
+        //}
+        public bool IsEditMode
+        {
+            get { return (bool)GetValue(IsEditModeProperty); }
+            set { SetValue(IsEditModeProperty, value); }
         }
 
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            //Messenger.Default.Unregister<string>(this);
-        }
+        // Using a DependencyProperty as the backing store for IsEditMode.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsEditModeProperty =
+            DependencyProperty.Register("IsEditMode", typeof(bool), typeof(AN6USPI_UC), new PropertyMetadata(false, IsEditModeChanged));
 
-        void SetNameFocus(string msg)
+        private static void IsEditModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (msg == "focus")
+            if (d != null)
             {
-                nameTb.Focus();
-                nameTb.CaretIndex = nameTb.Text.Length;
+                AN6USPI_UC uc = (AN6USPI_UC)d;
+                if ((bool)e.NewValue)
+                    uc.partition.Visibility = Visibility.Visible;
+                else
+                    uc.partition.Visibility = Visibility.Collapsed;
             }
         }
     }
