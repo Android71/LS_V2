@@ -25,13 +25,20 @@ namespace LS_Designer_WPF.Controls
             InitializeComponent();
         }
 
+        void SetNameFocus()
+        {
+            nameTb.Focus();
+            nameTb.CaretIndex = nameTb.Text.Length;
+        }
+
+        #region ChCountDP
+
         public int ChCount
         {
             get { return (int)GetValue(ChCountProperty); }
             set { SetValue(ChCountProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ChCount.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ChCountProperty =
             DependencyProperty.Register("ChCount", typeof(int), typeof(NLEventDeviceUC), new PropertyMetadata(0, ChCountChanged));
 
@@ -63,6 +70,67 @@ namespace LS_Designer_WPF.Controls
                     return;
                 }
             }
+        }
+
+        #endregion
+
+        #region IsEditModeDP
+
+        public bool IsEditMode
+        {
+            get { return (bool)GetValue(IsEditModeProperty); }
+            set { SetValue(IsEditModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsEditModeProperty =
+            DependencyProperty.Register("IsEditMode", typeof(bool), typeof(NLEventDeviceUC), new PropertyMetadata(false, IsEditModeChanged));
+
+        private static void IsEditModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d != null)
+            {
+                NLEventDeviceUC uc = (NLEventDeviceUC)d;
+                if ((bool)e.NewValue)
+                {
+                    uc.partition.Visibility = Visibility.Visible;
+                    uc.SetNameFocus();
+                }
+                else
+                    uc.partition.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        #endregion
+
+        #region IsAddModeDP
+
+        public bool IsAddMode
+        {
+            get { return (bool)GetValue(IsAddModeProperty); }
+            set { SetValue(IsAddModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAddModeProperty =
+            DependencyProperty.Register("IsAddMode", typeof(bool), typeof(NLEventDeviceUC), new PropertyMetadata(false, IsAddModeChanged));
+
+        private static void IsAddModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d != null)
+            {
+                NLEventDeviceUC uc = (NLEventDeviceUC)d;
+                if ((bool)e.NewValue)
+                {
+                    uc.partition.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        #endregion
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (IsAddMode)
+                SetNameFocus();
         }
     }
 }

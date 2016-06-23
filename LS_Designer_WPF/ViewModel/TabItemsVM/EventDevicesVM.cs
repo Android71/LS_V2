@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using LS_Designer_WPF.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -42,6 +43,12 @@ namespace LS_Designer_WPF.ViewModel
                     MasterSelectorList = data;
                 });
 
+                _dataService.GetPartitions((data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    Partitions = new List<Partition>(data);
+                });
+
                 _dataService.GetEventDevices(AppContext.ControlSpace, AppContext.Partition,(data, error) =>
                 {
                     if (error != null) { return; } // Report error here
@@ -66,6 +73,13 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Master Properties
 
+        List<Partition> _partitions;
+        public List<Partition> Partitions
+        {
+            get { return _partitions; }
+            set { Set(ref _partitions, value); }
+        }
+
         ObservableCollection<EventDevice> _masterList = new ObservableCollection<EventDevice>();
         public ObservableCollection<EventDevice> MasterList
         {
@@ -86,28 +100,28 @@ namespace LS_Designer_WPF.ViewModel
                 if (MasterSelectedItem != null)
                 {
                     msix = MasterList.IndexOf(value);
-                    //_dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-                    // {
-                    //     if (error != null) { return; } // Report error here
-                    //     MasterCurrentObject = data;
-                    // });
+                    _dataService.GetEventDevice(MasterSelectedItem.Id, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                         MasterCurrentObject = data;
+                     });
 
-                    //if (MasterSelectedItem.MultiChannel)
-                    //{
-                    //    DetailContentVisibility = Visibility.Visible;
-                    //    DetailList = MasterCurrentObject.ControlChannels;
-                    //}
-                    //else
-                    //    DetailContentVisibility = Visibility.Hidden;
+                    if (MasterSelectedItem.MultiChannel)
+                    {
+                        DetailContentVisibility = Visibility.Visible;
+                        DetailList = MasterCurrentObject.EventChannels;
+                    }
+                    else
+                        DetailContentVisibility = Visibility.Hidden;
 
-                    //MasterObjectPanelVisibility = Visibility.Visible;
-                    //MasterObjectCurtainVisibility = Visibility.Visible;
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectCurtainVisibility = Visibility.Visible;
                     //MasterRemoveCmd.RaiseCanExecuteChanged();
                 }
                 else
                 {
                     msix = -1;
-                    //MasterObjectPanelVisibility = Visibility.Collapsed;
+                    MasterObjectPanelVisibility = Visibility.Collapsed;
                 }
             }
         }
@@ -145,13 +159,16 @@ namespace LS_Designer_WPF.ViewModel
                     //var t = typeof(AN6USPI).AssemblyQualifiedName;
                     dynamic d = MasterSelectorSelectedItem;
                     dynamic x = Activator.CreateInstance(Type.GetType(d.DotNetType));
+
                     x.ControlSpace = AppContext.ControlSpace;
+                    x.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
+                    x.Partitions = Partitions;
                     x.Profile = d.Profile;
                     x.Model = d.Model;
-                    x.Partition = AppContext.Partition;
                     MasterCurrentObject = x;
 
                     MasterAddMode = true;
+                    MasterCurrentObject.IsAddMode = true;
                     MasterAddCmd.RaiseCanExecuteChanged();
                     MasterRemoveCmd.RaiseCanExecuteChanged();
 
@@ -339,6 +356,8 @@ namespace LS_Designer_WPF.ViewModel
 
             MasterAddMode = false;
             MasterEditMode = false;
+            MasterCurrentObject.IsEditMode = false;
+            MasterCurrentObject.IsAddMode = false;
             MasterRemoveCmd.RaiseCanExecuteChanged();
             MasterAddCmd.RaiseCanExecuteChanged();
 
@@ -377,6 +396,8 @@ namespace LS_Designer_WPF.ViewModel
             }
             MasterAddMode = false;
             MasterEditMode = false;
+            MasterCurrentObject.IsAddMode = false;
+            MasterCurrentObject.IsEditMode = false;
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
 

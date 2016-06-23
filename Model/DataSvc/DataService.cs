@@ -250,8 +250,6 @@ namespace LS_Designer_WPF.Model
                     controlDevice.ControlChannels.Add(controlChannel);
                 }
             }
-
-            
             callback(controlDevice, null);
         }
 
@@ -576,6 +574,36 @@ namespace LS_Designer_WPF.Model
 
         }
 
+        public void GetEventDevice(int id, Action<EventDevice, Exception> callback)
+        {
+            EFData.EventDevice dbEventDevice;
+            EventDevice eventDevice = new EventDevice();
+            EventChannel eventChannel;
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                dbEventDevice = db.EventDevices.Include("EventChannels").FirstOrDefault(p => p.Id == id);
+                Mapper.Db2O(dbEventDevice, out eventDevice);
+                eventDevice.ControlSpace = new ControlSpace();
+                Mapper.Db2O(dbEventDevice.ControlSpace, eventDevice.ControlSpace);
+                eventDevice.Partition = new Partition();
+                Mapper.Db2O(dbEventDevice.Partition, eventDevice.Partition);
+                foreach (EFData.EventChannel dbCh in dbEventDevice.EventChannels)
+                {
+                    //if (ch is EFData.ArtNetControlChannel)
+                    //    controlChannel = new ArtNetControlChannel();
+                    eventChannel = new EventChannel();
+                    Mapper.Db2O(dbCh, eventChannel);
+                    eventChannel.ControlSpace = new ControlSpace();
+                    Mapper.Db2O(dbCh.ControlSpace, eventChannel.ControlSpace);
+                    eventChannel.Partition = new Partition();
+                    Mapper.Db2O(dbCh.Partition, eventChannel.Partition);
+                    eventDevice.EventChannels.Add(eventChannel);
+                }
+            }
+            callback(eventDevice, null);
+        }
+
         public void UpdateEventDevice(EventDevice item, Action<int, Exception> callback)
         {
             EFData.EventDevice dbEventDevice;
@@ -617,9 +645,10 @@ namespace LS_Designer_WPF.Model
                     foreach (EventChannel ch in item.EventChannels)
                     {
                         dbEventChannel = new EFData.EventChannel();
-                        ch.Name = string.Format($"{item.Name}/{ch.EventName} [{ch.ChannelNo}]");
+                        ch.Name = string.Format($"[{ch.ChannelNo}] {ch.EventName}");
                         Mapper.O2Db(ch, dbEventChannel);
                         dbEventChannel.ControlSpace = dbEventDevice.ControlSpace;
+                        dbEventChannel.Partition = dbEventDevice.Partition;
                         dbEventDevice.EventChannels.Add(dbEventChannel);
                     }
                     db.EventDevices.Add(dbEventDevice);
@@ -627,7 +656,7 @@ namespace LS_Designer_WPF.Model
                     {
                         updateCount = db.SaveChanges();
                     }
-                    catch (Exception){ /*var x = 5;*/ }
+                    catch (Exception /*ex*/){ /*var x = 5;*/ }
                     
                     item.Id = dbEventDevice.Id;
                     int i = 0;
@@ -635,7 +664,7 @@ namespace LS_Designer_WPF.Model
                     {
                         item.EventChannels[i].Id = ech.Id;
                         item.EventChannels[i].ControlSpace = item.ControlSpace;
-                        //item.EventChannels[i].Partition = item.Partition;
+                        item.EventChannels[i].Partition = item.Partition;
                         i++;
                     }
                 }

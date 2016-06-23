@@ -196,28 +196,21 @@ namespace LS_Designer_WPF.Model
             dbObj.DotNetType = obj.DotNetType;
         }
 
-        public static void Db2O(EFData.EventDevice dbObj, EventDevice obj)
+        public static void Db2O(EFData.EventDevice dbObj, out EventDevice obj)
         {
-
+            obj = (EventDevice)Activator.CreateInstance(Type.GetType(dbObj.DotNetType));
             obj.Id = dbObj.Id;
+            obj.Profile = dbObj.Profile;
+
+            
             obj.Name = dbObj.Name;
             obj.Model = dbObj.Model;
             obj.OldMode = dbObj.Mode;
             obj.Mode = dbObj.Mode;
-            obj.Profile = dbObj.Profile;
             obj.Remark = dbObj.Remark;
             obj.MultiChannel = dbObj.MultiChannel;
             obj.CanAddChannel = dbObj.CanAddChannel;
             obj.DotNetType = dbObj.DotNetType;
-            //obj.Mode = dbObj.Mode;
-            //obj.OldMode = dbObj.Mode;
-            //obj.Model = dbObj.Model;
-            //obj.Name = dbObj.Name;
-            //obj.Profile = dbObj.Profile;
-            //obj.ControlSpace = new ControlSpace();
-            //Db2O(dbObj.ControlSpace, obj.ControlSpace);
-            //obj.Partition = new Partition();
-            //Db2O(dbObj.Partition, obj.Partition);
         }
 
         #endregion
@@ -231,6 +224,7 @@ namespace LS_Designer_WPF.Model
             dbObj.Name = obj.Name;
             dbObj.ChannelNo = obj.ChannelNo;
             dbObj.EventName = obj.EventName;
+            dbObj.Profile = obj.Profile;
         }
 
         public static void Db2O(EFData.EventChannel dbObj, EventChannel obj)
@@ -239,6 +233,7 @@ namespace LS_Designer_WPF.Model
             obj.Name = dbObj.Name;
             obj.ChannelNo = dbObj.ChannelNo;
             obj.EventName = dbObj.EventName;
+            obj.Profile = dbObj.Profile;
         }
 
         #endregion

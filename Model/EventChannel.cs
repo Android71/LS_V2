@@ -14,7 +14,11 @@ namespace LS_Designer_WPF.Model
 
         public string EventName { get; set; }
 
+        public string Profile { get; set; } = "";
+
         public ControlSpace ControlSpace { get; set; }
+
+        public Partition Partition { get; set; }
         
         public EventDevice EventDevice { get; set; }
     }

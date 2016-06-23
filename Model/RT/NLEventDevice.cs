@@ -11,7 +11,7 @@ namespace LS_Designer_WPF.Model
     {
         public NLEventDevice()
         {
-            EventChannels = new List<EventChannel>();
+            EventChannels = new ObservableCollection<EventChannel>();
             MultiChannel = true;
             CanAddChannel = false;
             Name = "NL_EDev";
@@ -28,22 +28,22 @@ namespace LS_Designer_WPF.Model
         string _profile;
         string CreateProfile()
         {
-            XElement root = XElement.Parse(_profile);
-            IEnumerable<XElement> channels = root.Elements("Mode")
-                                             .Where(p => p.Attribute("Value").Value == Mode.ToString()).Elements();
-            int i = 0;
-            foreach (XElement ch in channels)
-            {
-                ch.Attribute("ChannelNo").Value = channelNumbers[i].ToString();
-                i++;
-            }
+            //XElement root = XElement.Parse(_profile);
+            //IEnumerable<XElement> channels = root.Elements("Mode")
+            //                                 .Where(p => p.Attribute("Value").Value == Mode.ToString()).Elements();
+            //int i = 0;
+            //foreach (XElement ch in channels)
+            //{
+            //    ch.Attribute("ChannelNo").Value = channelNumbers[i].ToString();
+            //    i++;
+            //}
 
-                //XElement profile =
-                //    new XElement("Params",
-                //        new XElement("IPAddress", new XAttribute("Value", IPAddress.ToString())),
-                //        new XElement("VirtualIP", new XAttribute("Value", VirtualIP.ToString()))
-                //        );
-                //string s = profile.ToString();
+            //    //XElement profile =
+            //    //    new XElement("Params",
+            //    //        new XElement("IPAddress", new XAttribute("Value", IPAddress.ToString())),
+            //    //        new XElement("VirtualIP", new XAttribute("Value", VirtualIP.ToString()))
+            //    //        );
+            //    //string s = profile.ToString();
              return _profile;
         }
         
@@ -53,7 +53,7 @@ namespace LS_Designer_WPF.Model
             channelNumbers = new List<int>();
 
             _profile = profile;
-            OldMode = Mode;
+            //OldMode = Mode;
             XElement root = XElement.Parse(profile);
 
             IEnumerable<XElement> channels = root.Elements("Mode")
@@ -72,7 +72,7 @@ namespace LS_Designer_WPF.Model
                 ModeList.Add(String.Format("Mode_{0}", i + 1));
             }
 
-            SelectedModeListItem = ModeList[Mode];
+            //SelectedModeListItem = ModeList[Mode];
 
             if (Id == 0)
             {
@@ -83,57 +83,106 @@ namespace LS_Designer_WPF.Model
                         ech = new EventChannel();
                         ech.ChannelNo = int.Parse(ch.Attribute("ChannelNo").Value);
                         ech.EventName = evnt.Attribute("Name").Value;
-                        //ech.Name = string.Format($"{Name}/{ech.EventName} [{ech.ChannelNo}]");
+                        //ech.Name = string.Format($"[{ech.ChannelNo}] {ech.EventName}");
                         EventChannels.Add(ech);
                     }
                 }
             }
         }
 
+        int _mode = 0;
         public override int Mode
         {
             get
             {
-                return base.Mode;
+                return _mode;
             }
 
             set
             {
-                if (value != OldMode)
+                //SelectedModeListItem = ModeList[Mode];
+                Set(ref _mode, value); 
+                if (Mode != OldMode)
                 {
-                    EventChannel ech;
+                    //EventChannel ech;
 
                     XElement root = XElement.Parse(_profile);
-                    List<EventChannel> eventChannels = new List<EventChannel>();
-                    IEnumerable<XElement> channels = root.Elements("Mode")
+                    //ObservableCollection<EventChannel> eventChannels = new ObservableCollection<EventChannel>();
+                    IEnumerable<XElement> xmlChannels = root.Elements("Mode")
                                              .Where(p => p.Attribute("Value").Value == value.ToString()).Elements();
 
-                    int i = 0;
-                    foreach (XElement ch in channels)
-                    {
-                        ch.Attribute("ChannelNo").Value = channelNumbers[i].ToString();
-                        foreach (XElement evnt in ch.Elements())
-                        {
-                            ech = new EventChannel();
-                            ech.ChannelNo = int.Parse(ch.Attribute("ChannelNo").Value);
-                            ech.EventName = evnt.Attribute("Name").Value;
-                            //ech.Name = string.Format($"{Name}/{ech.EventName} [{ech.ChannelNo}]"); 
-                            eventChannels.Add(ech);
-                            
-                        }
-                        i++;
-                    }
+                    //int i = 0;
+                    //foreach (XElement ch in channels)
+                    //{
+                    //    ch.Attribute("ChannelNo").Value = channelNumbers[i].ToString();
+                    //    foreach (XElement evnt in ch.Elements())
+                    //    {
+                    //        ech = new EventChannel();
+                    //        ech.ChannelNo = int.Parse(ch.Attribute("ChannelNo").Value);
+                    //        ech.EventName = evnt.Attribute("Name").Value;
+                    //        //ech.Name = string.Format($"[{ech.ChannelNo}] {ech.EventName}");
+                    //        eventChannels.Add(ech);
+                    //    }
+                    //    i++;
+                    //}
 
-                    EventChannels = eventChannels; 
-
-                    base.Mode = value;
+                    EventChannels = CreateChannels(xmlChannels);
+                    if (Id != 0)
+                        foreach(EventChannel ech in EventChannels)
+                            ech.Name = string.Format($"[{ech.ChannelNo}] {ech.EventName}");
                 }
+                base.Mode = value;
             }
         }
 
+        ObservableCollection<EventChannel> CreateChannels(IEnumerable<XElement> channels)
+        {
+            EventChannel ech;
+            ObservableCollection<EventChannel> eventChannels = new ObservableCollection<EventChannel>();
+            int i = 0;
+            foreach (XElement ch in channels)
+            {
+                ch.Attribute("ChannelNo").Value = channelNumbers[i].ToString();
+                foreach (XElement evnt in ch.Elements())
+                {
+                    ech = new EventChannel();
+                    ech.ChannelNo = int.Parse(ch.Attribute("ChannelNo").Value);
+                    ech.EventName = evnt.Attribute("Name").Value;
+                    //ech.Name = string.Format($"[{ech.ChannelNo}] {ech.EventName}");
+                    eventChannels.Add(ech);
+                }
+                i++;
+            }
+            return eventChannels;
+        }
 
+        void UpdateEventChannels(ObservableCollection<EventChannel> eventChannels)
+        {
+            for (int i = 0; i < EventChannels.Count; i++)
+            {
+                EventChannels[i].ChannelNo = eventChannels[i].ChannelNo;
+            }
+        }
 
         // UI Staff
+
+        void UpdateProfile(int ix)
+        {
+            List<XElement> chList;
+            ObservableCollection<EventChannel> eventChannels;
+            XElement root = XElement.Parse(_profile);
+            foreach(XElement mode in root.Elements())
+            {
+                chList = mode.Elements().ToList();
+                chList[ix].Attribute("ChannelNo").Value = channelNumbers[ix].ToString();
+            }
+            _profile = root.ToString();
+            root = XElement.Parse(_profile);
+            IEnumerable<XElement> channels = root.Elements("Mode")
+                                             .Where(p => p.Attribute("Value").Value == Mode.ToString()).Elements();
+            eventChannels = CreateChannels(channels);
+            UpdateEventChannels(eventChannels);
+        }
 
         public int Channel_1
         {
@@ -144,6 +193,7 @@ namespace LS_Designer_WPF.Model
             set
             {
                 channelNumbers[0] = value;
+                UpdateProfile(0);
             }
         }
 
@@ -159,7 +209,10 @@ namespace LS_Designer_WPF.Model
             set
             {
                 if (channelNumbers.Count > 1)
+                {
                     channelNumbers[1] = value;
+                    UpdateProfile(1);
+                }
             }
         }
 
@@ -175,7 +228,10 @@ namespace LS_Designer_WPF.Model
             set
             {
                 if (channelNumbers.Count > 2)
+                {
                     channelNumbers[2] = value;
+                    UpdateProfile(2);
+                }
             }
         }
 
@@ -191,7 +247,10 @@ namespace LS_Designer_WPF.Model
             set
             {
                 if (channelNumbers.Count > 3)
+                {
                     channelNumbers[3] = value;
+                    UpdateProfile(3);
+                }
             }
         }
     }

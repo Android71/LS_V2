@@ -45,7 +45,7 @@ namespace LS_Designer_WPF.Model
         List<Partition> _partitions;
         public List<Partition> Partitions //{ get; set; }
         {
-            get { /*var x = Partition; Partition = null; Partition = x;*/ return _partitions; }
+            get { return _partitions; }
             set { Set(ref _partitions, value); }
         }
 
