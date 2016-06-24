@@ -19,16 +19,12 @@
     <EntitySet Name="Effects" EntityType="LSModel.Store.Effects" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EnvironmentItems" EntityType="LSModel.Store.EnvironmentItems" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LE_Types" EntityType="LSModel.Store.LE_Types" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="EffectParts" EntityType="LSModel.Store.EffectParts" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="EffectPartTypes" EntityType="LSModel.Store.EffectPartTypes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="LE_Proxies" EntityType="LSModel.Store.LE_Proxies" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CustomGammas" EntityType="LSModel.Store.CustomGammas" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ControlDevices" EntityType="LSModel.Store.ControlDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EventDevices" EntityType="LSModel.Store.EventDevices" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CSEnvItems" EntityType="LSModel.Store.CSEnvItems" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="LightElements_LightStrip" EntityType="LSModel.Store.LightElements_LightStrip" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SceneLightZone" EntityType="LSModel.Store.SceneLightZone" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="EventChannelLightZone" EntityType="LSModel.Store.EventChannelLightZone" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="GammaLightElement" Association="LSModel.Store.GammaLightElement">
       <End Role="Gamma" EntitySet="Gammas" />
       <End Role="LightElement" EntitySet="LightElements" />
@@ -49,14 +45,6 @@
       <End Role="LightChannel" EntitySet="ControlChannels" />
       <End Role="LightElement" EntitySet="LightElements" />
     </AssociationSet>
-    <AssociationSet Name="FK_EventChannelLightZone_EventChannel" Association="LSModel.Store.FK_EventChannelLightZone_EventChannel">
-      <End Role="EventChannel" EntitySet="EventChannels" />
-      <End Role="EventChannelLightZone" EntitySet="EventChannelLightZone" />
-    </AssociationSet>
-    <AssociationSet Name="FK_EventChannelLightZone_LightZone" Association="LSModel.Store.FK_EventChannelLightZone_LightZone">
-      <End Role="LightZone" EntitySet="LightZones" />
-      <End Role="EventChannelLightZone" EntitySet="EventChannelLightZone" />
-    </AssociationSet>
     <AssociationSet Name="PartitionLightZone" Association="LSModel.Store.PartitionLightZone">
       <End Role="Partition" EntitySet="Partitions" />
       <End Role="LightZone" EntitySet="LightZones" />
@@ -76,22 +64,6 @@
     <AssociationSet Name="ControlSpaceLightZone" Association="LSModel.Store.ControlSpaceLightZone">
       <End Role="ControlSpace" EntitySet="ControlSpaces" />
       <End Role="LightZone" EntitySet="LightZones" />
-    </AssociationSet>
-    <AssociationSet Name="SceneEffect" Association="LSModel.Store.SceneEffect">
-      <End Role="Scene" EntitySet="Scenes" />
-      <End Role="Effect" EntitySet="Effects" />
-    </AssociationSet>
-    <AssociationSet Name="EffectPartTypeEffectPart" Association="LSModel.Store.EffectPartTypeEffectPart">
-      <End Role="EffectPartType" EntitySet="EffectPartTypes" />
-      <End Role="EffectPart" EntitySet="EffectParts" />
-    </AssociationSet>
-    <AssociationSet Name="EffectEffectPart" Association="LSModel.Store.EffectEffectPart">
-      <End Role="Effect" EntitySet="Effects" />
-      <End Role="EffectPart" EntitySet="EffectParts" />
-    </AssociationSet>
-    <AssociationSet Name="EffectPartEffectPart" Association="LSModel.Store.EffectPartEffectPart">
-      <End Role="EffectPart" EntitySet="EffectParts" />
-      <End Role="EffectPart1" EntitySet="EffectParts" />
     </AssociationSet>
     <AssociationSet Name="LightZoneLE_Proxy" Association="LSModel.Store.LightZoneLE_Proxy">
       <End Role="LightZone" EntitySet="LightZones" />
@@ -157,10 +129,6 @@
       <End Role="Partition" EntitySet="Partitions" />
       <End Role="ControlDevice" EntitySet="ControlDevices" />
     </AssociationSet>
-    <AssociationSet Name="FK_LightStrip_inherits_LightElement" Association="LSModel.Store.FK_LightStrip_inherits_LightElement">
-      <End Role="LightElement" EntitySet="LightElements" />
-      <End Role="LightStrip" EntitySet="LightElements_LightStrip" />
-    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ControlSpaces">
     <Key>
@@ -204,8 +172,11 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CanDimming" Type="bit" Nullable="false" DefaultValue="false" />
     <Property Name="PointType" Type="int" Nullable="true" />
+    <Property Name="StartPoint" Type="int" Nullable="false" />
+    <Property Name="PointCount" Type="int" Nullable="false" />
+    <Property Name="Direction" Type="int" Nullable="false" />
+    <Property Name="ColorSequence" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Gamma_Id" Type="int" Nullable="true" />
     <Property Name="ControlChannel_Id" Type="int" Nullable="true" />
@@ -249,6 +220,7 @@
     <Property Name="Category" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Params" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PointType" Type="int" Nullable="false" />
+    <Property Name="DotNetType" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Patterns">
@@ -277,10 +249,9 @@
     <Property Name="Category" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Params" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PointType" Type="int" Nullable="false" />
-    <Property Name="Type" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="DotNetType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LightZone_Id" Type="int" Nullable="true" />
-    <Property Name="Scene_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="EnvironmentItems">
     <Key>
@@ -303,26 +274,6 @@
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="EffectParts">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Params" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="EffectPartType_Id" Type="int" Nullable="false" />
-    <Property Name="Effect_Id" Type="int" Nullable="false" />
-    <Property Name="EffectPartEffectPart_EffectPart1_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="EffectPartTypes">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Category" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Params" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="PointType" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="LE_Proxies">
     <Key>
       <PropertyRef Name="Id" />
@@ -342,6 +293,7 @@
     <Property Name="ValueR" Type="varbinary(max)" Nullable="true" />
     <Property Name="ValueG" Type="varbinary(max)" Nullable="true" />
     <Property Name="ValueB" Type="varbinary(max)" Nullable="true" />
+    <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ControlDevices">
     <Key>
@@ -383,30 +335,12 @@
     <Property Name="EnvironmentItem_Id" Type="int" Nullable="false" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="LightElements_LightStrip">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="StartPoint" Type="int" Nullable="false" />
-    <Property Name="PointCount" Type="int" Nullable="false" />
-    <Property Name="Direction" Type="int" Nullable="false" />
-    <Property Name="ColorSequence" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Id" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="SceneLightZone">
     <Key>
       <PropertyRef Name="Scenes_Id" />
       <PropertyRef Name="LightZones_Id" />
     </Key>
     <Property Name="Scenes_Id" Type="int" Nullable="false" />
-    <Property Name="LightZones_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="EventChannelLightZone">
-    <Key>
-      <PropertyRef Name="EventChannels_Id" />
-      <PropertyRef Name="LightZones_Id" />
-    </Key>
-    <Property Name="EventChannels_Id" Type="int" Nullable="false" />
     <Property Name="LightZones_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="GammaLightElement">
@@ -502,54 +436,6 @@
       </Principal>
       <Dependent Role="LightZone">
         <PropertyRef Name="ControlSpace_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="SceneEffect">
-    <End Role="Scene" Type="LSModel.Store.Scenes" Multiplicity="1" />
-    <End Role="Effect" Type="LSModel.Store.Effects" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Scene">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Effect">
-        <PropertyRef Name="Scene_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="EffectPartTypeEffectPart">
-    <End Role="EffectPartType" Type="LSModel.Store.EffectPartTypes" Multiplicity="1" />
-    <End Role="EffectPart" Type="LSModel.Store.EffectParts" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EffectPartType">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EffectPart">
-        <PropertyRef Name="EffectPartType_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="EffectEffectPart">
-    <End Role="Effect" Type="LSModel.Store.Effects" Multiplicity="1" />
-    <End Role="EffectPart" Type="LSModel.Store.EffectParts" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Effect">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EffectPart">
-        <PropertyRef Name="Effect_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="EffectPartEffectPart">
-    <End Role="EffectPart" Type="LSModel.Store.EffectParts" Multiplicity="1" />
-    <End Role="EffectPart1" Type="LSModel.Store.EffectParts" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EffectPart">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EffectPart1">
-        <PropertyRef Name="EffectPartEffectPart_EffectPart1_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -769,44 +655,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_EventChannelLightZone_EventChannel">
-    <End Role="EventChannel" Type="LSModel.Store.EventChannels" Multiplicity="1" />
-    <End Role="EventChannelLightZone" Type="LSModel.Store.EventChannelLightZone" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="EventChannel">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EventChannelLightZone">
-        <PropertyRef Name="EventChannels_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_EventChannelLightZone_LightZone">
-    <End Role="EventChannelLightZone" Type="LSModel.Store.EventChannelLightZone" Multiplicity="*" />
-    <End Role="LightZone" Type="LSModel.Store.LightZones" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="LightZone">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EventChannelLightZone">
-        <PropertyRef Name="LightZones_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_LightStrip_inherits_LightElement">
-    <End Role="LightElement" Type="LSModel.Store.LightElements" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="LightStrip" Type="LSModel.Store.LightElements_LightStrip" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="LightElement">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="LightStrip">
-        <PropertyRef Name="Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -839,10 +687,6 @@
             <End Role="LightChannel" EntitySet="ControlChannels" />
             <End Role="LightElement" EntitySet="LightElements" />
           </AssociationSet>
-          <AssociationSet Name="EventChannelLightZone" Association="LSModel.EventChannelLightZone">
-            <End Role="EventChannel" EntitySet="EventChannels" />
-            <End Role="LightZone" EntitySet="LightZones" />
-          </AssociationSet>
           <AssociationSet Name="PartitionLightZone" Association="LSModel.PartitionLightZone">
             <End Role="Partition" EntitySet="Partitions" />
             <End Role="LightZone" EntitySet="LightZones" />
@@ -864,24 +708,6 @@
           <AssociationSet Name="ControlSpaceLightZone" Association="LSModel.ControlSpaceLightZone">
             <End Role="ControlSpace" EntitySet="ControlSpaces" />
             <End Role="LightZone" EntitySet="LightZones" />
-          </AssociationSet>
-          <AssociationSet Name="SceneEffect" Association="LSModel.SceneEffect">
-            <End Role="Scene" EntitySet="Scenes" />
-            <End Role="Effect" EntitySet="Effects" />
-          </AssociationSet>
-          <EntitySet Name="EffectParts" EntityType="LSModel.EffectPart" />
-          <EntitySet Name="EffectPartTypes" EntityType="LSModel.EffectPartType" />
-          <AssociationSet Name="EffectPartTypeEffectPart" Association="LSModel.EffectPartTypeEffectPart">
-            <End Role="EffectPartType" EntitySet="EffectPartTypes" />
-            <End Role="EffectPart" EntitySet="EffectParts" />
-          </AssociationSet>
-          <AssociationSet Name="EffectEffectPart" Association="LSModel.EffectEffectPart">
-            <End Role="Effect" EntitySet="Effects" />
-            <End Role="EffectPart" EntitySet="EffectParts" />
-          </AssociationSet>
-          <AssociationSet Name="EffectPartEffectPart" Association="LSModel.EffectPartEffectPart">
-            <End Role="EffectPart" EntitySet="EffectParts" />
-            <End Role="EffectPart1" EntitySet="EffectParts" />
           </AssociationSet>
           <EntitySet Name="LE_Proxies" EntityType="LSModel.LE_Proxy" />
           <AssociationSet Name="LightZoneLE_Proxy" Association="LSModel.LightZoneLE_Proxy">
@@ -992,7 +818,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" />
           <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceEventChannel" FromRole="EventChannel" ToRole="ControlSpace" />
-          <NavigationProperty Name="LightZones" Relationship="LSModel.EventChannelLightZone" FromRole="EventChannel" ToRole="LightZone" />
           <Property Name="ChannelNo" Type="Int32" Nullable="false" />
           <Property Name="EventName" Type="String" Nullable="false" />
           <NavigationProperty Name="EventDevice" Relationship="LSModel.EventDeviceEventChannel" FromRole="EventChannel" ToRole="EventDevice" />
@@ -1009,11 +834,14 @@
           <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLightElement" FromRole="LightElement" ToRole="ControlSpace" />
           <NavigationProperty Name="ControlChannel" Relationship="LSModel.LightChannelLightElement" FromRole="LightElement" ToRole="LightChannel" />
           <NavigationProperty Name="Gamma" Relationship="LSModel.GammaLightElement" FromRole="LightElement" ToRole="Gamma" />
-          <Property Name="CanDimming" Type="Boolean" Nullable="false" DefaultValue="False" />
           <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="true" />
-          <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="CustomGamma" Relationship="LSModel.CustomGammaLightElement" FromRole="LightElement" ToRole="CustomGamma" />
           <NavigationProperty Name="LE_Proxies" Relationship="LSModel.LightElementLE_Proxy" FromRole="LightElement" ToRole="LE_Proxy" />
+          <Property Name="StartPoint" Type="Int32" Nullable="false" />
+          <Property Name="PointCount" Type="Int32" Nullable="false" />
+          <Property Name="Direction" Type="LSModel.Direction" Nullable="false" />
+          <Property Name="ColorSequence" Type="String" Nullable="false" />
+          <Property Name="Remark" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="LightZone">
           <Key>
@@ -1024,7 +852,6 @@
           <NavigationProperty Name="Partition" Relationship="LSModel.PartitionLightZone" FromRole="LightZone" ToRole="Partition" />
           <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLightZone" FromRole="LightZone" ToRole="ControlSpace" />
           <NavigationProperty Name="Scenes" Relationship="LSModel.SceneLightZone" FromRole="LightZone" ToRole="Scene" />
-          <NavigationProperty Name="EventChannels" Relationship="LSModel.EventChannelLightZone" FromRole="LightZone" ToRole="EventChannel" />
           <NavigationProperty Name="Effects" Relationship="LSModel.LightZoneEffect" FromRole="LightZone" ToRole="Effect" />
           <Property Name="IsNode" Type="Boolean" Nullable="false" DefaultValue="False" />
           <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="true" />
@@ -1063,6 +890,7 @@
           <Property Name="Category" Type="String" Nullable="false" />
           <Property Name="Params" Type="String" Nullable="false" />
           <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="false" />
+          <Property Name="DotNetType" Type="String" Nullable="false" />
           <Property Name="Remark" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="Pattern">
@@ -1082,7 +910,6 @@
           <NavigationProperty Name="Partition" Relationship="LSModel.PartitionScene" FromRole="Scene" ToRole="Partition" />
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="Remark" Type="String" Nullable="true" />
-          <NavigationProperty Name="Effects" Relationship="LSModel.SceneEffect" FromRole="Scene" ToRole="Effect" />
         </EntityType>
         <Association Name="GammaLightElement">
           <End Type="LSModel.Gamma" Role="Gamma" Multiplicity="0..1" />
@@ -1105,25 +932,13 @@
           <Property Name="Category" Type="String" Nullable="false" />
           <Property Name="Params" Type="String" Nullable="false" />
           <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="false" />
-          <Property Name="Type" Type="String" Nullable="true" />
+          <Property Name="DotNetType" Type="String" Nullable="true" />
           <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="LightZone" Relationship="LSModel.LightZoneEffect" FromRole="Effect" ToRole="LightZone" />
-          <NavigationProperty Name="Scene" Relationship="LSModel.SceneEffect" FromRole="Effect" ToRole="Scene" />
-          <NavigationProperty Name="EffectParts" Relationship="LSModel.EffectEffectPart" FromRole="Effect" ToRole="EffectPart" />
         </EntityType>
         <Association Name="LightChannelLightElement">
           <End Type="LSModel.ControlChannel" Role="LightChannel" Multiplicity="0..1" />
           <End Type="LSModel.LightElement" Role="LightElement" Multiplicity="*" />
-        </Association>
-        <EntityType Name="LightStrip" BaseType="LSModel.LightElement" >
-          <Property Name="StartPoint" Type="Int32" Nullable="false" />
-          <Property Name="PointCount" Type="Int32" Nullable="false" />
-          <Property Name="Direction" Type="LSModel.Direction" Nullable="false" />
-          <Property Name="ColorSequence" Type="String" Nullable="false" />
-        </EntityType>
-        <Association Name="EventChannelLightZone">
-          <End Type="LSModel.EventChannel" Role="EventChannel" Multiplicity="*" />
-          <End Type="LSModel.LightZone" Role="LightZone" Multiplicity="*" />
         </Association>
         <Association Name="PartitionLightZone">
           <End Type="LSModel.Partition" Role="Partition" Multiplicity="1" />
@@ -1186,44 +1001,6 @@
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
           <End Type="LSModel.LightZone" Role="LightZone" Multiplicity="*" />
         </Association>
-        <Association Name="SceneEffect">
-          <End Type="LSModel.Scene" Role="Scene" Multiplicity="1" />
-          <End Type="LSModel.Effect" Role="Effect" Multiplicity="*" />
-        </Association>
-        <EntityType Name="EffectPart">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="EffectPartType" Relationship="LSModel.EffectPartTypeEffectPart" FromRole="EffectPart" ToRole="EffectPartType" />
-          <NavigationProperty Name="Effect" Relationship="LSModel.EffectEffectPart" FromRole="EffectPart" ToRole="Effect" />
-          <Property Name="Params" Type="String" Nullable="true" />
-          <NavigationProperty Name="EffectParts" Relationship="LSModel.EffectPartEffectPart" FromRole="EffectPart" ToRole="EffectPart1" />
-          <NavigationProperty Name="ParentPart" Relationship="LSModel.EffectPartEffectPart" FromRole="EffectPart" ToRole="EffectPart1" />
-        </EntityType>
-        <EntityType Name="EffectPartType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="EffectParts" Relationship="LSModel.EffectPartTypeEffectPart" FromRole="EffectPartType" ToRole="EffectPart" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="Category" Type="String" Nullable="true" />
-          <Property Name="Params" Type="String" Nullable="true" />
-          <Property Name="PointType" Type="LSModel.PointTypeEnum" Nullable="false" />
-        </EntityType>
-        <Association Name="EffectPartTypeEffectPart">
-          <End Type="LSModel.EffectPartType" Role="EffectPartType" Multiplicity="1" />
-          <End Type="LSModel.EffectPart" Role="EffectPart" Multiplicity="*" />
-        </Association>
-        <Association Name="EffectEffectPart">
-          <End Type="LSModel.Effect" Role="Effect" Multiplicity="1" />
-          <End Type="LSModel.EffectPart" Role="EffectPart" Multiplicity="*" />
-        </Association>
-        <Association Name="EffectPartEffectPart">
-          <End Type="LSModel.EffectPart" Role="EffectPart" Multiplicity="1" />
-          <End Type="LSModel.EffectPart" Role="EffectPart1" Multiplicity="0..1" />
-        </Association>
         <EntityType Name="LE_Proxy">
           <Key>
             <PropertyRef Name="Id" />
@@ -1252,6 +1029,7 @@
           <Property Name="ValueG" Type="Binary" Nullable="true" />
           <Property Name="ValueB" Type="Binary" Nullable="true" />
           <NavigationProperty Name="LightElements" Relationship="LSModel.CustomGammaLightElement" FromRole="CustomGamma" ToRole="LightElement" />
+          <Property Name="Remark" Type="String" Nullable="true" />
         </EntityType>
         <Association Name="CustomGammaLightElement">
           <End Type="LSModel.CustomGamma" Role="CustomGamma" Multiplicity="0..1" />
@@ -1395,18 +1173,12 @@
         <MappingFragment StoreEntitySet="LightElements">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CanDimming" ColumnName="CanDimming" />
           <ScalarProperty Name="PointType" ColumnName="PointType" />
-          <ScalarProperty Name="Remark" ColumnName="Remark" />
-        </MappingFragment>
-      </EntityTypeMapping>
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.LightStrip)">
-        <MappingFragment StoreEntitySet="LightElements_LightStrip">
-          <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="StartPoint" ColumnName="StartPoint" />
           <ScalarProperty Name="PointCount" ColumnName="PointCount" />
           <ScalarProperty Name="Direction" ColumnName="Direction" />
           <ScalarProperty Name="ColorSequence" ColumnName="ColorSequence" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1446,6 +1218,7 @@
           <ScalarProperty Name="Category" ColumnName="Category" />
           <ScalarProperty Name="Params" ColumnName="Params" />
           <ScalarProperty Name="PointType" ColumnName="PointType" />
+          <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1476,7 +1249,7 @@
           <ScalarProperty Name="Category" ColumnName="Category" />
           <ScalarProperty Name="Params" ColumnName="Params" />
           <ScalarProperty Name="PointType" ColumnName="PointType" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1503,25 +1276,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="EffectParts">
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.EffectPart)">
-        <MappingFragment StoreEntitySet="EffectParts">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Params" ColumnName="Params" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="EffectPartTypes">
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.EffectPartType)">
-        <MappingFragment StoreEntitySet="EffectPartTypes">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Category" ColumnName="Category" />
-          <ScalarProperty Name="Params" ColumnName="Params" />
-          <ScalarProperty Name="PointType" ColumnName="PointType" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="LE_Proxies">
       <EntityTypeMapping TypeName="IsTypeOf(LSModel.LE_Proxy)">
         <MappingFragment StoreEntitySet="LE_Proxies">
@@ -1539,6 +1293,7 @@
           <ScalarProperty Name="ValueR" ColumnName="ValueR" />
           <ScalarProperty Name="ValueG" ColumnName="ValueG" />
           <ScalarProperty Name="ValueB" ColumnName="ValueB" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1613,14 +1368,6 @@
       </EndProperty>
       <Condition ColumnName="ControlChannel_Id" IsNull="false" />
     </AssociationSetMapping>
-    <AssociationSetMapping Name="EventChannelLightZone" TypeName="LSModel.EventChannelLightZone" StoreEntitySet="EventChannelLightZone">
-      <EndProperty Name="EventChannel">
-        <ScalarProperty Name="Id" ColumnName="EventChannels_Id" />
-      </EndProperty>
-      <EndProperty Name="LightZone">
-        <ScalarProperty Name="Id" ColumnName="LightZones_Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="PartitionLightZone" TypeName="LSModel.PartitionLightZone" StoreEntitySet="LightZones">
       <EndProperty Name="Partition">
         <ScalarProperty Name="Id" ColumnName="Partition_Id" />
@@ -1659,38 +1406,6 @@
         <ScalarProperty Name="Id" ColumnName="ControlSpace_Id" />
       </EndProperty>
       <EndProperty Name="LightZone">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="SceneEffect" TypeName="LSModel.SceneEffect" StoreEntitySet="Effects">
-      <EndProperty Name="Scene">
-        <ScalarProperty Name="Id" ColumnName="Scene_Id" />
-      </EndProperty>
-      <EndProperty Name="Effect">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="EffectPartTypeEffectPart" TypeName="LSModel.EffectPartTypeEffectPart" StoreEntitySet="EffectParts">
-      <EndProperty Name="EffectPartType">
-        <ScalarProperty Name="Id" ColumnName="EffectPartType_Id" />
-      </EndProperty>
-      <EndProperty Name="EffectPart">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="EffectEffectPart" TypeName="LSModel.EffectEffectPart" StoreEntitySet="EffectParts">
-      <EndProperty Name="Effect">
-        <ScalarProperty Name="Id" ColumnName="Effect_Id" />
-      </EndProperty>
-      <EndProperty Name="EffectPart">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="EffectPartEffectPart" TypeName="LSModel.EffectPartEffectPart" StoreEntitySet="EffectParts">
-      <EndProperty Name="EffectPart">
-        <ScalarProperty Name="Id" ColumnName="EffectPartEffectPart_EffectPart1_Id" />
-      </EndProperty>
-      <EndProperty Name="EffectPart1">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

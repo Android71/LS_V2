@@ -26,6 +26,7 @@ namespace EFData
         public byte[] ValueR { get; set; }
         public byte[] ValueG { get; set; }
         public byte[] ValueB { get; set; }
+        public string Remark { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightElement> LightElements { get; set; }

@@ -23,6 +23,7 @@ namespace LS_Designer_WPF.Controls
         public NLEventDeviceUC()
         {
             InitializeComponent();
+            partition.Visibility = Visibility.Collapsed;
         }
 
         void SetNameFocus()

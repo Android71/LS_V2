@@ -19,6 +19,7 @@ namespace EFData
         public string Category { get; set; }
         public string Params { get; set; }
         public PointTypeEnum PointType { get; set; }
+        public string DotNetType { get; set; }
         public string Remark { get; set; }
     }
 }

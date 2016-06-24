@@ -19,7 +19,6 @@ namespace EFData
         {
             this.IsNode = false;
             this.Scenes = new HashSet<Scene>();
-            this.EventChannels = new HashSet<EventChannel>();
             this.Effects = new HashSet<Effect>();
             this.LE_Proxies = new HashSet<LE_Proxy>();
         }
@@ -34,8 +33,6 @@ namespace EFData
         public virtual ControlSpace ControlSpace { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Scene> Scenes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EventChannel> EventChannels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Effect> Effects { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

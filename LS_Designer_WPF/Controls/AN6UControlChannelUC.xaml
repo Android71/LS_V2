@@ -51,7 +51,7 @@
                   Style="{StaticResource ComboBoxFlatStyle}"
                   ItemsSource="{Binding Partitions}"
                   DisplayMemberPath="Name"
-                  SelectedItem="{Binding Partition}"/>
+                  SelectedItem="{Binding Partition}" />
         <Label Grid.Row="5" Grid.Column="0" Content="Remark" />
         <TextBox Grid.Row="5" Grid.Column="1" Margin="0,2,0,2"
                  VerticalAlignment="Center"

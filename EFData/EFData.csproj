@@ -76,12 +76,6 @@
     <Compile Include="Effect.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="EffectPart.cs">
-      <DependentUpon>LSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EffectPartType.cs">
-      <DependentUpon>LSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="EnvironmentItem.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
@@ -101,9 +95,6 @@
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LightPointType.cs">
-      <DependentUpon>LSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LightStrip.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LightZone.cs">

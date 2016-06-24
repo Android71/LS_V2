@@ -38,8 +38,6 @@ namespace EFData
         public virtual DbSet<Effect> Effects { get; set; }
         public virtual DbSet<EnvironmentItem> EnvironmentItems { get; set; }
         public virtual DbSet<LightPointType> LE_Types { get; set; }
-        public virtual DbSet<EffectPart> EffectParts { get; set; }
-        public virtual DbSet<EffectPartType> EffectPartTypes { get; set; }
         public virtual DbSet<LE_Proxy> LE_Proxies { get; set; }
         public virtual DbSet<CustomGamma> CustomGammas { get; set; }
         public virtual DbSet<ControlDevice> ControlDevices { get; set; }

@@ -18,34 +18,14 @@ namespace LS_Designer_WPF.Model
             ModeList = new List<string>();
             DotNetType = typeof(NLEventDevice).AssemblyQualifiedName;
         }
-
+        string _profile;
         public override string Profile
         {
-            get { return CreateProfile(); }
+            get { return _profile; /*return CreateProfile(_profile)*/ }
             set { ParseProfile(value); }
         }
-
-        string _profile;
-        string CreateProfile()
-        {
-            //XElement root = XElement.Parse(_profile);
-            //IEnumerable<XElement> channels = root.Elements("Mode")
-            //                                 .Where(p => p.Attribute("Value").Value == Mode.ToString()).Elements();
-            //int i = 0;
-            //foreach (XElement ch in channels)
-            //{
-            //    ch.Attribute("ChannelNo").Value = channelNumbers[i].ToString();
-            //    i++;
-            //}
-
-            //    //XElement profile =
-            //    //    new XElement("Params",
-            //    //        new XElement("IPAddress", new XAttribute("Value", IPAddress.ToString())),
-            //    //        new XElement("VirtualIP", new XAttribute("Value", VirtualIP.ToString()))
-            //    //        );
-            //    //string s = profile.ToString();
-             return _profile;
-        }
+        
+        //string CreateProfile(){}
         
         void ParseProfile(string profile)
         {
@@ -53,7 +33,6 @@ namespace LS_Designer_WPF.Model
             channelNumbers = new List<int>();
 
             _profile = profile;
-            //OldMode = Mode;
             XElement root = XElement.Parse(profile);
 
             IEnumerable<XElement> channels = root.Elements("Mode")
@@ -72,8 +51,6 @@ namespace LS_Designer_WPF.Model
                 ModeList.Add(String.Format("Mode_{0}", i + 1));
             }
 
-            //SelectedModeListItem = ModeList[Mode];
-
             if (Id == 0)
             {
                 foreach (XElement ch in channels)
@@ -83,7 +60,6 @@ namespace LS_Designer_WPF.Model
                         ech = new EventChannel();
                         ech.ChannelNo = int.Parse(ch.Attribute("ChannelNo").Value);
                         ech.EventName = evnt.Attribute("Name").Value;
-                        //ech.Name = string.Format($"[{ech.ChannelNo}] {ech.EventName}");
                         EventChannels.Add(ech);
                     }
                 }
@@ -93,38 +69,16 @@ namespace LS_Designer_WPF.Model
         int _mode = 0;
         public override int Mode
         {
-            get
-            {
-                return _mode;
-            }
+            get { return _mode; }
 
             set
             {
-                //SelectedModeListItem = ModeList[Mode];
                 Set(ref _mode, value); 
                 if (Mode != OldMode)
                 {
-                    //EventChannel ech;
-
                     XElement root = XElement.Parse(_profile);
-                    //ObservableCollection<EventChannel> eventChannels = new ObservableCollection<EventChannel>();
                     IEnumerable<XElement> xmlChannels = root.Elements("Mode")
                                              .Where(p => p.Attribute("Value").Value == value.ToString()).Elements();
-
-                    //int i = 0;
-                    //foreach (XElement ch in channels)
-                    //{
-                    //    ch.Attribute("ChannelNo").Value = channelNumbers[i].ToString();
-                    //    foreach (XElement evnt in ch.Elements())
-                    //    {
-                    //        ech = new EventChannel();
-                    //        ech.ChannelNo = int.Parse(ch.Attribute("ChannelNo").Value);
-                    //        ech.EventName = evnt.Attribute("Name").Value;
-                    //        //ech.Name = string.Format($"[{ech.ChannelNo}] {ech.EventName}");
-                    //        eventChannels.Add(ech);
-                    //    }
-                    //    i++;
-                    //}
 
                     EventChannels = CreateChannels(xmlChannels);
                     if (Id != 0)
@@ -148,7 +102,6 @@ namespace LS_Designer_WPF.Model
                     ech = new EventChannel();
                     ech.ChannelNo = int.Parse(ch.Attribute("ChannelNo").Value);
                     ech.EventName = evnt.Attribute("Name").Value;
-                    //ech.Name = string.Format($"[{ech.ChannelNo}] {ech.EventName}");
                     eventChannels.Add(ech);
                 }
                 i++;

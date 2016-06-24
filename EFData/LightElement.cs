@@ -17,14 +17,16 @@ namespace EFData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LightElement()
         {
-            this.CanDimming = false;
             this.LE_Proxies = new HashSet<LE_Proxy>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool CanDimming { get; set; }
         public Nullable<PointTypeEnum> PointType { get; set; }
+        public int StartPoint { get; set; }
+        public int PointCount { get; set; }
+        public Direction Direction { get; set; }
+        public string ColorSequence { get; set; }
         public string Remark { get; set; }
     
         public virtual Partition Partition { get; set; }

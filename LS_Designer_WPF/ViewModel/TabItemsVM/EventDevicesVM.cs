@@ -233,12 +233,17 @@ namespace LS_Designer_WPF.ViewModel
                 if (DetailSelectedItem != null)
                 {
                     dsix = DetailList.IndexOf(value);
-                    _dataService.GetControlChannel(DetailSelectedItem.Id, (data, error) =>
+                    _dataService.GetEventChannel(DetailSelectedItem.Id, (data, error) =>
                      {
                          if (error != null) { return; } // Report error here
                          DetailCurrentObject = data;
                      });
+
+                    DetailCurrentObject.Partitions = Partitions;
+                    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
+
                     DetailObjectPanelVisibility = Visibility.Visible;
+                    DetailObjectCurtainVisibility = Visibility.Visible;
                 }
                 else
                 {
@@ -248,8 +253,8 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
-        ControlChannel _detailCurrentObject;
-        public ControlChannel DetailCurrentObject
+        EventChannel _detailCurrentObject;
+        public EventChannel DetailCurrentObject
         {
             get { return _detailCurrentObject; }
             set { Set(ref _detailCurrentObject, value); }
@@ -327,6 +332,9 @@ namespace LS_Designer_WPF.ViewModel
         void MasterExecSave()
         {
             int i = -1;
+            bool modeChanged = false;
+            if (MasterCurrentObject.Mode != MasterCurrentObject.OldMode)
+                modeChanged = true;
             _dataService.UpdateEventDevice(MasterCurrentObject, (updatedCount, error) =>
             {
                 if (error != null) { return; } // Report error here
@@ -346,13 +354,16 @@ namespace LS_Designer_WPF.ViewModel
                 MasterSelectedItem = MasterCurrentObject;
                 MasterListVisibility = Visibility.Visible;
             }
-            //if (MasterEditMode) //in EditMode MasterSelectedItem always not null
-            //{
-            //    MasterList[msix] = MasterCurrentObject;
-            //    MasterSelectedItem = MasterCurrentObject;
-            //    if (savedDsix != -1)
-            //        DetailSelectedItem = DetailList[savedDsix];
-            //}
+            if (MasterEditMode) //in EditMode MasterSelectedItem always not null
+            {
+                MasterList[msix] = MasterCurrentObject;
+                MasterSelectedItem = MasterCurrentObject;
+                if (!modeChanged)
+                {
+                    if (savedDsix != -1)
+                        DetailSelectedItem = DetailList[savedDsix];
+                }
+            }
 
             MasterAddMode = false;
             MasterEditMode = false;
@@ -410,17 +421,17 @@ namespace LS_Designer_WPF.ViewModel
 
             if (MasterSelectedItem != null)
             {
-                //_dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-                //{
-                //    if (error != null) { return; } // Report error here
-                //    MasterCurrentObject = data;
-                //});
-                //if (MasterSelectedItem.MultiChannel)
-                //{
-                //    DetailContentVisibility = Visibility.Visible;
-                //    if (DetailSelectedItem != null)
-                //        DetailObjectPanelVisibility = Visibility.Visible;
-                //}
+                _dataService.GetEventDevice(MasterSelectedItem.Id, (data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    MasterCurrentObject = data;
+                });
+                if (MasterSelectedItem.MultiChannel)
+                {
+                    DetailContentVisibility = Visibility.Visible;
+                    if (DetailSelectedItem != null)
+                        DetailObjectPanelVisibility = Visibility.Visible;
+                }
             }
             else
                 MasterObjectPanelVisibility = Visibility.Collapsed;
@@ -439,8 +450,12 @@ namespace LS_Designer_WPF.ViewModel
             savedDsix = dsix;
 
             MasterEditMode = true;
+            MasterCurrentObject.IsEditMode = true;
+            MasterCurrentObject.Partitions = Partitions;
+            MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
+
             MasterListCurtainVisibility = Visibility.Visible;
             MasterObjectButtonsVisibility = Visibility.Visible;
             MasterObjectCurtainVisibility = Visibility.Collapsed;
@@ -552,25 +567,25 @@ namespace LS_Designer_WPF.ViewModel
 
         void DetailExecSave()
         {
-            //int updateCount = 0;
-            //_dataService.UpdateControlChannel(DetailCurrentObject, (data, error) =>
-            //         {
-            //             if (error != null) { return; } // Report error here
-            //             updateCount = data;
-            //         });
-            //DetailEditMode = false;
-            //MasterAddCmd.RaiseCanExecuteChanged();
-            //MasterRemoveCmd.RaiseCanExecuteChanged();
+            int updateCount = 0;
+            _dataService.UpdateEventChannel(DetailCurrentObject, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                         updateCount = data;
+                     });
+            DetailEditMode = false;
+            MasterAddCmd.RaiseCanExecuteChanged();
+            MasterRemoveCmd.RaiseCanExecuteChanged();
 
-            //DetailList[dsix] = DetailCurrentObject;
-            //DetailSelectedItem = DetailCurrentObject;
+            DetailList[dsix] = DetailCurrentObject;
+            DetailSelectedItem = DetailCurrentObject;
 
-            //DetailObjectButtonsVisibility = Visibility.Collapsed;
-            //DetailListCurtainVisibility = Visibility.Collapsed;
+            DetailObjectButtonsVisibility = Visibility.Collapsed;
+            DetailListCurtainVisibility = Visibility.Collapsed;
 
-            //MasterListCurtainVisibility = Visibility.Collapsed;
+            MasterListCurtainVisibility = Visibility.Collapsed;
 
-            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         private void DetailOKCallbackAction(Object obj)
@@ -595,15 +610,18 @@ namespace LS_Designer_WPF.ViewModel
 
         void DetailExecCancel()
         {
-            _dataService.GetControlChannel(DetailSelectedItem.Id, (data, error) =>
+            _dataService.GetEventChannel(DetailSelectedItem.Id, (data, error) =>
             {
                 if (error != null) { return; } // Report error here
                 DetailCurrentObject = data;
             });
 
             DetailEditMode = false;
+            DetailCurrentObject.Partitions = Partitions;
+            DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
+
 
             DetailListCurtainVisibility = Visibility.Collapsed;
             MasterListCurtainVisibility = Visibility.Collapsed;
@@ -623,6 +641,9 @@ namespace LS_Designer_WPF.ViewModel
         void DetailExecEdit()
         {
             DetailEditMode = true;
+            DetailCurrentObject.IsEditMode = true;
+            DetailCurrentObject.Partitions = Partitions;
+            DetailCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
 
             DetailObjectCurtainVisibility = Visibility.Collapsed;
             DetailObjectButtonsVisibility = Visibility.Visible;

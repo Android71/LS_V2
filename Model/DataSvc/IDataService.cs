@@ -81,6 +81,15 @@ namespace LS_Designer_WPF.Model
 
         /************************************************************/
 
+        #region EventChannels
+
+        void GetEventChannel(int id, Action<EventChannel, Exception> callback);
+
+        // Only Partition change
+        void UpdateEventChannel(EventChannel eCh, Action<int, Exception> callback);
+
+        #endregion
+
         //void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback);
 
         //void GetEnvironmentItem(string model, Action<EnvironmentItem, Exception> callback);

@@ -14,23 +14,14 @@ namespace EFData
     
     public partial class Effect
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Effect()
-        {
-            this.EffectParts = new HashSet<EffectPart>();
-        }
-    
         public int Id { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
         public string Params { get; set; }
         public PointTypeEnum PointType { get; set; }
-        public string Type { get; set; }
+        public string DotNetType { get; set; }
         public string Remark { get; set; }
     
         public virtual LightZone LightZone { get; set; }
-        public virtual Scene Scene { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EffectPart> EffectParts { get; set; }
     }
 }

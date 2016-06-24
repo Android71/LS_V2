@@ -90,9 +90,9 @@
                         Visibility="{Binding MasterObjectPanelVisibility}">
                     <Border.Resources>
                         <DataTemplate DataType="{x:Type model:NLEventDevice}">
-                            <local:NLEventDeviceUC ChCount="{Binding ChCount}" 
+                            <local:NLEventDeviceUC ChCount="{Binding ChCount}"
                                                    IsAddMode="{Binding IsAddMode}"
-                                                   IsEditMode="{Binding IsEditMode}"/>
+                                                   IsEditMode="{Binding IsEditMode}" />
                         </DataTemplate>
                     </Border.Resources>
                     <ContentControl Name="masterCurrentObject" Margin="0,5,0,0"
@@ -171,8 +171,8 @@
                         BorderThickness="1" Padding="10"
                         Visibility="{Binding DetailObjectPanelVisibility}">
                     <Border.Resources>
-                        <DataTemplate DataType="{x:Type model:AN6UControlChannel}">
-                            <local:AN6UControlChannelUC />
+                        <DataTemplate DataType="{x:Type model:EventChannel}">
+                            <local:EventChannelUC />
                         </DataTemplate>
                     </Border.Resources>
                     <ContentControl Name="detailCurrentObject" Margin="0,5,0,0"

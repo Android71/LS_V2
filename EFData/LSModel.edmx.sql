@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/22/2016 19:15:06
--- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 06/24/2016 16:02:46
+-- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -32,12 +32,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_LightChannelLightElement]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LightElements] DROP CONSTRAINT [FK_LightChannelLightElement];
 GO
-IF OBJECT_ID(N'[dbo].[FK_EventChannelLightZone_EventChannel]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EventChannelLightZone] DROP CONSTRAINT [FK_EventChannelLightZone_EventChannel];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EventChannelLightZone_LightZone]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EventChannelLightZone] DROP CONSTRAINT [FK_EventChannelLightZone_LightZone];
-GO
 IF OBJECT_ID(N'[dbo].[FK_PartitionLightZone]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LightZones] DROP CONSTRAINT [FK_PartitionLightZone];
 GO
@@ -55,15 +49,6 @@ IF OBJECT_ID(N'[dbo].[FK_ControlSpaceLightZone]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_SceneEffect]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Effects] DROP CONSTRAINT [FK_SceneEffect];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EffectPartTypeEffectPart]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EffectParts] DROP CONSTRAINT [FK_EffectPartTypeEffectPart];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EffectEffectPart]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EffectParts] DROP CONSTRAINT [FK_EffectEffectPart];
-GO
-IF OBJECT_ID(N'[dbo].[FK_EffectPartEffectPart]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[EffectParts] DROP CONSTRAINT [FK_EffectPartEffectPart];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LightZoneLE_Proxy]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LE_Proxies] DROP CONSTRAINT [FK_LightZoneLE_Proxy];
@@ -113,9 +98,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PartitionControlDevice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlDevices] DROP CONSTRAINT [FK_PartitionControlDevice];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LightStrip_inherits_LightElement]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[LightElements_LightStrip] DROP CONSTRAINT [FK_LightStrip_inherits_LightElement];
-GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -160,12 +142,6 @@ GO
 IF OBJECT_ID(N'[dbo].[LE_Types]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LE_Types];
 GO
-IF OBJECT_ID(N'[dbo].[EffectParts]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EffectParts];
-GO
-IF OBJECT_ID(N'[dbo].[EffectPartTypes]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EffectPartTypes];
-GO
 IF OBJECT_ID(N'[dbo].[LE_Proxies]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LE_Proxies];
 GO
@@ -181,14 +157,8 @@ GO
 IF OBJECT_ID(N'[dbo].[CSEnvItems]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CSEnvItems];
 GO
-IF OBJECT_ID(N'[dbo].[LightElements_LightStrip]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[LightElements_LightStrip];
-GO
 IF OBJECT_ID(N'[dbo].[SceneLightZone]', 'U') IS NOT NULL
     DROP TABLE [dbo].[SceneLightZone];
-GO
-IF OBJECT_ID(N'[dbo].[EventChannelLightZone]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[EventChannelLightZone];
 GO
 
 -- --------------------------------------------------
@@ -235,8 +205,11 @@ GO
 CREATE TABLE [dbo].[LightElements] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [CanDimming] bit  NOT NULL,
     [PointType] int  NULL,
+    [StartPoint] int  NOT NULL,
+    [PointCount] int  NOT NULL,
+    [Direction] int  NOT NULL,
+    [ColorSequence] nvarchar(max)  NOT NULL,
     [Remark] nvarchar(max)  NULL,
     [Gamma_Id] int  NULL,
     [ControlChannel_Id] int  NULL,
@@ -280,6 +253,7 @@ CREATE TABLE [dbo].[BaseEffects] (
     [Category] nvarchar(max)  NOT NULL,
     [Params] nvarchar(max)  NOT NULL,
     [PointType] int  NOT NULL,
+    [DotNetType] nvarchar(max)  NOT NULL,
     [Remark] nvarchar(max)  NULL
 );
 GO
@@ -308,10 +282,9 @@ CREATE TABLE [dbo].[Effects] (
     [Category] nvarchar(max)  NOT NULL,
     [Params] nvarchar(max)  NOT NULL,
     [PointType] int  NOT NULL,
-    [Type] nvarchar(max)  NULL,
+    [DotNetType] nvarchar(max)  NULL,
     [Remark] nvarchar(max)  NULL,
-    [LightZone_Id] int  NULL,
-    [Scene_Id] int  NOT NULL
+    [LightZone_Id] int  NULL
 );
 GO
 
@@ -336,26 +309,6 @@ CREATE TABLE [dbo].[LE_Types] (
 );
 GO
 
--- Creating table 'EffectParts'
-CREATE TABLE [dbo].[EffectParts] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Params] nvarchar(max)  NULL,
-    [EffectPartType_Id] int  NOT NULL,
-    [Effect_Id] int  NOT NULL,
-    [EffectPartEffectPart_EffectPart1_Id] int  NOT NULL
-);
-GO
-
--- Creating table 'EffectPartTypes'
-CREATE TABLE [dbo].[EffectPartTypes] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [Category] nvarchar(max)  NULL,
-    [Params] nvarchar(max)  NULL,
-    [PointType] int  NOT NULL
-);
-GO
-
 -- Creating table 'LE_Proxies'
 CREATE TABLE [dbo].[LE_Proxies] (
     [Id] int IDENTITY(1,1) NOT NULL,
@@ -372,7 +325,8 @@ CREATE TABLE [dbo].[CustomGammas] (
     [Value] varbinary(max)  NULL,
     [ValueR] varbinary(max)  NULL,
     [ValueG] varbinary(max)  NULL,
-    [ValueB] varbinary(max)  NULL
+    [ValueB] varbinary(max)  NULL,
+    [Remark] nvarchar(max)  NULL
 );
 GO
 
@@ -416,26 +370,9 @@ CREATE TABLE [dbo].[CSEnvItems] (
 );
 GO
 
--- Creating table 'LightElements_LightStrip'
-CREATE TABLE [dbo].[LightElements_LightStrip] (
-    [StartPoint] int  NOT NULL,
-    [PointCount] int  NOT NULL,
-    [Direction] int  NOT NULL,
-    [ColorSequence] nvarchar(max)  NOT NULL,
-    [Id] int  NOT NULL
-);
-GO
-
 -- Creating table 'SceneLightZone'
 CREATE TABLE [dbo].[SceneLightZone] (
     [Scenes_Id] int  NOT NULL,
-    [LightZones_Id] int  NOT NULL
-);
-GO
-
--- Creating table 'EventChannelLightZone'
-CREATE TABLE [dbo].[EventChannelLightZone] (
-    [EventChannels_Id] int  NOT NULL,
     [LightZones_Id] int  NOT NULL
 );
 GO
@@ -522,18 +459,6 @@ ADD CONSTRAINT [PK_LE_Types]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'EffectParts'
-ALTER TABLE [dbo].[EffectParts]
-ADD CONSTRAINT [PK_EffectParts]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'EffectPartTypes'
-ALTER TABLE [dbo].[EffectPartTypes]
-ADD CONSTRAINT [PK_EffectPartTypes]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'LE_Proxies'
 ALTER TABLE [dbo].[LE_Proxies]
 ADD CONSTRAINT [PK_LE_Proxies]
@@ -564,22 +489,10 @@ ADD CONSTRAINT [PK_CSEnvItems]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'LightElements_LightStrip'
-ALTER TABLE [dbo].[LightElements_LightStrip]
-ADD CONSTRAINT [PK_LightElements_LightStrip]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Scenes_Id], [LightZones_Id] in table 'SceneLightZone'
 ALTER TABLE [dbo].[SceneLightZone]
 ADD CONSTRAINT [PK_SceneLightZone]
     PRIMARY KEY CLUSTERED ([Scenes_Id], [LightZones_Id] ASC);
-GO
-
--- Creating primary key on [EventChannels_Id], [LightZones_Id] in table 'EventChannelLightZone'
-ALTER TABLE [dbo].[EventChannelLightZone]
-ADD CONSTRAINT [PK_EventChannelLightZone]
-    PRIMARY KEY CLUSTERED ([EventChannels_Id], [LightZones_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -655,30 +568,6 @@ ON [dbo].[LightElements]
     ([ControlChannel_Id]);
 GO
 
--- Creating foreign key on [EventChannels_Id] in table 'EventChannelLightZone'
-ALTER TABLE [dbo].[EventChannelLightZone]
-ADD CONSTRAINT [FK_EventChannelLightZone_EventChannel]
-    FOREIGN KEY ([EventChannels_Id])
-    REFERENCES [dbo].[EventChannels]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [LightZones_Id] in table 'EventChannelLightZone'
-ALTER TABLE [dbo].[EventChannelLightZone]
-ADD CONSTRAINT [FK_EventChannelLightZone_LightZone]
-    FOREIGN KEY ([LightZones_Id])
-    REFERENCES [dbo].[LightZones]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventChannelLightZone_LightZone'
-CREATE INDEX [IX_FK_EventChannelLightZone_LightZone]
-ON [dbo].[EventChannelLightZone]
-    ([LightZones_Id]);
-GO
-
 -- Creating foreign key on [Partition_Id] in table 'LightZones'
 ALTER TABLE [dbo].[LightZones]
 ADD CONSTRAINT [FK_PartitionLightZone]
@@ -752,66 +641,6 @@ GO
 CREATE INDEX [IX_FK_ControlSpaceLightZone]
 ON [dbo].[LightZones]
     ([ControlSpace_Id]);
-GO
-
--- Creating foreign key on [Scene_Id] in table 'Effects'
-ALTER TABLE [dbo].[Effects]
-ADD CONSTRAINT [FK_SceneEffect]
-    FOREIGN KEY ([Scene_Id])
-    REFERENCES [dbo].[Scenes]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_SceneEffect'
-CREATE INDEX [IX_FK_SceneEffect]
-ON [dbo].[Effects]
-    ([Scene_Id]);
-GO
-
--- Creating foreign key on [EffectPartType_Id] in table 'EffectParts'
-ALTER TABLE [dbo].[EffectParts]
-ADD CONSTRAINT [FK_EffectPartTypeEffectPart]
-    FOREIGN KEY ([EffectPartType_Id])
-    REFERENCES [dbo].[EffectPartTypes]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EffectPartTypeEffectPart'
-CREATE INDEX [IX_FK_EffectPartTypeEffectPart]
-ON [dbo].[EffectParts]
-    ([EffectPartType_Id]);
-GO
-
--- Creating foreign key on [Effect_Id] in table 'EffectParts'
-ALTER TABLE [dbo].[EffectParts]
-ADD CONSTRAINT [FK_EffectEffectPart]
-    FOREIGN KEY ([Effect_Id])
-    REFERENCES [dbo].[Effects]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EffectEffectPart'
-CREATE INDEX [IX_FK_EffectEffectPart]
-ON [dbo].[EffectParts]
-    ([Effect_Id]);
-GO
-
--- Creating foreign key on [EffectPartEffectPart_EffectPart1_Id] in table 'EffectParts'
-ALTER TABLE [dbo].[EffectParts]
-ADD CONSTRAINT [FK_EffectPartEffectPart]
-    FOREIGN KEY ([EffectPartEffectPart_EffectPart1_Id])
-    REFERENCES [dbo].[EffectParts]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EffectPartEffectPart'
-CREATE INDEX [IX_FK_EffectPartEffectPart]
-ON [dbo].[EffectParts]
-    ([EffectPartEffectPart_EffectPart1_Id]);
 GO
 
 -- Creating foreign key on [LightZone_Id] in table 'LE_Proxies'
@@ -1052,15 +881,6 @@ GO
 CREATE INDEX [IX_FK_PartitionControlDevice]
 ON [dbo].[ControlDevices]
     ([Partition_Id]);
-GO
-
--- Creating foreign key on [Id] in table 'LightElements_LightStrip'
-ALTER TABLE [dbo].[LightElements_LightStrip]
-ADD CONSTRAINT [FK_LightStrip_inherits_LightElement]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[LightElements]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
