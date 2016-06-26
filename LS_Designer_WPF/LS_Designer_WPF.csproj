@@ -94,6 +94,9 @@
     <Compile Include="Controls\AN6USPI_UC.xaml.cs">
       <DependentUpon>AN6USPI_UC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LE_UC.xaml.cs">
+      <DependentUpon>LE_UC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabItemsUC\EventDevicesUC.xaml.cs">
       <DependentUpon>EventDevicesUC.xaml</DependentUpon>
     </Compile>
@@ -117,6 +120,9 @@
     </Compile>
     <Compile Include="Controls\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserControl2.xaml.cs">
+      <DependentUpon>UserControl2.xaml</DependentUpon>
     </Compile>
     <Compile Include="GrayScale.xaml.cs">
       <DependentUpon>GrayScale.xaml</DependentUpon>
@@ -143,6 +149,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\AN6USPI_UC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LE_UC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\UserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\UserControl2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

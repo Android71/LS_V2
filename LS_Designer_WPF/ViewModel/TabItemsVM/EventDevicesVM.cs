@@ -628,7 +628,7 @@ namespace LS_Designer_WPF.ViewModel
             DetailObjectCurtainVisibility = Visibility.Visible;
 
             DetailObjectButtonsVisibility = Visibility.Collapsed;
-
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         #endregion

@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="LS_Designer_WPF.Controls.LE_UC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
+             mc:Ignorable="d" 
+             d:DesignWidth="220">
+    
+    <Grid Name="layoutRoot" Grid.IsSharedSizeScope="True">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Foreground" Value="{StaticResource LightGrayBrush}" />
+                <Setter Property="Margin" Value="0,0,10,0" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Name="partition" Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Partition" />
+            <ComboBox Grid.Column="1" Margin="0,2,0,2"
+                      Style="{StaticResource ComboBoxFlatStyle}"
+                      ItemsSource="{Binding Partitions}"
+                      SelectedItem="{Binding Partition}"
+                      DisplayMemberPath="Name" />
+        </Grid>
+        <Label Grid.Row="1" Grid.Column="0" Content="Name" />
+        <TextBox Name="nameTb" Grid.Row="1" Grid.Column="1"
+                 Margin="0,2,0,2" VerticalAlignment="Center"
+                 Style="{StaticResource TextBoxStyle1}"
+                 Text="{Binding Name}" />
+        <Label Grid.Row="2" Grid.Column="0" Content="PointType" />
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,2,0,2"
+                 VerticalAlignment="Center"
+                 Style="{StaticResource TextBoxStyle1}"
+                 Text="{Binding Model}"
+                 IsReadOnly="True" />
+        <Label Grid.Row="3" Grid.Column="0" Content="StartPoint" Height="26" VerticalAlignment="Top" />
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="0,2,0,2"
+                 VerticalAlignment="Center"
+                 Style="{StaticResource TextBoxStyle1}"
+                 Text="{Binding IPAddress,
+                                Converter={StaticResource IPConverter}}" />
+        <Label Grid.Row="4" Grid.Column="0" Content="PointCount" />
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="0,2,0,2"
+                 VerticalAlignment="Center"
+                 Style="{StaticResource TextBoxStyle1}"
+                 Text="{Binding VirtualIP,
+                                Converter={StaticResource IPConverter}}" />
+        <Grid Name="direction" Grid.Row="5" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Direction" />
+            <ComboBox Grid.Column="1" Margin="0,2,0,2"
+                      Style="{StaticResource ComboBoxFlatStyle}"
+                      ItemsSource="{Binding Partitions}"
+                      SelectedItem="{Binding Partition}"
+                      DisplayMemberPath="Name" />
+        </Grid>
+        <Label Grid.Row="6" Grid.Column="0" Content="ColorSequence" />
+        <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,2,0,2"
+                      Style="{StaticResource ComboBoxFlatStyle}"
+                      ItemsSource="{Binding Partitions}"
+                      SelectedItem="{Binding Partition}"
+                      DisplayMemberPath="Name" />
+        <Grid Grid.Row="7" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Gamma" Foreground="Gray"/>
+            <Grid Grid.Column="1" Margin="0,2,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Style="{StaticResource ComboBoxFlatStyle}"/>
+                <Button Grid.Column="1" Style="{StaticResource ButtonStyle1}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="8" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="CustomGamma" Foreground="Gray"/>
+            <Grid Grid.Column="1" Margin="0,2,0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Style="{StaticResource ComboBoxFlatStyle}"/>
+                <Button Grid.Column="1" Style="{StaticResource ButtonStyle1}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"/>
+            </Grid>
+        </Grid>
+        <Label Grid.Row="9" Grid.Column="0" Content="Remark" />
+        <TextBox Grid.Row="9" Grid.Column="1" Margin="0,2,0,2"
+                 VerticalAlignment="Center" TextWrapping="Wrap" AcceptsReturn="True"
+                 Style="{StaticResource TextBoxStyle1}"
+                 Text="{Binding Remark}" />
+    </Grid>
+</UserControl>
