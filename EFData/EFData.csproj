@@ -91,10 +91,10 @@
     <Compile Include="LE_Proxy.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="LightElement.cs">
+    <Compile Include="LE_Type.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="LightPointType.cs">
+    <Compile Include="LightElement.cs">
       <DependentUpon>LSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="LightZone.cs">

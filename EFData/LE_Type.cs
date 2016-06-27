@@ -12,7 +12,7 @@ namespace EFData
     using System;
     using System.Collections.Generic;
     
-    public partial class LightPointType
+    public partial class LE_Type
     {
         public int Id { get; set; }
         public string Name { get; set; }

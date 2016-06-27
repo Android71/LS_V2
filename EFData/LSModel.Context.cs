@@ -37,7 +37,7 @@ namespace EFData
         public virtual DbSet<Scene> Scenes { get; set; }
         public virtual DbSet<Effect> Effects { get; set; }
         public virtual DbSet<EnvironmentItem> EnvironmentItems { get; set; }
-        public virtual DbSet<LightPointType> LE_Types { get; set; }
+        public virtual DbSet<LE_Type> LE_Types { get; set; }
         public virtual DbSet<LE_Proxy> LE_Proxies { get; set; }
         public virtual DbSet<CustomGamma> CustomGammas { get; set; }
         public virtual DbSet<ControlDevice> ControlDevices { get; set; }

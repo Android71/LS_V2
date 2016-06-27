@@ -112,6 +112,9 @@
     <Compile Include="Controls\TabItemsUC\ControlSpacesUC.xaml.cs">
       <DependentUpon>ControlSpacesUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TabItemsUC\LightElementsUC.xaml.cs">
+      <DependentUpon>LightElementsUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabItemsUC\PartitionsUC.xaml.cs">
       <DependentUpon>PartitionsUC.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,7 @@
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\TabItemsVM\LightElementsVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\ControlDevicesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\AttentionVM.cs" />
     <Compile Include="ViewModel\PopUpVM\EmptyPopUpVM.cs" />
@@ -173,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TabItemsUC\ControlSpacesUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabItemsUC\LightElementsUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

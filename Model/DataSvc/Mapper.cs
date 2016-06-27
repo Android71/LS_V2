@@ -1,4 +1,5 @@
 ﻿using EFData;
+using LS_Designer_WPF.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -238,7 +239,20 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
+        /****************************************************************/
 
+        #region LE_Type
+
+        public static void Db2O(EFData.LE_Type dbObj, LE_Type obj)
+        {
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.PointType = (PointTypeEnum)dbObj.PointType;
+        }
+
+        #endregion
+
+        /****************************************************************/
 
         //#region LightElement
 

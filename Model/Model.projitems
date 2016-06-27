@@ -26,7 +26,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomGamma.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Gamma.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LE_Type.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LightElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Partition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\AN6UControlChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\AN6USPI.cs" />

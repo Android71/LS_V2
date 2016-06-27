@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/24/2016 16:02:46
+-- Date Created: 06/27/2016 13:09:38
 -- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
@@ -46,9 +46,6 @@ IF OBJECT_ID(N'[dbo].[FK_LightZoneEffect]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ControlSpaceLightZone]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LightZones] DROP CONSTRAINT [FK_ControlSpaceLightZone];
-GO
-IF OBJECT_ID(N'[dbo].[FK_SceneEffect]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Effects] DROP CONSTRAINT [FK_SceneEffect];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LightZoneLE_Proxy]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LE_Proxies] DROP CONSTRAINT [FK_LightZoneLE_Proxy];

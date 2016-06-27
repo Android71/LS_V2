@@ -609,6 +609,32 @@ namespace LS_Designer_WPF.Model
 
         /****************************************************************/
 
+        #region LE_Type List
+
+        public void GetLE_TypeList(ControlSpace space, Action<List<LE_Type>, Exception> callback)
+        {
+            var x = new List<LE_Type>();
+            LE_Type LE_Type = null;
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+
+                foreach (EFData.LE_Type dbLightPointType in db.LE_Types.
+                               Where(p => (p.ControlSpace.Id == space.Id) && (p.IsActive)).OrderBy(p => p.PointType))
+                {
+                    LE_Type = new LE_Type();
+                    Mapper.Db2O(dbLightPointType, LE_Type);
+                    x.Add(LE_Type);
+                }
+            }
+            callback(x, null);
+        }
+
+        #endregion
+
+        /****************************************************************/
+
+
         //#region LightElement
 
         //public void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace, 

@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="0.5" PointY="4.5" />
         <EntityTypeShape EntityType="LSModel.EnvironmentItem" Width="1.75" PointX="8.875" PointY="7" />
         <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="6.375" PointY="0.5" />
-        <EntityTypeShape EntityType="LSModel.LightPointType" Width="1.5" PointX="2.875" PointY="7.125" />
+        <EntityTypeShape EntityType="LSModel.LE_Type" Width="1.5" PointX="2.875" PointY="7.125" />
         <AssociationConnector Association="LSModel.ControlSpaceControlChannel" />
         <AssociationConnector Association="LSModel.ControlSpaceEventChannel" />
         <AssociationConnector Association="LSModel.ControlSpaceLightPointType" />

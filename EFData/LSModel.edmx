@@ -700,7 +700,7 @@
             <End Role="ControlSpace" EntitySet="ControlSpaces" />
             <End Role="LightElement" EntitySet="LightElements" />
           </AssociationSet>
-          <EntitySet Name="LE_Types" EntityType="LSModel.LightPointType" />
+          <EntitySet Name="LE_Types" EntityType="LSModel.LE_Type" />
           <AssociationSet Name="LightZoneEffect" Association="LSModel.LightZoneEffect">
             <End Role="LightZone" EntitySet="LightZones" />
             <End Role="Effect" EntitySet="Effects" />
@@ -968,7 +968,7 @@
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
           <End Type="LSModel.LightElement" Role="LightElement" Multiplicity="*" />
         </Association>
-        <EntityType Name="LightPointType">
+        <EntityType Name="LE_Type">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -1045,7 +1045,7 @@
         </Association>
         <Association Name="ControlSpaceLightPointType">
           <End Type="LSModel.ControlSpace" Role="ControlSpace" Multiplicity="1" />
-          <End Type="LSModel.LightPointType" Role="LightPointType" Multiplicity="*" />
+          <End Type="LSModel.LE_Type" Role="LightPointType" Multiplicity="*" />
         </Association>
         <EntityType Name="ControlDevice">
           <Key>
@@ -1266,7 +1266,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="LE_Types">
-      <EntityTypeMapping TypeName="IsTypeOf(LSModel.LightPointType)">
+      <EntityTypeMapping TypeName="IsTypeOf(LSModel.LE_Type)">
         <MappingFragment StoreEntitySet="LE_Types">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />

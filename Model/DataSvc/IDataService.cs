@@ -106,9 +106,15 @@ namespace LS_Designer_WPF.Model
 
         //void UpdateEventDevice(EventDevice item, Action<int, Exception> callback);
 
+        /********************************************************************/
 
+        #region LE_Type
 
-        ///********************************************************************/
+        void GetLE_TypeList(ControlSpace space, Action<List<LE_Type>, Exception> callback);
+
+        #endregion
+
+        /********************************************************************/
 
         //#region LightElement
 

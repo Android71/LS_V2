@@ -79,12 +79,6 @@ namespace LS_Designer_WPF.ViewModel
         }
 
 
-        Visibility _detailContentVisibility = Visibility.Collapsed;
-        public Visibility DetailContentVisibility
-        {
-            get { return _detailContentVisibility; }
-            set { Set(ref _detailContentVisibility, value); }
-        }
 
         /*************************************************************/
 
@@ -340,6 +334,14 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _masterObjectPanelVisibility, value); }
         }
 
+        Visibility _detailContentVisibility = Visibility.Collapsed;
+        public Visibility DetailContentVisibility
+        {
+            get { return _detailContentVisibility; }
+            set { Set(ref _detailContentVisibility, value); }
+        }
+
+
         void MasterNormalUIState()
         {
             MasterListCurtainVisibility = Visibility.Collapsed;
@@ -364,8 +366,6 @@ namespace LS_Designer_WPF.ViewModel
         /*************************************************************/
 
         #region Master Commands
-
-        
 
         #region Master Save Command
         public RelayCommand MasterSaveCmd { get; private set; }
