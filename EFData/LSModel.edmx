@@ -137,6 +137,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Prefix" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="ControlChannels">
     <Key>
@@ -794,6 +795,7 @@
           <NavigationProperty Name="ControlDevices" Relationship="LSModel.ControlSpaceControlDevice" FromRole="ControlSpace" ToRole="ControlDevice" />
           <NavigationProperty Name="EventDevices" Relationship="LSModel.ControlSpaceEventDevice" FromRole="ControlSpace" ToRole="EventDevice" />
           <NavigationProperty Name="CSEnvItems" Relationship="LSModel.CSEnvItemControlSpace" FromRole="ControlSpace" ToRole="CSEnvItem" />
+          <Property Name="Prefix" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="ControlChannel" Abstract="false">
           <Key>
@@ -1141,6 +1143,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Prefix" ColumnName="Prefix" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

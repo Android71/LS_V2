@@ -169,20 +169,21 @@ namespace LS_Designer_WPF.ViewModel
                     MasterCurrentObject.Partitions = Partitions;
 
                     MasterAddMode = true;
+                    MasterCurrentObject.IsAddMode = true;
                     MasterAddCmd.RaiseCanExecuteChanged();
                     MasterRemoveCmd.RaiseCanExecuteChanged();
 
-                    //MasterSelectorVisibility = Visibility.Hidden;
-                    //MasterSelectorSelectedItem = null;
-                    //MasterListVisibility = Visibility.Hidden;
-                    //MasterListButtonsVisibility = Visibility.Visible;
+                    MasterSelectorVisibility = Visibility.Hidden;
+                    MasterSelectorSelectedItem = null;
+                    MasterListVisibility = Visibility.Hidden;
+                    MasterListButtonsVisibility = Visibility.Visible;
 
-                    //MasterObjectPanelVisibility = Visibility.Visible;
-                    //MasterObjectButtonsVisibility = Visibility.Visible;
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectButtonsVisibility = Visibility.Visible;
 
-                    //MasterListCurtainVisibility = Visibility.Visible;
+                    MasterListCurtainVisibility = Visibility.Visible;
                     //DetailListCurtainVisibility = Visibility.Visible;
-                    //MasterObjectCurtainVisibility = Visibility.Collapsed;
+                    MasterObjectCurtainVisibility = Visibility.Collapsed;
 
                     return;
                 }
@@ -374,30 +375,30 @@ namespace LS_Designer_WPF.ViewModel
             //             MasterCurrentObject = data;
             //         });
             //}
-            //MasterAddMode = false;
-            //MasterEditMode = false;
-            //MasterCurrentObject.IsEditMode = false;
+            MasterAddMode = false;
+            MasterEditMode = false;
+            MasterCurrentObject.IsEditMode = false;
+            MasterCurrentObject.IsAddMode = false;
+            MasterAddCmd.RaiseCanExecuteChanged();
+            MasterRemoveCmd.RaiseCanExecuteChanged();
 
-            //MasterAddCmd.RaiseCanExecuteChanged();
-            //MasterRemoveCmd.RaiseCanExecuteChanged();
+            MasterListCurtainVisibility = Visibility.Collapsed;
+            MasterObjectCurtainVisibility = Visibility.Visible;
 
-            //MasterListCurtainVisibility = Visibility.Collapsed;
-            //MasterObjectCurtainVisibility = Visibility.Visible;
+            MasterObjectButtonsVisibility = Visibility.Collapsed;
+            MasterListVisibility = Visibility.Visible;
 
-            //MasterObjectButtonsVisibility = Visibility.Collapsed;
-            //MasterListVisibility = Visibility.Visible;
-
-            //if (MasterSelectedItem != null)
-            //{
-            //    _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        MasterCurrentObject = data;
-            //    });
-            //}
-            //else
-            //    MasterObjectPanelVisibility = Visibility.Collapsed;
-            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+            if (MasterSelectedItem != null)
+            {
+                //_dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
+                //{
+                //    if (error != null) { return; } // Report error here
+                //    MasterCurrentObject = data;
+                //});
+            }
+            else
+                MasterObjectPanelVisibility = Visibility.Collapsed;
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         #endregion

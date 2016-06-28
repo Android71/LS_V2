@@ -1,12 +1,20 @@
-﻿<UserControl x:Class="LS_Designer_WPF.Controls.LightElementsUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Custom="http://www.galasoft.ch/mvvmlight" d:DesignHeight="300"
-             d:DesignWidth="289.195" mc:Ignorable="d">
+﻿<UserControl x:Class="LS_Designer_WPF.Controls.LightElementsUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Custom="http://www.galasoft.ch/mvvmlight"
+             xmlns:model="clr-namespace:LS_Designer_WPF.Model"
+             d:DesignHeight="300"
+             d:DesignWidth="289.195"
+             mc:Ignorable="d">
     <Grid Name="layoutRoot">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="250" />
             <ColumnDefinition Width="60" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="220" />
         </Grid.ColumnDefinitions>
         <Grid x:Name="masterLayout">
             <Grid.RowDefinitions>
@@ -88,15 +96,12 @@
                         BorderThickness="1" Padding="10"
                         Visibility="{Binding MasterObjectPanelVisibility}">
                     <Border.Resources>
-                        <!--<DataTemplate DataType="{x:Type model:AN6USPI}">
-                            <local:AN6USPI_UC IsEditMode="{Binding IsEditMode}"/>
+                        <DataTemplate DataType="{x:Type model:LightElement}">
+                            <local:LE_UC IsEditMode="{Binding IsEditMode}"
+                                         IsAddMode="{Binding IsAddMode}"
+                                         PointType="{Binding PointType}"
+                                         CSprefix="{Binding ControlSpace.Prefix}" />
                         </DataTemplate>
-                        -->
-                        <!--  IsEditMode="{Binding IsEditMode}"  -->
-                        <!--
-                        <DataTemplate DataType="{x:Type model:NLPowerBlock}">
-                            <local:NLPowerBlockUC />
-                        </DataTemplate>-->
                     </Border.Resources>
                     <ContentControl Name="masterCurrentObject" Margin="0,5,0,0"
                                     Content="{Binding MasterCurrentObject}" />

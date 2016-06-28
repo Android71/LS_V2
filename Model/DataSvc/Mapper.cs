@@ -47,6 +47,7 @@ namespace LS_Designer_WPF.Model
             obj.Id = dbObj.Id;
             obj.Name = dbObj.Name;
             obj.IsActive = dbObj.IsActive;
+            obj.Prefix = dbObj.Prefix;
         }
 
         #endregion

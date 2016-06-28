@@ -22,7 +22,9 @@ namespace LS_Designer_WPF.Model
         bool _isActive;
         public bool IsActive { get { return _isActive; } set { Set(ref _isActive, value); } }
 
-        
+        public string Prefix { get; set; }
+
+
 
         //public static ArtNetControlDevice CreateArtNetControlDevice(IDataService dataService, string model)
         //{

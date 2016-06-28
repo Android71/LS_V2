@@ -3,6 +3,7 @@
                     xmlns:wpfex="clr-namespace:LS_Designer_WPF.WPF_Extras">
     
     <wpfex:IP2StringConverter x:Key="IPConverter" />
+    <!--<wpfex:EnumValuesExtension x:Key="EnumExt"/>-->
 
     <!--  App Colors And Brushes  -->
 

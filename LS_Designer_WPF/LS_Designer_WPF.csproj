@@ -142,6 +142,7 @@
     <Compile Include="ViewModel\TabItemsVM\TabItemVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="WPF_Extras\Converters\IP2String.cs" />
+    <Compile Include="WPF_Extras\Extentions\EnumValuesExtension.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />
     <Compile Include="WPF_Extras\Extentions\WaterMarkExtention.cs" />
     <Page Include="Controls\AN6UControlChannelUC.xaml">
