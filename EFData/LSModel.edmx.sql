@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/28/2016 07:57:53
+-- Date Created: 06/29/2016 10:04:08
 -- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
@@ -207,7 +207,7 @@ CREATE TABLE [dbo].[LightElements] (
     [StartPoint] int  NOT NULL,
     [PointCount] int  NOT NULL,
     [Direction] int  NOT NULL,
-    [ColorSequence] nvarchar(max)  NOT NULL,
+    [ColorSequence] nvarchar(max)  NULL,
     [Remark] nvarchar(max)  NULL,
     [Gamma_Id] int  NULL,
     [ControlChannel_Id] int  NULL,

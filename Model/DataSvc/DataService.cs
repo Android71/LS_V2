@@ -351,6 +351,30 @@ namespace LS_Designer_WPF.Model
             }
         }
 
+        public void GetControlChannelList(ControlSpace space, Partition partition, Action<List<ControlChannel>, Exception> callback)
+        {
+            ControlChannel conttrolChannel = new ControlChannel();
+            List<ControlChannel> chList = new List<ControlChannel>();
+            IEnumerable<EFData.ControlChannel> dbChList;
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                if (partition != null)
+                    dbChList = db.ControlChannels.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
+                else
+                    dbChList = db.ControlChannels.Where(p => p.ControlSpace.Id == space.Id);
+                foreach(EFData.ControlChannel dbControlChannel in dbChList)
+                {
+                    conttrolChannel = new ControlChannel();
+                    Mapper.Db2O(dbControlChannel, out conttrolChannel);
+                    conttrolChannel.Partition = new Partition();
+                    Mapper.Db2O(dbControlChannel.Partition, conttrolChannel.Partition);
+                    chList.Add(conttrolChannel);
+                }
+            }
+            callback(chList, null);
+        }
+
         #endregion
 
         /****************************************************************/
@@ -634,8 +658,93 @@ namespace LS_Designer_WPF.Model
 
         /****************************************************************/
 
+        #region LightElement
 
-        //#region LightElement
+        public void UpdateLightElement(LightElement item, Action<int, Exception> callback)
+        {
+            EFData.LightElement dbLightElement = null;
+            int updateCount = -1;
+            if (item.Id != 0)
+            {
+                //Update
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbLightElement = db.LightElements.FirstOrDefault(p => p.Id == item.Id);
+                    Mapper.O2Db(item, dbLightElement);
+                    if (dbLightElement.Partition.Id != item.Partition.Id)
+                    {
+                        dbLightElement.Partition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
+                        db.Entry(dbLightElement).State = EntityState.Modified;
+                    }
+                    updateCount = db.SaveChanges();
+                }
+                callback(updateCount, null);
+            }
+            else
+            {
+                // Create
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbLightElement = new EFData.LightElement();
+                    Mapper.O2Db(item, dbLightElement);
+                    dbLightElement.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
+                    dbLightElement.Partition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
+                    if (item.Gamma != null)
+                    dbLightElement.Gamma = db.Gammas.FirstOrDefault(p => p.Id == item.Gamma.Id);
+                    if (item.CustomGamma != null)
+                        dbLightElement.CustomGamma = db.CustomGammas.FirstOrDefault(p => p.Id == item.CustomGamma.Id);
+
+                    db.LightElements.Add(dbLightElement);
+                    try
+                    {
+                        updateCount = db.SaveChanges();
+                        item.Id = dbLightElement.Id;
+                    }
+                    catch (Exception ex) { var x = 5; }
+                }
+                callback(updateCount, null);
+            }
+        }
+
+        public void GetLightElement(int Id, Action<LightElement, Exception> callback)
+        {
+            LightElement le = null;
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == Id);
+                if (dbLe != null)
+                {
+                    le = new LightElement();
+                    Mapper.Db2O(dbLe, le);
+                    le.IsLinked = dbLe.ControlChannel != null;
+                }
+            }
+            callback(le, null);
+        }
+
+        public void GetLightElements(ControlSpace space, Partition partition, Action<ObservableCollection<LightElement>, Exception> callback)
+        {
+            IEnumerable<EFData.LightElement> y = null;
+            var x = new ObservableCollection<LightElement>();
+            LightElement lightElement = null;
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                y = db.LightElements.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
+                
+                foreach (EFData.LightElement dbLightElement in y)
+                {
+                    
+                    lightElement = new LightElement();
+                    Mapper.Db2O(dbLightElement, lightElement);
+                    lightElement.IsLinked = dbLightElement.ControlChannel != null;
+                    x.Add(lightElement);
+                }
+            }
+            callback(x, null);
+        }
+
+        #endregion
 
         //public void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace, 
         //                                   FilterEnum filter, Action<BindingList<LightElement>, Exception> callback)
@@ -709,50 +818,9 @@ namespace LS_Designer_WPF.Model
         //    callback(new BindingList<LightElement>(list.ToList()), null);
         //}
 
-        //public LightElement GetLightElement(int Id)
-        //{
-        //    LightElement le = null;
-        //    using (var db = new LSModelContainer(LS.CS))
-        //    {
-        //        EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == Id);
-        //        if (dbLe != null)
-        //        {
-        //            if (dbLe is EFData.LightStrip)
-        //                le = new LightStrip();
-        //            else
-        //                le = new LightElement();
-        //            Mapper.Db2O(dbLe, le);
-        //        }
-        //    }
-        //    return le;
-        //}
 
-        //public void GetLightElements(ControlSpace space, Partition partition, Action<ObservableNotifiableCollection<LightElement>, Exception> callback)
-        //{
-        //    IEnumerable<EFData.LightElement> y = null;
-        //    var x = new ObservableNotifiableCollection<LightElement>();
-        //    LightElement lightElement = null;
-        //    //EventChannel eventChannel = null;
 
-        //    using (var db = new LSModelContainer(LS.CS))
-        //    {
-        //        if (space != null)
-        //            y = db.LightElements.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
-        //        //    else
-        //        //        y = db.EventDevices;
-        //        foreach (EFData.LightElement dbLightElement in y)
-        //        {
-        //            if (dbLightElement is EFData.LightStrip)
-        //                lightElement = new LightStrip();
-        //            else
-        //                lightElement = new LightElement();
-        //            Mapper.Db2O(dbLightElement, lightElement);
-        //            lightElement.IsLinked = lightElement.ControlChannel != null;
-        //            x.Add(lightElement);
-        //        }
-        //    }
-        //    callback(x, null);
-        //}
+
 
         //public void GetLinkedLightElements(ControlSpace space, ControlChannel channel, Action<List<LightElement>, Exception> callback)
         //{
@@ -854,49 +922,7 @@ namespace LS_Designer_WPF.Model
         //    }
         //}
 
-        //public void UpdateLightElement(LightElement item, Action<int, Exception> callback)
-        //{
-        //    EFData.LightElement dbLightElement = null;
-        //    int ix = -1;
-        //    if (item.Id != 0)
-        //    {
-        //        //Update
-        //        using (var db = new LSModelContainer(LS.CS))
-        //        {
-        //            dbLightElement = db.LightElements.FirstOrDefault(p => p.Id == item.Id);
-        //            Mapper.O2Db(item, dbLightElement);
-        //            EFData.Partition dbPartition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
-        //            dbLightElement.Partition = dbPartition;
-        //            ix = db.SaveChanges();
-        //        }
-        //        callback(ix, null);
-        //    }
-        //    else
-        //    {
-        //        // Create
-        //        using (var db = new LSModelContainer(LS.CS))
-        //        {
-        //            if (item is LightStrip)
-        //                dbLightElement = new EFData.LightStrip();
-        //            else
-        //                dbLightElement = new EFData.LightElement();
-        //            Mapper.O2Db(item, dbLightElement);
-        //            dbLightElement.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == item.ControlSpace.Id);
-        //            dbLightElement.Partition = db.Partitions.FirstOrDefault(p => p.Id == item.Partition.Id);
-        //            db.LightElements.Add(dbLightElement);
-        //            try
-        //            {
-        //                ix = db.SaveChanges();
-        //                item.Id = dbLightElement.Id;
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                callback(ix, ex);
-        //            }
-        //        }
-        //        callback(ix, null);
-        //    }
-        //}
+
 
 
         //#endregion

@@ -33,7 +33,7 @@ namespace LS_Designer_WPF.Model
                 ColorSequenceList = LightElement.ColorSequenseRGBW;
                 ColorSequence = ColorSequenceList[0];
             }
-            Name = string.Format($"{ControlSpace.Prefix}_LE");
+            Name = string.Format($"{ControlSpace.Prefix}_LE_{pointType}_");
         }
 
         public int Id { get; set; }
@@ -130,7 +130,7 @@ namespace LS_Designer_WPF.Model
             set { Set(ref _canLink, value); }
         }
 
-        bool _isMappingMode = true;
+        bool _isMappingMode = false;
         public bool IsMappingMode
         {
             get { return _isMappingMode; }

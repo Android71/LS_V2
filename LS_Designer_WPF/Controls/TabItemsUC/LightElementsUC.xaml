@@ -8,13 +8,12 @@
              xmlns:Custom="http://www.galasoft.ch/mvvmlight"
              xmlns:model="clr-namespace:LS_Designer_WPF.Model"
              d:DesignHeight="300"
-             d:DesignWidth="289.195"
              mc:Ignorable="d">
     <Grid Name="layoutRoot">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="60" />
             <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Grid x:Name="masterLayout">
             <Grid.RowDefinitions>
@@ -57,7 +56,32 @@
                         </i:Interaction.Triggers>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Name="checkBox" Margin="0,0,5,0" VerticalAlignment="Bottom"
+                                              IsChecked="{Binding IsLinked}"
+                                              Visibility="{Binding IsMappingMode,Converter={StaticResource CollapsedIfFalse}}"
+                                              IsEnabled="False" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <!--<Trigger SourceName="text" Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="text" Property="Background" Value="GreenYellow" />
+                                    </Trigger>-->
+
+                                    <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                                        <Setter TargetName="checkBox" Property="IsEnabled" Value="True" />
+                                    </DataTrigger>-->
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True" />
+                                            <Condition Binding="{Binding CanLink}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="checkBox" Property="IsEnabled" Value="True" />
+                                    </MultiDataTrigger>
+
+
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -111,5 +135,83 @@
                       Visibility="{Binding MasterObjectCurtainVisibility}" />
             </Grid>
         </Grid>
+        <Grid x:Name="detailLayout" Grid.Column="2"
+              Visibility="{Binding DetailContentVisibility}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid x:Name="detailList" Grid.Row="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid x:Name="detailListButtons" Grid.Row="0" Margin="0,0,0,10"
+                      Background="{StaticResource DarkBrush}"
+                      Visibility="{Binding DetailListButtonsVisibility}">
+                    <Button x:Name="detailRemoveButton" Margin="1" HorizontalAlignment="Stretch"
+                            Command="{Binding MainSwitchCmd}"
+                            Content="{Binding MainSwitchContent}"
+                            Padding="3,1"
+                            Style="{StaticResource ButtonStyle1}" />
+
+                </Grid>
+                <ListBox Grid.Row="1"
+                         ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                         ItemsSource="{Binding DetailList}"
+                         SelectedItem="{Binding DetailSelectedItem}"
+                         Style="{StaticResource ListBoxStyle1}">
+                    <!--<i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <Custom:EventToCommand Command="{Binding DetailEditCmd}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>-->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Grid x:Name="detailListCurtain" Grid.Row="1" Background="#334F4F4F"
+                      Visibility="{Binding DetailListCurtainVisibility}" />
+            </Grid>
+            <Grid x:Name="detailObject" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!--<StackPanel x:Name="detailObjectButtons" Grid.Row="0" Margin="0,10,0,0"
+                            Background="{DynamicResource DarkBrush}"
+                            FlowDirection="RightToLeft" Orientation="Horizontal"
+                            Visibility="{Binding DetailObjectButtonsVisibility}">
+                    <Button x:Name="detailSaveButton" HorizontalAlignment="Left"
+                            Command="{Binding DetailSaveCmd}"
+                            Content="Save"
+                            Style="{StaticResource ButtonStyle1}" />
+                    <Button x:Name="detailCancelButton" HorizontalAlignment="Right"
+                            Command="{Binding DetailCancelCmd}"
+                            Content="Cancel"
+                            Style="{StaticResource ButtonStyle1}" />
+                </StackPanel>-->
+                <Border Name="detailObjectPanel" Grid.Row="1" Margin="0,10,0,0"
+                        Background="{StaticResource VeryDarkBrush}"
+                        BorderBrush="{DynamicResource PlumbumBrush}"
+                        BorderThickness="1" Padding="10"
+                        Visibility="{Binding DetailObjectPanelVisibility}">
+                    <Border.Resources>
+                        <DataTemplate DataType="{x:Type model:AN6UControlChannel}">
+                            <local:AN6UControlChannelUC />
+                        </DataTemplate>
+                    </Border.Resources>
+                    <ContentControl Name="detailCurrentObject" Margin="0,5,0,0"
+                                    Content="{Binding DetailCurrentObject}" />
+                </Border>
+                <Grid x:Name="detailObjectCurtain" Grid.Row="1" Margin="0,10,0,0"
+                      Background="Transparent"
+                      Visibility="{Binding DetailObjectCurtainVisibility}" />
+            </Grid>
+        </Grid>
+
     </Grid>
 </UserControl>

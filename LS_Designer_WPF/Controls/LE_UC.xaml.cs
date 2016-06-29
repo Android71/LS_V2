@@ -136,10 +136,15 @@ namespace LS_Designer_WPF.Controls
                 PointTypeEnum pt = uc.PointType;
                 if (prefix == "AN" || prefix == "DX")
                 {
+
                     uc.lsProps.Visibility = Visibility.Visible;
+                    if (pt == PointTypeEnum.RGB || pt == PointTypeEnum.RGBW )
+                        uc.colorSeq.Visibility = Visibility.Visible;
+
                 }
                 else
                     uc.lsProps.Visibility = Visibility.Collapsed;
+                
             }
         }
 

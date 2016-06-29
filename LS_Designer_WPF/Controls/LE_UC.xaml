@@ -7,7 +7,8 @@
              xmlns:wpfex="clr-namespace:LS_Designer_WPF.WPF_Extras"
              xmlns:model="clr-namespace:LS_Designer_WPF.Model"
              d:DesignWidth="220"
-             mc:Ignorable="d" Loaded="UserControl_Loaded">
+             Loaded="UserControl_Loaded"
+             mc:Ignorable="d">
 
     <Grid Name="layoutRoot" Grid.IsSharedSizeScope="True">
         <Grid.Resources>

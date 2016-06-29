@@ -255,66 +255,66 @@ namespace LS_Designer_WPF.Model
 
         /****************************************************************/
 
-        //#region LightElement
+        #region LightElement
 
-        //public static void O2Db(LightElement obj, EFData.LightElement dbObj)
-        //{
-        //    dbObj.CanDimming = obj.CanDimming;
-        //    dbObj.PointType = (EFData.PointTypeEnum)obj.PointType;
-        //    dbObj.Name = obj.Name;
-        //    dbObj.Remark = obj.Remark;
-        //    dbObj.StartPoint = obj.StartPoint;
-        //    //dbObj.Ix = obj.Ix;
+        public static void O2Db(LightElement obj, EFData.LightElement dbObj)
+        {
+            dbObj.Name = obj.Name;
+            dbObj.PointType = (EFData.PointTypeEnum)obj.PointType;
+            dbObj.StartPoint = obj.StartPoint;
+            dbObj.PointCount = obj.PointCount;
+            dbObj.Direction = (EFData.Direction)obj.Direction;
+            dbObj.ColorSequence = obj.ColorSequence;
+            dbObj.Remark = obj.Remark;
+            
+            //dbObj.Ix = obj.Ix;
+                    
 
+            //if (obj is LightStrip)
+            //{
+            //    (dbObj as EFData.LightStrip).Direction = (EFData.Direction)(obj as LightStrip).Direction;
+            //    (dbObj as EFData.LightStrip).PointCount = (obj as LightStrip).PointCount;
+            //    (dbObj as EFData.LightStrip).ColorSequence = (obj as LightStrip).ColorSequence;
+            //}
+        }
 
-        //    if (obj is LightStrip)
-        //    {
-        //        (dbObj as EFData.LightStrip).Direction = (EFData.Direction)(obj as LightStrip).Direction;
-        //        (dbObj as EFData.LightStrip).PointCount = (obj as LightStrip).PointCount;
-        //        (dbObj as EFData.LightStrip).ColorSequence = (obj as LightStrip).ColorSequence;
-        //    }
-        //}
+        public static void Db2O(EFData.LightElement dbObj, LightElement obj)
+        {
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.PointType = (PointTypeEnum)dbObj.PointType;
+            obj.StartPoint = dbObj.StartPoint;
+            obj.PointCount = dbObj.PointCount;
+            obj.Direction = (Direction)dbObj.Direction;
+            obj.ColorSequence = dbObj.ColorSequence;
+            obj.Remark = dbObj.Remark;
 
-        //public static void Db2O(EFData.LightElement dbObj, LightElement obj)
-        //{
-        //    obj.Id = dbObj.Id;
-        //    obj.CanDimming = dbObj.CanDimming;
-        //    obj.PointType = (PointTypeEnum)dbObj.PointType;
-        //    obj.Name = dbObj.Name;
-        //    obj.Remark = dbObj.Remark;
-        //    obj.StartPoint = dbObj.StartPoint;
-        //    obj.oldStartPoint = dbObj.StartPoint;
-        //    //obj.Ix = (int)dbObj.Ix;
+            obj.Partition = new Partition();
+            obj.ControlSpace = new ControlSpace();
 
-        //    obj.Partition = new Partition();
-        //    obj.ControlSpace = new ControlSpace();
+            Db2O(dbObj.Partition, obj.Partition);
+            Db2O(dbObj.ControlSpace, obj.ControlSpace);
 
-        //    Db2O(dbObj.Partition, obj.Partition);
-        //    Db2O(dbObj.ControlSpace, obj.ControlSpace);
-        //    if (dbObj.ControlChannel != null)
-        //    {
-        //        if (obj is LightStrip)
-        //            obj.ControlChannel = new ArtNetControlChannel();
-        //        else
-        //            obj.ControlChannel = new ControlChannel();
-        //        Db2O(dbObj.ControlChannel, obj.ControlChannel);
-        //    }
-        //    //obj.Partition = partition;
-        //    //obj.ControlSpace = controlSpace;
+            if (dbObj.ControlChannel != null)
+            {
+                ControlChannel cCh = new ControlChannel();
+                Db2O(dbObj.ControlChannel, out cCh);
+                obj.ControlChannel = cCh;
+            }
 
-        //    if (dbObj is EFData.LightStrip)
-        //    {
-        //        (obj as LightStrip).Direction = (Direction)(dbObj as EFData.LightStrip).Direction;
-        //        (obj as LightStrip).oldPointCount = (dbObj as EFData.LightStrip).PointCount;
-        //        (obj as LightStrip).PointCount = (dbObj as EFData.LightStrip).PointCount;
-        //        (obj as LightStrip).ColorSequence = (dbObj as EFData.LightStrip).ColorSequence;
-        //        (obj as LightStrip).ColorSequenceList = LightElement.rgbCsList;
-        //    }
-        //}
+            if (obj.ControlSpace.Prefix == "AN" || obj.ControlSpace.Prefix == "DX")
+            {
+                if (obj.PointType == PointTypeEnum.RGB)
+                    obj.ColorSequenceList = LightElement.ColorSequenseRGB;
+                if (obj.PointType == PointTypeEnum.RGBW)
+                    obj.ColorSequenceList = LightElement.ColorSequenseRGBW;
+            }
 
-        //#endregion
+        }
 
-        ///****************************************************************/
+        #endregion
+
+        /****************************************************************/
 
         //#region LE_Type
 

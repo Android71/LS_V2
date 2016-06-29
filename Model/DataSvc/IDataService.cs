@@ -65,6 +65,8 @@ namespace LS_Designer_WPF.Model
 
         void UpdateControlChannel(ControlChannel ch, Action<int, Exception> callback);
 
+        void GetControlChannelList(ControlSpace space, Partition partition, Action<List<ControlChannel>, Exception> callback);
+
         #endregion
 
         /************************************************************/
@@ -116,20 +118,20 @@ namespace LS_Designer_WPF.Model
 
         /********************************************************************/
 
-        //#region LightElement
+        #region LightElement
 
-        //LightElement GetLightElement(int Id);
+        void GetLightElement(int Id, Action<LightElement, Exception> callback);
 
-        //void GetLightElements(ControlSpace space, Partition partition, Action<ObservableNotifiableCollection<LightElement>, Exception> callback);
+        void GetLightElements(ControlSpace space, Partition partition, Action<ObservableCollection<LightElement>, Exception> callback);
 
         //void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace,
         //                                   FilterEnum filter, Action<BindingList<LightElement>, Exception> callback);
 
         //void GetLinkedLightElements(ControlSpace space, ControlChannel channel, Action<List<LightElement>, Exception> callback);
 
-        //void UpdateLightElement(LightElement item, Action<int, Exception> callback);
+        void UpdateLightElement(LightElement item, Action<int, Exception> callback);
 
-        //#endregion
+        #endregion
 
         ///********************************************************************/
 

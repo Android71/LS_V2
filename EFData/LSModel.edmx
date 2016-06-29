@@ -177,7 +177,7 @@
     <Property Name="StartPoint" Type="int" Nullable="false" />
     <Property Name="PointCount" Type="int" Nullable="false" />
     <Property Name="Direction" Type="int" Nullable="false" />
-    <Property Name="ColorSequence" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ColorSequence" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Gamma_Id" Type="int" Nullable="true" />
     <Property Name="ControlChannel_Id" Type="int" Nullable="true" />
@@ -842,7 +842,7 @@
           <Property Name="StartPoint" Type="Int32" Nullable="false" />
           <Property Name="PointCount" Type="Int32" Nullable="false" />
           <Property Name="Direction" Type="LSModel.Direction" Nullable="false" />
-          <Property Name="ColorSequence" Type="String" Nullable="false" />
+          <Property Name="ColorSequence" Type="String" Nullable="true" />
           <Property Name="Remark" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="LightZone">

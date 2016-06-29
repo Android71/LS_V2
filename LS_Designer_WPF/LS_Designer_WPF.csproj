@@ -141,6 +141,7 @@
     <Compile Include="ViewModel\TabItemsVM\PartitionsVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\TabItemVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="WPF_Extras\Converters\BoolToVisibility.cs" />
     <Compile Include="WPF_Extras\Converters\IP2String.cs" />
     <Compile Include="WPF_Extras\Extentions\EnumValuesExtension.cs" />
     <Compile Include="WPF_Extras\Extentions\RootExtention.cs" />

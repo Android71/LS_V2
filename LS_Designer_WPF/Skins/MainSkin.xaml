@@ -1,9 +1,17 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:wpfex="clr-namespace:LS_Designer_WPF.WPF_Extras">
-    
+
+    <!--  Hides control if boolean value is false  -->
+    <wpfex:BooleanToVisibilityConverter x:Key="HiddenIfFalse" IsHidden="True" TriggerValue="False" />
+
+    <!--  Collapses control if boolean value is false  -->
+    <wpfex:BooleanToVisibilityConverter x:Key="CollapsedIfFalse" IsHidden="False" TriggerValue="False" />
+
+    <!--  Collapses control if boolean value is true  -->
+    <wpfex:BooleanToVisibilityConverter x:Key="CollapsedIfTrue" IsHidden="False" TriggerValue="True" />
+
     <wpfex:IP2StringConverter x:Key="IPConverter" />
-    <!--<wpfex:EnumValuesExtension x:Key="EnumExt"/>-->
 
     <!--  App Colors And Brushes  -->
 
