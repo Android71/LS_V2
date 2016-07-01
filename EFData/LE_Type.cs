@@ -19,6 +19,7 @@ namespace EFData
         public PointTypeEnum PointType { get; set; }
         public bool IsActive { get; set; }
         public string Remark { get; set; }
+        public Nullable<bool> CanUseGamma { get; set; }
     
         public virtual ControlSpace ControlSpace { get; set; }
     }

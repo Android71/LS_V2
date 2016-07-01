@@ -27,6 +27,7 @@
     <Color x:Key="White">#FFFFFFFF</Color>
 
     <Color x:Key="BlueAccent">#FF007ACC</Color>
+    <Color x:Key="OrangeAccent">#FFBF3F00</Color>
 
     <SolidColorBrush x:Key="BlackBrush" Color="Black" />
     <SolidColorBrush x:Key="VeryDarkBrush" Color="{StaticResource VeryDark}" />
@@ -41,6 +42,7 @@
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}" />
 
     <SolidColorBrush x:Key="BlueAccentBrush" Color="{StaticResource BlueAccent}" />
+    <SolidColorBrush x:Key="OrangeAccentBrush" Color="{StaticResource OrangeAccent}" />
 
 
     <Style x:Key="ControlPanelLabel" TargetType="Label">

@@ -42,5 +42,26 @@ namespace LS_Designer_WPF.Model
             set { Set(ref _partitions, value); }
         }
 
+        bool _directParent = false;
+        public bool DirectParent
+        {
+            get { return _directParent; }
+            set { Set(ref _directParent, value); }
+        }
+
+        bool _hasChildren = false;
+        public bool HasChildren
+        {
+            get { return _hasChildren; }
+            set { Set(ref _hasChildren, value); }
+        }
+
+        public int LE_Count { get; set; }
+
+        public virtual bool CanLinkLE(LightElement le)
+        {
+            return true;
+        }
+
     }
 }

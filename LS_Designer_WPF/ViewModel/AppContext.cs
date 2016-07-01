@@ -31,6 +31,8 @@ namespace LS_Designer_WPF.ViewModel
         public static Guid CSRemovedMsg = Guid.NewGuid();
         public static Guid CSIsActiveChangedMsg = Guid.NewGuid();
 
+        public static Guid LE_LinkChangedMsg = Guid.NewGuid();
+
         public static Dictionary<PointTypeEnum, int> CountByType = new Dictionary<PointTypeEnum, int>()
         {
             { PointTypeEnum.W, 1 }, { PointTypeEnum.WT, 2 }, { PointTypeEnum.CW, 2 },  { PointTypeEnum.RGB, 3 },

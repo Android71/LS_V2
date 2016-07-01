@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LS_Designer_WPF.Model;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -23,12 +23,17 @@ namespace LS_Designer_WPF.ViewModel
 
             MainSwitchCmd = new RelayCommand(ExecMainSwitchCmd, CanExecMasterSwitchCmd);
 
+            MessengerInstance.Register<string>(this, AppContext.LE_LinkChangedMsg, LE_LinkChanged);
+
             TabItemEnabled = false;
         }
+
+        
 
         public override void Refresh()
         {
             MasterSelectedItem = null;
+            DetailSelectedItem = null;
             Load();
         }
 
@@ -64,6 +69,7 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
+        #region Message Handlers
 
         protected override void ContextChanged(string obj)
         {
@@ -75,6 +81,29 @@ namespace LS_Designer_WPF.ViewModel
 
             }
         }
+
+        private void LE_LinkChanged(string obj)
+        {
+            if (DetailSelectedItem != null)
+            {
+                if (!MasterSelectedItem.IsLinked) // предыдущее состояние LightElement.IsLinked
+                {
+                    _dataService.LinkLightElement(MasterSelectedItem, DetailSelectedItem, (updatesCount, error) =>
+                        {
+                            if (error != null) { return; } // Report error here
+                            int oc = updatesCount;
+                        });
+                    DetailSelectedItem.HasChildren = true;
+                    DetailSelectedItem.DirectParent = true;
+                    MasterSelectedItem.DirectChild = true;
+                }
+                //else
+                    //Unlink
+                
+            }
+        }
+
+        #endregion
 
         #region MainSwitch Command
 
@@ -126,6 +155,8 @@ namespace LS_Designer_WPF.ViewModel
 
         int msix = -1; //MasterSelectedItem ix;
 
+        bool selectionFromDetail = false;
+
         LightElement _masterSelectedItem;
         public LightElement MasterSelectedItem
         {
@@ -150,6 +181,48 @@ namespace LS_Designer_WPF.ViewModel
                 {
                     msix = -1;
                     MasterObjectPanelVisibility = Visibility.Collapsed;
+                }
+
+                if (MasterSelectedItem != null)
+                {
+                    if (MasterSelectedItem.IsLinked)
+                    {
+                        MasterSelectedItem.CanChangeLink = true;
+                        foreach (ControlChannel ch in DetailList)
+                        {
+                            if (MasterSelectedItem.ControlChannel != null)
+                                if (ch.Id == MasterSelectedItem.ControlChannel.Id)
+                                    ch.DirectParent = true;
+                                else
+                                    ch.DirectParent = false;
+                            else
+                                ch.DirectParent = false;
+                        }
+                        selectionFromMaster = true;
+                        DetailSelectedItem = DetailList.FirstOrDefault(p => p.Id == MasterSelectedItem.ControlChannel.Id);
+                    }
+                    else
+                    {
+                        foreach (LightElement le in MasterList)
+                            le.DirectChild = false;
+
+                        if (DetailSelectedItem == null)
+                        {
+                            selectionFromMaster = true;
+                            DetailSelectedItem = null;
+                        }
+                        else
+                            MasterSelectedItem.CanChangeLink = true;
+                    }
+                }
+                else
+                {
+                    if (selectionFromDetail)
+                    {
+                        foreach (LightElement le in MasterList)
+                            le.DirectChild = false;
+                        selectionFromDetail = false;
+                    }
                 }
             }
         }
@@ -245,6 +318,7 @@ namespace LS_Designer_WPF.ViewModel
         }
 
         int dsix = -1; //DetailSelectedItem ix
+        bool selectionFromMaster;
 
         ControlChannel _detailSelectedItem;
         public ControlChannel DetailSelectedItem
@@ -265,13 +339,60 @@ namespace LS_Designer_WPF.ViewModel
 
                     DetailCurrentObject.Partitions = Partitions;
                     DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
+
+                    if (selectionFromMaster)
+                    {
+                        foreach (LightElement le in MasterList)
+                        {
+                            if (le.ControlChannel != null)
+                            {
+                                if (le.ControlChannel.Id == DetailSelectedItem.Id)
+                                    le.DirectChild = true;
+                                else
+                                    le.DirectChild = false;
+                            }
+                        }
+                        selectionFromMaster = false;
+                    }
+                    else
+                    {
+                        foreach (ControlChannel ch in DetailList)
+                            ch.DirectParent = false;
+                        if (DetailSelectedItem.HasChildren)
+                        {
+                            LightElement le = MasterList.FirstOrDefault(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id);
+                            foreach (ControlChannel ch in DetailList)
+                                ch.DirectParent = false;
+                            selectionFromDetail = true;
+                            MasterSelectedItem = le;
+                        }
+                        else
+                        {
+                            if (MasterSelectedItem != null)
+                            {
+                                if (MasterSelectedItem.IsLinked)
+                                {
+                                    selectionFromDetail = true;
+                                    MasterSelectedItem = null;
+                                }
+                                else
+                                    MasterSelectedItem.CanChangeLink = true;
+                            }
+                        }
+                    }
                 }
                 else
                 {
                     dsix = -1;
                     DetailObjectPanelVisibility = Visibility.Collapsed;
-                }
 
+                    if (selectionFromMaster)
+                    {
+                        foreach (ControlChannel ch in DetailList)
+                            ch.DirectParent = false;
+                        selectionFromMaster = false;
+                    }
+                }
             }
         }
 

@@ -273,6 +273,7 @@
     <Property Name="PointType" Type="int" Nullable="false" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="CanUseGamma" Type="bit" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="LE_Proxies">
@@ -980,6 +981,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="ControlSpace" Relationship="LSModel.ControlSpaceLightPointType" FromRole="LightPointType" ToRole="ControlSpace" />
+          <Property Name="CanUseGamma" Type="Boolean" Nullable="true" />
         </EntityType>
         <Association Name="LightZoneEffect">
           <End Type="LSModel.LightZone" Role="LightZone" Multiplicity="0..1" />
@@ -1276,6 +1278,7 @@
           <ScalarProperty Name="PointType" ColumnName="PointType" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CanUseGamma" ColumnName="CanUseGamma" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

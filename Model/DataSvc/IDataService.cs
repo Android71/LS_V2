@@ -131,6 +131,8 @@ namespace LS_Designer_WPF.Model
 
         void UpdateLightElement(LightElement item, Action<int, Exception> callback);
 
+        void LinkLightElement(LightElement le, ControlChannel ch, Action<int, Exception> callback);
+
         #endregion
 
         ///********************************************************************/

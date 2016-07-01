@@ -9,6 +9,118 @@
              xmlns:model="clr-namespace:LS_Designer_WPF.Model"
              d:DesignHeight="300"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="MasterTemplate">
+            <!--<StackPanel Orientation="Horizontal">
+                <CheckBox Name="checkBox" Margin="0,0,5,0" VerticalAlignment="Bottom"
+                          IsChecked="{Binding IsLinked}"
+                          Visibility="{Binding IsMappingMode,
+                                               Converter={StaticResource CollapsedIfFalse}}"
+                          IsEnabled="False" />
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <CheckBox Name="mapper" Grid.Column="0" VerticalAlignment="Center"
+                          IsChecked="{Binding IsLinked}"
+                          IsEnabled="{Binding CanChangeLink}"
+                          Visibility="Hidden" />
+                <Border Name="isLinked" Grid.Column="0" Height="13"
+                        VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{DynamicResource BlueAccentBrush}"
+                        Background="{DynamicResource BlueAccentBrush}" />
+                <!--
+                    Visibility="{Binding IsLinked,
+                    Converter={StaticResource HiddenIfFalse}}"
+                -->
+                <Border Name="directChild" Grid.Column="0" Height="13"
+                        VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{StaticResource OrangeAccentBrush}"
+                        Background="{StaticResource OrangeAccentBrush}" />
+                <!--
+                    Visibility="{Binding DirectChild,
+                    Converter={StaticResource HiddenIfFalse}}"
+                -->
+                <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                           Text="{Binding Name}" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <!--<Trigger SourceName="text" Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="text" Property="Background" Value="GreenYellow" />
+                                    </Trigger>-->
+
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                    <Setter TargetName="mapper" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+
+                <!--<MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True" />
+                        <Condition Binding="{Binding CanChangeLink}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="mapper" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Hidden" />
+                </MultiDataTrigger>-->
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="False" />
+                        <Condition Binding="{Binding IsLinked}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="mapper" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Hidden" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="False" />
+                        <Condition Binding="{Binding DirectChild}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="mapper" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="DetailTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border Name="hasChildren" Grid.Column="0" Height="13" Width="13"
+                        VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{DynamicResource BlueAccentBrush}"
+                        Background="{DynamicResource BlueAccentBrush}" />
+                
+                <Border Name="directParent" Grid.Column="0" Height="13"
+                        VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{StaticResource OrangeAccentBrush}"
+                        Background="{StaticResource OrangeAccentBrush}" />
+                
+                <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                           Text="{Binding Name}" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding HasChildren}" Value="True">
+                                        <Setter TargetName="hasChildren" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding DirectParent}" Value="True">
+                                        <Setter TargetName="directParent" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+    </UserControl.Resources>
     <Grid Name="layoutRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220" />
@@ -48,29 +160,33 @@
                              ItemsSource="{Binding MasterList}"
                              SelectedItem="{Binding MasterSelectedItem}"
                              Style="{StaticResource ListBoxStyle1}"
+                             ItemTemplate="{StaticResource MasterTemplate}"
                              Visibility="{Binding MasterListVisibility}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <Custom:EventToCommand Command="{Binding MasterEditCmd}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <ListBox.ItemTemplate>
+                        <!--<ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox Name="checkBox" Margin="0,0,5,0" VerticalAlignment="Bottom"
                                               IsChecked="{Binding IsLinked}"
-                                              Visibility="{Binding IsMappingMode,Converter={StaticResource CollapsedIfFalse}}"
+                                              Visibility="{Binding IsMappingMode,
+                                                                   Converter={StaticResource CollapsedIfFalse}}"
                                               IsEnabled="False" />
                                     <TextBlock Text="{Binding Name}" />
                                 </StackPanel>
                                 <DataTemplate.Triggers>
-                                    <!--<Trigger SourceName="text" Property="IsMouseOver" Value="True">
+                        -->
+                        <!--<Trigger SourceName="text" Property="IsMouseOver" Value="True">
                                         <Setter TargetName="text" Property="Background" Value="GreenYellow" />
                                     </Trigger>-->
 
-                                    <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                        <!--<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
                                         <Setter TargetName="checkBox" Property="IsEnabled" Value="True" />
                                     </DataTrigger>-->
+                        <!--
 
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
@@ -83,7 +199,7 @@
 
                                 </DataTemplate.Triggers>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>
+                        </ListBox.ItemTemplate>-->
                     </ListBox>
 
                     <Grid x:Name="masterListCurtain" Grid.RowSpan="2" Background="#334F4F4F"
@@ -159,6 +275,7 @@
                 </Grid>
                 <ListBox Grid.Row="1"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                         ItemTemplate="{StaticResource DetailTemplate}"
                          ItemsSource="{Binding DetailList}"
                          SelectedItem="{Binding DetailSelectedItem}"
                          Style="{StaticResource ListBoxStyle1}">
@@ -167,11 +284,11 @@
                             <Custom:EventToCommand Command="{Binding DetailEditCmd}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>-->
-                    <ListBox.ItemTemplate>
+                    <!--<ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" />
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
+                    </ListBox.ItemTemplate>-->
                 </ListBox>
                 <Grid x:Name="detailListCurtain" Grid.Row="1" Background="#334F4F4F"
                       Visibility="{Binding DetailListCurtainVisibility}" />

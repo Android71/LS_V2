@@ -369,6 +369,8 @@ namespace LS_Designer_WPF.Model
                     Mapper.Db2O(dbControlChannel, out conttrolChannel);
                     conttrolChannel.Partition = new Partition();
                     Mapper.Db2O(dbControlChannel.Partition, conttrolChannel.Partition);
+                    conttrolChannel.LE_Count = dbControlChannel.LightElements.Count;
+                    conttrolChannel.HasChildren = conttrolChannel.LE_Count != 0;
                     chList.Add(conttrolChannel);
                 }
             }
@@ -629,6 +631,7 @@ namespace LS_Designer_WPF.Model
             callback(updeteCount, null);
         }
 
+
         #endregion
 
         /****************************************************************/
@@ -737,12 +740,26 @@ namespace LS_Designer_WPF.Model
                     
                     lightElement = new LightElement();
                     Mapper.Db2O(dbLightElement, lightElement);
+                    lightElement.SetSilentIsLinked(dbLightElement.ControlChannel != null);
                     lightElement.IsLinked = dbLightElement.ControlChannel != null;
                     x.Add(lightElement);
                 }
             }
             callback(x, null);
         }
+
+        public void LinkLightElement(LightElement le, ControlChannel ch, Action<int, Exception> callback)
+        {
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
+                EFData.ControlChannel dbCh = db.ControlChannels.FirstOrDefault(p => p.Id == ch.Id);
+                dbCh.PointType = (EFData.PointTypeEnum) le.PointType;
+                dbLe.ControlChannel = dbCh;
+                callback(db.SaveChanges(), null);
+            }
+        }
+
 
         #endregion
 

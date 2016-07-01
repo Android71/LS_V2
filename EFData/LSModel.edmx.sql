@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/29/2016 10:04:08
+-- Date Created: 06/30/2016 14:53:14
 -- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
@@ -303,6 +303,7 @@ CREATE TABLE [dbo].[LE_Types] (
     [PointType] int  NOT NULL,
     [IsActive] bit  NOT NULL,
     [Remark] nvarchar(max)  NULL,
+    [CanUseGamma] bit  NULL,
     [ControlSpace_Id] int  NOT NULL
 );
 GO

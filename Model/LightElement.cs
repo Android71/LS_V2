@@ -1,11 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
+using LS_Designer_WPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LS_Designer_WPF.Model
 {
-    public class LightElement : ObservableObject
+    public class LightElement : ViewModelBase
     {
 
         public static List<string> ColorSequenseRGB = new List<string>()
@@ -120,21 +121,35 @@ namespace LS_Designer_WPF.Model
         public bool IsLinked
         {
             get { return _isLinked; }
-            set { Set(ref _isLinked, value); }
+            set
+            {
+                if (value != _isLinked)
+                {
+                    //DirectChild = true;
+                    if ((value && ControlChannel == null) || (!value && ControlChannel != null))
+                    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
+                }
+                Set(ref _isLinked, value);
+            }
         }
 
-        bool _canLink = false;
-        public bool CanLink
+        bool _canChangeLink = false;
+        public bool CanChangeLink
         {
-            get { return _canLink; }
-            set { Set(ref _canLink, value); }
+            get { return _canChangeLink; }
+            set { Set(ref _canChangeLink, value); }
         }
 
-        bool _isMappingMode = false;
-        public bool IsMappingMode
+        bool _directChild = false;
+        public bool DirectChild
         {
-            get { return _isMappingMode; }
-            set { Set(ref _isMappingMode, value); }
+            get { return _directChild; }
+            set { Set(ref _directChild, value); }
+        }
+
+        public void SetSilentIsLinked(bool val)
+        {
+            _isLinked = val;
         }
     }
 }

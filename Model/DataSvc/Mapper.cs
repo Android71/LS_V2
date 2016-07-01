@@ -249,6 +249,7 @@ namespace LS_Designer_WPF.Model
             obj.Id = dbObj.Id;
             obj.Name = dbObj.Name;
             obj.PointType = (PointTypeEnum)dbObj.PointType;
+            obj.CanUseGamma = dbObj.CanUseGamma;
         }
 
         #endregion
