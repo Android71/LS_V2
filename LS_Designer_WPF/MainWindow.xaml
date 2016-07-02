@@ -138,6 +138,12 @@
                 <DataTemplate DataType="{x:Type vm:AttentionVM}">
                         <Controls:AttentionUC />
                  </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:PopUpMessageVM}">
+                        <Controls:MessageUC Width="{Binding Width}" Height="{Binding Height}"/>
+                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:LE_ConflictVM}">
+                        <Controls:LE_Conflict_UC Width="{Binding Width}" Height="{Binding Height}"/>
+                 </DataTemplate>
                     
             </Grid.Resources>
             

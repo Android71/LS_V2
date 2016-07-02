@@ -84,23 +84,66 @@ namespace LS_Designer_WPF.ViewModel
 
         private void LE_LinkChanged(string obj)
         {
+            bool leConflict = false;
             if (DetailSelectedItem != null)
             {
-                if (!MasterSelectedItem.IsLinked) // предыдущее состояние LightElement.IsLinked
+                if (!MasterSelectedItem.IsLinkedBeforeAction) // состояние LightElement.IsLinked до изменения CheckBox пользователем
                 {
-                    _dataService.LinkLightElement(MasterSelectedItem, DetailSelectedItem, (updatesCount, error) =>
+                    if (DetailSelectedItem.CanLinkLE(MasterSelectedItem))
+                    {
+                        if (MasterSelectedItem.ControlSpace.Prefix == "AN" || MasterSelectedItem.ControlSpace.Prefix == "DX")
+                            leConflict = CheckIntersectionLE();
+
+                        if (!leConflict)
                         {
-                            if (error != null) { return; } // Report error here
-                            int oc = updatesCount;
-                        });
-                    DetailSelectedItem.HasChildren = true;
-                    DetailSelectedItem.DirectParent = true;
-                    MasterSelectedItem.DirectChild = true;
+                            // Link
+                            _dataService.LinkLightElement(MasterSelectedItem, DetailSelectedItem, (updatesCount, error) =>
+                                {
+                                    if (error != null) { return; } // Report error here
+                                int oc = updatesCount;
+                                });
+                            DetailSelectedItem.HasChildren = true;
+                            DetailSelectedItem.DirectParent = true;
+                            DetailSelectedItem.LE_Count++;
+
+                            MasterSelectedItem.DirectChild = true;
+                            MasterSelectedItem.ControlChannel = DetailSelectedItem;
+                            //MasterSelectedItem.SetSilentIsLinked(true);
+                            //RaisePropertyChanged("IsLinke")
+                            
+                        }
+                        else
+                        {
+                            MasterSelectedItem.SetSilentIsLinked(false);
+                            RaisePropertyChanged("IsLinked");
+                        }
+                    }
                 }
                 //else
                     //Unlink
                 
             }
+        }
+
+        bool CheckIntersectionLE()
+        {
+            bool result = false;
+            List<LightElement> leList = MasterList.Where(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == DetailSelectedItem.Id).ToList();  //(p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id)
+            foreach (LightElement le in leList)
+            {
+                if (MasterSelectedItem.StartPoint >= le.StartPoint && MasterSelectedItem.StartPoint <= le.EndPoint ||
+                    MasterSelectedItem.EndPoint >= le.StartPoint && MasterSelectedItem.EndPoint <= le.EndPoint)
+                {
+                    result = true;
+                    MasterSelectedItem.InConflict = true;
+                    leList.Add(MasterSelectedItem);
+                    MessengerInstance.Send<LE_ConflictVM>(new LE_ConflictVM(leList.OrderBy(p => p.StartPoint).ToList()), AppContext.ShowPopUpMsg);
+                    break;
+                }
+                else
+                    MasterSelectedItem.InConflict = false;
+            }      
+            return result;
         }
 
         #endregion
@@ -338,7 +381,7 @@ namespace LS_Designer_WPF.ViewModel
                     DetailObjectPanelVisibility = Visibility.Visible;
 
                     DetailCurrentObject.Partitions = Partitions;
-                    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
+                    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id); 
 
                     if (selectionFromMaster)
                     {
@@ -478,58 +521,61 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecSave()
         {
-            int i = -1;
-            bool partitionChanged = false;
-            if (MasterEditMode)
+            if (MasterCurrentObject.Validate())
             {
-                if (MasterCurrentObject.Partition.Id != MasterSelectedItem.Partition.Id)
+                int i = -1;
+                bool partitionChanged = false;
+                if (MasterEditMode)
                 {
-                    partitionChanged = true;
+                    if (MasterCurrentObject.Partition.Id != MasterSelectedItem.Partition.Id)
+                    {
+                        partitionChanged = true;
+                    }
                 }
-            }
-            _dataService.UpdateLightElement(MasterCurrentObject, (updatedCount, error) =>
-            {
-                if (error != null) { return; } // Report error here
+                _dataService.UpdateLightElement(MasterCurrentObject, (updatedCount, error) =>
+                {
+                    if (error != null) { return; } // Report error here
                     i = updatedCount;
-            });
+                });
 
-            MasterObjectButtonsVisibility = Visibility.Collapsed;
-            MasterListCurtainVisibility = Visibility.Collapsed;
-            //DetailListCurtainVisibility = Visibility.Collapsed;
+                MasterObjectButtonsVisibility = Visibility.Collapsed;
+                MasterListCurtainVisibility = Visibility.Collapsed;
+                //DetailListCurtainVisibility = Visibility.Collapsed;
 
 
-            if (MasterAddMode)
-            {
-                MasterSelectorSelectedItem = null;
-
-                MasterList.Add(MasterCurrentObject);
-                MasterSelectedItem = MasterCurrentObject;
-                MasterListVisibility = Visibility.Visible;
-            }
-            if (MasterEditMode) //in EditMode MasterSelectedItem always not null
-            {
-                if (!partitionChanged)
+                if (MasterAddMode)
                 {
-                    MasterList[msix] = MasterCurrentObject;
+                    MasterSelectorSelectedItem = null;
+
+                    MasterList.Add(MasterCurrentObject);
                     MasterSelectedItem = MasterCurrentObject;
-                    //if (savedDsix != -1)
-                    //    DetailSelectedItem = DetailList[savedDsix];
+                    MasterListVisibility = Visibility.Visible;
                 }
-                else
+                if (MasterEditMode) //in EditMode MasterSelectedItem always not null
                 {
-                    MasterList.Remove(MasterSelectedItem);
-                    //DetailContentVisibility = Visibility.Hidden;
-                    partitionChanged = false;
+                    if (!partitionChanged)
+                    {
+                        MasterList[msix] = MasterCurrentObject;
+                        MasterSelectedItem = MasterCurrentObject;
+                        //if (savedDsix != -1)
+                        //    DetailSelectedItem = DetailList[savedDsix];
+                    }
+                    else
+                    {
+                        MasterList.Remove(MasterSelectedItem);
+                        //DetailContentVisibility = Visibility.Hidden;
+                        partitionChanged = false;
+                    }
                 }
-            }
 
-            MasterAddMode = false;
-            MasterEditMode = false;
-            MasterCurrentObject.IsEditMode = false;
-            MasterCurrentObject.IsAddMode = false;
-            MasterRemoveCmd.RaiseCanExecuteChanged();
-            MasterAddCmd.RaiseCanExecuteChanged();
-            MainSwitchCmd.RaiseCanExecuteChanged();
+                MasterAddMode = false;
+                MasterEditMode = false;
+                MasterCurrentObject.IsEditMode = false;
+                MasterCurrentObject.IsAddMode = false;
+                MasterRemoveCmd.RaiseCanExecuteChanged();
+                MasterAddCmd.RaiseCanExecuteChanged();
+                MainSwitchCmd.RaiseCanExecuteChanged();
+            }
 
             MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }

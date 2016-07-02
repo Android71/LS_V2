@@ -49,5 +49,12 @@ namespace LS_Designer_WPF.Model
         {
             return string.Format($"<Params IP = \"{IPAddress}\"  ChNum = \"{ChannelNo}\"  Port = \"{PortNo}\"/>"); ;
         }
+
+        //UI related
+
+        public override bool CanLinkLE(LightElement le)
+        {
+            return true;
+        }
     }
 }

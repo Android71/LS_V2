@@ -20,6 +20,8 @@ namespace LS_Designer_WPF.ViewModel
 
         public override void ExecCancel()
         {
+            // Close PoUp
+            PopUpVisibility = Visibility.Collapsed;
             CancelAction(null);
         }
 

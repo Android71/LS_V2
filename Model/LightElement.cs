@@ -34,7 +34,7 @@ namespace LS_Designer_WPF.Model
                 ColorSequenceList = LightElement.ColorSequenseRGBW;
                 ColorSequence = ColorSequenceList[0];
             }
-            Name = string.Format($"{ControlSpace.Prefix}_LE_{pointType}_");
+            Name = string.Format($"{ControlSpace.Prefix}_{pointType}_");
         }
 
         public int Id { get; set; }
@@ -51,6 +51,63 @@ namespace LS_Designer_WPF.Model
         public int StartPoint { get; set; } = 1;
 
         public int PointCount { get; set; } = 1;
+
+        public int EndPoint { get { return StartPoint + PointCount - 1; } }
+
+        int StartDMX
+        {
+            get { return (StartPoint - 1) * AppContext.CountByType[PointType] + 1; }
+        }
+
+        int EndDMX
+        {
+            get { return StartDMX + PointCount * AppContext.CountByType[PointType] + 1; }
+        }
+
+        public bool Validate()
+        {
+            int maxCount = 512 / AppContext.CountByType[PointType];
+            StringBuilder sb = new StringBuilder();
+            //info = new PopUpMessageVM("");
+            bool result = true;
+            bool rule1 = true, rule2 = true, rule3 = true;
+
+            // Validade fields
+
+            if (StartPoint < 1)
+            {
+                sb.AppendLine("StartPoint не может быть меньше 1");
+                rule1 = false;
+            }
+
+            if (PointCount < 1)
+            {
+                sb.AppendLine("PointCount не может быть меньше 1");
+                rule2 = false;
+            }
+
+            if (rule1 & rule2)
+            {
+                int tmp = (StartPoint - 1) * AppContext.CountByType[PointType] + PointCount * AppContext.CountByType[PointType];
+                if (tmp > 512)
+                {
+                    sb.AppendLine("LightStrip выходит за границы Universe");
+                    sb.AppendLine("Измените либо StartPoint либо PointCount");
+                    rule3 = false;
+                }
+            }
+
+            result = rule1 & rule2 & rule3;
+
+            if (!result)
+            {
+                PopUpMessageVM info = new PopUpMessageVM(sb.ToString());
+                MessengerInstance.Send<EmptyPopUpVM>(info, AppContext.ShowPopUpMsg);
+            }
+
+            return result;
+        }
+
 
         public Direction Direction { get; set; } = Direction.Up;
 
@@ -117,19 +174,23 @@ namespace LS_Designer_WPF.Model
             set { Set(ref _isAddMode, value); }
         }
 
+        public bool IsLinkedBeforeAction;
+
         bool _isLinked = false;
         public bool IsLinked
         {
             get { return _isLinked; }
             set
             {
-                if (value != _isLinked)
-                {
-                    //DirectChild = true;
-                    if ((value && ControlChannel == null) || (!value && ControlChannel != null))
-                    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
-                }
+                IsLinkedBeforeAction = _isLinked;
+                
                 Set(ref _isLinked, value);
+
+                if (value != IsLinkedBeforeAction)
+                {
+                    if ((value && ControlChannel == null) || (!value && ControlChannel != null))
+                        MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
+                }
             }
         }
 
@@ -151,5 +212,7 @@ namespace LS_Designer_WPF.Model
         {
             _isLinked = val;
         }
+
+        public bool InConflict { get; set; }
     }
 }

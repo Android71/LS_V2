@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="LS_Designer_WPF.Controls.LE_Conflict_UC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="560.593"
+             mc:Ignorable="d">
+    <Grid Background="Gray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.Background>
+                <SolidColorBrush Color="{DynamicResource DimGray}"/>
+            </Grid.Background>
+            <TextBlock Text="Light Elements Conflict" FontWeight="Bold" Margin="10,2,0,2" FontSize="14"/>
+            <Button HorizontalAlignment="Right"  Command="{Binding CancelCmd}" >
+                <Button.Background>
+                    <SolidColorBrush Color="{DynamicResource Gray}"/>
+                </Button.Background>
+                <Viewbox 
+                 Width="20"
+                 Height="20">
+                    <Rectangle Width="20" Height="20">
+                        <Rectangle.Fill>
+                            <DrawingBrush>
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <DrawingGroup.Children>
+                                            <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                            <GeometryDrawing Brush="{DynamicResource GrayBrush}" Geometry="F1M4.7471,12.125C4.2721,12.125 3.8261,11.938 3.4881,11.598 2.7991,10.902 2.8001,9.771 3.4891,9.076L5.7291,7.104 4.6151,6.063C3.8951,5.336 3.8971,4.205 4.5901,3.512 4.9121,3.187 5.3781,3 5.8661,3 6.3671,3 6.8341,3.204 7.1461,3.56L8.1871,4.952 10.6761,3.125 13.5001,3.125 10.0961,7.148 14.0001,12.121 11.1911,12.125 8.0791,9.354 6.0311,11.572C5.6671,11.938,5.2201,12.125,4.7471,12.125" />
+                                            <GeometryDrawing Brush="#FFA1260D" Geometry="F1M8.8008,7.125L11.4678,3.996 11.0218,3.996 7.9998,6.371 6.3948,4.219C6.1208,3.907 5.5658,3.948 5.2968,4.219 5.0188,4.498 4.9628,4.994 5.2968,5.332L7.2178,7.125 4.1988,9.781C3.8908,10.092 3.8908,10.582 4.1988,10.893 4.5048,11.203 4.9888,11.203 5.2968,10.893L8.0098,7.955 11.5728,11.121 11.9678,11.121z" />
+                                        </DrawingGroup.Children>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Viewbox>
+            </Button>
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <Grid Name="strip" Width="512" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.ColumnSpan="3" Text="AN_RGB_1   StartPoint: 5   EndPoint: 25   PointCount: 50"/>
+                <Border Grid.Row="2" Grid.ColumnSpan="3">
+                    <Border.Background>
+                        <SolidColorBrush Color="{DynamicResource Dark}"/>
+                    </Border.Background>
+                </Border>
+                <Rectangle Grid.Row="2" Grid.Column="0" Width="5" />
+                <Rectangle Grid.Row="2" Grid.Column="1" Width="50" Height="10" Margin="0,2">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{DynamicResource BlueAccent}"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+            <Grid Name="strip1" Width="512" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.ColumnSpan="3" Text="AN_RGB_1   StartPoint: 5   PointCount: 50"/>
+                <Border Grid.Row="2" Grid.ColumnSpan="3">
+                    <Border.Background>
+                        <SolidColorBrush Color="{DynamicResource Dark}"/>
+                    </Border.Background>
+                </Border>
+                <Rectangle Grid.Row="2" Grid.Column="0" Width="60" />
+                <Rectangle Grid.Row="2" Grid.Column="1" Width="50" Height="10" Margin="0,2">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{DynamicResource OrangeAccent}"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -97,6 +97,12 @@
     <Compile Include="Controls\LE_UC.xaml.cs">
       <DependentUpon>LE_UC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PopUp\LE_Conflict_UC.xaml.cs">
+      <DependentUpon>LE_Conflict_UC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PopUp\MessageUC.xaml.cs">
+      <DependentUpon>MessageUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabItemsUC\EventDevicesUC.xaml.cs">
       <DependentUpon>EventDevicesUC.xaml</DependentUpon>
     </Compile>
@@ -131,6 +137,8 @@
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\PopUpVM\LE_ConflictVM.cs" />
+    <Compile Include="ViewModel\PopUpVM\PopupMessageVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\LightElementsVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\ControlDevicesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\AttentionVM.cs" />
@@ -159,6 +167,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LE_UC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PopUp\LE_Conflict_UC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PopUp\MessageUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
