@@ -137,7 +137,8 @@ namespace LS_Designer_WPF.ViewModel
                     result = true;
                     MasterSelectedItem.InConflict = true;
                     leList.Add(MasterSelectedItem);
-                    MessengerInstance.Send<LE_ConflictVM>(new LE_ConflictVM(leList.OrderBy(p => p.StartPoint).ToList()), AppContext.ShowPopUpMsg);
+                    LE_ConflictVM popupVM = new LE_ConflictVM(leList.OrderBy(p => p.StartPoint).ToList());
+                    MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
                     break;
                 }
                 else
