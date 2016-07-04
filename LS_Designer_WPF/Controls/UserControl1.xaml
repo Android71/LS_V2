@@ -154,6 +154,7 @@
 
             
     </UserControl.Resources>
+    <StackPanel>
     <Grid>
         <TextBox x:Name="textBox" Height="23" Margin="39.74,73.247,140.26,0" Style="{StaticResource TextBoxWithWaterMark}"
                  ex:WaterMarkExtentions.WaterMark = "watermark text"
@@ -166,4 +167,16 @@
             <ComboBoxItem>Item4</ComboBoxItem>
         </ComboBox>
     </Grid>
+        <TextBlock Width="200" Margin="0,20,0,0">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                    <GradientStop Color="#FF00CC00" Offset="0"/>
+                    <GradientStop Color="#FF991A00" Offset="1"/>
+                    <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.091"/>
+                    <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.939"/>
+                    <GradientStop Color="#FF7C463B" Offset="0.943"/>
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+    </StackPanel>
 </UserControl>

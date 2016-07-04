@@ -114,8 +114,8 @@ namespace LS_Designer_WPF.ViewModel
                         }
                         else
                         {
-                            MasterSelectedItem.SetSilentIsLinked(false);
-                            RaisePropertyChanged("IsLinked");
+                            //MasterSelectedItem.SetSilentIsLinked(false);
+                            //RaisePropertyChanged("IsLinked");
                         }
                     }
                 }
@@ -136,6 +136,8 @@ namespace LS_Designer_WPF.ViewModel
                 {
                     result = true;
                     MasterSelectedItem.InConflict = true;
+                    MasterSelectedItem.SetSilentIsLinked(false, true);
+                    //MasterSelectedItem.RaisePropertyChanged("IsLinked");
                     leList.Add(MasterSelectedItem);
                     LE_ConflictVM popupVM = new LE_ConflictVM(leList.OrderBy(p => p.StartPoint).ToList());
                     MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
@@ -247,11 +249,13 @@ namespace LS_Designer_WPF.ViewModel
                     }
                     else
                     {
-                        foreach (LightElement le in MasterList)
-                            le.DirectChild = false;
+                        //if (DetailSelectedItem != null)
+                        
 
                         if (DetailSelectedItem == null)
                         {
+                            foreach (LightElement le in MasterList)
+                                le.DirectChild = false;
                             selectionFromMaster = true;
                             DetailSelectedItem = null;
                         }

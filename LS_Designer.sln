@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFData", "EFData\EFData.csproj", "{8AA9FD1B-3F18-498F-AF33-0696781F33C0}"
 EndProject
@@ -13,10 +13,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LS_Connect", "EF_Connect\LS
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Model\Model.projitems*{608d7607-3b9d-45d1-a1ca-05f110866515}*SharedItemsImports = 13
 		EF_Connect\EF_Connect.projitems*{6386de45-2c15-4d36-b630-81f375b56a63}*SharedItemsImports = 13
 		EF_Connect\EF_Connect.projitems*{b2ccf5e1-618e-429b-8f4c-31f0edc114e8}*SharedItemsImports = 4
 		Model\Model.projitems*{b2ccf5e1-618e-429b-8f4c-31f0edc114e8}*SharedItemsImports = 4
-		Model\Model.projitems*{608d7607-3b9d-45d1-a1ca-05f110866515}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

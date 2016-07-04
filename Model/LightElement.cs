@@ -54,14 +54,34 @@ namespace LS_Designer_WPF.Model
 
         public int EndPoint { get { return StartPoint + PointCount - 1; } }
 
-        int StartDMX
+        public int StartDMX
         {
             get { return (StartPoint - 1) * AppContext.CountByType[PointType] + 1; }
         }
 
-        int EndDMX
+        public int StartDMX_511
         {
-            get { return StartDMX + PointCount * AppContext.CountByType[PointType] + 1; }
+            get { return StartDMX - 1; }
+        }
+
+        public int EndDMX
+        {
+            get { return StartDMX + PointCount * AppContext.CountByType[PointType] - 1; }
+        }
+
+        public int EndDMX_511
+        {
+            get { return EndDMX - 1; }
+        }
+
+        public int DMXlength
+        {
+            get { return PointCount * AppContext.CountByType[PointType]; }
+        }
+
+        public string FullName
+        {
+            get { return string.Format($"{Name}   StartPoint: {StartPoint}   EndPoint: {EndPoint}   PointCount: {PointCount}"); }
         }
 
         public bool Validate()
@@ -208,9 +228,11 @@ namespace LS_Designer_WPF.Model
             set { Set(ref _directChild, value); }
         }
 
-        public void SetSilentIsLinked(bool val)
+        public void SetSilentIsLinked(bool val, bool raisePropertyChanged = false)
         {
             _isLinked = val;
+            if (raisePropertyChanged)
+                RaisePropertyChanged("IsLinked");
         }
 
         public bool InConflict { get; set; }

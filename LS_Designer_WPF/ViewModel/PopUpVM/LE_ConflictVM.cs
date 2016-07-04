@@ -12,10 +12,10 @@ namespace LS_Designer_WPF.ViewModel
         public LE_ConflictVM(List<LightElement> leList)
         {
             LE_List = leList;
-            Width = 560;
+            Width = 600;
             Height = 300;
         }
 
-        List<LightElement> LE_List { get; set; }
+        public List<LightElement> LE_List { get; set; }
     }
 }
