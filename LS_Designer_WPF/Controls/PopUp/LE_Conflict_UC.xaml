@@ -5,6 +5,26 @@
              xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <LinearGradientBrush x:Key="upBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+            <GradientStop Color="Lime" Offset="0"/>
+            <GradientStop Color="Red" Offset="1"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.05"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.949"/>
+            <GradientStop Color="Red" Offset="0.95"/>
+            <GradientStop Color="Lime" Offset="0.049"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="downBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+            <GradientStop Color="Red" Offset="0"/>
+            <GradientStop Color="Lime" Offset="1"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.05"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.949"/>
+            <GradientStop Color="Lime" Offset="0.95"/>
+            <GradientStop Color="Red" Offset="0.049"/>
+        </LinearGradientBrush>
+
+    </UserControl.Resources>
     <Grid Background="Gray">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -82,6 +102,21 @@
                         <DataTrigger Binding="{Binding InConflict}" Value="true">
                             <Setter TargetName="strip" Property="Fill" Value="{StaticResource OrangeAccentBrush}"/>
                         </DataTrigger>
+                    
+                    <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding InConflict}" Value="False" />
+                        <Condition Binding="{Binding Direction}" Value="Up" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="strip" Property="Fill" Value="{StaticResource upBrush}"/>
+                </MultiDataTrigger>
+                    <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding InConflict}" Value="False" />
+                        <Condition Binding="{Binding Direction}" Value="Down" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="strip" Property="Fill" Value="{StaticResource downBrush}"/>
+                </MultiDataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

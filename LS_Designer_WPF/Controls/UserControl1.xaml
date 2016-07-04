@@ -150,9 +150,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <LinearGradientBrush x:Key="upBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+            <GradientStop Color="Lime" Offset="0"/>
+            <GradientStop Color="Red" Offset="1"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.05"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.949"/>
+            <GradientStop Color="Red" Offset="0.95"/>
+            <GradientStop Color="Lime" Offset="0.049"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="downBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+            <GradientStop Color="Red" Offset="0"/>
+            <GradientStop Color="Lime" Offset="1"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.05"/>
+            <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.949"/>
+            <GradientStop Color="Lime" Offset="0.95"/>
+            <GradientStop Color="Red" Offset="0.049"/>
+        </LinearGradientBrush>
 
 
-            
     </UserControl.Resources>
     <StackPanel>
     <Grid>
@@ -167,16 +183,9 @@
             <ComboBoxItem>Item4</ComboBoxItem>
         </ComboBox>
     </Grid>
-        <TextBlock Width="200" Margin="0,20,0,0">
-            <TextBlock.Background>
-                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                    <GradientStop Color="#FF00CC00" Offset="0"/>
-                    <GradientStop Color="#FF991A00" Offset="1"/>
-                    <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.091"/>
-                    <GradientStop Color="{DynamicResource BlueAccent}" Offset="0.939"/>
-                    <GradientStop Color="#FF7C463B" Offset="0.943"/>
-                </LinearGradientBrush>
-            </TextBlock.Background>
-        </TextBlock>
+        <TextBlock Width="200" Margin="0,20,0,0" Background="{StaticResource upBrush}"/>
+        <TextBlock Width="200" Margin="0,20,0,0" Background="{StaticResource downBrush}"/>
+
+
     </StackPanel>
 </UserControl>
