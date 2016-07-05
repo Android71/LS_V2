@@ -52,7 +52,8 @@ namespace LS_Designer_WPF.Model
         bool _hasChildren = false;
         public bool HasChildren
         {
-            get { return _hasChildren; }
+            //get { return _hasChildren; }
+            get { return LE_Count != 0; }
             set { Set(ref _hasChildren, value); }
         }
 

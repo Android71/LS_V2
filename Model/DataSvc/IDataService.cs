@@ -131,7 +131,9 @@ namespace LS_Designer_WPF.Model
 
         void UpdateLightElement(LightElement item, Action<int, Exception> callback);
 
-        void LinkLightElement(LightElement le, ControlChannel ch, Action<int, Exception> callback);
+        void LinkToChannel(LightElement le, ControlChannel ch, Action<int, Exception> callback);
+
+        void UnlinkFromChannel(LightElement le, Action<int, Exception> callback);
 
         #endregion
 

@@ -18,9 +18,9 @@ namespace LS_Designer_WPF.Controls
     /// <summary>
     /// Логика взаимодействия для LE_Conflict_UC.xaml
     /// </summary>
-    public partial class LE_Conflict_UC : UserControl
+    public partial class LE_VisualUC : UserControl
     {
-        public LE_Conflict_UC()
+        public LE_VisualUC()
         {
             InitializeComponent();
         }

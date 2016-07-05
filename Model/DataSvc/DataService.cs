@@ -369,8 +369,10 @@ namespace LS_Designer_WPF.Model
                     Mapper.Db2O(dbControlChannel, out conttrolChannel);
                     conttrolChannel.Partition = new Partition();
                     Mapper.Db2O(dbControlChannel.Partition, conttrolChannel.Partition);
+                    conttrolChannel.ControlSpace = new ControlSpace();
+                    Mapper.Db2O(dbControlChannel.ControlSpace, conttrolChannel.ControlSpace);
                     conttrolChannel.LE_Count = dbControlChannel.LightElements.Count;
-                    conttrolChannel.HasChildren = conttrolChannel.LE_Count != 0;
+                    //conttrolChannel.HasChildren = conttrolChannel.LE_Count != 0;
                     chList.Add(conttrolChannel);
                 }
             }
@@ -719,7 +721,7 @@ namespace LS_Designer_WPF.Model
                 {
                     le = new LightElement();
                     Mapper.Db2O(dbLe, le);
-                    le.IsLinked = dbLe.ControlChannel != null;
+                    //le.IsLinked = dbLe.ControlChannel != null;
                 }
             }
             callback(le, null);
@@ -740,15 +742,15 @@ namespace LS_Designer_WPF.Model
                     
                     lightElement = new LightElement();
                     Mapper.Db2O(dbLightElement, lightElement);
-                    lightElement.SetSilentIsLinked(dbLightElement.ControlChannel != null);
-                    lightElement.IsLinked = dbLightElement.ControlChannel != null;
+                    //lightElement.SetSilentIsLinked(dbLightElement.ControlChannel != null);
+                    //lightElement.IsLinked = dbLightElement.ControlChannel != null;
                     x.Add(lightElement);
                 }
             }
             callback(x, null);
         }
 
-        public void LinkLightElement(LightElement le, ControlChannel ch, Action<int, Exception> callback)
+        public void LinkToChannel(LightElement le, ControlChannel ch, Action<int, Exception> callback)
         {
             using (var db = new LSModelContainer(LS.CS))
             {
@@ -759,6 +761,23 @@ namespace LS_Designer_WPF.Model
                 callback(db.SaveChanges(), null);
             }
         }
+
+        public void UnlinkFromChannel(LightElement le, Action<int, Exception> callback)
+        {
+            
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
+                EFData.ControlChannel dbCChannel = db.ControlChannels.FirstOrDefault(p => p.Id == le.ControlChannel.Id);
+                dbCChannel.LightElements.Remove(dbLe);
+                //dbLe.ControlChannel = null;
+                //db.Entry(dbLe).State = EntityState.Modified;
+                int updateCount = db.SaveChanges();
+                callback(updateCount, null);
+            }
+        }
+
+
 
 
         #endregion

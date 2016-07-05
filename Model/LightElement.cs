@@ -199,23 +199,29 @@ namespace LS_Designer_WPF.Model
         bool _isLinked = false;
         public bool IsLinked
         {
-            get { return _isLinked; }
+            //get { return _isLinked; }
+            get { return ControlChannel != null; }
             set
             {
-                IsLinkedBeforeAction = _isLinked;
+                //IsLinkedBeforeAction = _isLinked;
                 
                 Set(ref _isLinked, value);
 
-                if (value != IsLinkedBeforeAction)
-                {
+                //if (value != IsLinkedBeforeAction)
+                //{
                     if ((value && ControlChannel == null) || (!value && ControlChannel != null))
                         MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
-                }
+                //}
             }
         }
 
+        public void RaiseIsLinkedChanged()
+        {
+            RaisePropertyChanged("IsLinked");
+        }
+
         bool _canChangeLink = false;
-        public bool CanChangeLink
+        public bool ChangeLinkEnable
         {
             get { return _canChangeLink; }
             set { Set(ref _canChangeLink, value); }

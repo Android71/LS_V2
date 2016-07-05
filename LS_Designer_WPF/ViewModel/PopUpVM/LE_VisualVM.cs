@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace LS_Designer_WPF.ViewModel
 {
-    public class LE_ConflictVM : EmptyPopUpVM
+    public class LE_VisualVM : EmptyPopUpVM
     {
-        public LE_ConflictVM(List<LightElement> leList)
+        public LE_VisualVM(List<LightElement> leList, string title)
         {
             LE_List = leList;
-            Width = 600;
-            Height = 300;
+            Title = title;
         }
 
         public List<LightElement> LE_List { get; set; }
+
+        public string Title { get; set; }
     }
 }

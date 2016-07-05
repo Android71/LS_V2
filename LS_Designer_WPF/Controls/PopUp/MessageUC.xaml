@@ -6,7 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             Background="{DynamicResource LightGrayBrush}">
     <DockPanel>
         <StackPanel Height="25"
                     Background="#FF514D4D"
@@ -14,6 +15,6 @@
                     Orientation="Horizontal">
             <Button Command="{Binding CancelCmd}" Content="Close" />
         </StackPanel>
-        <TextBox Text="{Binding Message}" />
+        <TextBlock Text="{Binding Message}" TextWrapping="Wrap" Margin="10" />
     </DockPanel>
 </UserControl>

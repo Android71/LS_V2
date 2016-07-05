@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LS_Designer_WPF.Controls.LE_Conflict_UC"
+﻿<UserControl x:Class="LS_Designer_WPF.Controls.LE_VisualUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -34,7 +34,7 @@
             <Grid.Background>
                 <SolidColorBrush Color="{DynamicResource DimGray}" />
             </Grid.Background>
-            <TextBlock Margin="10,2,0,2" Text="Light Elements Conflict" FontWeight="Bold" >
+            <TextBlock Margin="10,2,0,2" Text="{Binding Title}" FontWeight="Bold" >
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="{DynamicResource DimWhite}"/>
                 </TextBlock.Foreground>
