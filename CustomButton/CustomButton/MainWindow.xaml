@@ -10,9 +10,6 @@
         <SolidColorBrush Color="Black"/>
     </Window.Background>
     <Grid Name="LayoutRoot">
-        <StackPanel>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="35" Stroke="Black" VerticalAlignment="Top" Width="75" RadiusY="20" RadiusX="20"/>
-            <Button Width="75" Height="35"/>
-        </StackPanel>
+        <Button x:Name="button" Content="Button" Height="37" Margin="251.75,60,153.25,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

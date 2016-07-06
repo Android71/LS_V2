@@ -1,30 +1,63 @@
-﻿<Application x:Class="CustomButton.App"
+﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CustomButton"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="CustomButton.App"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
+
+
 
         <Style TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <Rectangle x:Name="outerRectangle" Fill="#00000000" RadiusY="20" RadiusX="20" Stroke="{TemplateBinding Background}" StrokeThickness="5" Margin="0"/>
-                            <Rectangle x:Name="innerRectangle" Fill="#00000000" Height="Auto" Margin="15.334,10" RadiusY="0" RadiusX="0" Stroke="Black" StrokeThickness="5" VerticalAlignment="Stretch"/>
+                        <Grid d:DesignHeight="42">
+                            <Rectangle x:Name="outerRectangle" Fill="Transparent" RadiusY="20" RadiusX="20" Stroke="{TemplateBinding Background}" StrokeThickness="5"/>
+                            <Rectangle x:Name="innerRectangle" Fill="{TemplateBinding Background}" Margin="25.333,10,24.333,9.52" RadiusY="0" RadiusX="0" Stroke="Transparent" StrokeThickness="5"/>
                             <ContentPresenter x:Name="myContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <Rectangle x:Name="glassCube" RadiusY="10" RadiusX="10" Stroke="{TemplateBinding Background}" StrokeThickness="2">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" Opacity="0">
+                                        <GradientStop Color="#BFFFFFFF" Offset="0"/>
+                                        <GradientStop Offset="1"/>
+                                        <GradientStop Color="#BFFFFFFF" Offset="0.4"/>
+                                        <GradientStop Offset="0.2"/>
+                                        <GradientStop Offset="0.604"/>
+                                        <GradientStop Color="#BFFFFFFF" Offset="0.8"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True"/>
                             <Trigger Property="IsDefaulted" Value="True"/>
-                            <Trigger Property="IsMouseOver" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="glassCube">
+                                    <Setter.Value>
+                                        <LinearGradientBrush EndPoint="1,0.5" Opacity="1" StartPoint="0,0.5">
+                                            <GradientStop Color="#BFFFFFFF" Offset="0"/>
+                                            <GradientStop Offset="1"/>
+                                            <GradientStop Color="#BFFFFFFF" Offset="0.4"/>
+                                            <GradientStop Offset="0.2"/>
+                                            <GradientStop Offset="0.604"/>
+                                            <GradientStop Color="#BFFFFFFF" Offset="0.8"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
                             <Trigger Property="IsPressed" Value="True"/>
                             <Trigger Property="IsEnabled" Value="False"/>
+                            <Trigger Property="IsMouseOver" Value="False"/>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+
 
     </Application.Resources>
 </Application>
