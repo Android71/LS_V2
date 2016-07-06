@@ -135,6 +135,8 @@ namespace LS_Designer_WPF.Model
 
         void UnlinkFromChannel(LightElement le, Action<int, Exception> callback);
 
+        void DeleteLightElement(LightElement le, Action<int, Exception> callback);
+
         #endregion
 
         ///********************************************************************/

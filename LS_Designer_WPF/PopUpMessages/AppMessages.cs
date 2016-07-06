@@ -13,8 +13,17 @@ namespace LS_Designer_WPF.PopUpMessages
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Редактирование невозможно.");
             sb.AppendLine("");
-            sb.AppendLine("Для редактирования удалите связь между LightElement и ControlChannel");
+            sb.AppendLine("Для редактирования удалите связь между LightElement и ControlChannel.");
             return sb.ToString();
-        }  
+        }
+
+        public static string UniverseLinkMsg()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Операция невозможна.");
+            sb.AppendLine("");
+            sb.AppendLine("Universe не может содержать LightElements разных типов.");
+            return sb.ToString();
+        }
     }
 }

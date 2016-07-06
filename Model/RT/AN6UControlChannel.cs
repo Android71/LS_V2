@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LS_Designer_WPF.PopUpMessages;
+using LS_Designer_WPF.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -52,9 +54,18 @@ namespace LS_Designer_WPF.Model
 
         //UI related
 
-        public override bool CanLinkLE(LightElement le)
+        public override bool CanLinkLE(LightElement le, PopUpMessageVM messageVM)
         {
-            return true;
+            if (LE_Count >= 1 && PointType != le.PointType)
+            {
+                messageVM.Message = AppMessages.UniverseLinkMsg();
+                return false;
+            }
+            else
+            {
+
+                return true;
+            }
         }
     }
 }

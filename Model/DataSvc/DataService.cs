@@ -770,11 +770,23 @@ namespace LS_Designer_WPF.Model
                 EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
                 EFData.ControlChannel dbCChannel = db.ControlChannels.FirstOrDefault(p => p.Id == le.ControlChannel.Id);
                 dbCChannel.LightElements.Remove(dbLe);
-                //dbLe.ControlChannel = null;
+                //dbLe.ControlChannel = null; // ********* ??? ************
                 //db.Entry(dbLe).State = EntityState.Modified;
                 int updateCount = db.SaveChanges();
                 callback(updateCount, null);
             }
+        }
+
+        public void DeleteLightElement(LightElement le, Action<int, Exception> callback)
+        {
+            int updateCount = -1;
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
+                db.Entry(dbLe).State = EntityState.Deleted;
+                updateCount = db.SaveChanges();
+            }
+            callback(updateCount, null);
         }
 
 

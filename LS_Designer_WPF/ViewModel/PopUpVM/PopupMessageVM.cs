@@ -7,6 +7,10 @@ namespace LS_Designer_WPF.ViewModel
 {
     public class PopUpMessageVM : EmptyPopUpVM
     {
+        public PopUpMessageVM()
+        {
+
+        }
         public PopUpMessageVM(string message)
         {
             //CloseCommand = new RelayCommand(ExecClose);

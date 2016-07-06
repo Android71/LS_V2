@@ -26,7 +26,7 @@
                 </Grid.ColumnDefinitions>
                 <CheckBox Name="mapper" Grid.Column="0" VerticalAlignment="Center"
                           IsChecked="{Binding IsLinked}"
-                          IsEnabled="{Binding CanChangeLink}"
+                          IsEnabled="{Binding ChangeLinkEnable}"
                           Visibility="Hidden" />
                 <Border Name="isLinked" Grid.Column="0" Height="13"
                         VerticalAlignment="Center" Visibility="Hidden"
@@ -149,6 +149,11 @@
                             Command="{Binding MasterAddCmd}"
                             Content="Add" DockPanel.Dock="Right" Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
+                    <Button x:Name="testButton" Margin="1,1,10,1" HorizontalAlignment="Right"
+                            Background="DimGray"
+                            Command="{Binding MasterTestCmd}"
+                            Content="Test" DockPanel.Dock="Right" Padding="3,1"
+                            Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
                 <Grid Name="lisLayout" Grid.Row="1">
                     <Grid.RowDefinitions>
@@ -263,12 +268,13 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
+                <!--Background="{StaticResource DarkBrush}"-->
                 <Grid x:Name="detailListButtons" Grid.Row="0" Margin="0,0,0,10"
                       Background="{StaticResource DarkBrush}"
                       Visibility="{Binding DetailListButtonsVisibility}">
-                    <Button x:Name="detailRemoveButton" Margin="1" HorizontalAlignment="Stretch"
-                            Command="{Binding MainSwitchCmd}"
-                            Content="{Binding MainSwitchContent}"
+                    <Button x:Name="detailViewButton" Margin="1" HorizontalAlignment="Right"
+                            Command="{Binding ViewCmd}"
+                            Content="VIew"
                             Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
 

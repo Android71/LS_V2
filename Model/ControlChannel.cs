@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using LS_Designer_WPF.Model;
+using LS_Designer_WPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -59,7 +60,7 @@ namespace LS_Designer_WPF.Model
 
         public int LE_Count { get; set; }
 
-        public virtual bool CanLinkLE(LightElement le)
+        public virtual bool CanLinkLE(LightElement le, PopUpMessageVM messageVM)
         {
             return true;
         }

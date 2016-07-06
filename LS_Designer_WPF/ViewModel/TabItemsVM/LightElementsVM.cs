@@ -21,8 +21,9 @@ namespace LS_Designer_WPF.ViewModel
             MasterEditCmd = new RelayCommand(MasterExecEdit);
             MasterSaveCmd = new RelayCommand(MasterExecSave);
             MasterCancelCmd = new RelayCommand(MasterExecCancel);
+            MasterTestCmd = new RelayCommand(MasterExecTest, MasterCanExecTest);
 
-            MainSwitchCmd = new RelayCommand(ExecMainSwitchCmd, CanExecMasterSwitchCmd);
+            ViewCmd = new RelayCommand(ExecViewCmd, CanExecViewCmd);
 
             MessengerInstance.Register<string>(this, AppContext.LE_LinkChangedMsg, LE_LinkChanged);
 
@@ -70,6 +71,48 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
+        void UpdateChangeLinkEnable()
+        {
+            if (MasterSelectedItem != null && DetailSelectedItem != null)
+            {
+                if (!MasterSelectedItem.IsLinked)
+                {
+                    if (DetailSelectedItem != null)
+                    {
+                        if (DetailSelectedItem.ControlSpace.Prefix == "AN" || DetailSelectedItem.ControlSpace.Prefix == "DX")
+                        {
+                            MasterSelectedItem.ChangeLinkEnable = true;
+                            return;
+                        }
+                        else
+                        {
+                            if (DetailSelectedItem.HasChildren)
+                            {
+                                MasterSelectedItem.ChangeLinkEnable = false;
+                                return;
+                            }
+                            else
+                            {
+                                MasterSelectedItem.ChangeLinkEnable = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    MasterSelectedItem.ChangeLinkEnable = true;
+                    return;
+                }
+            }
+            if (MasterSelectedItem != null && DetailSelectedItem == null)
+            {
+                MasterSelectedItem.ChangeLinkEnable = false;
+                return;
+            }
+        }
+
+
         #region Message Handlers
 
         protected override void ContextChanged(string obj)
@@ -86,59 +129,64 @@ namespace LS_Designer_WPF.ViewModel
         private void LE_LinkChanged(string obj)
         {
             bool leConflict = false;
-            //if (DetailSelectedItem != null)
-            //{
-                //if (!MasterSelectedItem.IsLinkedBeforeAction) // состояние LightElement.IsLinked до изменения CheckBox пользователем
-                if (MasterSelectedItem.ControlChannel == null)
+            if (MasterSelectedItem.ControlChannel == null)
+            {
+                // Try Link
+                PopUpMessageVM popupVM = new PopUpMessageVM();
+                if (DetailSelectedItem.CanLinkLE(MasterSelectedItem, popupVM))
                 {
-                    // Try Link
-                    if (DetailSelectedItem.CanLinkLE(MasterSelectedItem))
+                    if (MasterSelectedItem.ControlSpace.Prefix == "AN" || MasterSelectedItem.ControlSpace.Prefix == "DX")
+                        leConflict = CheckIntersectionLE();
+
+                    if (!leConflict)
                     {
-                        if (MasterSelectedItem.ControlSpace.Prefix == "AN" || MasterSelectedItem.ControlSpace.Prefix == "DX")
-                            leConflict = CheckIntersectionLE();
-
-                        if (!leConflict)
-                        {
-                            _dataService.LinkToChannel(MasterSelectedItem, DetailSelectedItem, (updatesCount, error) =>
-                                {
-                                    if (error != null) { return; } // Report error here
+                        _dataService.LinkToChannel(MasterSelectedItem, DetailSelectedItem, (updatesCount, error) =>
+                            {
+                                if (error != null) { return; } // Report error here
                                 int uc = updatesCount;
-                                });
-                            DetailSelectedItem.HasChildren = true;
-                            DetailSelectedItem.DirectParent = true;
-                            DetailSelectedItem.LE_Count++;
+                            });
+                        DetailSelectedItem.HasChildren = true;
+                        DetailSelectedItem.DirectParent = true;
+                        DetailSelectedItem.LE_Count++;
 
-                            MasterSelectedItem.DirectChild = true;
-                            MasterSelectedItem.ControlChannel = DetailSelectedItem;
-                        }
+                        MasterSelectedItem.DirectChild = true;
+                        MasterSelectedItem.ControlChannel = DetailSelectedItem;
+                        DetailSelectedItem.PointType = MasterSelectedItem.PointType;
+                        MasterSelectedItem.RaiseIsLinkedChanged();
                     }
                 }
                 else
                 {
-                    //Unlink
-                    _dataService.UnlinkFromChannel(MasterSelectedItem, (updatesCount, error) =>
-                                {
-                                    if (error != null) { return; } // Report error here
-                                    int uc = updatesCount;
-                                });
-                    DetailSelectedItem.LE_Count--;
-                    MasterSelectedItem.DirectChild = false;
-                    MasterSelectedItem.ControlChannel = null;
-                    //MasterCurrentObject.IsLinked = false;
-                    MasterSelectedItem.RaiseIsLinkedChanged();
-                    if (DetailSelectedItem.LE_Count == 0)
-                    {
-                        DetailSelectedItem.HasChildren = false;
-                        DetailSelectedItem.DirectParent = false;
-                    }
+                    MasterSelectedItem.SetSilentIsLinked(false, true);
+                    MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
                 }
-            //}
+            }
+            else
+            {
+                //Unlink
+                _dataService.UnlinkFromChannel(MasterSelectedItem, (updatesCount, error) =>
+                            {
+                                if (error != null) { return; } // Report error here
+                                int uc = updatesCount;
+                            });
+                DetailSelectedItem.LE_Count--;
+                MasterSelectedItem.DirectChild = false;
+                MasterSelectedItem.ControlChannel = null;
+                MasterSelectedItem.RaiseIsLinkedChanged();
+                if (DetailSelectedItem.LE_Count == 0)
+                {
+                    DetailSelectedItem.HasChildren = false;
+                    DetailSelectedItem.DirectParent = false;
+                }
+            }
+
+            ViewCmd.RaiseCanExecuteChanged();
         }
 
         bool CheckIntersectionLE()
         {
             bool result = false;
-            List<LightElement> leList = MasterList.Where(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == DetailSelectedItem.Id).ToList();  //(p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id)
+            List<LightElement> leList = MasterList.Where(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == DetailSelectedItem.Id).ToList();  
             foreach (LightElement le in leList)
             {
                 if (MasterSelectedItem.StartPoint >= le.StartPoint && MasterSelectedItem.StartPoint <= le.EndPoint ||
@@ -147,7 +195,6 @@ namespace LS_Designer_WPF.ViewModel
                     result = true;
                     MasterSelectedItem.InConflict = true;
                     MasterSelectedItem.SetSilentIsLinked(false, true);
-                    //MasterSelectedItem.RaisePropertyChanged("IsLinked");
                     leList.Add(MasterSelectedItem);
                     LE_VisualVM popupVM = new LE_VisualVM(leList.OrderBy(p => p.StartPoint).ToList(), string.Format($"Conflict in {DetailSelectedItem.Name}"));
                     MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
@@ -161,27 +208,21 @@ namespace LS_Designer_WPF.ViewModel
 
         #endregion
 
-        #region MainSwitch Command
+        #region View Command
 
-        public RelayCommand MainSwitchCmd { get; private set; }
+        public RelayCommand ViewCmd { get; private set; }
 
-        void ExecMainSwitchCmd()
+        void ExecViewCmd()
         {
-
+            List<LightElement> leList = MasterList.Where(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == DetailSelectedItem.Id).ToList();
+            LE_VisualVM popupVM = new LE_VisualVM(leList.OrderBy(p => p.StartPoint).ToList(), string.Format($"LightElement mapping to {DetailSelectedItem.Name}"));
+            MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
         }
 
-        bool CanExecMasterSwitchCmd()
+        bool CanExecViewCmd()
         {
-            return !MasterAddMode && !MasterEditMode;
+            return DetailSelectedItem != null && DetailSelectedItem.HasChildren && !MasterAddMode && !MasterEditMode;
         }
-
-        string _mainSwitchContent = "Link Light Elements";
-        public string MainSwitchContent
-        {
-            get { return _mainSwitchContent; }
-            set { Set(ref _mainSwitchContent, value); }
-        }
-
 
         #endregion
 
@@ -225,14 +266,36 @@ namespace LS_Designer_WPF.ViewModel
 
                 if (selectionFromDetail)
                 {
+                    foreach (ControlChannel ch in DetailList)
+                    {
+                        if (MasterSelectedItem.ControlChannel != null)
+                            if (ch.Id == MasterSelectedItem.ControlChannel.Id)
+                                ch.DirectParent = true;
+                            else
+                                ch.DirectParent = false;
+                        else
+                            ch.DirectParent = false;
+                    }
                     selectionFromDetail = false;
                 }
                 else
                 {
-                    
+                    foreach (LightElement le in MasterList)
+                        le.DirectChild = false;
 
                     if (MasterSelectedItem != null)
                     {
+                        foreach (ControlChannel ch in DetailList)
+                        {
+                            if (MasterSelectedItem.ControlChannel != null)
+                                if (ch.Id == MasterSelectedItem.ControlChannel.Id)
+                                    ch.DirectParent = true;
+                                else
+                                    ch.DirectParent = false;
+                            else
+                                ch.DirectParent = false;
+                        }
+
                         msix = MasterList.IndexOf(value);
                         _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
                          {
@@ -244,110 +307,21 @@ namespace LS_Designer_WPF.ViewModel
                         MasterObjectCurtainVisibility = Visibility.Visible;
                         MasterRemoveCmd.RaiseCanExecuteChanged();
 
-
                         if (MasterSelectedItem.IsLinked)
                         {
-                            foreach (ControlChannel ch in DetailList)
-                            {
-                                if (MasterSelectedItem.ControlChannel != null)
-                                    if (ch.Id == MasterSelectedItem.ControlChannel.Id)
-                                        ch.DirectParent = true;
-                                    else
-                                        ch.DirectParent = false;
-                                else
-                                    ch.DirectParent = false;
-                            }
-
                             selectionFromMaster = true;
                             DetailSelectedItem = DetailList.FirstOrDefault(p => p.Id == MasterSelectedItem.ControlChannel.Id);
                         }
-                        //else
-                        //{
-                        //    if (DetailSelectedItem == null)
-                        //    {
-                        //        foreach (LightElement le in MasterList)
-                        //            le.DirectChild = false;
-                        //        //selectionFromMaster = true;
-                        //        //DetailSelectedItem = null;
-                        //    }
-                        //    //else
-                        //    //    MasterSelectedItem.ChangeLinkEnable = true;
-                        //}
                     }
                     else
                     {
                         msix = -1;
                         MasterObjectPanelVisibility = Visibility.Collapsed;
-
-                        foreach (LightElement le in MasterList)
-                            le.DirectChild = false;
                     }
                 }
-
-                //if (MasterSelectedItem != null)
-                //{
-                //}
-                //else
-                //{
-                //    if (selectionFromDetail)
-                //    {
-                //        foreach (LightElement le in MasterList)
-                //            le.DirectChild = false;
-                //        selectionFromDetail = false;
-                //    }
-                //}
             }
         }
 
-        void UpdateChangeLinkEnable()
-        {
-            if (MasterSelectedItem != null && DetailSelectedItem != null)
-            {
-                if (!MasterSelectedItem.IsLinked)
-                {
-                    if (DetailSelectedItem != null)
-                    {
-                        if (DetailSelectedItem.ControlSpace.Prefix == "AN" || DetailSelectedItem.ControlSpace.Prefix == "DX")
-                        {
-                            MasterSelectedItem.ChangeLinkEnable = true;
-                            return;
-                        }
-                        else
-                        {
-                            if (DetailSelectedItem.HasChildren)
-                            {
-                                MasterSelectedItem.ChangeLinkEnable = false;
-                                return;
-                            }
-                            else
-                            {
-                                MasterSelectedItem.ChangeLinkEnable = true;
-                                return;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    MasterSelectedItem.ChangeLinkEnable = true;
-                    return;
-                }
-            }
-            else
-            {
-                if (MasterSelectedItem != null)
-                {
-
-                    MasterSelectedItem.ChangeLinkEnable = true;
-                    return;
-                }
-                //else
-                //{
-                //    MasterSelectedItem.ChangeLinkEnable = false;
-                //    return;
-                //}
-            }
-        }
 
         LightElement _masterCurrentObject;
         public LightElement MasterCurrentObject
@@ -390,7 +364,7 @@ namespace LS_Designer_WPF.ViewModel
                     MasterCurrentObject.IsAddMode = true;
                     MasterAddCmd.RaiseCanExecuteChanged();
                     MasterRemoveCmd.RaiseCanExecuteChanged();
-                    MainSwitchCmd.RaiseCanExecuteChanged();
+                    ViewCmd.RaiseCanExecuteChanged();
 
                     MasterSelectorVisibility = Visibility.Hidden;
                     MasterSelectorSelectedItem = null;
@@ -413,7 +387,9 @@ namespace LS_Designer_WPF.ViewModel
                     MasterListVisibility = Visibility.Visible;
 
                     MasterAddMode = false;
-                    MainSwitchCmd.RaiseCanExecuteChanged();
+                    ViewCmd.RaiseCanExecuteChanged();
+
+                    DetailListCurtainVisibility = Visibility.Collapsed;
 
                     if (MasterSelectedItem != null)
                     {
@@ -449,6 +425,10 @@ namespace LS_Designer_WPF.ViewModel
             set
             {
                 Set(ref _detailSelectedItem, value);
+
+                UpdateChangeLinkEnable();
+                ViewCmd.RaiseCanExecuteChanged();
+
                 if (DetailSelectedItem != null)
                 {
                     dsix = DetailList.IndexOf(value);
@@ -460,37 +440,49 @@ namespace LS_Designer_WPF.ViewModel
                     DetailObjectPanelVisibility = Visibility.Visible;
 
                     DetailCurrentObject.Partitions = Partitions;
-                    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id); 
+                    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
 
+                    
                     if (selectionFromMaster)
                     {
-                        
+                        foreach (LightElement le in MasterList)
+                        {
+                            if (le.ControlChannel != null)
+                            {
+                                if (le.ControlChannel.Id == DetailSelectedItem.Id)
+                                    le.DirectChild = true;
+                                else
+                                    le.DirectChild = false;
+                            }
+                        }
                         selectionFromMaster = false;
                     }
                     else
                     {
                         foreach (ControlChannel ch in DetailList)
                             ch.DirectParent = false;
+
+                        foreach (LightElement le in MasterList)
+                        {
+                            if (le.ControlChannel != null)
+                            {
+                                if (le.ControlChannel.Id == DetailSelectedItem.Id)
+                                    le.DirectChild = true;
+                                else
+                                    le.DirectChild = false;
+                            }
+                        }
+
                         if (DetailSelectedItem.HasChildren)
                         {
-                            LightElement le = MasterList.FirstOrDefault(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id);
-                            foreach (ControlChannel ch in DetailList)
-                                ch.DirectParent = false;
+                            LightElement le1 = MasterList.FirstOrDefault(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id);
                             selectionFromDetail = true;
-                            MasterSelectedItem = le;
+                            MasterSelectedItem = le1;
                         }
                         else
                         {
-                            if (MasterSelectedItem != null)
-                            {
-                                if (MasterSelectedItem.IsLinked)
-                                {
-                                    selectionFromDetail = true;
-                                    MasterSelectedItem = null;
-                                }
-                                else
-                                    MasterSelectedItem.ChangeLinkEnable = true;
-                            }
+                            if (MasterSelectedItem != null && MasterSelectedItem.IsLinked)
+                                MasterSelectedItem = null;
                         }
                     }
                 }
@@ -498,27 +490,6 @@ namespace LS_Designer_WPF.ViewModel
                 {
                     dsix = -1;
                     DetailObjectPanelVisibility = Visibility.Collapsed;
-
-                    if (selectionFromMaster)
-                    {
-                        foreach (ControlChannel ch in DetailList)
-                            ch.DirectParent = false;
-                        selectionFromMaster = false;
-                    }
-                }
-            }
-        }
-
-        void ClearDirectChild()
-        {
-            foreach (LightElement le in MasterList)
-            {
-                if (le.ControlChannel != null)
-                {
-                    if (le.ControlChannel.Id == DetailSelectedItem.Id)
-                        le.DirectChild = true;
-                    else
-                        le.DirectChild = false;
                 }
             }
         }
@@ -624,7 +595,7 @@ namespace LS_Designer_WPF.ViewModel
 
                 MasterObjectButtonsVisibility = Visibility.Collapsed;
                 MasterListCurtainVisibility = Visibility.Collapsed;
-                //DetailListCurtainVisibility = Visibility.Collapsed;
+                DetailListCurtainVisibility = Visibility.Collapsed;
 
 
                 if (MasterAddMode)
@@ -640,6 +611,7 @@ namespace LS_Designer_WPF.ViewModel
                     if (!partitionChanged)
                     {
                         MasterList[msix] = MasterCurrentObject;
+                        //MasterSelectedItem.RaiseIsLinkedChanged();
                         MasterSelectedItem = MasterCurrentObject;
                         //if (savedDsix != -1)
                         //    DetailSelectedItem = DetailList[savedDsix];
@@ -658,18 +630,18 @@ namespace LS_Designer_WPF.ViewModel
                 MasterCurrentObject.IsAddMode = false;
                 MasterRemoveCmd.RaiseCanExecuteChanged();
                 MasterAddCmd.RaiseCanExecuteChanged();
-                MainSwitchCmd.RaiseCanExecuteChanged();
+                //MainSwitchCmd.RaiseCanExecuteChanged();
 
-                if (DetailSelectedItem != null)
-                {
-                    // при выполнении Save происходит замена .net объекта в MasterList
-                    // необходимо восстановить Visual State
-                    LightElement letmp = MasterSelectedItem;
-                    ControlChannel tmp = DetailSelectedItem;
-                    DetailSelectedItem = null;
-                    DetailSelectedItem = tmp;
-                    MasterSelectedItem = letmp;
-                }
+                //if (DetailSelectedItem != null)
+                //{
+                //    // при выполнении Save происходит замена .net объекта в MasterList
+                //    // необходимо восстановить Visual State
+                //    LightElement letmp = MasterSelectedItem;
+                //    ControlChannel tmp = DetailSelectedItem;
+                //    DetailSelectedItem = null;
+                //    DetailSelectedItem = tmp;
+                //    MasterSelectedItem = letmp;
+                //}
             }
 
             
@@ -701,21 +673,22 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecCancel()
         {
-            //if (MasterEditMode)
-            //{
-            //    _dataService.GetControlDevice(MasterSelectedItem.Id, (data, error) =>
-            //         {
-            //             if (error != null) { return; } // Report error here
-            //             MasterCurrentObject = data;
-            //         });
-            //}
+            if (MasterEditMode)
+            {
+                _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                         MasterCurrentObject = data;
+                     });
+            }
             MasterAddMode = false;
             MasterEditMode = false;
             MasterCurrentObject.IsEditMode = false;
             MasterCurrentObject.IsAddMode = false;
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
-            MainSwitchCmd.RaiseCanExecuteChanged();
+
+            DetailListCurtainVisibility = Visibility.Collapsed;
 
             MasterListCurtainVisibility = Visibility.Collapsed;
             MasterObjectCurtainVisibility = Visibility.Visible;
@@ -758,13 +731,16 @@ namespace LS_Designer_WPF.ViewModel
 
 
             MasterEditMode = true;
+
+            DetailListCurtainVisibility = Visibility.Visible;
+
             MasterCurrentObject.IsEditMode = true;
             MasterCurrentObject.Partitions = Partitions;
             MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
 
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
-            MainSwitchCmd.RaiseCanExecuteChanged();
+            //MainSwitchCmd.RaiseCanExecuteChanged();
 
             MasterListCurtainVisibility = Visibility.Visible;
             MasterObjectButtonsVisibility = Visibility.Visible;
@@ -786,8 +762,10 @@ namespace LS_Designer_WPF.ViewModel
             MasterObjectPanelVisibility = Visibility.Hidden;
             IsMasterSelectorOpen = true;
 
+            DetailListCurtainVisibility = Visibility.Visible;
+
             MasterAddMode = true;
-            MainSwitchCmd.RaiseCanExecuteChanged();
+            ViewCmd.RaiseCanExecuteChanged();
 
             MessengerInstance.Send("", AppContext.BlockUIMsg);
         }
@@ -805,11 +783,40 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecRemove()
         {
+            _dataService.DeleteLightElement(MasterSelectedItem, (data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    int updateCount = data;
+                });
+            MasterList.Remove(MasterSelectedItem);
+            MasterSelectedItem = null;
         }
 
         bool MasterCanExecRemove()
         {
             return !MasterAddMode && !MasterEditMode && MasterSelectedItem != null;
+        }
+
+        #endregion
+
+        #region Master Test Command
+
+        public RelayCommand MasterTestCmd { get; private set; }
+
+        void MasterExecTest()
+        {
+            _dataService.DeleteLightElement(MasterSelectedItem, (data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    int updateCount = data;
+                });
+            MasterList.Remove(MasterSelectedItem);
+            MasterSelectedItem = null;
+        }
+
+        bool MasterCanExecTest()
+        {
+            return false;
         }
 
         #endregion
