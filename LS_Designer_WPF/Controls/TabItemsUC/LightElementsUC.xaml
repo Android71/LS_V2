@@ -326,6 +326,9 @@
                         <DataTemplate DataType="{x:Type model:AN6UControlChannel}">
                             <local:AN6UControlChannelUC />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type model:NLPowerChannel}">
+                            <local:NLControlChannelUC />
+                        </DataTemplate>
                     </Border.Resources>
                     <ContentControl Name="detailCurrentObject" Margin="0,5,0,0"
                                     Content="{Binding DetailCurrentObject}" />

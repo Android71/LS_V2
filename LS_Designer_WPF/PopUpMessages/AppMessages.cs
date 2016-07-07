@@ -25,5 +25,14 @@ namespace LS_Designer_WPF.PopUpMessages
             sb.AppendLine("Universe не может содержать LightElements разных типов.");
             return sb.ToString();
         }
+
+        public static string LE_LinkMsg()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Операция невозможна.");
+            sb.AppendLine("");
+            sb.AppendLine("ControlChannel не может управлять LightElement данного типа.");
+            return sb.ToString();
+        }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="86" >
+      <Diagram DiagramId="86e615d1757b47bd97f122b948f7b9da" Name="Diagram1" ZoomLevel="100" >
         <EntityTypeShape EntityType="LSModel.ControlSpace" Width="1.5" PointX="5.875" PointY="4.375" />
         <EntityTypeShape EntityType="LSModel.ControlChannel" Width="1.5" PointX="11.375" PointY="3.875" />
         <EntityTypeShape EntityType="LSModel.EventChannel" Width="1.5" PointX="0.5" PointY="4.5" />

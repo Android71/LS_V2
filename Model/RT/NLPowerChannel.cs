@@ -1,4 +1,6 @@
 ﻿using LS_Designer_WPF.Model;
+using LS_Designer_WPF.PopUpMessages;
+using LS_Designer_WPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,11 +14,12 @@ namespace LS_Designer_WPF.Model
         public NLPowerChannel()
         {
             DotNetType = typeof(NLPowerChannel).AssemblyQualifiedName;
+            Multilink = false;
         }
 
         public override string Name
         {
-            get { return String.Format("NL_PowerChannel_{0}", ChannelNo); }
+            get { return String.Format($"NL_{PointType}_Ch_{ChannelNo}"); }
         }
 
         public override string Profile
@@ -42,6 +45,19 @@ namespace LS_Designer_WPF.Model
                             new XAttribute("PointType", PointType.ToString())
                             );
             return profile.ToString();
+        }
+
+        //UI related
+
+        public override bool CanLinkLE(LightElement le, PopUpMessageVM messageVM)
+        {
+            if (PointType != le.PointType)
+            {
+                messageVM.Message = AppMessages.LE_LinkMsg();
+                return false;
+            }
+            else
+                return true;
         }
     }
 }

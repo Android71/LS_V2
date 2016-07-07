@@ -770,7 +770,7 @@ namespace LS_Designer_WPF.Model
                 EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
                 EFData.ControlChannel dbCChannel = db.ControlChannels.FirstOrDefault(p => p.Id == le.ControlChannel.Id);
                 dbCChannel.LightElements.Remove(dbLe);
-                //dbLe.ControlChannel = null; // ********* ??? ************
+                //dbLe.ControlChannel = null; // ********* ??? почему не работает ************
                 //db.Entry(dbLe).State = EntityState.Modified;
                 int updateCount = db.SaveChanges();
                 callback(updateCount, null);

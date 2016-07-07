@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 06/30/2016 14:53:14
+-- Date Created: 07/07/2016 09:19:13
 -- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
@@ -180,6 +180,7 @@ CREATE TABLE [dbo].[ControlChannels] (
     [HaveDimmer] bit  NULL,
     [DotNetType] nvarchar(max)  NULL,
     [Profile] nvarchar(max)  NULL,
+    [Multilink] bit  NULL,
     [ControlSpace_Id] int  NOT NULL,
     [ControlDevice_Id] int  NOT NULL,
     [Partition_Id] int  NOT NULL

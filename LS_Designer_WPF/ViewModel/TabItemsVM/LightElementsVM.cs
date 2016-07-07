@@ -79,23 +79,41 @@ namespace LS_Designer_WPF.ViewModel
                 {
                     if (DetailSelectedItem != null)
                     {
-                        if (DetailSelectedItem.ControlSpace.Prefix == "AN" || DetailSelectedItem.ControlSpace.Prefix == "DX")
+                        //if (DetailSelectedItem.ControlSpace.Prefix == "AN" || DetailSelectedItem.ControlSpace.Prefix == "DX")
+                        //{
+                        //    MasterSelectedItem.ChangeLinkEnable = true;
+                        //    return;
+                        //}
+                        //else
+                        //{
+                        //    if (DetailSelectedItem.HasChildren)
+                        //    {
+                        //        MasterSelectedItem.ChangeLinkEnable = false;
+                        //        return;
+                        //    }
+                        //    else
+                        //    {
+                        //        MasterSelectedItem.ChangeLinkEnable = true;
+                        //        return;
+                        //    }
+                        //}
+                        if (DetailSelectedItem.HasChildren)
                         {
-                            MasterSelectedItem.ChangeLinkEnable = true;
-                            return;
-                        }
-                        else
-                        {
-                            if (DetailSelectedItem.HasChildren)
-                            {
-                                MasterSelectedItem.ChangeLinkEnable = false;
-                                return;
-                            }
-                            else
+                            if (DetailSelectedItem.Multilink)
                             {
                                 MasterSelectedItem.ChangeLinkEnable = true;
                                 return;
                             }
+                            else
+                            {
+                                MasterSelectedItem.ChangeLinkEnable = false;
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            MasterSelectedItem.ChangeLinkEnable = true;
+                            return;
                         }
                     }
                 }
@@ -145,9 +163,11 @@ namespace LS_Designer_WPF.ViewModel
                                 if (error != null) { return; } // Report error here
                                 int uc = updatesCount;
                             });
+
+                        DetailSelectedItem.LE_Count++;
                         DetailSelectedItem.HasChildren = true;
                         DetailSelectedItem.DirectParent = true;
-                        DetailSelectedItem.LE_Count++;
+                        
 
                         MasterSelectedItem.DirectChild = true;
                         MasterSelectedItem.ControlChannel = DetailSelectedItem;
@@ -221,7 +241,8 @@ namespace LS_Designer_WPF.ViewModel
 
         bool CanExecViewCmd()
         {
-            return DetailSelectedItem != null && DetailSelectedItem.HasChildren && !MasterAddMode && !MasterEditMode;
+            return DetailSelectedItem != null && DetailSelectedItem.HasChildren 
+                   && DetailSelectedItem.Multilink && !MasterAddMode && !MasterEditMode;
         }
 
         #endregion

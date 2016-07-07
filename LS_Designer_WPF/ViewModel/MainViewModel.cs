@@ -58,13 +58,14 @@ namespace LS_Designer_WPF.ViewModel
             ControlDevicesVM = new ControlDevicesVM(dataService);
             EventDevicesVM = new EventDevicesVM(dataService);
             LightElementsVM = new LightElementsVM(dataService);
+            LightZonesVM = new LightZonesVM(dataService);
 
             TabItems.Add(PartitionsVM);
             TabItems.Add(ControlSpacesVM);
             TabItems.Add(ControlDevicesVM);
             TabItems.Add(EventDevicesVM);
             TabItems.Add(LightElementsVM);
-            //TabItems.Add(LightZonesVM);
+            TabItems.Add(LightZonesVM);
 
         }
 
@@ -79,6 +80,8 @@ namespace LS_Designer_WPF.ViewModel
         public EventDevicesVM EventDevicesVM { get; private set; }
 
         public LightElementsVM LightElementsVM { get; private set; }
+
+        public LightZonesVM LightZonesVM { get; private set; }
 
         object _popupVM = null;
         public object PopUpVM { get { return _popupVM; } set { Set(ref _popupVM, value); } }

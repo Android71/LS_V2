@@ -14,6 +14,7 @@ namespace LS_Designer_WPF.Model
         {
             HaveDimmer = true;
             DotNetType = typeof(AN6UControlChannel).AssemblyQualifiedName;
+            Multilink = true;
         }
 
         public IPAddress IPAddress { get; set; }

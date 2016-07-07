@@ -11,5 +11,16 @@
     </Window.Background>
     <Grid Name="LayoutRoot">
         <Button x:Name="button" Content="Button" Height="37" Margin="251.75,60,153.25,0" VerticalAlignment="Top"/>
+        <Ellipse Margin="111.75,70,0,110" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stroke="White" StrokeThickness="10" StrokeLineJoin="Round" HorizontalAlignment="Left" Width="140"/>
+        <Path Margin="105.16,43.445,235.49,103.445" Stroke="White" StrokeThickness="20" RenderTransformOrigin="0.5,0.5" Data="M10,10 L166.34989,-28.109623 125,125" Stretch="Fill" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="45.087"/>
+                    <TranslateTransform X="-19.572146288951217" Y="9.0400594178411637"/>
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
     </Grid>
 </Window>

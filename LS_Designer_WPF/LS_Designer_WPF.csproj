@@ -85,6 +85,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\TabItemsUC\LightZonesUC.xaml.cs">
+      <DependentUpon>LightZonesUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NLControlChannelUC.xaml.cs">
+      <DependentUpon>NLControlChannelUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PopUpMessages\AppMessages.cs" />
     <Compile Include="Controls\AN6UControlChannelUC.xaml.cs">
       <DependentUpon>AN6UControlChannelUC.xaml</DependentUpon>
@@ -138,6 +144,7 @@
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\TabItemsVM\LightZonesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\LE_VisualVM.cs" />
     <Compile Include="ViewModel\PopUpVM\PopupMessageVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\LightElementsVM.cs" />
@@ -168,6 +175,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LE_UC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabItemsUC\LightZonesUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NLControlChannelUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

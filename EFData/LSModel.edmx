@@ -150,6 +150,7 @@
     <Property Name="HaveDimmer" Type="bit" Nullable="true" />
     <Property Name="DotNetType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Profile" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Multilink" Type="bit" Nullable="true" />
     <Property Name="ControlSpace_Id" Type="int" Nullable="false" />
     <Property Name="ControlDevice_Id" Type="int" Nullable="false" />
     <Property Name="Partition_Id" Type="int" Nullable="false" />
@@ -813,6 +814,7 @@
           <NavigationProperty Name="ControlDevice" Relationship="LSModel.ControlDeviceControlChannel" FromRole="ControlChannel" ToRole="ControlDevice" />
           <Property Name="Profile" Type="String" Nullable="true" />
           <NavigationProperty Name="Partition" Relationship="LSModel.PartitionControlChannel" FromRole="ControlChannel" ToRole="Partition" />
+          <Property Name="Multilink" Type="Boolean" Nullable="true" />
         </EntityType>
         <EntityType Name="EventChannel" Abstract="false">
           <Key>
@@ -1159,6 +1161,7 @@
           <ScalarProperty Name="HaveDimmer" ColumnName="HaveDimmer" />
           <ScalarProperty Name="DotNetType" ColumnName="DotNetType" />
           <ScalarProperty Name="Profile" ColumnName="Profile" />
+          <ScalarProperty Name="Multilink" ColumnName="Multilink" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

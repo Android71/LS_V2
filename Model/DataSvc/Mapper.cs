@@ -148,6 +148,7 @@ namespace LS_Designer_WPF.Model
             dbObj.ChannelNo = obj.ChannelNo;
             dbObj.PointType = (EFData.PointTypeEnum)obj.PointType;
             dbObj.HaveDimmer = obj.HaveDimmer;
+            dbObj.Multilink = obj.Multilink;
             dbObj.DotNetType = obj.DotNetType;
             dbObj.Profile = obj.Profile;
         }
@@ -160,6 +161,7 @@ namespace LS_Designer_WPF.Model
             obj.ChannelNo = dbObj.ChannelNo;
             obj.PointType = (PointTypeEnum)dbObj.PointType;
             obj.HaveDimmer = (bool)dbObj.HaveDimmer;
+            obj.Multilink = (bool)dbObj.Multilink;
             obj.DotNetType = dbObj.DotNetType;
             obj.Profile = dbObj.Profile;
         }

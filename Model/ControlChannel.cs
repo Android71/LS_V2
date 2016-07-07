@@ -19,6 +19,8 @@ namespace LS_Designer_WPF.Model
 
         public bool HaveDimmer { get; set; }
 
+        public bool Multilink { get; set; }
+
         public string DotNetType { get; set; }
 
         public virtual string Profile { get; set; }
