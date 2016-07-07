@@ -92,6 +92,16 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
+        /************************************************************/
+
+        #region LightZone
+
+        void GetLightZones(ControlSpace space, Partition partition, Action<ObservableCollection<LightZone>, Exception> callback);
+
+        #endregion
+
+        /************************************************************/
+
         //void GetEnvironmentItems(int controlSpaceId, DeviceTypeEnum deviceType, Action<List<EnvironmentItem>, Exception> callback);
 
         //void GetEnvironmentItem(string model, Action<EnvironmentItem, Exception> callback);

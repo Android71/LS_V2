@@ -794,6 +794,42 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
+        /****************************************************************/
+
+        #region LightZone
+
+        public void GetLightZones(ControlSpace space, Partition partition, Action<ObservableCollection<LightZone>, Exception> callback)
+        {
+            IEnumerable<EFData.LightZone> y = null;
+            var x = new ObservableCollection<LightZone>();
+            LightZone lightZone = null;
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                y = db.LightZones.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
+
+                foreach (EFData.LightZone dbLightZone in y)
+                {
+
+                    lightZone = new LightZone();
+                    Mapper.Db2O(dbLightZone, lightZone);
+                    lightZone.LE_ProxyList = new List<LE_Proxy>();
+                    foreach(EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies)
+                    {
+                        LE_Proxy proxy = new LE_Proxy();
+                        Mapper.Db2O(dbProxy, proxy);
+                        lightZone.LE_ProxyList.Add(proxy);
+                    }
+                    x.Add(lightZone);
+                }
+            }
+            callback(x, null);
+        }
+
+        #endregion
+
+        /****************************************************************/
+
         //public void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace, 
         //                                   FilterEnum filter, Action<BindingList<LightElement>, Exception> callback)
         //{

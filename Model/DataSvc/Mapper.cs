@@ -319,6 +319,39 @@ namespace LS_Designer_WPF.Model
 
         /****************************************************************/
 
+        #region LightZone
+
+        public static void Db2O(EFData.LightZone dbObj, LightZone obj)
+        {
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.IsNode = dbObj.IsNode;
+            obj.PointType = (PointTypeEnum)dbObj.PointType;
+            obj.Remark = dbObj.Remark;
+            obj.Partition = new Partition();
+            Db2O(dbObj.Partition, obj.Partition);
+            obj.ControlSpace = new ControlSpace();
+            Db2O(dbObj.ControlSpace, obj.ControlSpace);
+        }
+
+        #endregion
+
+        /****************************************************************/
+
+        #region LE_Proxy
+
+        public static void Db2O(EFData.LE_Proxy dbObj, LE_Proxy obj)
+        {
+            obj.Id = dbObj.Id;
+            obj.LightZone = new LightZone();
+            Db2O(dbObj.LightZone, obj.LightZone);
+            obj.LightElement = new LightElement();
+            Db2O(dbObj.LightElement, obj.LightElement);
+        }
+
+        #endregion
+
+
         //#region LE_Type
 
         //public static void Db2O(EFData.LE_Type dbObj, LE_Type obj)

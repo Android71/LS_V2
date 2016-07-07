@@ -1,11 +1,12 @@
-﻿using LS_Designer_WPF.Model;
+﻿using GalaSoft.MvvmLight;
+using LS_Designer_WPF.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LS_Designer_WPF.Model
 {
-    public class LightZone
+    public class LightZone : ObservableObject
     {
         public int Id { get; set; }
 
@@ -27,5 +28,23 @@ namespace LS_Designer_WPF.Model
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         //public virtual ICollection<LE_Proxy> LE_Proxies { get; set; }
 
+        // UI related
+
+        public List<LE_Proxy> LE_ProxyList { get; set; }
+
+        bool _directParent = false;
+        public bool DirectParent
+        {
+            get { return _directParent; }
+            set { Set(ref _directParent, value); }
+        }
+
+        bool _hasChildren = false;
+        public bool HasChildren
+        {
+            //get { return _hasChildren; }
+            get { return LE_ProxyList.Count != 0; }
+            set { Set(ref _hasChildren, value); }
+        }
     }
 }
