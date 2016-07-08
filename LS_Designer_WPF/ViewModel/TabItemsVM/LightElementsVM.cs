@@ -285,6 +285,25 @@ namespace LS_Designer_WPF.ViewModel
 
                 UpdateChangeLinkEnable();
 
+                if(MasterSelectedItem != null)
+                {
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectCurtainVisibility = Visibility.Visible;
+
+                    msix = MasterList.IndexOf(value);
+                    _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                         MasterCurrentObject = data;
+                     });
+                }
+                else
+                {
+                    msix = -1;
+                    MasterObjectPanelVisibility = Visibility.Collapsed;
+                }
+                MasterRemoveCmd.RaiseCanExecuteChanged();
+
                 if (selectionFromDetail)
                 {
                     foreach (ControlChannel ch in DetailList)
@@ -317,16 +336,9 @@ namespace LS_Designer_WPF.ViewModel
                                 ch.DirectParent = false;
                         }
 
-                        msix = MasterList.IndexOf(value);
-                        _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
-                         {
-                             if (error != null) { return; } // Report error here
-                         MasterCurrentObject = data;
-                         });
+                        
 
-                        MasterObjectPanelVisibility = Visibility.Visible;
-                        MasterObjectCurtainVisibility = Visibility.Visible;
-                        MasterRemoveCmd.RaiseCanExecuteChanged();
+                        
 
                         if (MasterSelectedItem.IsLinked)
                         {
@@ -334,11 +346,11 @@ namespace LS_Designer_WPF.ViewModel
                             DetailSelectedItem = DetailList.FirstOrDefault(p => p.Id == MasterSelectedItem.ControlChannel.Id);
                         }
                     }
-                    else
-                    {
-                        msix = -1;
-                        MasterObjectPanelVisibility = Visibility.Collapsed;
-                    }
+                    //else
+                    //{
+                    //    msix = -1;
+                    //    MasterObjectPanelVisibility = Visibility.Collapsed;
+                    //}
                 }
             }
         }

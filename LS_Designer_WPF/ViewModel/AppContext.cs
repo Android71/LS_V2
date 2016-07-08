@@ -32,6 +32,7 @@ namespace LS_Designer_WPF.ViewModel
         public static Guid CSIsActiveChangedMsg = Guid.NewGuid();
 
         public static Guid LE_LinkChangedMsg = Guid.NewGuid();
+        public static Guid LE_LinkToZoneChangedMsg = Guid.NewGuid();
 
         public static Dictionary<PointTypeEnum, int> CountByType = new Dictionary<PointTypeEnum, int>()
         {

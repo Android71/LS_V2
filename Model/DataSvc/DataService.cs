@@ -750,6 +750,39 @@ namespace LS_Designer_WPF.Model
             callback(x, null);
         }
 
+        public void GetZoneLightElements(/*ControlSpace space, Partition partition,*/ LightZone zone, Action<ObservableCollection<LightElement>, Exception> callback)
+        {
+            IEnumerable<EFData.LightElement> y = null;
+            IEnumerable<EFData.LE_Proxy> z = null;
+            var x = new ObservableCollection<LightElement>();
+            LightElement lightElement = null;
+
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                y = db.LightElements.Where(p => p.ControlSpace.Id == zone.ControlSpace.Id && p.Partition.Id == zone.Partition.Id && p.ControlChannel != null);
+
+                z = db.LE_Proxies.Where(p => p.LightZone.Id == zone.Id);
+
+                foreach (EFData.LightElement dbLightElement in y)
+                {
+
+                    lightElement = new LightElement();
+                    Mapper.Db2O(dbLightElement, lightElement);
+
+                    EFData.LE_Proxy dbProxy = z.FirstOrDefault(p => p.LightElement.Id == lightElement.Id);
+                    if (dbProxy != null)
+                    {
+                        lightElement.LE_Proxy = new LE_Proxy();
+                        Mapper.Db2O(dbProxy, lightElement.LE_Proxy);
+                    }
+                    
+                    x.Add(lightElement);
+                }
+            }
+            callback(x, null);
+        }
+
         public void LinkToChannel(LightElement le, ControlChannel ch, Action<int, Exception> callback)
         {
             using (var db = new LSModelContainer(LS.CS))
@@ -759,6 +792,31 @@ namespace LS_Designer_WPF.Model
                 dbCh.PointType = (EFData.PointTypeEnum) le.PointType;
                 dbLe.ControlChannel = dbCh;
                 callback(db.SaveChanges(), null);
+            }
+        }
+
+        public void LinkToZone(LightElement le, LightZone zone, Action<LE_Proxy, Exception> callback)
+        {
+            int updateCount = -1;
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
+                EFData.LightZone dbZone = db.LightZones.FirstOrDefault(p => p.Id == zone.Id);
+                //EFData.LE_Proxy dbProxy = db.LE_Proxies.FirstOrDefault(p => p.LightZone.Id == zone.Id && p.LightElement.Id == le.Id);
+                //if (dbProxy)
+                EFData.LE_Proxy dbProxy = new EFData.LE_Proxy();
+                dbProxy.LightElement = dbLe;
+                dbProxy.LightZone = dbZone;
+                db.LE_Proxies.Add(dbProxy);
+                updateCount = db.SaveChanges();
+                LE_Proxy proxy = new LE_Proxy();
+                Mapper.Db2O(dbProxy, proxy);
+                //Mapper.O2Db(le, dbProxy.LightElement);
+                //Mapper.O2Db(zone, dbProxy.LightZone);
+                //EFData.LightZone dbCh = db.ControlChannels.FirstOrDefault(p => p.Id == ch.Id);
+                //dbCh.PointType = (EFData.PointTypeEnum)le.PointType;
+                //dbLe.ControlChannel = dbCh;
+                callback(proxy, null);
             }
         }
 
@@ -798,7 +856,7 @@ namespace LS_Designer_WPF.Model
 
         #region LightZone
 
-        public void GetLightZones(ControlSpace space, Partition partition, Action<ObservableCollection<LightZone>, Exception> callback)
+        public void GetPartitionZones(Partition partition, Action<ObservableCollection<LightZone>, Exception> callback)
         {
             IEnumerable<EFData.LightZone> y = null;
             var x = new ObservableCollection<LightZone>();
@@ -806,7 +864,7 @@ namespace LS_Designer_WPF.Model
 
             using (var db = new LSModelContainer(LS.CS))
             {
-                y = db.LightZones.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
+                y = db.LightZones.Where(p => p.Partition.Id == partition.Id);
 
                 foreach (EFData.LightZone dbLightZone in y)
                 {
@@ -824,6 +882,56 @@ namespace LS_Designer_WPF.Model
                 }
             }
             callback(x, null);
+        }
+
+        public void GetLightZones(ControlSpace space, Partition partition, Action<ObservableCollection<LightZone>, Exception> callback)
+        {
+            IEnumerable<EFData.LightZone> y = null;
+            var x = new ObservableCollection<LightZone>();
+            LightZone lightZone = null;
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                y = db.LightZones.Where(p => p.ControlSpace.Id == space.Id && p.Partition.Id == partition.Id);
+
+                foreach (EFData.LightZone dbLightZone in y)
+                {
+
+                    lightZone = new LightZone();
+                    Mapper.Db2O(dbLightZone, lightZone);
+                    lightZone.LE_ProxyList = new List<LE_Proxy>();
+                    foreach (EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies)
+                    {
+                        LE_Proxy proxy = new LE_Proxy();
+                        Mapper.Db2O(dbProxy, proxy);
+                        lightZone.LE_ProxyList.Add(proxy);
+                    }
+                    x.Add(lightZone);
+                }
+            }
+            callback(x, null);
+        }
+
+        public void GetLightZone(int Id, Action<LightZone, Exception> callback)
+        {
+            LightZone lightZone = null;
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.LightZone dbLightZone = db.LightZones.FirstOrDefault(p => p.Id == Id);
+                if (dbLightZone != null)
+                {
+                    lightZone = new LightZone();
+                    Mapper.Db2O(dbLightZone, lightZone);
+                    lightZone.LE_ProxyList = new List<LE_Proxy>();
+                    foreach (EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies)
+                    {
+                        LE_Proxy proxy = new LE_Proxy();
+                        Mapper.Db2O(dbProxy, proxy);
+                        lightZone.LE_ProxyList.Add(proxy);
+                    }
+                }
+            }
+            callback(lightZone, null);
         }
 
         #endregion

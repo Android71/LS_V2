@@ -90,32 +90,32 @@
 
             </DataTemplate.Triggers>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="DetailTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Border Name="hasChildren" Grid.Column="0" Height="13" Width="13"
-                        VerticalAlignment="Center" Visibility="Hidden"
+                <Border Name="hasChildren" Grid.Column="0" Width="13"
+                        Height="13" VerticalAlignment="Center" Visibility="Hidden"
                         BorderBrush="{DynamicResource BlueAccentBrush}"
                         Background="{DynamicResource BlueAccentBrush}" />
-                
+
                 <Border Name="directParent" Grid.Column="0" Height="13"
                         VerticalAlignment="Center" Visibility="Hidden"
                         BorderBrush="{StaticResource OrangeAccentBrush}"
                         Background="{StaticResource OrangeAccentBrush}" />
-                
+
                 <TextBlock Grid.Column="1" Margin="10,0,0,0"
                            Text="{Binding Name}" />
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding HasChildren}" Value="True">
-                                        <Setter TargetName="hasChildren" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="hasChildren" Property="Visibility" Value="Visible" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding DirectParent}" Value="True">
-                                        <Setter TargetName="directParent" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="directParent" Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -268,14 +268,13 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <!--Background="{StaticResource DarkBrush}"-->
+                <!--  Background="{StaticResource DarkBrush}"  -->
                 <Grid x:Name="detailListButtons" Grid.Row="0" Margin="0,0,0,10"
                       Background="{StaticResource DarkBrush}"
                       Visibility="{Binding DetailListButtonsVisibility}">
                     <Button x:Name="detailViewButton" Margin="1" HorizontalAlignment="Right"
                             Command="{Binding ViewCmd}"
-                            Content="VIew"
-                            Padding="3,1"
+                            Content="VIew" Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
 
                 </Grid>

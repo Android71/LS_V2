@@ -27,7 +27,7 @@ namespace LS_Designer_WPF.ViewModel
 
             ViewCmd = new RelayCommand(ExecViewCmd, CanExecViewCmd);
 
-            MessengerInstance.Register<string>(this, AppContext.LE_LinkChangedMsg, LE_LinkChanged);
+            MessengerInstance.Register<string>(this, AppContext.LE_LinkToZoneChangedMsg, LE_LinkToZoneChanged);
 
             TabItemEnabled = false;
         }
@@ -41,35 +41,31 @@ namespace LS_Designer_WPF.ViewModel
 
         void Load()
         {
-            //if (AppContext.ControlSpace != null)
-            //{
-            //    _dataService.GetLE_TypeList(AppContext.ControlSpace, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        MasterSelectorList = data;
-            //    });
+            if (AppContext.ControlSpace != null)
+            {
+                _dataService.GetPartitions((data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    Partitions = new List<Partition>(data);
+                });
 
-            //    _dataService.GetPartitions((data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        Partitions = new List<Partition>(data);
-            //    });
+                _dataService.GetLightZones(AppContext.ControlSpace, AppContext.Partition, (data, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    MasterList = data;
+                });
 
-            //    _dataService.GetLightElements(AppContext.ControlSpace, AppContext.Partition, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        MasterList = data;
-            //    });
+                //_dataService.GetPartitionLightElements(AppContext.ControlSpace, AppContext.Partition, (data, error) =>
+                //{
+                //    if (error != null) { return; } // Report error here
+                //    DetailList = data;
+                //});
 
-            //    _dataService.GetControlChannelList(AppContext.ControlSpace, AppContext.Partition, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        DetailList = data;
-            //    });
-            //    //DetailContentVisibility = Visibility.Hidden;
-            //    MasterObjectPanelVisibility = Visibility.Collapsed;
-            //}
+                ////DetailContentVisibility = Visibility.Hidden;
+                //MasterObjectPanelVisibility = Visibility.Collapsed;
+            }
         }
+    
 
         void UpdateChangeLinkEnable()
         {
@@ -126,61 +122,68 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
-        private void LE_LinkChanged(string obj)
+        private void LE_LinkToZoneChanged(string obj)
         {
             //bool leConflict = false;
-            //if (MasterSelectedItem.ControlChannel == null)
-            //{
-            //    // Try Link
-            //    PopUpMessageVM popupVM = new PopUpMessageVM();
-            //    if (DetailSelectedItem.CanLinkLE(MasterSelectedItem, popupVM))
-            //    {
-            //        if (MasterSelectedItem.ControlSpace.Prefix == "AN" || MasterSelectedItem.ControlSpace.Prefix == "DX")
-            //            leConflict = CheckIntersectionLE();
+            if (DetailSelectedItem.LE_Proxy == null)
+            {
+                //    // Try Link
+                //    PopUpMessageVM popupVM = new PopUpMessageVM();
+                //    if (DetailSelectedItem.CanLinkLE(MasterSelectedItem, popupVM))
+                //    {
+                //        if (MasterSelectedItem.ControlSpace.Prefix == "AN" || MasterSelectedItem.ControlSpace.Prefix == "DX")
+                //            leConflict = CheckIntersectionLE();
 
-            //        if (!leConflict)
-            //        {
-            //            _dataService.LinkToChannel(MasterSelectedItem, DetailSelectedItem, (updatesCount, error) =>
-            //                {
-            //                    if (error != null) { return; } // Report error here
-            //                    int uc = updatesCount;
-            //                });
+                //        if (!leConflict)
+                //        {
 
-            //            DetailSelectedItem.LE_Count++;
-            //            DetailSelectedItem.HasChildren = true;
-            //            DetailSelectedItem.DirectParent = true;
-                        
+                //Link Operation
+                _dataService.LinkToZone(DetailSelectedItem, MasterSelectedItem,(leProxy, error) =>
+                {
+                    if (error != null) { return; } // Report error here
+                    {
+                        DetailSelectedItem.LE_Proxy = leProxy;
+                        MasterSelectedItem.LE_ProxyList.Add(leProxy);
+                        DetailSelectedItem.RaiseLinkedToZoneChanged();
+                        MasterSelectedItem.RaiseHasChildrenChanged();
+                    }
+                });
 
-            //            MasterSelectedItem.DirectChild = true;
-            //            MasterSelectedItem.ControlChannel = DetailSelectedItem;
-            //            DetailSelectedItem.PointType = MasterSelectedItem.PointType;
-            //            MasterSelectedItem.RaiseIsLinkedChanged();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        MasterSelectedItem.SetSilentIsLinked(false, true);
-            //        MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
-            //    }
-            //}
-            //else
-            //{
-            //    //Unlink
-            //    _dataService.UnlinkFromChannel(MasterSelectedItem, (updatesCount, error) =>
-            //                {
-            //                    if (error != null) { return; } // Report error here
-            //                    int uc = updatesCount;
-            //                });
-            //    DetailSelectedItem.LE_Count--;
-            //    MasterSelectedItem.DirectChild = false;
-            //    MasterSelectedItem.ControlChannel = null;
-            //    MasterSelectedItem.RaiseIsLinkedChanged();
-            //    if (DetailSelectedItem.LE_Count == 0)
-            //    {
-            //        DetailSelectedItem.HasChildren = false;
-            //        DetailSelectedItem.DirectParent = false;
-            //    }
-            //}
+                //            DetailSelectedItem.LE_Count++;
+                //            DetailSelectedItem.HasChildren = true;
+                //            DetailSelectedItem.DirectParent = true;
+
+
+                //            MasterSelectedItem.DirectChild = true;
+                //            MasterSelectedItem.ControlChannel = DetailSelectedItem;
+                //            DetailSelectedItem.PointType = MasterSelectedItem.PointType;
+                //            MasterSelectedItem.RaiseIsLinkedChanged();
+                //        }
+                //    }
+                //    else
+                //    {
+                //        MasterSelectedItem.SetSilentIsLinked(false, true);
+                //        MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
+                //    }
+                //}
+                //else
+                //{
+                //    //Unlink
+                //    _dataService.UnlinkFromChannel(MasterSelectedItem, (updatesCount, error) =>
+                //                {
+                //                    if (error != null) { return; } // Report error here
+                //                    int uc = updatesCount;
+                //                });
+                //    DetailSelectedItem.LE_Count--;
+                //    MasterSelectedItem.DirectChild = false;
+                //    MasterSelectedItem.ControlChannel = null;
+                //    MasterSelectedItem.RaiseIsLinkedChanged();
+                //    if (DetailSelectedItem.LE_Count == 0)
+                //    {
+                //        DetailSelectedItem.HasChildren = false;
+                //        DetailSelectedItem.DirectParent = false;
+                //    }
+            }
 
             //ViewCmd.RaiseCanExecuteChanged();
         }
@@ -284,42 +287,51 @@ namespace LS_Designer_WPF.ViewModel
                 //    foreach (LightElement le in MasterList)
                 //        le.DirectChild = false;
 
-                //    if (MasterSelectedItem != null)
-                //    {
-                //        foreach (ControlChannel ch in DetailList)
-                //        {
-                //            if (MasterSelectedItem.ControlChannel != null)
-                //                if (ch.Id == MasterSelectedItem.ControlChannel.Id)
-                //                    ch.DirectParent = true;
-                //                else
-                //                    ch.DirectParent = false;
-                //            else
-                //                ch.DirectParent = false;
-                //        }
+                if (MasterSelectedItem != null)
+                {
+                    //        foreach (ControlChannel ch in DetailList)
+                    //        {
+                    //            if (MasterSelectedItem.ControlChannel != null)
+                    //                if (ch.Id == MasterSelectedItem.ControlChannel.Id)
+                    //                    ch.DirectParent = true;
+                    //                else
+                    //                    ch.DirectParent = false;
+                    //            else
+                    //                ch.DirectParent = false;
+                    //        }
 
-                //        msix = MasterList.IndexOf(value);
-                //        _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
-                //         {
-                //             if (error != null) { return; } // Report error here
-                //         MasterCurrentObject = data;
-                //         });
+                    msix = MasterList.IndexOf(value);
+                    _dataService.GetLightZone(MasterSelectedItem.Id, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                                 MasterCurrentObject = data;
+                     });
 
-                //        MasterObjectPanelVisibility = Visibility.Visible;
-                //        MasterObjectCurtainVisibility = Visibility.Visible;
-                //        MasterRemoveCmd.RaiseCanExecuteChanged();
+                    ProxyList = MasterSelectedItem.LE_ProxyList;
 
-                //        if (MasterSelectedItem.IsLinked)
-                //        {
-                //            selectionFromMaster = true;
-                //            DetailSelectedItem = DetailList.FirstOrDefault(p => p.Id == MasterSelectedItem.ControlChannel.Id);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        msix = -1;
-                //        MasterObjectPanelVisibility = Visibility.Collapsed;
-                //    }
-                //}
+                    _dataService.GetZoneLightElements(MasterSelectedItem, (data, error) =>
+                    {
+                        if (error != null) { return; } // Report error here
+                        DetailList = data;
+                    });
+
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectCurtainVisibility = Visibility.Visible;
+
+                    //        MasterRemoveCmd.RaiseCanExecuteChanged();
+
+                    //        if (MasterSelectedItem.IsLinked)
+                    //        {
+                    //            selectionFromMaster = true;
+                    //            DetailSelectedItem = DetailList.FirstOrDefault(p => p.Id == MasterSelectedItem.ControlChannel.Id);
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        msix = -1;
+                    //        MasterObjectPanelVisibility = Visibility.Collapsed;
+                    //    }
+                }
             }
         }
 
@@ -409,8 +421,8 @@ namespace LS_Designer_WPF.ViewModel
 
         #region LEproxy Properties
 
-        ObservableCollection<LE_Proxy> _proxyList;
-        public ObservableCollection<LE_Proxy> ProxyList
+        List<LE_Proxy> _proxyList;
+        public List<LE_Proxy> ProxyList
         {
             get { return _proxyList; }
             set { Set(ref _proxyList, value); }
@@ -429,8 +441,8 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Detail Properties
 
-        List<LightElement> _detailList;
-        public List<LightElement> DetailList
+        ObservableCollection<LightElement> _detailList;
+        public ObservableCollection<LightElement> DetailList
         {
             get { return _detailList; }
             set { Set(ref _detailList, value); }
@@ -450,68 +462,69 @@ namespace LS_Designer_WPF.ViewModel
                 //UpdateChangeLinkEnable();
                 //ViewCmd.RaiseCanExecuteChanged();
 
-                //if (DetailSelectedItem != null)
-                //{
-                //    dsix = DetailList.IndexOf(value);
-                //    _dataService.GetControlChannel(DetailSelectedItem.Id, (data, error) =>
-                //     {
-                //         if (error != null) { return; } // Report error here
-                //         DetailCurrentObject = data;
-                //     });
-                //    DetailObjectPanelVisibility = Visibility.Visible;
+                if (DetailSelectedItem != null)
+                {
+                    dsix = DetailList.IndexOf(value);
+                    _dataService.GetLightElement(DetailSelectedItem.Id, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                         DetailCurrentObject = data;
+                     });
+                    DetailObjectPanelVisibility = Visibility.Visible;
 
-                //    DetailCurrentObject.Partitions = Partitions;
-                //    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
+                    DetailCurrentObject.Partitions = Partitions;
+                    DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
 
-                    
-                //    if (selectionFromMaster)
-                //    {
-                //        foreach (LightElement le in MasterList)
-                //        {
-                //            if (le.ControlChannel != null)
-                //            {
-                //                if (le.ControlChannel.Id == DetailSelectedItem.Id)
-                //                    le.DirectChild = true;
-                //                else
-                //                    le.DirectChild = false;
-                //            }
-                //        }
-                //        selectionFromMaster = false;
-                //    }
-                //    else
-                //    {
-                //        foreach (ControlChannel ch in DetailList)
-                //            ch.DirectParent = false;
 
-                //        foreach (LightElement le in MasterList)
-                //        {
-                //            if (le.ControlChannel != null)
-                //            {
-                //                if (le.ControlChannel.Id == DetailSelectedItem.Id)
-                //                    le.DirectChild = true;
-                //                else
-                //                    le.DirectChild = false;
-                //            }
-                //        }
+                    //    if (selectionFromMaster)
+                    //    {
+                    //        foreach (LightElement le in MasterList)
+                    //        {
+                    //            if (le.ControlChannel != null)
+                    //            {
+                    //                if (le.ControlChannel.Id == DetailSelectedItem.Id)
+                    //                    le.DirectChild = true;
+                    //                else
+                    //                    le.DirectChild = false;
+                    //            }
+                    //        }
+                    //        selectionFromMaster = false;
+                    //    }
+                    //    else
+                    //    {
+                    //        foreach (ControlChannel ch in DetailList)
+                    //            ch.DirectParent = false;
 
-                //        if (DetailSelectedItem.HasChildren)
-                //        {
-                //            LightElement le1 = MasterList.FirstOrDefault(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id);
-                //            selectionFromDetail = true;
-                //            MasterSelectedItem = le1;
-                //        }
-                //        else
-                //        {
-                //            if (MasterSelectedItem != null && MasterSelectedItem.IsLinked)
-                //                MasterSelectedItem = null;
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    dsix = -1;
-                //    DetailObjectPanelVisibility = Visibility.Collapsed;
-                //}
+                    //        foreach (LightElement le in MasterList)
+                    //        {
+                    //            if (le.ControlChannel != null)
+                    //            {
+                    //                if (le.ControlChannel.Id == DetailSelectedItem.Id)
+                    //                    le.DirectChild = true;
+                    //                else
+                    //                    le.DirectChild = false;
+                    //            }
+                    //        }
+
+                    //        if (DetailSelectedItem.HasChildren)
+                    //        {
+                    //            LightElement le1 = MasterList.FirstOrDefault(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id);
+                    //            selectionFromDetail = true;
+                    //            MasterSelectedItem = le1;
+                    //        }
+                    //        else
+                    //        {
+                    //            if (MasterSelectedItem != null && MasterSelectedItem.IsLinked)
+                    //                MasterSelectedItem = null;
+                    //        }
+                    //    }
+                    }
+                else
+                {
+                    dsix = -1;
+                    DetailObjectPanelVisibility = Visibility.Collapsed;
+                }
+                
             }
         }
 

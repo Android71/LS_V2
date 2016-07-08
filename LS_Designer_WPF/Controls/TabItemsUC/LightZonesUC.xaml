@@ -9,9 +9,125 @@
              xmlns:model="clr-namespace:LS_Designer_WPF.Model"
              d:DesignHeight="300"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="MasterTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border Name="hasChildren" Grid.Column="0" Width="13"
+                        Height="13" VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{DynamicResource BlueAccentBrush}"
+                        Background="{DynamicResource BlueAccentBrush}" />
+
+                <Border Name="directParent" Grid.Column="0" Height="13"
+                        VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{StaticResource OrangeAccentBrush}"
+                        Background="{StaticResource OrangeAccentBrush}" />
+
+                <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                           Text="{Binding Name}" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding HasChildren}" Value="True">
+                                        <Setter TargetName="hasChildren" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding DirectParent}" Value="True">
+                                        <Setter TargetName="directParent" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DetailTemplate">
+            <!--<StackPanel Orientation="Horizontal">
+                <CheckBox Name="checkBox" Margin="0,0,5,0" VerticalAlignment="Bottom"
+                          IsChecked="{Binding IsLinked}"
+                          Visibility="{Binding IsMappingMode,
+                                               Converter={StaticResource CollapsedIfFalse}}"
+                          IsEnabled="False" />
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <CheckBox Name="mapper" Grid.Column="0" VerticalAlignment="Center"
+                          IsChecked="{Binding LinkedToZone}"
+                          Visibility="Hidden" />
+                <!--  IsEnabled="{Binding ChangeLinkEnable}"  -->
+                <Border Name="isLinked" Grid.Column="0" Height="13"
+                        VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{DynamicResource BlueAccentBrush}"
+                        Background="{DynamicResource BlueAccentBrush}" />
+                <!--
+                    Visibility="{Binding IsLinked,
+                    Converter={StaticResource HiddenIfFalse}}"
+                -->
+                <Border Name="directChild" Grid.Column="0" Height="13"
+                        VerticalAlignment="Center" Visibility="Hidden"
+                        BorderBrush="{StaticResource OrangeAccentBrush}"
+                        Background="{StaticResource OrangeAccentBrush}" />
+                <!--
+                    Visibility="{Binding DirectChild,
+                    Converter={StaticResource HiddenIfFalse}}"
+                -->
+                <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                           Text="{Binding Name}" />
+            </Grid>
+            <DataTemplate.Triggers>
+
+
+
+
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                    <Setter TargetName="mapper" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+
+
+                <!--<MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True" />
+                        <Condition Binding="{Binding CanChangeLink}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="mapper" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Hidden" />
+                </MultiDataTrigger>-->
+                
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="False" />
+                        <Condition Binding="{Binding LinkedToZone}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="mapper" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Hidden" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="False" />
+                        <Condition Binding="{Binding DirectChild}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="mapper" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="isLinked" Property="Visibility" Value="Hidden" />
+                    <Setter TargetName="directChild" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
     <Grid Name="layoutRoot">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="220" />
             <ColumnDefinition Width="40" />
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="40" />
@@ -45,7 +161,7 @@
                             Content="Test" DockPanel.Dock="Right" Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
-                <Grid Name="lisLayout" Grid.Row="1">
+                <Grid Name="listLayout" Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
@@ -54,9 +170,10 @@
                              ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                              ItemsSource="{Binding MasterList}"
                              SelectedItem="{Binding MasterSelectedItem}"
+                             ItemTemplate="{StaticResource MasterTemplate}"
                              Style="{StaticResource ListBoxStyle1}"
                              Visibility="{Binding MasterListVisibility}">
-                        <!--ItemTemplate="{StaticResource MasterTemplate}"-->
+                        <!--  ItemTemplate="{StaticResource MasterTemplate}"  -->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <Custom:EventToCommand Command="{Binding MasterEditCmd}" />
@@ -102,14 +219,11 @@
                                     Content="{Binding MasterCurrentObject}" />
                 </Border>-->
 
-                <Border Name="masterObjectPanel"
-                    Grid.Row="1"
-                    Margin="0,10,0,0"
-                    Background="{StaticResource VeryDarkBrush}"
-                    BorderBrush="{StaticResource PlumbumBrush}"
-                    BorderThickness="1"
-                    Padding="10"
-                    Visibility="{Binding ObjectPanelVisibility}">
+                <Border Name="masterObjectPanel" Grid.Row="1" Margin="0,10,0,0"
+                        Background="{StaticResource VeryDarkBrush}"
+                        BorderBrush="{StaticResource PlumbumBrush}"
+                        BorderThickness="1" Padding="10"
+                        Visibility="{Binding MasterObjectPanelVisibility}">
                     <Grid Name="csObject">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -125,23 +239,18 @@
                             </Label.Foreground>
                             Name
                         </Label>
-                        <TextBox Grid.Row="0"
-                             Grid.Column="1"
-                             VerticalAlignment="Center"
-                             Style="{StaticResource TextBoxStyle1}"
-                             Text="{Binding CurrentObject.Name}" IsReadOnly="True" />
-                        <Label Grid.Row="1"
-                           Grid.Column="0"
-                           Margin="0,0,10,0">
+                        <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                                 Style="{StaticResource TextBoxStyle1}"
+                                 Text="{Binding MasterCurrentObject.Name}"
+                                 IsReadOnly="True" />
+                        <Label Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
                             <Label.Foreground>
                                 <SolidColorBrush Color="{StaticResource LightGray}" />
                             </Label.Foreground>
                             IsNode
                         </Label>
-                        <CheckBox Grid.Row="1"
-                              Grid.Column="1"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding CurrentObject.IsNode}" />
+                        <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                                  IsChecked="{Binding MasterCurrentObject.IsNode}" />
                     </Grid>
                 </Border>
 
@@ -169,7 +278,14 @@
 
             </Grid>
             <ListBox Name="le_proxyList" Grid.Row="1"
-                     Style="{StaticResource ListBoxStyle1}" />
+                     ItemsSource="{Binding ProxyList}"
+                     Style="{StaticResource ListBoxStyle1}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding QualifiedName}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             <Grid x:Name="le_proxyListCurtain" Grid.Row="1" Background="#334F4F4F"
                   Visibility="{Binding DetailListCurtainVisibility}" />
         </Grid>
@@ -180,30 +296,26 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <ListBox 
-                         ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                <ListBox ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                          ItemsSource="{Binding DetailList}"
                          SelectedItem="{Binding DetailSelectedItem}"
+                         ItemTemplate="{StaticResource DetailTemplate}"
                          Style="{StaticResource ListBoxStyle1}" />
-                <!--  ItemTemplate="{StaticResource DetailTemplate}"  -->
+                <Grid x:Name="detailListCurtain" Grid.Row="1" Background="#334F4F4F"
+                      Visibility="{Binding DetailListCurtainVisibility}" />
             </Grid>
             <Grid x:Name="detailObject" Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                
                 <Border Name="detailObjectPanel" Grid.Row="1" Margin="0,10,0,0"
                         Background="{StaticResource VeryDarkBrush}"
                         BorderBrush="{DynamicResource PlumbumBrush}"
                         BorderThickness="1" Padding="10"
                         Visibility="{Binding DetailObjectPanelVisibility}">
                     <Border.Resources>
-                        <DataTemplate DataType="{x:Type model:AN6UControlChannel}">
-                            <local:AN6UControlChannelUC />
-                        </DataTemplate>
-                        <DataTemplate DataType="{x:Type model:NLPowerChannel}">
-                            <local:NLControlChannelUC />
+                        <DataTemplate DataType="{x:Type model:LightElement}">
+                            <local:LE_UC IsEditMode="{Binding IsEditMode}"
+                                         IsAddMode="{Binding IsAddMode}"
+                                         PointType="{Binding PointType}"
+                                         CSprefix="{Binding ControlSpace.Prefix}" />
                         </DataTemplate>
                     </Border.Resources>
                     <ContentControl Name="detailCurrentObject" Margin="0,5,0,0"

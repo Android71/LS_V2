@@ -204,13 +204,13 @@ namespace LS_Designer_WPF.Model
             set
             {
                 //IsLinkedBeforeAction = _isLinked;
-                
+
                 Set(ref _isLinked, value);
 
                 //if (value != IsLinkedBeforeAction)
                 //{
-                    if ((value && ControlChannel == null) || (!value && ControlChannel != null))
-                        MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
+                if ((value && ControlChannel == null) || (!value && ControlChannel != null))
+                    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
                 //}
             }
         }
@@ -242,5 +242,32 @@ namespace LS_Designer_WPF.Model
         }
 
         public bool InConflict { get; set; }
+
+        List<LE_Proxy> _proxies;
+        public List<LE_Proxy> Proxies
+        {
+            get { return _proxies; }
+            set { Set(ref _proxies, value); }
+        }
+
+        //LE_Proxy _proxy;
+        public LE_Proxy  LE_Proxy {get; set;}
+
+        bool _linkedToZone = false;
+        public bool LinkedToZone
+        {
+            get { return LE_Proxy != null; }
+            set
+            {
+                Set(ref _linkedToZone, value);
+                if ((value && LE_Proxy == null) || (!value && LE_Proxy != null))
+                    MessengerInstance.Send("", AppContext.LE_LinkToZoneChangedMsg);
+            }
+        }
+
+        public void RaiseLinkedToZoneChanged()
+        {
+            RaisePropertyChanged("LinkedToZone");
+        }
     }
 }

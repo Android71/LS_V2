@@ -96,7 +96,11 @@ namespace LS_Designer_WPF.Model
 
         #region LightZone
 
+        void GetPartitionZones(Partition partition, Action<ObservableCollection<LightZone>, Exception> callback);
+
         void GetLightZones(ControlSpace space, Partition partition, Action<ObservableCollection<LightZone>, Exception> callback);
+
+        void GetLightZone(int Id, Action<LightZone, Exception> callback);
 
         #endregion
 
@@ -134,14 +138,18 @@ namespace LS_Designer_WPF.Model
 
         void GetLightElements(ControlSpace space, Partition partition, Action<ObservableCollection<LightElement>, Exception> callback);
 
+        void GetZoneLightElements(/*ControlSpace space, Partition partition,*/ LightZone zone, Action<ObservableCollection<LightElement>, Exception> callback);
+
+        //void GetPartitionLightElements(ControlSpace space, Partition partition, Action<ObservableCollection<LightElement>, Exception> callback);
+
         //void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace,
         //                                   FilterEnum filter, Action<BindingList<LightElement>, Exception> callback);
-
-        //void GetLinkedLightElements(ControlSpace space, ControlChannel channel, Action<List<LightElement>, Exception> callback);
 
         void UpdateLightElement(LightElement item, Action<int, Exception> callback);
 
         void LinkToChannel(LightElement le, ControlChannel ch, Action<int, Exception> callback);
+
+        void LinkToZone(LightElement le, LightZone zone, Action<LE_Proxy, Exception> callback);
 
         void UnlinkFromChannel(LightElement le, Action<int, Exception> callback);
 

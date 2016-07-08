@@ -46,5 +46,10 @@ namespace LS_Designer_WPF.Model
             get { return LE_ProxyList.Count != 0; }
             set { Set(ref _hasChildren, value); }
         }
+
+        public void RaiseHasChildrenChanged()
+        {
+            RaisePropertyChanged("HasChildren");
+        }
     }
 }

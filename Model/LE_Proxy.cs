@@ -13,5 +13,13 @@ namespace LS_Designer_WPF.Model
         public LightZone LightZone { get; set; }
 
         public LightElement LightElement { get; set; }
+
+        // UI Related
+
+        public string QualifiedName
+        {
+            get { return string.Format($"[{LightElement.ControlChannel.Name}] {LightElement.Name}"); }
+            //set;
+        }
     }
 }
