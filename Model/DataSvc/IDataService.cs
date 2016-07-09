@@ -102,6 +102,8 @@ namespace LS_Designer_WPF.Model
 
         void GetLightZone(int Id, Action<LightZone, Exception> callback);
 
+        void UpdateLightZone(LightZone zone, Action<int, Exception> callback);
+
         #endregion
 
         /************************************************************/
@@ -157,7 +159,13 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
-        ///********************************************************************/
+        /********************************************************************/
+
+        #region LE_Proxy
+
+        void GetLightElementZones(LightElement le, Action<List<LightZone>, Exception> callback);
+
+        #endregion 
 
         //void GetLE_Types(ControlSpace space, Action<List<LE_Type>, Exception> callback);
 

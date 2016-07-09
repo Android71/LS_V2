@@ -934,6 +934,64 @@ namespace LS_Designer_WPF.Model
             callback(lightZone, null);
         }
 
+        public void UpdateLightZone(LightZone zone, Action<int, Exception> callback)
+        {
+            EFData.LightZone dbLightZone = null;
+            int updateCount = -1;
+            if (zone.Id != 0)
+            {
+                //Update
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbLightZone = db.LightZones.FirstOrDefault(p => p.Id == zone.Id);
+                    Mapper.O2Db(zone, dbLightZone);
+                    updateCount = db.SaveChanges();
+                }
+                callback(updateCount, null);
+            }
+            else
+            {
+                // Create
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbLightZone = new EFData.LightZone();
+                    Mapper.O2Db(zone, dbLightZone);
+                    dbLightZone.ControlSpace = db.ControlSpaces.FirstOrDefault(p => p.Id == zone.ControlSpace.Id);
+                    dbLightZone.Partition = db.Partitions.FirstOrDefault(p => p.Id == zone.Partition.Id);
+
+                    db.LightZones.Add(dbLightZone);
+                    try
+                    {
+                        updateCount = db.SaveChanges();
+                        zone.Id = dbLightZone.Id;
+                    }
+                    catch (Exception /*ex*/) { /*var x = 5;*/ }
+                }
+                callback(updateCount, null);
+            }
+        }
+
+        #endregion
+
+        /****************************************************************/
+
+        #region LE_Proxy
+
+        public void GetLightElementZones(LightElement le, Action<List<LightZone>, Exception> callback)
+        {
+            List<LightZone> lzList = new List<LightZone>();
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                foreach(EFData.LE_Proxy proxy in db.LE_Proxies.Where(p => p.LightElement.Id == le.Id))
+                {
+                    LightZone lz = new LightZone();
+                    Mapper.Db2O(proxy.LightZone, lz);
+                    lzList.Add(lz);
+                }
+                callback(lzList, null);
+            }
+        }
+
         #endregion
 
         /****************************************************************/

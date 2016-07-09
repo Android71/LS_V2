@@ -144,8 +144,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <DockPanel x:Name="masterListButtons" Grid.Row="0" Margin="0,0,0,10"
-                           Background="{StaticResource DarkBrush}"
-                           Visibility="{Binding MasterListButtonsVisibility}">
+                           Background="{StaticResource DarkBrush}">
                     <Button x:Name="masterRemoveButton" Margin="1" HorizontalAlignment="Left"
                             Command="{Binding MasterRemoveCmd}"
                             Content="Remove" DockPanel.Dock="Left" Padding="3,1"
@@ -171,9 +170,7 @@
                              ItemsSource="{Binding MasterList}"
                              SelectedItem="{Binding MasterSelectedItem}"
                              ItemTemplate="{StaticResource MasterTemplate}"
-                             Style="{StaticResource ListBoxStyle1}"
-                             Visibility="{Binding MasterListVisibility}">
-                        <!--  ItemTemplate="{StaticResource MasterTemplate}"  -->
+                             Style="{StaticResource ListBoxStyle1}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <Custom:EventToCommand Command="{Binding MasterEditCmd}" />
@@ -241,8 +238,7 @@
                         </Label>
                         <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
                                  Style="{StaticResource TextBoxStyle1}"
-                                 Text="{Binding MasterCurrentObject.Name}"
-                                 IsReadOnly="True" />
+                                 Text="{Binding MasterCurrentObject.Name}" />
                         <Label Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
                             <Label.Foreground>
                                 <SolidColorBrush Color="{StaticResource LightGray}" />
@@ -270,15 +266,19 @@
                 <DockPanel>
                     <Button Margin="1" Content="Up" DockPanel.Dock="Right"
                             Padding="3,1"
+                            Command="{Binding ProxyUpCmd}"
                             Style="{StaticResource ButtonStyle1}" />
                     <Button Margin="1,1,5,1" HorizontalAlignment="Right" Content="Down"
                             DockPanel.Dock="Right" Padding="3,1"
+                            Command="{Binding ProxyDownCmd}"
                             Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
 
             </Grid>
             <ListBox Name="le_proxyList" Grid.Row="1"
+                     ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                      ItemsSource="{Binding ProxyList}"
+                     SelectedItem="{Binding SelectedProxy}"
                      Style="{StaticResource ListBoxStyle1}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -287,10 +287,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <Grid x:Name="le_proxyListCurtain" Grid.Row="1" Background="#334F4F4F"
-                  Visibility="{Binding DetailListCurtainVisibility}" />
+                  Visibility="{Binding ProxyListCurtainVisibility}" />
         </Grid>
-        <Grid x:Name="detailLayout" Grid.Column="4"
-              Visibility="{Binding DetailContentVisibility}">
+        <Grid x:Name="detailLayout" Grid.Column="4">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />

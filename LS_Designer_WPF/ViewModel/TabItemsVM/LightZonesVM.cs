@@ -25,6 +25,9 @@ namespace LS_Designer_WPF.ViewModel
             MasterCancelCmd = new RelayCommand(MasterExecCancel);
             MasterTestCmd = new RelayCommand(MasterExecTest, MasterCanExecTest);
 
+            ProxyUpCmd = new RelayCommand(ProxyExecUp, ProxyCanExecUp);
+            ProxyDownCmd = new RelayCommand(ProxyExecDown, ProxyCanExecDown);
+
             ViewCmd = new RelayCommand(ExecViewCmd, CanExecViewCmd);
 
             MessengerInstance.Register<string>(this, AppContext.LE_LinkToZoneChangedMsg, LE_LinkToZoneChanged);
@@ -35,7 +38,8 @@ namespace LS_Designer_WPF.ViewModel
         public override void Refresh()
         {
             MasterSelectedItem = null;
-            DetailSelectedItem = null;
+            DetailList = null;
+            ProxyList = null;
             Load();
         }
 
@@ -138,16 +142,26 @@ namespace LS_Designer_WPF.ViewModel
                 //        {
 
                 //Link Operation
+
+
                 _dataService.LinkToZone(DetailSelectedItem, MasterSelectedItem,(leProxy, error) =>
                 {
                     if (error != null) { return; } // Report error here
                     {
                         DetailSelectedItem.LE_Proxy = leProxy;
                         MasterSelectedItem.LE_ProxyList.Add(leProxy);
-                        DetailSelectedItem.RaiseLinkedToZoneChanged();
-                        MasterSelectedItem.RaiseHasChildrenChanged();
+                       
                     }
                 });
+
+                if (MasterSelectedItem.PointType != DetailSelectedItem.PointType)
+                {
+                    MasterSelectedItem.PointType = DetailSelectedItem.PointType;
+
+                    _dataService.UpdateLightZone(MasterSelectedItem, (i, er) => { });
+                }
+                DetailSelectedItem.RaiseLinkedToZoneChanged();
+                MasterSelectedItem.RaiseHasChildrenChanged();
 
                 //            DetailSelectedItem.LE_Count++;
                 //            DetailSelectedItem.HasChildren = true;
@@ -343,83 +357,13 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _masterCurrentObject, value); }
         }
 
-        //object _masterSelectorList;
-        //public object MasterSelectorList
-        //{
-        //    get { return _masterSelectorList; }
-        //    set { Set(ref _masterSelectorList, value); }
-        //}
-
-        //object _masterSelectorSelectedItem;
-        //public object MasterSelectorSelectedItem
-        //{
-        //    get { return _masterSelectorSelectedItem; }
-        //    set { Set(ref _masterSelectorSelectedItem, value); }
-        //}
-
-        //bool _isMasterSelectorOpen = false;
-        //public bool IsMasterSelectorOpen
-        //{
-        //    get { return _isMasterSelectorOpen; }
-        //    set
-        //    {
-        //        Set(ref _isMasterSelectorOpen, value);
-        //        //if (!IsMasterSelectorOpen && MasterSelectorSelectedItem != null)
-        //        //{
-        //        //    LE_Type leType = (LE_Type)MasterSelectorSelectedItem;
-        //        //    MasterCurrentObject = new LightElement(leType.PointType, AppContext.ControlSpace);
-        //        //    MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
-        //        //    MasterCurrentObject.Partitions = Partitions;
-
-        //        //    MasterObjectPanelVisibility = Visibility.Visible;
-
-        //        //    MasterAddMode = true;
-        //        //    MasterCurrentObject.IsAddMode = true;
-        //        //    MasterAddCmd.RaiseCanExecuteChanged();
-        //        //    MasterRemoveCmd.RaiseCanExecuteChanged();
-        //        //    ViewCmd.RaiseCanExecuteChanged();
-
-        //        //    MasterSelectorVisibility = Visibility.Hidden;
-        //        //    MasterSelectorSelectedItem = null;
-        //        //    MasterListVisibility = Visibility.Hidden;
-        //        //    MasterListButtonsVisibility = Visibility.Visible;
-
-        //        //    MasterObjectPanelVisibility = Visibility.Visible;
-        //        //    MasterObjectButtonsVisibility = Visibility.Visible;
-
-        //        //    MasterListCurtainVisibility = Visibility.Visible;
-        //        //    //DetailListCurtainVisibility = Visibility.Visible;
-        //        //    MasterObjectCurtainVisibility = Visibility.Collapsed;
-
-        //        //    return;
-        //        //}
-        //        //if (!IsMasterSelectorOpen)
-        //        //{
-        //        //    MasterListButtonsVisibility = Visibility.Visible;
-        //        //    MasterSelectorVisibility = Visibility.Hidden;
-        //        //    MasterListVisibility = Visibility.Visible;
-
-        //        //    MasterAddMode = false;
-        //        //    ViewCmd.RaiseCanExecuteChanged();
-
-        //        //    DetailListCurtainVisibility = Visibility.Collapsed;
-
-        //        //    if (MasterSelectedItem != null)
-        //        //    {
-        //        //        MasterObjectPanelVisibility = Visibility.Visible;
-        //        //    }
-        //        //    else
-        //        //        MasterObjectPanelVisibility = Visibility.Collapsed;
-        //        //    MessengerInstance.Send("", AppContext.UnBlockUIMsg);
-        //        //}
-        //    }
-        //}
-
         #endregion
 
         /*************************************************************/
 
-        #region LEproxy Properties
+        #region LEproxy
+
+        #region Properties
 
         List<LE_Proxy> _proxyList;
         public List<LE_Proxy> ProxyList
@@ -434,6 +378,51 @@ namespace LS_Designer_WPF.ViewModel
             get { return _selectedProxy; }
             set { Set(ref _selectedProxy, value); }
         }
+
+        Visibility _proxyListCurtainVisibility = Visibility.Collapsed;
+        public Visibility ProxyListCurtainVisibility
+        {
+            get { return _proxyListCurtainVisibility; }
+            set { Set(ref _proxyListCurtainVisibility, value); }
+        }
+
+        #endregion
+
+        #region Commands
+
+        #region UpCmd
+
+        public RelayCommand ProxyUpCmd { get; private set; }
+
+        void ProxyExecUp()
+        {
+            
+        }
+
+        bool ProxyCanExecUp()
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region DownCmd
+
+        public RelayCommand ProxyDownCmd { get; private set; }
+
+        void ProxyExecDown()
+        {
+
+        }
+
+        bool ProxyCanExecDown()
+        {
+            return false;
+        }
+
+        #endregion
+
+        #endregion
 
         #endregion
 
@@ -475,7 +464,21 @@ namespace LS_Designer_WPF.ViewModel
                     DetailCurrentObject.Partitions = Partitions;
                     DetailCurrentObject.Partition = Partitions.Find(p => p.Id == DetailSelectedItem.Partition.Id);
 
-
+                    if (DetailSelectedItem.IsLinked)
+                    {
+                        List<LightZone> lzList = null;
+                        _dataService.GetLightElementZones(DetailSelectedItem, (data, error) =>
+                         {
+                             if (error != null) { return; } // Report error here
+                             lzList = data;
+                         });
+                        foreach(LightZone zone in MasterList)
+                        {
+                            var x = lzList.FirstOrDefault(p => p.Id == zone.Id);
+                            if (x != null)
+                                zone.DirectParent = true;
+                        }
+                    }
                     //    if (selectionFromMaster)
                     //    {
                     //        foreach (LightElement le in MasterList)
@@ -612,7 +615,7 @@ namespace LS_Designer_WPF.ViewModel
         {
             //if (MasterCurrentObject.Validate())
             //{
-            //    int i = -1;
+            int i = -1;
             //    bool partitionChanged = false;
             //    if (MasterEditMode)
             //    {
@@ -621,25 +624,23 @@ namespace LS_Designer_WPF.ViewModel
             //            partitionChanged = true;
             //        }
             //    }
-            //    _dataService.UpdateLightElement(MasterCurrentObject, (updatedCount, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        i = updatedCount;
-            //    });
+            _dataService.UpdateLightZone(MasterCurrentObject, (updatedCount, error) =>
+            {
+                if (error != null) { return; } // Report error here
+                    i = updatedCount;
+            });
 
-            //    MasterObjectButtonsVisibility = Visibility.Collapsed;
-            //    MasterListCurtainVisibility = Visibility.Collapsed;
-            //    DetailListCurtainVisibility = Visibility.Collapsed;
+            MasterObjectButtonsVisibility = Visibility.Collapsed;
+            MasterListCurtainVisibility = Visibility.Collapsed;
+            DetailListCurtainVisibility = Visibility.Collapsed;
+            ProxyListCurtainVisibility = Visibility.Collapsed;
 
 
-            //    if (MasterAddMode)
-            //    {
-            //        MasterSelectorSelectedItem = null;
-
-            //        MasterList.Add(MasterCurrentObject);
-            //        MasterSelectedItem = MasterCurrentObject;
-            //        MasterListVisibility = Visibility.Visible;
-            //    }
+            if (MasterAddMode)
+            {
+                MasterList.Add(MasterCurrentObject);
+                MasterSelectedItem = MasterCurrentObject;
+            }
             //    if (MasterEditMode) //in EditMode MasterSelectedItem always not null
             //    {
             //        if (!partitionChanged)
@@ -658,12 +659,10 @@ namespace LS_Designer_WPF.ViewModel
             //        }
             //    }
 
-            //    MasterAddMode = false;
-            //    MasterEditMode = false;
-            //    MasterCurrentObject.IsEditMode = false;
-            //    MasterCurrentObject.IsAddMode = false;
-            //    MasterRemoveCmd.RaiseCanExecuteChanged();
-            //    MasterAddCmd.RaiseCanExecuteChanged();
+            MasterAddMode = false;
+            MasterEditMode = false;
+            MasterRemoveCmd.RaiseCanExecuteChanged();
+            MasterAddCmd.RaiseCanExecuteChanged();
             //    //MainSwitchCmd.RaiseCanExecuteChanged();
 
             //    //if (DetailSelectedItem != null)
@@ -678,8 +677,8 @@ namespace LS_Designer_WPF.ViewModel
             //    //}
             //}
 
-            
-            //MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         
@@ -774,16 +773,26 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecAdd()
         {
-            //MasterListButtonsVisibility = Visibility.Collapsed;
-            //MasterListVisibility = Visibility.Hidden;
-            //MasterSelectorVisibility = Visibility.Visible;
-            //MasterObjectPanelVisibility = Visibility.Hidden;
-            //IsMasterSelectorOpen = true;
-
-            DetailListCurtainVisibility = Visibility.Visible;
-
             MasterAddMode = true;
-            //ViewCmd.RaiseCanExecuteChanged();
+
+            MasterCurrentObject = new LightZone();
+            MasterCurrentObject.PointType = PointTypeEnum.W;
+            MasterCurrentObject.Partition = AppContext.Partition;
+            MasterCurrentObject.ControlSpace = AppContext.ControlSpace;
+            MasterCurrentObject.LE_ProxyList = new List<LE_Proxy>();
+
+            MasterAddCmd.RaiseCanExecuteChanged();
+            MasterRemoveCmd.RaiseCanExecuteChanged();
+            ViewCmd.RaiseCanExecuteChanged();
+
+            MasterObjectPanelVisibility = Visibility.Visible;
+            MasterObjectButtonsVisibility = Visibility.Visible;
+
+            MasterListCurtainVisibility = Visibility.Visible;
+            DetailListCurtainVisibility = Visibility.Visible;
+            MasterObjectCurtainVisibility = Visibility.Collapsed;
+
+            ProxyListCurtainVisibility = Visibility.Visible;
 
             MessengerInstance.Send("", AppContext.BlockUIMsg);
         }

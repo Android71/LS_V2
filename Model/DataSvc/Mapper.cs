@@ -137,7 +137,7 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
-        ///****************************************************************/
+        /****************************************************************/
 
         #region Control Channel
 
@@ -168,7 +168,7 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
-        ///****************************************************************/
+        /****************************************************************/
 
         #region EnvironmentItem
 
@@ -332,6 +332,14 @@ namespace LS_Designer_WPF.Model
             Db2O(dbObj.Partition, obj.Partition);
             obj.ControlSpace = new ControlSpace();
             Db2O(dbObj.ControlSpace, obj.ControlSpace);
+        }
+
+        public static void O2Db(LightZone obj, EFData.LightZone dbObj)
+        {
+            dbObj.Name = obj.Name;
+            dbObj.IsNode = obj.IsNode;
+            dbObj.PointType = (EFData.PointTypeEnum)obj.PointType;
+            dbObj.Remark = obj.Remark;
         }
 
         #endregion

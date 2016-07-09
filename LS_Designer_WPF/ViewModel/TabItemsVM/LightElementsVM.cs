@@ -171,6 +171,7 @@ namespace LS_Designer_WPF.ViewModel
 
                         MasterSelectedItem.DirectChild = true;
                         MasterSelectedItem.ControlChannel = DetailSelectedItem;
+                        MasterCurrentObject.ControlChannel = DetailSelectedItem;
                         DetailSelectedItem.PointType = MasterSelectedItem.PointType;
                         MasterSelectedItem.RaiseIsLinkedChanged();
                     }
@@ -192,6 +193,7 @@ namespace LS_Designer_WPF.ViewModel
                 DetailSelectedItem.LE_Count--;
                 MasterSelectedItem.DirectChild = false;
                 MasterSelectedItem.ControlChannel = null;
+                MasterCurrentObject.ControlChannel = null;
                 MasterSelectedItem.RaiseIsLinkedChanged();
                 if (DetailSelectedItem.LE_Count == 0)
                 {
