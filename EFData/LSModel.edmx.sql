@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/07/2016 09:19:13
--- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 07/10/2016 08:24:43
+-- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -269,8 +269,10 @@ GO
 CREATE TABLE [dbo].[Scenes] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
+    [IsAccent] nvarchar(max)  NOT NULL,
     [Remark] nvarchar(max)  NULL,
-    [Partition_Id] int  NOT NULL
+    [Partition_Id] int  NOT NULL,
+    [SceneScene_Scene1_Id] int  NOT NULL
 );
 GO
 
@@ -283,7 +285,8 @@ CREATE TABLE [dbo].[Effects] (
     [PointType] int  NOT NULL,
     [DotNetType] nvarchar(max)  NULL,
     [Remark] nvarchar(max)  NULL,
-    [LightZone_Id] int  NULL
+    [LightZone_Id] int  NULL,
+    [Scene_Id] int  NULL
 );
 GO
 
@@ -881,6 +884,36 @@ GO
 CREATE INDEX [IX_FK_PartitionControlDevice]
 ON [dbo].[ControlDevices]
     ([Partition_Id]);
+GO
+
+-- Creating foreign key on [SceneScene_Scene1_Id] in table 'Scenes'
+ALTER TABLE [dbo].[Scenes]
+ADD CONSTRAINT [FK_SceneScene]
+    FOREIGN KEY ([SceneScene_Scene1_Id])
+    REFERENCES [dbo].[Scenes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SceneScene'
+CREATE INDEX [IX_FK_SceneScene]
+ON [dbo].[Scenes]
+    ([SceneScene_Scene1_Id]);
+GO
+
+-- Creating foreign key on [Scene_Id] in table 'Effects'
+ALTER TABLE [dbo].[Effects]
+ADD CONSTRAINT [FK_SceneEffect]
+    FOREIGN KEY ([Scene_Id])
+    REFERENCES [dbo].[Scenes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SceneEffect'
+CREATE INDEX [IX_FK_SceneEffect]
+ON [dbo].[Effects]
+    ([Scene_Id]);
 GO
 
 -- --------------------------------------------------

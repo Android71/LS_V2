@@ -2,6 +2,7 @@
 using LS_Designer_WPF.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace LS_Designer_WPF.Model
@@ -30,7 +31,7 @@ namespace LS_Designer_WPF.Model
 
         // UI related
 
-        public List<LE_Proxy> LE_ProxyList { get; set; }
+        public ObservableCollection<LE_Proxy> LE_ProxyList { get; set; }
 
         bool _directParent = false;
         public bool DirectParent

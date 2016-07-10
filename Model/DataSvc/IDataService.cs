@@ -151,7 +151,7 @@ namespace LS_Designer_WPF.Model
 
         void LinkToChannel(LightElement le, ControlChannel ch, Action<int, Exception> callback);
 
-        void LinkToZone(LightElement le, LightZone zone, Action<LE_Proxy, Exception> callback);
+        void LinkToZone(LightElement le, LightZone zone, int ix, Action<LE_Proxy, Exception> callback);
 
         void UnlinkFromChannel(LightElement le, Action<int, Exception> callback);
 
@@ -164,6 +164,8 @@ namespace LS_Designer_WPF.Model
         #region LE_Proxy
 
         void GetLightElementZones(LightElement le, Action<List<LightZone>, Exception> callback);
+
+        void SwapProxy(LE_Proxy proxy1, LE_Proxy proxy2);
 
         #endregion 
 

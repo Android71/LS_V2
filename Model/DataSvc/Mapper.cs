@@ -351,6 +351,7 @@ namespace LS_Designer_WPF.Model
         public static void Db2O(EFData.LE_Proxy dbObj, LE_Proxy obj)
         {
             obj.Id = dbObj.Id;
+            obj.Ix = dbObj.Ix;
             obj.LightZone = new LightZone();
             Db2O(dbObj.LightZone, obj.LightZone);
             obj.LightElement = new LightElement();

@@ -56,6 +56,7 @@
                 </Grid.ColumnDefinitions>
                 <CheckBox Name="mapper" Grid.Column="0" VerticalAlignment="Center"
                           IsChecked="{Binding LinkedToZone}"
+                          IsEnabled="{Binding ChangeLinkEnable}"
                           Visibility="Hidden" />
                 <!--  IsEnabled="{Binding ChangeLinkEnable}"  -->
                 <Border Name="isLinked" Grid.Column="0" Height="13"

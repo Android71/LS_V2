@@ -795,7 +795,7 @@ namespace LS_Designer_WPF.Model
             }
         }
 
-        public void LinkToZone(LightElement le, LightZone zone, Action<LE_Proxy, Exception> callback)
+        public void LinkToZone(LightElement le, LightZone zone, int ix, Action<LE_Proxy, Exception> callback)
         {
             int updateCount = -1;
             using (var db = new LSModelContainer(LS.CS))
@@ -807,6 +807,7 @@ namespace LS_Designer_WPF.Model
                 EFData.LE_Proxy dbProxy = new EFData.LE_Proxy();
                 dbProxy.LightElement = dbLe;
                 dbProxy.LightZone = dbZone;
+                dbProxy.Ix = ix;
                 db.LE_Proxies.Add(dbProxy);
                 updateCount = db.SaveChanges();
                 LE_Proxy proxy = new LE_Proxy();
@@ -871,7 +872,7 @@ namespace LS_Designer_WPF.Model
 
                     lightZone = new LightZone();
                     Mapper.Db2O(dbLightZone, lightZone);
-                    lightZone.LE_ProxyList = new List<LE_Proxy>();
+                    lightZone.LE_ProxyList = new ObservableCollection<LE_Proxy>();
                     foreach(EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies)
                     {
                         LE_Proxy proxy = new LE_Proxy();
@@ -899,8 +900,8 @@ namespace LS_Designer_WPF.Model
 
                     lightZone = new LightZone();
                     Mapper.Db2O(dbLightZone, lightZone);
-                    lightZone.LE_ProxyList = new List<LE_Proxy>();
-                    foreach (EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies)
+                    lightZone.LE_ProxyList = new ObservableCollection<LE_Proxy>();
+                    foreach (EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies.OrderBy(p => p.Ix))
                     {
                         LE_Proxy proxy = new LE_Proxy();
                         Mapper.Db2O(dbProxy, proxy);
@@ -915,6 +916,7 @@ namespace LS_Designer_WPF.Model
         public void GetLightZone(int Id, Action<LightZone, Exception> callback)
         {
             LightZone lightZone = null;
+
             using (var db = new LSModelContainer(LS.CS))
             {
                 EFData.LightZone dbLightZone = db.LightZones.FirstOrDefault(p => p.Id == Id);
@@ -922,8 +924,8 @@ namespace LS_Designer_WPF.Model
                 {
                     lightZone = new LightZone();
                     Mapper.Db2O(dbLightZone, lightZone);
-                    lightZone.LE_ProxyList = new List<LE_Proxy>();
-                    foreach (EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies)
+                    lightZone.LE_ProxyList = new ObservableCollection<LE_Proxy>();
+                    foreach (EFData.LE_Proxy dbProxy in dbLightZone.LE_Proxies.OrderBy(p => p.Ix))
                     {
                         LE_Proxy proxy = new LE_Proxy();
                         Mapper.Db2O(dbProxy, proxy);
@@ -989,6 +991,19 @@ namespace LS_Designer_WPF.Model
                     lzList.Add(lz);
                 }
                 callback(lzList, null);
+            }
+        }
+
+        public void SwapProxy(LE_Proxy proxy1, LE_Proxy proxy2)
+        {
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.LE_Proxy dbProxy1 = db.LE_Proxies.FirstOrDefault(p => p.Id == proxy1.Id);
+                EFData.LE_Proxy dbProxy2 = db.LE_Proxies.FirstOrDefault(p => p.Id == proxy2.Id);
+                int ix = dbProxy1.Ix;
+                dbProxy1.Ix = dbProxy2.Ix;
+                dbProxy2.Ix = ix;
+                ix = db.SaveChanges();
             }
         }
 

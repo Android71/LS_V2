@@ -23,5 +23,6 @@ namespace EFData
         public string Remark { get; set; }
     
         public virtual LightZone LightZone { get; set; }
+        public virtual Scene Scene { get; set; }
     }
 }

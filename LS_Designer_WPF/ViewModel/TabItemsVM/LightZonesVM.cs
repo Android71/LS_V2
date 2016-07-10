@@ -39,6 +39,7 @@ namespace LS_Designer_WPF.ViewModel
         {
             MasterSelectedItem = null;
             DetailList = null;
+            SelectedProxy = null;
             ProxyList = null;
             Load();
         }
@@ -71,46 +72,6 @@ namespace LS_Designer_WPF.ViewModel
         }
     
 
-        void UpdateChangeLinkEnable()
-        {
-            //if (MasterSelectedItem != null && DetailSelectedItem != null)
-            //{
-            //    if (!MasterSelectedItem.IsLinked)
-            //    {
-            //        if (DetailSelectedItem != null)
-            //        {
-            //            if (DetailSelectedItem.HasChildren)
-            //            {
-            //                if (DetailSelectedItem.Multilink)
-            //                {
-            //                    MasterSelectedItem.ChangeLinkEnable = true;
-            //                    return;
-            //                }
-            //                else
-            //                {
-            //                    MasterSelectedItem.ChangeLinkEnable = false;
-            //                    return;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                MasterSelectedItem.ChangeLinkEnable = true;
-            //                return;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        MasterSelectedItem.ChangeLinkEnable = true;
-            //        return;
-            //    }
-            //}
-            //if (MasterSelectedItem != null && DetailSelectedItem == null)
-            //{
-            //    MasterSelectedItem.ChangeLinkEnable = false;
-            //    return;
-            //}
-        }
 
 
         #region Message Handlers
@@ -143,14 +104,14 @@ namespace LS_Designer_WPF.ViewModel
 
                 //Link Operation
 
-
-                _dataService.LinkToZone(DetailSelectedItem, MasterSelectedItem,(leProxy, error) =>
+                int ix = ProxyList.Count;
+                _dataService.LinkToZone(DetailSelectedItem, MasterSelectedItem, ix, (leProxy, error) =>
                 {
                     if (error != null) { return; } // Report error here
                     {
                         DetailSelectedItem.LE_Proxy = leProxy;
-                        MasterSelectedItem.LE_ProxyList.Add(leProxy);
-                       
+                        //MasterSelectedItem.LE_ProxyList.Add(leProxy);
+                        ProxyList.Add(leProxy);
                     }
                 });
 
@@ -298,8 +259,8 @@ namespace LS_Designer_WPF.ViewModel
                 //}
                 //else
                 //{
-                //    foreach (LightElement le in MasterList)
-                //        le.DirectChild = false;
+                foreach (LightZone lz in MasterList)
+                    lz.DirectParent = false;
 
                 if (MasterSelectedItem != null)
                 {
@@ -365,8 +326,8 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Properties
 
-        List<LE_Proxy> _proxyList;
-        public List<LE_Proxy> ProxyList
+        ObservableCollection<LE_Proxy> _proxyList;
+        public ObservableCollection<LE_Proxy> ProxyList
         {
             get { return _proxyList; }
             set { Set(ref _proxyList, value); }
@@ -376,8 +337,15 @@ namespace LS_Designer_WPF.ViewModel
         public LE_Proxy SelectedProxy
         {
             get { return _selectedProxy; }
-            set { Set(ref _selectedProxy, value); }
+            set
+            {
+                Set(ref _selectedProxy, value);
+                ProxyUpCmd.RaiseCanExecuteChanged();
+                ProxyDownCmd.RaiseCanExecuteChanged();
+            }
         }
+
+        
 
         Visibility _proxyListCurtainVisibility = Visibility.Collapsed;
         public Visibility ProxyListCurtainVisibility
@@ -396,12 +364,24 @@ namespace LS_Designer_WPF.ViewModel
 
         void ProxyExecUp()
         {
-            
+            int ix = ProxyList.IndexOf(SelectedProxy);
+            LE_Proxy prevProxy = ProxyList[ix - 1];
+            int ix1 = SelectedProxy.Ix;
+            _dataService.SwapProxy(SelectedProxy, prevProxy);
+            SelectedProxy.Ix = prevProxy.Ix;
+            prevProxy.Ix = ix1;
+            ProxyList[ix - 1] = SelectedProxy;
+            ProxyList[ix] = prevProxy;
+            SelectedProxy = ProxyList[ix - 1];
         }
 
         bool ProxyCanExecUp()
         {
-            return false;
+            if (SelectedProxy == null)
+                return false;
+            if (SelectedProxy.Ix == 0)
+                return false;
+            return true;
         }
 
         #endregion
@@ -417,7 +397,11 @@ namespace LS_Designer_WPF.ViewModel
 
         bool ProxyCanExecDown()
         {
-            return false;
+            if (SelectedProxy == null)
+                return false;
+            if (SelectedProxy.Ix == ProxyList.Count - 1)
+                return false;
+            return true;
         }
 
         #endregion
@@ -472,13 +456,17 @@ namespace LS_Designer_WPF.ViewModel
                              if (error != null) { return; } // Report error here
                              lzList = data;
                          });
-                        foreach(LightZone zone in MasterList)
+                        foreach (LightZone zone in MasterList)
                         {
                             var x = lzList.FirstOrDefault(p => p.Id == zone.Id);
                             if (x != null)
                                 zone.DirectParent = true;
+                            else
+                                zone.DirectParent = false;
                         }
                     }
+                    if (!DetailSelectedItem.LinkedToZone)
+                        UpdateChangeLinkEnable();
                     //    if (selectionFromMaster)
                     //    {
                     //        foreach (LightElement le in MasterList)
@@ -530,6 +518,15 @@ namespace LS_Designer_WPF.ViewModel
                 
             }
         }
+
+        void UpdateChangeLinkEnable()
+        {
+            if (MasterSelectedItem.LE_ProxyList.Count != 0 &&
+                MasterSelectedItem.PointType != DetailSelectedItem.PointType)
+                DetailSelectedItem.ChangeLinkEnable = false;
+            else
+                DetailSelectedItem.ChangeLinkEnable = true;
+        } 
 
         LightElement _detailCurrentObject;
         public LightElement DetailCurrentObject
@@ -779,7 +776,7 @@ namespace LS_Designer_WPF.ViewModel
             MasterCurrentObject.PointType = PointTypeEnum.W;
             MasterCurrentObject.Partition = AppContext.Partition;
             MasterCurrentObject.ControlSpace = AppContext.ControlSpace;
-            MasterCurrentObject.LE_ProxyList = new List<LE_Proxy>();
+            MasterCurrentObject.LE_ProxyList = new ObservableCollection<LE_Proxy>();
 
             MasterAddCmd.RaiseCanExecuteChanged();
             MasterRemoveCmd.RaiseCanExecuteChanged();
