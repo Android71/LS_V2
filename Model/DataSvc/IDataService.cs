@@ -153,6 +153,8 @@ namespace LS_Designer_WPF.Model
 
         void LinkToZone(LightElement le, LightZone zone, int ix, Action<LE_Proxy, Exception> callback);
 
+        void UnlinkFromZone(LightElement le, LightZone zone, Action<int, Exception> callback);
+
         void UnlinkFromChannel(LightElement le, Action<int, Exception> callback);
 
         void DeleteLightElement(LightElement le, Action<int, Exception> callback);

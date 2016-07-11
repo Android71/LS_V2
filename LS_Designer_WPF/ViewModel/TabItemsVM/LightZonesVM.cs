@@ -89,19 +89,8 @@ namespace LS_Designer_WPF.ViewModel
 
         private void LE_LinkToZoneChanged(string obj)
         {
-            //bool leConflict = false;
             if (DetailSelectedItem.LE_Proxy == null)
             {
-                //    // Try Link
-                //    PopUpMessageVM popupVM = new PopUpMessageVM();
-                //    if (DetailSelectedItem.CanLinkLE(MasterSelectedItem, popupVM))
-                //    {
-                //        if (MasterSelectedItem.ControlSpace.Prefix == "AN" || MasterSelectedItem.ControlSpace.Prefix == "DX")
-                //            leConflict = CheckIntersectionLE();
-
-                //        if (!leConflict)
-                //        {
-
                 //Link Operation
 
                 int ix = ProxyList.Count;
@@ -110,7 +99,6 @@ namespace LS_Designer_WPF.ViewModel
                     if (error != null) { return; } // Report error here
                     {
                         DetailSelectedItem.LE_Proxy = leProxy;
-                        //MasterSelectedItem.LE_ProxyList.Add(leProxy);
                         ProxyList.Add(leProxy);
                     }
                 });
@@ -121,70 +109,32 @@ namespace LS_Designer_WPF.ViewModel
 
                     _dataService.UpdateLightZone(MasterSelectedItem, (i, er) => { });
                 }
+                
+                MasterSelectedItem.DirectParent = true;
+
                 DetailSelectedItem.RaiseLinkedToZoneChanged();
                 MasterSelectedItem.RaiseHasChildrenChanged();
-
-                //            DetailSelectedItem.LE_Count++;
-                //            DetailSelectedItem.HasChildren = true;
-                //            DetailSelectedItem.DirectParent = true;
-
-
-                //            MasterSelectedItem.DirectChild = true;
-                //            MasterSelectedItem.ControlChannel = DetailSelectedItem;
-                //            DetailSelectedItem.PointType = MasterSelectedItem.PointType;
-                //            MasterSelectedItem.RaiseIsLinkedChanged();
-                //        }
-                //    }
-                //    else
-                //    {
-                //        MasterSelectedItem.SetSilentIsLinked(false, true);
-                //        MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
-                //    }
-                //}
-                //else
-                //{
-                //    //Unlink
-                //    _dataService.UnlinkFromChannel(MasterSelectedItem, (updatesCount, error) =>
-                //                {
-                //                    if (error != null) { return; } // Report error here
-                //                    int uc = updatesCount;
-                //                });
-                //    DetailSelectedItem.LE_Count--;
-                //    MasterSelectedItem.DirectChild = false;
-                //    MasterSelectedItem.ControlChannel = null;
-                //    MasterSelectedItem.RaiseIsLinkedChanged();
-                //    if (DetailSelectedItem.LE_Count == 0)
-                //    {
-                //        DetailSelectedItem.HasChildren = false;
-                //        DetailSelectedItem.DirectParent = false;
-                //    }
+            }
+            else
+            {
+                // Unlink
+                _dataService.UnlinkFromZone(DetailSelectedItem, MasterSelectedItem, (updateCount, error) => { });
+                LE_Proxy proxy = ProxyList.FirstOrDefault(p => p.LightElement.Id == DetailSelectedItem.Id);
+                ProxyList.Remove(proxy);
+                int i = 0;
+                foreach(LE_Proxy leProxy in ProxyList)
+                {
+                    leProxy.Ix = i;
+                    i++;
+                }
+                DetailSelectedItem.LE_Proxy = null;
+                MasterSelectedItem.DirectParent = false;
+                DetailSelectedItem.RaiseLinkedToZoneChanged();
+                MasterSelectedItem.RaiseHasChildrenChanged();
             }
 
-            //ViewCmd.RaiseCanExecuteChanged();
         }
 
-        bool CheckIntersectionLE()
-        {
-            bool result = false;
-            //List<LightElement> leList = MasterList.Where(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == DetailSelectedItem.Id).ToList();  
-            //foreach (LightElement le in leList)
-            //{
-            //    if (MasterSelectedItem.StartPoint >= le.StartPoint && MasterSelectedItem.StartPoint <= le.EndPoint ||
-            //        MasterSelectedItem.EndPoint >= le.StartPoint && MasterSelectedItem.EndPoint <= le.EndPoint)
-            //    {
-            //        result = true;
-            //        MasterSelectedItem.InConflict = true;
-            //        MasterSelectedItem.SetSilentIsLinked(false, true);
-            //        leList.Add(MasterSelectedItem);
-            //        LE_VisualVM popupVM = new LE_VisualVM(leList.OrderBy(p => p.StartPoint).ToList(), string.Format($"Conflict in {DetailSelectedItem.Name}"));
-            //        MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
-            //        break;
-            //    }
-            //    else
-            //        MasterSelectedItem.InConflict = false;
-            //}      
-            return result;
-        }
 
         #endregion
 
@@ -392,7 +342,15 @@ namespace LS_Designer_WPF.ViewModel
 
         void ProxyExecDown()
         {
-
+            int ix = ProxyList.IndexOf(SelectedProxy);
+            LE_Proxy nextProxy = ProxyList[ix + 1];
+            int ix1 = SelectedProxy.Ix;
+            _dataService.SwapProxy(SelectedProxy, nextProxy);
+            SelectedProxy.Ix = nextProxy.Ix;
+            nextProxy.Ix = ix1;
+            ProxyList[ix + 1] = SelectedProxy;
+            ProxyList[ix] = nextProxy;
+            SelectedProxy = ProxyList[ix + 1];
         }
 
         bool ProxyCanExecDown()
@@ -432,9 +390,6 @@ namespace LS_Designer_WPF.ViewModel
             {
                 Set(ref _detailSelectedItem, value);
 
-                //UpdateChangeLinkEnable();
-                //ViewCmd.RaiseCanExecuteChanged();
-
                 if (DetailSelectedItem != null)
                 {
                     dsix = DetailList.IndexOf(value);
@@ -465,51 +420,9 @@ namespace LS_Designer_WPF.ViewModel
                                 zone.DirectParent = false;
                         }
                     }
-                    if (!DetailSelectedItem.LinkedToZone)
-                        UpdateChangeLinkEnable();
-                    //    if (selectionFromMaster)
-                    //    {
-                    //        foreach (LightElement le in MasterList)
-                    //        {
-                    //            if (le.ControlChannel != null)
-                    //            {
-                    //                if (le.ControlChannel.Id == DetailSelectedItem.Id)
-                    //                    le.DirectChild = true;
-                    //                else
-                    //                    le.DirectChild = false;
-                    //            }
-                    //        }
-                    //        selectionFromMaster = false;
-                    //    }
-                    //    else
-                    //    {
-                    //        foreach (ControlChannel ch in DetailList)
-                    //            ch.DirectParent = false;
-
-                    //        foreach (LightElement le in MasterList)
-                    //        {
-                    //            if (le.ControlChannel != null)
-                    //            {
-                    //                if (le.ControlChannel.Id == DetailSelectedItem.Id)
-                    //                    le.DirectChild = true;
-                    //                else
-                    //                    le.DirectChild = false;
-                    //            }
-                    //        }
-
-                    //        if (DetailSelectedItem.HasChildren)
-                    //        {
-                    //            LightElement le1 = MasterList.FirstOrDefault(p => (p.ControlChannel == null) ? false : p.ControlChannel.Id == value.Id);
-                    //            selectionFromDetail = true;
-                    //            MasterSelectedItem = le1;
-                    //        }
-                    //        else
-                    //        {
-                    //            if (MasterSelectedItem != null && MasterSelectedItem.IsLinked)
-                    //                MasterSelectedItem = null;
-                    //        }
-                    //    }
-                    }
+                    UpdateChangeLinkEnable();
+                    
+                }
                 else
                 {
                     dsix = -1;
@@ -542,27 +455,6 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Master UI State
 
-        //Visibility _masterListButtonsVisibility = Visibility.Visible;
-        //public Visibility MasterListButtonsVisibility
-        //{
-        //    get { return _masterListButtonsVisibility; }
-        //    set { Set(ref _masterListButtonsVisibility, value); }
-        //}
-
-        //Visibility _masterSelectorVisibility = Visibility.Hidden;
-        //public Visibility MasterSelectorVisibility
-        //{
-        //    get { return _masterSelectorVisibility; }
-        //    set { Set(ref _masterSelectorVisibility, value); }
-        //}
-
-        //Visibility _masterListVisibility = Visibility.Visible;
-        //public Visibility MasterListVisibility
-        //{
-        //    get { return _masterListVisibility; }
-        //    set { Set(ref _masterListVisibility, value); }
-        //}
-
         Visibility _masterListCurtainVisibility = Visibility.Collapsed;
         public Visibility MasterListCurtainVisibility
         {
@@ -591,13 +483,6 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _masterObjectPanelVisibility, value); }
         }
 
-        //Visibility _detailContentVisibility = Visibility.Visible;
-        //public Visibility DetailContentVisibility
-        //{
-        //    get { return _detailContentVisibility; }
-        //    set { Set(ref _detailContentVisibility, value); }
-        //}
-
         #endregion
 
         /*************************************************************/
@@ -610,17 +495,8 @@ namespace LS_Designer_WPF.ViewModel
 
         void MasterExecSave()
         {
-            //if (MasterCurrentObject.Validate())
-            //{
             int i = -1;
-            //    bool partitionChanged = false;
-            //    if (MasterEditMode)
-            //    {
-            //        if (MasterCurrentObject.Partition.Id != MasterSelectedItem.Partition.Id)
-            //        {
-            //            partitionChanged = true;
-            //        }
-            //    }
+            
             _dataService.UpdateLightZone(MasterCurrentObject, (updatedCount, error) =>
             {
                 if (error != null) { return; } // Report error here
@@ -660,7 +536,6 @@ namespace LS_Designer_WPF.ViewModel
             MasterEditMode = false;
             MasterRemoveCmd.RaiseCanExecuteChanged();
             MasterAddCmd.RaiseCanExecuteChanged();
-            //    //MainSwitchCmd.RaiseCanExecuteChanged();
 
             //    //if (DetailSelectedItem != null)
             //    //{
@@ -673,8 +548,6 @@ namespace LS_Designer_WPF.ViewModel
             //    //    MasterSelectedItem = letmp;
             //    //}
             //}
-
-
             MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
@@ -851,26 +724,12 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Detail UI State
 
-        //Visibility _detailListButtonsVisibility = Visibility.Visible;
-        //public Visibility DetailListButtonsVisibility
-        //{
-        //    get { return _detailListButtonsVisibility; }
-        //    set { Set(ref _detailListButtonsVisibility, value); }
-        //}
-
         Visibility _detailListCurtainVisibility = Visibility.Collapsed;
         public Visibility DetailListCurtainVisibility
         {
             get { return _detailListCurtainVisibility; }
             set { Set(ref _detailListCurtainVisibility, value); }
         }
-
-        //Visibility _detailObjectButtonsVisibility = Visibility.Collapsed;
-        //public Visibility DetailObjectButtonsVisibility
-        //{
-        //    get { return _detailObjectButtonsVisibility; }
-        //    set { Set(ref _detailObjectButtonsVisibility, value); }
-        //}
 
         Visibility _detailObjectCurtainVisibility = Visibility.Visible;
         public Visibility DetailObjectCurtainVisibility

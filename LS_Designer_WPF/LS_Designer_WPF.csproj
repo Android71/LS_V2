@@ -143,6 +143,9 @@
     <Compile Include="GrayScale.xaml.cs">
       <DependentUpon>GrayScale.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScenesView.xaml.cs">
+      <DependentUpon>ScenesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
     <Compile Include="ViewModel\TabItemsVM\LightZonesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\LE_VisualVM.cs" />
@@ -155,6 +158,7 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TabItemsVM\EventDevicesVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\PartitionsVM.cs" />
+    <Compile Include="ViewModel\TabItemsVM\ScenesVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\TabItemVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="WPF_Extras\Converters\BoolToVisibility.cs" />
@@ -250,6 +254,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ScenesView.xaml">
+      <SubType>Form</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Skins\MainSkin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

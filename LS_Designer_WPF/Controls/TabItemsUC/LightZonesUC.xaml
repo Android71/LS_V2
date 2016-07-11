@@ -32,10 +32,10 @@
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding HasChildren}" Value="True">
-                                        <Setter TargetName="hasChildren" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="hasChildren" Property="Visibility" Value="Visible" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding DirectParent}" Value="True">
-                                        <Setter TargetName="directParent" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="directParent" Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -99,7 +99,7 @@
                     <Setter TargetName="isLinked" Property="Visibility" Value="Hidden" />
                     <Setter TargetName="directChild" Property="Visibility" Value="Hidden" />
                 </MultiDataTrigger>-->
-                
+
 
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
@@ -283,7 +283,7 @@
                      Style="{StaticResource ListBoxStyle1}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding QualifiedName}"/>
+                        <TextBlock Text="{Binding QualifiedName}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

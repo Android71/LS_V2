@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/10/2016 08:24:43
--- Generated from EDMX file: C:\Users\Андрей\Source\Repos\LS_V2\EFData\LSModel.edmx
+-- Date Created: 07/11/2016 11:43:14
+-- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -94,6 +94,12 @@ IF OBJECT_ID(N'[dbo].[FK_PartitionControlChannel]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_PartitionControlDevice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ControlDevices] DROP CONSTRAINT [FK_PartitionControlDevice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SceneScene]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Scenes] DROP CONSTRAINT [FK_SceneScene];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SceneEffect]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Effects] DROP CONSTRAINT [FK_SceneEffect];
 GO
 
 -- --------------------------------------------------
@@ -272,7 +278,7 @@ CREATE TABLE [dbo].[Scenes] (
     [IsAccent] nvarchar(max)  NOT NULL,
     [Remark] nvarchar(max)  NULL,
     [Partition_Id] int  NOT NULL,
-    [SceneScene_Scene1_Id] int  NOT NULL
+    [Parent_Id] int  NULL
 );
 GO
 
@@ -886,21 +892,6 @@ ON [dbo].[ControlDevices]
     ([Partition_Id]);
 GO
 
--- Creating foreign key on [SceneScene_Scene1_Id] in table 'Scenes'
-ALTER TABLE [dbo].[Scenes]
-ADD CONSTRAINT [FK_SceneScene]
-    FOREIGN KEY ([SceneScene_Scene1_Id])
-    REFERENCES [dbo].[Scenes]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_SceneScene'
-CREATE INDEX [IX_FK_SceneScene]
-ON [dbo].[Scenes]
-    ([SceneScene_Scene1_Id]);
-GO
-
 -- Creating foreign key on [Scene_Id] in table 'Effects'
 ALTER TABLE [dbo].[Effects]
 ADD CONSTRAINT [FK_SceneEffect]
@@ -914,6 +905,21 @@ GO
 CREATE INDEX [IX_FK_SceneEffect]
 ON [dbo].[Effects]
     ([Scene_Id]);
+GO
+
+-- Creating foreign key on [Parent_Id] in table 'Scenes'
+ALTER TABLE [dbo].[Scenes]
+ADD CONSTRAINT [FK_SceneScene]
+    FOREIGN KEY ([Parent_Id])
+    REFERENCES [dbo].[Scenes]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SceneScene'
+CREATE INDEX [IX_FK_SceneScene]
+ON [dbo].[Scenes]
+    ([Parent_Id]);
 GO
 
 -- --------------------------------------------------

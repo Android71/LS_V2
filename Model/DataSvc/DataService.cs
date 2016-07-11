@@ -802,8 +802,7 @@ namespace LS_Designer_WPF.Model
             {
                 EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
                 EFData.LightZone dbZone = db.LightZones.FirstOrDefault(p => p.Id == zone.Id);
-                //EFData.LE_Proxy dbProxy = db.LE_Proxies.FirstOrDefault(p => p.LightZone.Id == zone.Id && p.LightElement.Id == le.Id);
-                //if (dbProxy)
+
                 EFData.LE_Proxy dbProxy = new EFData.LE_Proxy();
                 dbProxy.LightElement = dbLe;
                 dbProxy.LightZone = dbZone;
@@ -812,12 +811,30 @@ namespace LS_Designer_WPF.Model
                 updateCount = db.SaveChanges();
                 LE_Proxy proxy = new LE_Proxy();
                 Mapper.Db2O(dbProxy, proxy);
-                //Mapper.O2Db(le, dbProxy.LightElement);
-                //Mapper.O2Db(zone, dbProxy.LightZone);
-                //EFData.LightZone dbCh = db.ControlChannels.FirstOrDefault(p => p.Id == ch.Id);
-                //dbCh.PointType = (EFData.PointTypeEnum)le.PointType;
-                //dbLe.ControlChannel = dbCh;
+                
                 callback(proxy, null);
+            }
+        }
+
+        public void UnlinkFromZone(LightElement le, LightZone zone, Action<int, Exception> callback)
+        {
+            int updateCount = -1;
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                //EFData.LightElement dbLe = db.LightElements.FirstOrDefault(p => p.Id == le.Id);
+                //EFData.LightZone dbZone = db.LightZones.FirstOrDefault(p => p.Id == zone.Id);
+                EFData.LE_Proxy dbProxy = db.LE_Proxies.FirstOrDefault(p => p.LightElement.Id == le.Id && p.LightZone.Id == zone.Id);
+                db.Entry(dbProxy).State = EntityState.Deleted;
+                updateCount = db.SaveChanges();
+                updateCount = -1;
+                int i = 0;
+                foreach(EFData.LE_Proxy dbProxy1 in db.LE_Proxies.Where(p => p.LightZone.Id == zone.Id))
+                {
+                    dbProxy1.Ix = i;
+                    //db.Entry(dbProxy1).State = EntityState.Modified;
+                    i++;
+                }
+                updateCount = db.SaveChanges();
             }
         }
 

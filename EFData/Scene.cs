@@ -18,7 +18,8 @@ namespace EFData
         public Scene()
         {
             this.LightZones = new HashSet<LightZone>();
-            this.Effect = new HashSet<Effect>();
+            this.Effects = new HashSet<Effect>();
+            this.Accents = new HashSet<Scene>();
         }
     
         public int Id { get; set; }
@@ -29,9 +30,10 @@ namespace EFData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LightZone> LightZones { get; set; }
         public virtual Partition Partition { get; set; }
-        public virtual Scene Accents { get; set; }
-        public virtual Scene Parent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Effect> Effect { get; set; }
+        public virtual ICollection<Effect> Effects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Scene> Accents { get; set; }
+        public virtual Scene Parent { get; set; }
     }
 }

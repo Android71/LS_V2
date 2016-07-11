@@ -30,6 +30,7 @@ namespace LS_Designer_WPF.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<IDataService, DataService>();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<ScenesVM>();
         }
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
@@ -40,6 +41,14 @@ namespace LS_Designer_WPF.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
+            }
+        }
+
+        public ScenesVM ScenesVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ScenesVM>();
             }
         }
 

@@ -129,13 +129,13 @@
       <End Role="Partition" EntitySet="Partitions" />
       <End Role="ControlDevice" EntitySet="ControlDevices" />
     </AssociationSet>
-    <AssociationSet Name="SceneScene" Association="LSModel.Store.SceneScene">
-      <End Role="Scene" EntitySet="Scenes" />
-      <End Role="Scene1" EntitySet="Scenes" />
-    </AssociationSet>
     <AssociationSet Name="SceneEffect" Association="LSModel.Store.SceneEffect">
       <End Role="Scene" EntitySet="Scenes" />
       <End Role="Effect" EntitySet="Effects" />
+    </AssociationSet>
+    <AssociationSet Name="SceneScene" Association="LSModel.Store.SceneScene">
+      <End Role="Scene" EntitySet="Scenes" />
+      <End Role="Scene1" EntitySet="Scenes" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="ControlSpaces">
@@ -250,7 +250,7 @@
     <Property Name="IsAccent" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Partition_Id" Type="int" Nullable="false" />
-    <Property Name="SceneScene_Scene1_Id" Type="int" Nullable="false" />
+    <Property Name="Parent_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Effects">
     <Key>
@@ -645,18 +645,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SceneScene">
-    <End Role="Scene" Type="LSModel.Store.Scenes" Multiplicity="1" />
-    <End Role="Scene1" Type="LSModel.Store.Scenes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Scene">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Scene1">
-        <PropertyRef Name="SceneScene_Scene1_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="SceneEffect">
     <End Role="Scene" Type="LSModel.Store.Scenes" Multiplicity="0..1" />
     <End Role="Effect" Type="LSModel.Store.Effects" Multiplicity="*" />
@@ -666,6 +654,18 @@
       </Principal>
       <Dependent Role="Effect">
         <PropertyRef Name="Scene_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SceneScene">
+    <End Role="Scene" Type="LSModel.Store.Scenes" Multiplicity="0..1" />
+    <End Role="Scene1" Type="LSModel.Store.Scenes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Scene">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Scene1">
+        <PropertyRef Name="Parent_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -816,13 +816,13 @@
             <End Role="Partition" EntitySet="Partitions" />
             <End Role="ControlDevice" EntitySet="ControlDevices" />
           </AssociationSet>
-          <AssociationSet Name="SceneScene" Association="LSModel.SceneScene">
-            <End Role="Scene" EntitySet="Scenes" />
-            <End Role="Scene1" EntitySet="Scenes" />
-          </AssociationSet>
           <AssociationSet Name="SceneEffect" Association="LSModel.SceneEffect">
             <End Role="Scene" EntitySet="Scenes" />
             <End Role="Effect" EntitySet="Effects" />
+          </AssociationSet>
+          <AssociationSet Name="SceneScene" Association="LSModel.SceneScene">
+            <End Role="Scene" EntitySet="Scenes" />
+            <End Role="Scene1" EntitySet="Scenes" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ControlSpace">
@@ -959,9 +959,9 @@
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="IsAccent" Type="String" Nullable="false" />
           <Property Name="Remark" Type="String" Nullable="true" />
+          <NavigationProperty Name="Effects" Relationship="LSModel.SceneEffect" FromRole="Scene" ToRole="Effect" />
           <NavigationProperty Name="Accents" Relationship="LSModel.SceneScene" FromRole="Scene" ToRole="Scene1" />
-          <NavigationProperty Name="Parent" Relationship="LSModel.SceneScene" FromRole="Scene" ToRole="Scene1" />
-          <NavigationProperty Name="Effect" Relationship="LSModel.SceneEffect" FromRole="Scene" ToRole="Effect" />
+          <NavigationProperty Name="Parent" ToRole="Scene" FromRole="Scene1" Relationship="LSModel.SceneScene" />
         </EntityType>
         <Association Name="GammaLightElement">
           <End Type="LSModel.Gamma" Role="Gamma" Multiplicity="0..1" />
@@ -1183,13 +1183,13 @@
           <End Type="LSModel.Partition" Role="Partition" Multiplicity="1" />
           <End Type="LSModel.ControlDevice" Role="ControlDevice" Multiplicity="*" />
         </Association>
-        <Association Name="SceneScene">
-          <End Type="LSModel.Scene" Role="Scene" Multiplicity="1" />
-          <End Type="LSModel.Scene" Role="Scene1" Multiplicity="0..1" />
-        </Association>
         <Association Name="SceneEffect">
           <End Type="LSModel.Scene" Role="Scene" Multiplicity="0..1" />
           <End Type="LSModel.Effect" Role="Effect" Multiplicity="*" />
+        </Association>
+        <Association Name="SceneScene">
+          <End Type="LSModel.Scene" Role="Scene" Multiplicity="0..1" />
+          <End Type="LSModel.Scene" Role="Scene1" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1605,14 +1605,6 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="SceneScene" TypeName="LSModel.SceneScene" StoreEntitySet="Scenes">
-      <EndProperty Name="Scene">
-        <ScalarProperty Name="Id" ColumnName="SceneScene_Scene1_Id" />
-      </EndProperty>
-      <EndProperty Name="Scene1">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="SceneEffect" TypeName="LSModel.SceneEffect" StoreEntitySet="Effects">
       <EndProperty Name="Scene">
         <ScalarProperty Name="Id" ColumnName="Scene_Id" />
@@ -1621,6 +1613,15 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="Scene_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SceneScene" TypeName="LSModel.SceneScene" StoreEntitySet="Scenes">
+      <EndProperty Name="Scene">
+        <ScalarProperty Name="Id" ColumnName="Parent_Id" />
+      </EndProperty>
+      <EndProperty Name="Scene1">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="Parent_Id" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
