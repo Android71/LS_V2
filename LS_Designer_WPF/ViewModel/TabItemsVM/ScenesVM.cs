@@ -17,6 +17,18 @@ namespace LS_Designer_WPF.ViewModel
         public ScenesVM(IDataService dataService)
         {
             _dataService = dataService;
+            AppContext.Partition = new Partition();
+            AppContext.Partition.Id = 1;
+            Load();
+        }
+
+        void Load()
+        {
+            
+            _dataService.GetScenes(AppContext.Partition, (sceneList, Exception) =>
+            {
+                SceneList = sceneList;
+            });
         }
 
         /*************************************************************/
@@ -39,9 +51,20 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _selectedScene, value); }
         }
 
+        Scene _currentScene;
+        public Scene CurrentScene
+        {
+            get { return _currentScene; }
+            set { Set(ref _currentScene, value); }
+        }
+
         bool SceneAddMode { get; set; } = false;
 
         bool SceneEditMode { get; set; } = false;
+
+        bool AccentAddMode { get; set; } = false;
+
+        bool AccentEditMode { get; set; } = false;
 
         #endregion
 
@@ -58,6 +81,23 @@ namespace LS_Designer_WPF.ViewModel
         }
 
         bool SceneCanExecAdd()
+        {
+            return !SceneAddMode && !SceneEditMode;
+        }
+
+        #endregion
+
+        #region Edit Command
+
+        public RelayCommand SceneEditCmd { get; private set; }
+
+        void SceneExecEdit()
+        {
+
+            MessengerInstance.Send("", AppContext.BlockUIMsg);
+        }
+
+        bool SceneCanExecEdit()
         {
             return !SceneAddMode && !SceneEditMode;
         }
@@ -158,11 +198,25 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _sceneListCurtainVisibility, value); }
         }
 
-        Visibility _sceneObjectButtonsVisibility = Visibility.Collapsed;
+        Visibility _sceneObjectButtonsVisibility = Visibility.Visible;
         public Visibility SceneObjectButtonsVisibility
         {
             get { return _sceneObjectButtonsVisibility; }
             set { Set(ref _sceneObjectButtonsVisibility, value); }
+        }
+
+        Visibility _sceneObjectCurtainVisibility = Visibility.Visible;
+        public Visibility SceneObjectCurtainVisibility
+        {
+            get { return _sceneObjectCurtainVisibility; }
+            set { Set(ref _sceneObjectCurtainVisibility, value); }
+        }
+
+        Visibility _sceneObjectPanelVisibility = Visibility.Visible;
+        public Visibility SceneObjectPanelVisibility
+        {
+            get { return _sceneObjectPanelVisibility; }
+            set { Set(ref _sceneObjectPanelVisibility, value); }
         }
 
         #endregion

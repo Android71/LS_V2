@@ -11,6 +11,150 @@
                               Source={StaticResource Locator}}"
         Background="{DynamicResource DimGrayBrush}"
         mc:Ignorable="d ignore">
+    <Window.Resources>
+        <Style x:Key="myToogleButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="ExpanderButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.ColumnSpan="2" Fill="Transparent" />
+                                <Ellipse Name="Circle" Grid.Column="0" Width="20"
+                                         Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         Stroke="DarkGray" />
+                                <Path x:Name="Arrow" Grid.Column="0" HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" Data="M 1,1.5 L 4.5,5 8,1.5" Stroke="#FF666666"
+                                      StrokeThickness="2" RenderTransformOrigin="0.5,0.5">
+                                    <Path.RenderTransform>
+                                        <RotateTransform Angle="0" />
+                                    </Path.RenderTransform>
+                                </Path>
+                                <ContentPresenter x:Name="HeaderContent" Grid.Column="1" Margin="4,0,0,0"
+                                                  ContentSource="Content" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!--  Animate arrow when toggled  -->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" To="180"
+                                                             Duration="0:0:0.4" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Arrow" Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" To="0"
+                                                             Duration="0:0:0.4" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <!--  MouseOver, Pressed behaviours  -->
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Circle" Property="Stroke" Value="#FF3C7FB1" />
+                                <Setter TargetName="Arrow" Property="Stroke" Value="#222" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="Circle" Property="Stroke" Value="#FF526C7B" />
+                                <Setter TargetName="Circle" Property="StrokeThickness" Value="1.5" />
+                                <Setter TargetName="Arrow" Property="Stroke" Value="#FF003366" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="sceneTemplate">
+            <!--  Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"  -->
+            <!--  Width="{Binding ElementName=sceneList, Path=ActualWidth}"  -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ToggleButton Style="{StaticResource myToogleButton}"/>
+                <TextBlock Grid.Column="2" Text="{Binding Name}"/>
+                <Grid x:Name="accents" Grid.Row="1" Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!--<DockPanel x:Name="accentListButtons" Grid.Row="0" Margin="0,0,0,10"
+                                   Background="{StaticResource DarkBrush}">
+                            <Button x:Name="sceneRemoveButton" Margin="1" HorizontalAlignment="Left"
+                                    Command="{Binding AccentRemoveCmd}"
+                                    Content="Remove" DockPanel.Dock="Left" Padding="3,1"
+                                    Style="{StaticResource ButtonStyle1}" />
+                            <Button x:Name="sceneAddButton" Margin="1" HorizontalAlignment="Right"
+                                    Background="DimGray"
+                                    Command="{Binding AccentAddCmd}"
+                                    Content="Add" DockPanel.Dock="Right" Padding="3,1"
+                                    Style="{StaticResource ButtonStyle1}" />
+                        </DockPanel>-->
+                    <ListBox Name="accentList" Grid.Row="1"
+                                 ItemsSource="{Binding Accents}" 
+                             ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                             Style="{StaticResource ListBoxStyle1}"
+                                 >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    </Grid>
+                <!--<Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Expander Header="{Binding Name}" Background="#FF83F5EB">
+                    <Grid x:Name="accents">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <DockPanel x:Name="accentListButtons" Grid.Row="0" Margin="0,0,0,10"
+                                   Background="{StaticResource DarkBrush}">
+                            <Button x:Name="sceneRemoveButton" Margin="1" HorizontalAlignment="Left"
+                                    Command="{Binding AccentRemoveCmd}"
+                                    Content="Remove" DockPanel.Dock="Left" Padding="3,1"
+                                    Style="{StaticResource ButtonStyle1}" />
+                            <Button x:Name="sceneAddButton" Margin="1" HorizontalAlignment="Right"
+                                    Background="DimGray"
+                                    Command="{Binding AccentAddCmd}"
+                                    Content="Add" DockPanel.Dock="Right" Padding="3,1"
+                                    Style="{StaticResource ButtonStyle1}" />
+                        </DockPanel>
+                        <ListBox Name="accentList" Grid.Row="1"
+                                 ItemsSource="{Binding Accents}" />
+
+                    </Grid>
+                </Expander>-->
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
 
     <Grid Name="layoutRoot" Margin="10">
         <Grid.ColumnDefinitions>
@@ -42,17 +186,17 @@
                             Content="Add" DockPanel.Dock="Right" Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
-                <Grid Name="list_objectLayout" Grid.Row="1">
-                    <Grid.RowDefinitions>
+                <Grid Name="sceneListGrid" Grid.Row="1">
+                    <!--<Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <ListBox Name="list" Grid.RowSpan="2"
+                    </Grid.RowDefinitions>-->
+                    <ListBox Name="sceneList"
                              ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                              ItemsSource="{Binding SceneList}"
                              SelectedItem="{Binding SelectedScene}"
+                             ItemTemplate="{StaticResource sceneTemplate}"
                              Style="{StaticResource ListBoxStyle1}">
-                        <!--  ItemTemplate="{StaticResource MasterTemplate}"  -->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <Custom:EventToCommand Command="{Binding SceneEditCmd}" />
@@ -110,8 +254,8 @@
                             </Label.Foreground>
                             Remark
                         </Label>
-                        <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,4,0,0"
-                                 MinLines="2"
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,4,0,0"
+                                 VerticalAlignment="Center" MinLines="2"
                                  Style="{StaticResource TextBoxStyle1}"
                                  Text="{Binding CurrentScene.Remark}"
                                  AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />

@@ -46,6 +46,10 @@
         <EntityTypeShape EntityType="LSModel.CustomGamma" Width="1.5" PointX="11" PointY="3.375" />
         <AssociationConnector Association="LSModel.CustomGammaLightElement" />
         <AssociationConnector Association="LSModel.SceneEffect" />
+        <EntityTypeShape EntityType="LSModel.Partition" Width="1.5" PointX="1" PointY="7.25" />
+        <AssociationConnector Association="LSModel.PartitionScene" />
+        <AssociationConnector Association="LSModel.PartitionLightZone" />
+        <AssociationConnector Association="LSModel.PartitionLightElement" />
         <AssociationConnector Association="LSModel.SceneScene" />
         </Diagram>
     </edmx:Diagrams>

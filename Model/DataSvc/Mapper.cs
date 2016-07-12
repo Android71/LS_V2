@@ -360,6 +360,29 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
+        /****************************************************************/
+
+        #region Scene
+
+        public static void Db2O(EFData.Scene dbObj, Scene obj)
+        {
+            obj.Id = dbObj.Id;
+            obj.Name = dbObj.Name;
+            obj.IsAccent = dbObj.IsAccent;
+            
+            obj.Remark = dbObj.Remark;
+            //if (dbObj.Parent != null)
+            //{
+            //    obj.Parent = new Scene();
+            //}
+            obj.Partition = new Partition();
+            Db2O(dbObj.Partition, obj.Partition);
+        }
+
+        #endregion
+
+        /****************************************************************/
+
 
         //#region LE_Type
 

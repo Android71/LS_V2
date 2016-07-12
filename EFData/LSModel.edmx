@@ -961,8 +961,8 @@
           <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="Effects" Relationship="LSModel.SceneEffect" FromRole="Scene" ToRole="Effect" />
           <NavigationProperty Name="Accents" Relationship="LSModel.SceneScene" FromRole="Scene" ToRole="Scene1" />
-          <NavigationProperty Name="Parent" ToRole="Scene" FromRole="Scene1" Relationship="LSModel.SceneScene" />
-        </EntityType>
+          <NavigationProperty Name="Parent" Relationship="LSModel.SceneScene" FromRole="Scene1" ToRole="Scene" />
+          </EntityType>
         <Association Name="GammaLightElement">
           <End Type="LSModel.Gamma" Role="Gamma" Multiplicity="0..1" />
           <End Type="LSModel.LightElement" Role="LightElement" Multiplicity="*" />

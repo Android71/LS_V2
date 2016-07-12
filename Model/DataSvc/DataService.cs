@@ -1028,6 +1028,38 @@ namespace LS_Designer_WPF.Model
 
         /****************************************************************/
 
+        #region Scene
+
+        public void GetScenes(Partition partition, Action<ObservableCollection<Scene>, Exception> callback)
+        {
+            ObservableCollection<Scene> sceneList = new ObservableCollection<Scene>();
+
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                foreach (EFData.Scene dbScene in db.Scenes.Where(p => p.Partition.Id == partition.Id && p.Parent == null))
+                {
+                    Scene scene = new Scene();
+                    Mapper.Db2O(dbScene, scene);
+
+                    scene.Accents = new ObservableCollection<Scene>();
+                    foreach (EFData.Scene dbAccent in dbScene.Accents)
+                    {
+                        Scene accent = new Scene();
+                        Mapper.Db2O(dbAccent, accent);
+                        accent.Parent = new Scene();
+                        Mapper.Db2O(dbScene, accent.Parent);
+                        scene.Accents.Add(accent);
+                    }
+                    sceneList.Add(scene);
+                }
+            }
+            callback(sceneList, null);
+        }
+
+        #endregion
+
+        /****************************************************************/
+
         //public void GetLightElementsOfZone(LightZone zone, Partition partition, ControlSpace controlSpace, 
         //                                   FilterEnum filter, Action<BindingList<LightElement>, Exception> callback)
         //{

@@ -169,7 +169,17 @@ namespace LS_Designer_WPF.Model
 
         void SwapProxy(LE_Proxy proxy1, LE_Proxy proxy2);
 
-        #endregion 
+        #endregion
+
+        /********************************************************************/
+
+        #region Scene
+
+        void GetScenes(Partition partition, Action<ObservableCollection<Scene>, Exception> callback);
+
+        #endregion
+
+        /********************************************************************/
 
         //void GetLE_Types(ControlSpace space, Action<List<LE_Type>, Exception> callback);
 
