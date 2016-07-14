@@ -21,10 +21,12 @@ namespace EF_Connect
             const string providerName = "System.Data.SqlClient";
             const string metaData = @"res://*/LSModel.csdl|res://*/LSModel.ssdl|res://*/LSModel.msl";
             hostName = Dns.GetHostName();
-            if (hostName != "ak")
-                dataSource = Dns.GetHostName();
-            else
+            dataSource = Dns.GetHostName();
+            if (hostName == "ak")
                 dataSource = @"AK\SQLEXPRESS";
+            if (hostName == "LSWB")
+                //dataSource = @"LSWB\SQLEXPRESS";
+                dataSource = @"(localdb)\MSSQLLocalDB";
             const string initialCatalog = "LightSystemV1";
 
             SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
