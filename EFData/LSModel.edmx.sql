@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/12/2016 10:42:07
+-- Date Created: 07/17/2016 16:58:50
 -- Generated from EDMX file: D:\Repos\LS_V2\EFData\LSModel.edmx
 -- --------------------------------------------------
 
@@ -97,6 +97,9 @@ IF OBJECT_ID(N'[dbo].[FK_PartitionControlDevice]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_SceneEffect]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Effects] DROP CONSTRAINT [FK_SceneEffect];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SceneScene]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Scenes] DROP CONSTRAINT [FK_SceneScene];
 GO
 
 -- --------------------------------------------------
@@ -272,7 +275,6 @@ GO
 CREATE TABLE [dbo].[Scenes] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [IsAccent] nvarchar(max)  NOT NULL,
     [Remark] nvarchar(max)  NULL,
     [Partition_Id] int  NOT NULL,
     [Parent_Id] int  NULL

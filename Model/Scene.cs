@@ -10,11 +10,14 @@ namespace LS_Designer_WPF.Model
 {
     public class Scene : ObservableObject
     {
+        public Scene()
+        {
+            Name = "";
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        public string IsAccent { get; set; }
 
         public string Remark { get; set; }
 
@@ -22,14 +25,33 @@ namespace LS_Designer_WPF.Model
 
         public Scene Parent { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<LightZone> LightZones { get; set; }
+        ObservableCollection<LightZone> _lightZones;
+        public ObservableCollection<LightZone> LightZones
+        {
+            get { return _lightZones; }
+            set { Set(ref _lightZones, value); }
+        }
 
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         //public virtual ICollection<Effect> Effects { get; set; }
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
         // UI related
+
+        bool _directParent = false;
+        public bool DirectParent
+        {
+            get { return _directParent; }
+            set { Set(ref _directParent, value); }
+        }
+
+        bool _hasChildren = false;
+        public bool HasChildren
+        {
+            //get { return _hasChildren; }
+            get { return LightZones.Count != 0; }
+            set { Set(ref _hasChildren, value); }
+        }
 
         ObservableCollection<Scene> _accents;
         public  ObservableCollection<Scene> Accents

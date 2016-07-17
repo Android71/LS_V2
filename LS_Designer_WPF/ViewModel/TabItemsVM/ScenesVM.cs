@@ -11,12 +11,18 @@ using System.Windows;
 
 namespace LS_Designer_WPF.ViewModel
 { 
-    public class ScenesVM : ViewModelBase
+    public class ScenesVM : TabItemVM
     {
-        IDataService _dataService;
         public ScenesVM(IDataService dataService)
         {
             _dataService = dataService;
+            TabName = "Light Zones";
+
+            SceneAddCmd = new RelayCommand(SceneExecAdd, SceneCanExecAdd);
+            SceneRemoveCmd = new RelayCommand(SceneExecRemove, SceneCanExecRemove);
+            SceneCancelCmd = new RelayCommand(SceneExecCancel);
+            SceneSaveCmd = new RelayCommand(SceneExecSave);
+
             AppContext.Partition = new Partition();
             AppContext.Partition.Id = 1;
             Load();
@@ -44,11 +50,47 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _sceneList, value); }
         }
 
+        int ssix;   //SelectedScene Index;
+
         Scene _selectedScene;
         public Scene SelectedScene
         {
             get { return _selectedScene; }
-            set { Set(ref _selectedScene, value); }
+            set
+            {
+                Set(ref _selectedScene, value);
+                
+                if (SelectedScene != null)
+                {
+                    ssix = SceneList.IndexOf(SelectedScene);
+
+                    SceneObjectButtonsVisibility = Visibility.Collapsed;
+                    SceneObjectPanelVisibility = Visibility.Visible;
+                    SceneObjectCurtainVisibility = Visibility.Visible;
+                    
+
+                    if (!SceneAddMode && !SceneEditMode)
+                    {
+                        _dataService.GetScene(SelectedScene.Id, (scene, error) =>
+                        {
+                            if (error != null) { return; } // Report error here
+                        CurrentScene = scene;
+                        });
+                    }
+                    else
+                    {
+                        SceneAddMode = false;
+                        SceneEditMode = false;
+                    }
+                }
+                else
+                {
+
+                }
+
+                SceneRemoveCmd.RaiseCanExecuteChanged();
+                SceneAddCmd.RaiseCanExecuteChanged();
+            }
         }
 
         Scene _currentScene;
@@ -76,7 +118,21 @@ namespace LS_Designer_WPF.ViewModel
 
         void SceneExecAdd()
         {
-            
+            SceneAddMode = true;
+
+            CurrentScene = new Scene();
+            CurrentScene.Partition = AppContext.Partition;
+            CurrentScene.LightZones = new ObservableCollection<LightZone>();
+
+            SceneAddCmd.RaiseCanExecuteChanged();
+            SceneRemoveCmd.RaiseCanExecuteChanged();
+
+            SceneObjectPanelVisibility = Visibility.Visible;
+            SceneObjectButtonsVisibility = Visibility.Visible;
+            SceneObjectCurtainVisibility = Visibility.Collapsed;
+
+            SceneListCurtainVisibility = Visibility.Visible;
+
             MessengerInstance.Send("", AppContext.BlockUIMsg);
         }
 
@@ -116,7 +172,7 @@ namespace LS_Designer_WPF.ViewModel
 
         bool SceneCanExecRemove()
         {
-            return !SceneAddMode && !SceneEditMode;
+            return !SceneAddMode && !SceneEditMode && SelectedScene != null;
         }
 
         #endregion
@@ -144,13 +200,14 @@ namespace LS_Designer_WPF.ViewModel
 
         void SceneExecSave()
         {
+            _dataService.UpdateScene(CurrentScene, (updateCount, error) => { });
+
+            SceneListCurtainVisibility = Visibility.Collapsed;
+
+            SceneList.Add(CurrentScene);
+            SelectedScene = CurrentScene;
 
             MessengerInstance.Send("", AppContext.BlockUIMsg);
-        }
-
-        bool SceneCanExecSave()
-        {
-            return !SceneAddMode && !SceneEditMode;
         }
 
         #endregion
@@ -198,7 +255,7 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _sceneListCurtainVisibility, value); }
         }
 
-        Visibility _sceneObjectButtonsVisibility = Visibility.Visible;
+        Visibility _sceneObjectButtonsVisibility = Visibility.Collapsed;
         public Visibility SceneObjectButtonsVisibility
         {
             get { return _sceneObjectButtonsVisibility; }
@@ -212,7 +269,7 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _sceneObjectCurtainVisibility, value); }
         }
 
-        Visibility _sceneObjectPanelVisibility = Visibility.Visible;
+        Visibility _sceneObjectPanelVisibility = Visibility.Collapsed;
         public Visibility SceneObjectPanelVisibility
         {
             get { return _sceneObjectPanelVisibility; }

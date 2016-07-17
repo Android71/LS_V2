@@ -247,7 +247,6 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="IsAccent" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Remark" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Partition_Id" Type="int" Nullable="false" />
     <Property Name="Parent_Id" Type="int" Nullable="true" />
@@ -957,7 +956,6 @@
           <NavigationProperty Name="LightZones" Relationship="LSModel.SceneLightZone" FromRole="Scene" ToRole="LightZone" />
           <NavigationProperty Name="Partition" Relationship="LSModel.PartitionScene" FromRole="Scene" ToRole="Partition" />
           <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="IsAccent" Type="String" Nullable="false" />
           <Property Name="Remark" Type="String" Nullable="true" />
           <NavigationProperty Name="Effects" Relationship="LSModel.SceneEffect" FromRole="Scene" ToRole="Effect" />
           <NavigationProperty Name="Accents" Relationship="LSModel.SceneScene" FromRole="Scene" ToRole="Scene1" />
@@ -1301,7 +1299,6 @@
         <MappingFragment StoreEntitySet="Scenes">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="IsAccent" ColumnName="IsAccent" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
         </MappingFragment>
       </EntityTypeMapping>

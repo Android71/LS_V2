@@ -368,7 +368,6 @@ namespace LS_Designer_WPF.Model
         {
             obj.Id = dbObj.Id;
             obj.Name = dbObj.Name;
-            obj.IsAccent = dbObj.IsAccent;
             
             obj.Remark = dbObj.Remark;
             //if (dbObj.Parent != null)
@@ -377,6 +376,12 @@ namespace LS_Designer_WPF.Model
             //}
             obj.Partition = new Partition();
             Db2O(dbObj.Partition, obj.Partition);
+        }
+
+        public static void O2Db(Scene obj, EFData.Scene dbObj)
+        {
+            dbObj.Name = obj.Name;
+            dbObj.Remark = obj.Remark;
         }
 
         #endregion

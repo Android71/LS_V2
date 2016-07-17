@@ -705,7 +705,7 @@ namespace LS_Designer_WPF.Model
                         updateCount = db.SaveChanges();
                         item.Id = dbLightElement.Id;
                     }
-                    catch (Exception ex) { var x = 5; }
+                    catch (Exception /*ex*/) { /*var x = 5;*/ }
                 }
                 callback(updateCount, null);
             }
@@ -1050,10 +1050,85 @@ namespace LS_Designer_WPF.Model
                         Mapper.Db2O(dbScene, accent.Parent);
                         scene.Accents.Add(accent);
                     }
+                   
+                    scene.LightZones = new ObservableCollection<LightZone>();
+                    foreach(EFData.LightZone dbZone in dbScene.LightZones)
+                    {
+                        LightZone zone = new LightZone();
+                        Mapper.Db2O(dbZone, zone);
+                        scene.LightZones.Add(zone);
+                    }
+
                     sceneList.Add(scene);
                 }
             }
             callback(sceneList, null);
+        }
+
+        public void GetScene(int sceneId, Action<Scene, Exception> callback)
+        {
+            Scene scene = null;
+            using (var db = new LSModelContainer(LS.CS))
+            {
+                EFData.Scene dbScene = db.Scenes.FirstOrDefault(p => p.Id == sceneId);
+                scene = new Scene();
+                Mapper.Db2O(dbScene, scene);
+
+                scene.Accents = new ObservableCollection<Scene>();
+                foreach (EFData.Scene dbAccent in dbScene.Accents)
+                {
+                    Scene accent = new Scene();
+                    Mapper.Db2O(dbAccent, accent);
+                    accent.Parent = new Scene();
+                    Mapper.Db2O(dbScene, accent.Parent);
+                    scene.Accents.Add(accent);
+                }
+
+                scene.LightZones = new ObservableCollection<LightZone>();
+                foreach (EFData.LightZone dbZone in dbScene.LightZones)
+                {
+                    LightZone zone = new LightZone();
+                    Mapper.Db2O(dbZone, zone);
+                    scene.LightZones.Add(zone);
+                }
+            }
+            callback(scene, null);
+        }
+
+        public void UpdateScene(Scene scene, Action<int, Exception> callback)
+        {
+            EFData.Scene dbScene = null;
+            int updateCount = -1;
+            if (scene.Id != 0)
+            {
+                //Update
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbScene = db.Scenes.FirstOrDefault(p => p.Id == scene.Id);
+                    Mapper.O2Db(scene, dbScene);
+                    updateCount = db.SaveChanges();
+                }
+                callback(updateCount, null);
+            }
+            else
+            {
+                // Create
+                using (var db = new LSModelContainer(LS.CS))
+                {
+                    dbScene = new EFData.Scene();
+                    Mapper.O2Db(scene, dbScene);
+                    dbScene.Partition = db.Partitions.FirstOrDefault(p => p.Id == scene.Partition.Id);
+
+                    db.Scenes.Add(dbScene);
+                    try
+                    {
+                        updateCount = db.SaveChanges();
+                        scene.Id = dbScene.Id;
+                    }
+                    catch (Exception ex) { var x = 5; }
+                }
+                callback(updateCount, null);
+            }
         }
 
         #endregion

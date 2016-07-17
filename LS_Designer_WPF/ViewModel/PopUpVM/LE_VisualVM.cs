@@ -17,6 +17,6 @@ namespace LS_Designer_WPF.ViewModel
 
         public List<LightElement> LE_List { get; set; }
 
-        public string Title { get; set; }
+        //public string Title { get; set; }
     }
 }

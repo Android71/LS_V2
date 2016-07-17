@@ -177,6 +177,10 @@ namespace LS_Designer_WPF.Model
 
         void GetScenes(Partition partition, Action<ObservableCollection<Scene>, Exception> callback);
 
+        void GetScene(int sceneId, Action<Scene, Exception> callback);
+
+        void UpdateScene(Scene scene, Action<int, Exception> callback);
+
         #endregion
 
         /********************************************************************/

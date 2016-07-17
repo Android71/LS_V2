@@ -181,7 +181,7 @@ namespace LS_Designer_WPF.ViewModel
 
         int msix = -1; //MasterSelectedItem ix;
 
-        bool selectionFromDetail = false;
+        //bool selectionFromDetail = false;
 
         LightZone _masterSelectedItem;
         public LightZone MasterSelectedItem
@@ -380,7 +380,7 @@ namespace LS_Designer_WPF.ViewModel
         }
 
         int dsix = -1; //DetailSelectedItem ix
-        bool selectionFromMaster;
+        //bool selectionFromMaster;
 
         LightElement _detailSelectedItem;
         public LightElement DetailSelectedItem

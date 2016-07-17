@@ -1,11 +1,11 @@
 ﻿<UserControl x:Class="LS_Designer_WPF.Controls.LightZonesUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Custom="http://www.galasoft.ch/mvvmlight"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:LS_Designer_WPF.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:model="clr-namespace:LS_Designer_WPF.Model"
              d:DesignHeight="300"
              mc:Ignorable="d">
@@ -17,17 +17,25 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Border Name="hasChildren" Grid.Column="0" Width="13"
-                        Height="13" VerticalAlignment="Center" Visibility="Hidden"
+                <Border Name="hasChildren"
+                        Grid.Column="0"
+                        Width="13"
+                        Height="13"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource BlueAccentBrush}"
                         BorderBrush="{DynamicResource BlueAccentBrush}"
-                        Background="{DynamicResource BlueAccentBrush}" />
+                        Visibility="Hidden" />
 
-                <Border Name="directParent" Grid.Column="0" Height="13"
-                        VerticalAlignment="Center" Visibility="Hidden"
+                <Border Name="directParent"
+                        Grid.Column="0"
+                        Height="13"
+                        VerticalAlignment="Center"
+                        Background="{StaticResource OrangeAccentBrush}"
                         BorderBrush="{StaticResource OrangeAccentBrush}"
-                        Background="{StaticResource OrangeAccentBrush}" />
+                        Visibility="Hidden" />
 
-                <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                <TextBlock Grid.Column="1"
+                           Margin="10,0,0,0"
                            Text="{Binding Name}" />
             </Grid>
             <DataTemplate.Triggers>
@@ -54,28 +62,37 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <CheckBox Name="mapper" Grid.Column="0" VerticalAlignment="Center"
+                <CheckBox Name="mapper"
+                          Grid.Column="0"
+                          VerticalAlignment="Center"
                           IsChecked="{Binding LinkedToZone}"
                           IsEnabled="{Binding ChangeLinkEnable}"
                           Visibility="Hidden" />
                 <!--  IsEnabled="{Binding ChangeLinkEnable}"  -->
-                <Border Name="isLinked" Grid.Column="0" Height="13"
-                        VerticalAlignment="Center" Visibility="Hidden"
+                <Border Name="isLinked"
+                        Grid.Column="0"
+                        Height="13"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource BlueAccentBrush}"
                         BorderBrush="{DynamicResource BlueAccentBrush}"
-                        Background="{DynamicResource BlueAccentBrush}" />
+                        Visibility="Hidden" />
                 <!--
                     Visibility="{Binding IsLinked,
                     Converter={StaticResource HiddenIfFalse}}"
                 -->
-                <Border Name="directChild" Grid.Column="0" Height="13"
-                        VerticalAlignment="Center" Visibility="Hidden"
+                <Border Name="directChild"
+                        Grid.Column="0"
+                        Height="13"
+                        VerticalAlignment="Center"
+                        Background="{StaticResource OrangeAccentBrush}"
                         BorderBrush="{StaticResource OrangeAccentBrush}"
-                        Background="{StaticResource OrangeAccentBrush}" />
+                        Visibility="Hidden" />
                 <!--
                     Visibility="{Binding DirectChild,
                     Converter={StaticResource HiddenIfFalse}}"
                 -->
-                <TextBlock Grid.Column="1" Margin="10,0,0,0"
+                <TextBlock Grid.Column="1"
+                           Margin="10,0,0,0"
                            Text="{Binding Name}" />
             </Grid>
             <DataTemplate.Triggers>
@@ -144,21 +161,35 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <DockPanel x:Name="masterListButtons" Grid.Row="0" Margin="0,0,0,10"
+                <DockPanel x:Name="masterListButtons"
+                           Grid.Row="0"
+                           Margin="0,0,0,10"
                            Background="{StaticResource DarkBrush}">
-                    <Button x:Name="masterRemoveButton" Margin="1" HorizontalAlignment="Left"
+                    <Button x:Name="masterRemoveButton"
+                            Margin="1"
+                            HorizontalAlignment="Left"
                             Command="{Binding MasterRemoveCmd}"
-                            Content="Remove" DockPanel.Dock="Left" Padding="3,1"
+                            Content="Remove"
+                            DockPanel.Dock="Left"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
-                    <Button x:Name="masterAddButton" Margin="1" HorizontalAlignment="Right"
+                    <Button x:Name="masterAddButton"
+                            Margin="1"
+                            HorizontalAlignment="Right"
                             Background="DimGray"
                             Command="{Binding MasterAddCmd}"
-                            Content="Add" DockPanel.Dock="Right" Padding="3,1"
+                            Content="Add"
+                            DockPanel.Dock="Right"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
-                    <Button x:Name="testButton" Margin="1,1,10,1" HorizontalAlignment="Right"
+                    <Button x:Name="testButton"
+                            Margin="1,1,10,1"
+                            HorizontalAlignment="Right"
                             Background="DimGray"
                             Command="{Binding MasterTestCmd}"
-                            Content="Test" DockPanel.Dock="Right" Padding="3,1"
+                            Content="Test"
+                            DockPanel.Dock="Right"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
                 <Grid Name="listLayout" Grid.Row="1">
@@ -166,11 +197,12 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <ListBox Name="internalList" Grid.RowSpan="2"
+                    <ListBox Name="internalList"
+                             Grid.RowSpan="2"
                              ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                             ItemTemplate="{StaticResource MasterTemplate}"
                              ItemsSource="{Binding MasterList}"
                              SelectedItem="{Binding MasterSelectedItem}"
-                             ItemTemplate="{StaticResource MasterTemplate}"
                              Style="{StaticResource ListBoxStyle1}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
@@ -178,7 +210,8 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListBox>
-                    <Grid x:Name="masterListCurtain" Background="#334F4F4F"
+                    <Grid x:Name="masterListCurtain"
+                          Background="#334F4F4F"
                           Visibility="{Binding MasterListCurtainVisibility}" />
                 </Grid>
             </Grid>
@@ -187,15 +220,20 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <StackPanel x:Name="masterObjectButtons" Grid.Row="0" Margin="0,10,0,0"
+                <StackPanel x:Name="masterObjectButtons"
+                            Grid.Row="0"
+                            Margin="0,10,0,0"
                             Background="{DynamicResource DarkBrush}"
-                            FlowDirection="RightToLeft" Orientation="Horizontal"
+                            FlowDirection="RightToLeft"
+                            Orientation="Horizontal"
                             Visibility="{Binding MasterObjectButtonsVisibility}">
-                    <Button x:Name="masterSaveButton" HorizontalAlignment="Left"
+                    <Button x:Name="masterSaveButton"
+                            HorizontalAlignment="Left"
                             Command="{Binding MasterSaveCmd}"
                             Content="Save"
                             Style="{StaticResource ButtonStyle1}" />
-                    <Button x:Name="masterCancelButton" HorizontalAlignment="Right"
+                    <Button x:Name="masterCancelButton"
+                            HorizontalAlignment="Right"
                             Command="{Binding MasterCancelCmd}"
                             Content="Cancel"
                             Style="{StaticResource ButtonStyle1}" />
@@ -217,10 +255,13 @@
                                     Content="{Binding MasterCurrentObject}" />
                 </Border>-->
 
-                <Border Name="masterObjectPanel" Grid.Row="1" Margin="0,10,0,0"
+                <Border Name="masterObjectPanel"
+                        Grid.Row="1"
+                        Margin="0,10,0,0"
                         Background="{StaticResource VeryDarkBrush}"
                         BorderBrush="{StaticResource PlumbumBrush}"
-                        BorderThickness="1" Padding="10"
+                        BorderThickness="1"
+                        Padding="10"
                         Visibility="{Binding MasterObjectPanelVisibility}">
                     <Grid Name="csObject">
                         <Grid.ColumnDefinitions>
@@ -237,22 +278,30 @@
                             </Label.Foreground>
                             Name
                         </Label>
-                        <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                        <TextBox Grid.Row="0"
+                                 Grid.Column="1"
+                                 VerticalAlignment="Center"
                                  Style="{StaticResource TextBoxStyle1}"
                                  Text="{Binding MasterCurrentObject.Name}" />
-                        <Label Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="0,0,10,0">
                             <Label.Foreground>
                                 <SolidColorBrush Color="{StaticResource LightGray}" />
                             </Label.Foreground>
                             IsNode
                         </Label>
-                        <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                        <CheckBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  VerticalAlignment="Center"
                                   IsChecked="{Binding MasterCurrentObject.IsNode}" />
                     </Grid>
                 </Border>
 
 
-                <Grid x:Name="masterObjectCurtain" Grid.Row="1" Margin="0,10,0,0"
+                <Grid x:Name="masterObjectCurtain"
+                      Grid.Row="1"
+                      Margin="0,10,0,0"
                       Background="Transparent"
                       Visibility="{Binding MasterObjectCurtainVisibility}" />
             </Grid>
@@ -262,21 +311,29 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid x:Name="le_proxyButtons" Grid.Row="0" Margin="0,0,0,10"
+            <Grid x:Name="le_proxyButtons"
+                  Grid.Row="0"
+                  Margin="0,0,0,10"
                   Background="{StaticResource DarkBrush}">
                 <DockPanel>
-                    <Button Margin="1" Content="Up" DockPanel.Dock="Right"
-                            Padding="3,1"
+                    <Button Margin="1"
                             Command="{Binding ProxyUpCmd}"
+                            Content="Up"
+                            DockPanel.Dock="Right"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
-                    <Button Margin="1,1,5,1" HorizontalAlignment="Right" Content="Down"
-                            DockPanel.Dock="Right" Padding="3,1"
+                    <Button Margin="1,1,5,1"
+                            HorizontalAlignment="Right"
                             Command="{Binding ProxyDownCmd}"
+                            Content="Down"
+                            DockPanel.Dock="Right"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
 
             </Grid>
-            <ListBox Name="le_proxyList" Grid.Row="1"
+            <ListBox Name="le_proxyList"
+                     Grid.Row="1"
                      ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                      ItemsSource="{Binding ProxyList}"
                      SelectedItem="{Binding SelectedProxy}"
@@ -287,7 +344,9 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Grid x:Name="le_proxyListCurtain" Grid.Row="1" Background="#334F4F4F"
+            <Grid x:Name="le_proxyListCurtain"
+                  Grid.Row="1"
+                  Background="#334F4F4F"
                   Visibility="{Binding ProxyListCurtainVisibility}" />
         </Grid>
         <Grid x:Name="detailLayout" Grid.Column="4">
@@ -297,31 +356,39 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <ListBox ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
+                         ItemTemplate="{StaticResource DetailTemplate}"
                          ItemsSource="{Binding DetailList}"
                          SelectedItem="{Binding DetailSelectedItem}"
-                         ItemTemplate="{StaticResource DetailTemplate}"
                          Style="{StaticResource ListBoxStyle1}" />
-                <Grid x:Name="detailListCurtain" Grid.Row="1" Background="#334F4F4F"
+                <Grid x:Name="detailListCurtain"
+                      Grid.Row="1"
+                      Background="#334F4F4F"
                       Visibility="{Binding DetailListCurtainVisibility}" />
             </Grid>
             <Grid x:Name="detailObject" Grid.Row="1">
-                <Border Name="detailObjectPanel" Grid.Row="1" Margin="0,10,0,0"
+                <Border Name="detailObjectPanel"
+                        Grid.Row="1"
+                        Margin="0,10,0,0"
                         Background="{StaticResource VeryDarkBrush}"
                         BorderBrush="{DynamicResource PlumbumBrush}"
-                        BorderThickness="1" Padding="10"
+                        BorderThickness="1"
+                        Padding="10"
                         Visibility="{Binding DetailObjectPanelVisibility}">
                     <Border.Resources>
                         <DataTemplate DataType="{x:Type model:LightElement}">
-                            <local:LE_UC IsEditMode="{Binding IsEditMode}"
+                            <local:LE_UC CSprefix="{Binding ControlSpace.Prefix}"
                                          IsAddMode="{Binding IsAddMode}"
-                                         PointType="{Binding PointType}"
-                                         CSprefix="{Binding ControlSpace.Prefix}" />
+                                         IsEditMode="{Binding IsEditMode}"
+                                         PointType="{Binding PointType}" />
                         </DataTemplate>
                     </Border.Resources>
-                    <ContentControl Name="detailCurrentObject" Margin="0,5,0,0"
+                    <ContentControl Name="detailCurrentObject"
+                                    Margin="0,5,0,0"
                                     Content="{Binding DetailCurrentObject}" />
                 </Border>
-                <Grid x:Name="detailObjectCurtain" Grid.Row="1" Margin="0,10,0,0"
+                <Grid x:Name="detailObjectCurtain"
+                      Grid.Row="1"
+                      Margin="0,10,0,0"
                       Background="Transparent"
                       Visibility="{Binding DetailObjectCurtainVisibility}" />
             </Grid>
