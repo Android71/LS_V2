@@ -20,6 +20,7 @@ namespace LS_Designer_WPF.ViewModel
 
             SceneAddCmd = new RelayCommand(SceneExecAdd, SceneCanExecAdd);
             SceneRemoveCmd = new RelayCommand(SceneExecRemove, SceneCanExecRemove);
+            SceneEditCmd = new RelayCommand(SceneExecEdit, SceneCanExecEdit);
             SceneCancelCmd = new RelayCommand(SceneExecCancel);
             SceneSaveCmd = new RelayCommand(SceneExecSave);
 
@@ -131,6 +132,7 @@ namespace LS_Designer_WPF.ViewModel
             SceneObjectButtonsVisibility = Visibility.Visible;
             SceneObjectCurtainVisibility = Visibility.Collapsed;
 
+            SceneListVisibility = Visibility.Hidden;
             SceneListCurtainVisibility = Visibility.Visible;
 
             MessengerInstance.Send("", AppContext.BlockUIMsg);
@@ -149,7 +151,16 @@ namespace LS_Designer_WPF.ViewModel
 
         void SceneExecEdit()
         {
+            SceneEditMode = true;
 
+            SceneAddCmd.RaiseCanExecuteChanged();
+            SceneRemoveCmd.RaiseCanExecuteChanged();
+
+            SceneObjectPanelVisibility = Visibility.Visible;
+            SceneObjectButtonsVisibility = Visibility.Visible;
+            SceneObjectCurtainVisibility = Visibility.Collapsed;
+
+            SceneListCurtainVisibility = Visibility.Visible;
             MessengerInstance.Send("", AppContext.BlockUIMsg);
         }
 
@@ -183,13 +194,33 @@ namespace LS_Designer_WPF.ViewModel
 
         void SceneExecCancel()
         {
+            if (SceneAddMode)
+            {
+                SceneObjectButtonsVisibility = Visibility.Collapsed;
+                SceneObjectPanelVisibility = Visibility.Collapsed;
+                SceneListCurtainVisibility = Visibility.Collapsed;
+                SceneListVisibility = Visibility.Visible;
+            }
 
-            MessengerInstance.Send("", AppContext.BlockUIMsg);
-        }
+            if (SceneEditMode)
+            {
+                _dataService.GetScene(SelectedScene.Id, (scene, error) =>
+                        {
+                            if (error != null) { return; } // Report error here
+                            CurrentScene = scene;
+                        });
+                SceneObjectButtonsVisibility = Visibility.Collapsed;
+                SceneListCurtainVisibility = Visibility.Collapsed;
+                SceneObjectCurtainVisibility = Visibility.Visible;
+            }
 
-        bool SceneCanExecCancel()
-        {
-            return !SceneAddMode && !SceneEditMode;
+            SceneAddMode = false;
+            SceneEditMode = false;
+            SceneAddCmd.RaiseCanExecuteChanged();
+            SceneEditCmd.RaiseCanExecuteChanged();
+            SceneRemoveCmd.RaiseCanExecuteChanged();
+
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         #endregion
@@ -204,10 +235,20 @@ namespace LS_Designer_WPF.ViewModel
 
             SceneListCurtainVisibility = Visibility.Collapsed;
 
-            SceneList.Add(CurrentScene);
+            if (SceneAddMode)
+            {
+                SceneList.Add(CurrentScene);
+            }
+
+            if (SceneEditMode)
+            {
+                CurrentScene.DirectParent = SceneList[ssix].DirectParent;
+                SceneList[ssix] = CurrentScene;
+            }
+
             SelectedScene = CurrentScene;
 
-            MessengerInstance.Send("", AppContext.BlockUIMsg);
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
         }
 
         #endregion
@@ -253,6 +294,13 @@ namespace LS_Designer_WPF.ViewModel
         {
             get { return _sceneListCurtainVisibility; }
             set { Set(ref _sceneListCurtainVisibility, value); }
+        }
+
+        Visibility _sceneListVisibility = Visibility.Visible;
+        public Visibility SceneListVisibility
+        {
+            get { return _sceneListVisibility; }
+            set { Set(ref _sceneListVisibility, value); }
         }
 
         Visibility _sceneObjectButtonsVisibility = Visibility.Collapsed;
