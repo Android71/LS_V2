@@ -64,6 +64,7 @@ namespace LS_Designer_WPF.ViewModel
                 if (SelectedScene != null)
                 {
                     ssix = SceneList.IndexOf(SelectedScene);
+                    SceneZones = SelectedScene.LightZones;
 
                     SceneObjectButtonsVisibility = Visibility.Collapsed;
                     SceneObjectPanelVisibility = Visibility.Visible;
@@ -238,6 +239,7 @@ namespace LS_Designer_WPF.ViewModel
             if (SceneAddMode)
             {
                 SceneList.Add(CurrentScene);
+                SceneListVisibility = Visibility.Visible;
             }
 
             if (SceneEditMode)
@@ -330,12 +332,44 @@ namespace LS_Designer_WPF.ViewModel
 
         /*************************************************************/
 
+        #region SceneZones
+
+        #region Properties
+
         ObservableCollection<LightZone> _sceneZones;
-        ObservableCollection<LightZone> SceneZones
+        public ObservableCollection<LightZone> SceneZones
         {
             get { return _sceneZones; }
             set { Set(ref _sceneZones, value); }
         }
+
+        LightZone _selectedSceneZone;
+        public LightZone SelectedSceneZone
+        {
+            get { return _selectedSceneZone; }
+            set
+            {
+                Set(ref _selectedSceneZone, value);
+            }
+        }
+
+        #endregion
+
+        #region SceneZones UI State
+
+        Visibility _sceneZonesCurtainVisibility = Visibility.Collapsed;
+        public Visibility SceneZonesCurtainVisibility
+        {
+            get { return _sceneZonesCurtainVisibility; }
+            set { Set(ref _sceneZonesCurtainVisibility, value); }
+        }
+
+        #endregion
+
+        #endregion
+
+        /*************************************************************/
+
 
         ObservableCollection<LightZone> _zoneList;
         ObservableCollection<LightZone> ZoneList
