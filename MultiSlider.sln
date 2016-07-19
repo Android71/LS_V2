@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternEffect", "PatternEff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "CustomControls\CustomControls.csproj", "{686D50D2-110D-4E3E-8687-9020035232EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LS_Library", "LS_Library\LS_Library.csproj", "{A8E86196-447F-454D-8FB4-FAAF0087C83B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{686D50D2-110D-4E3E-8687-9020035232EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{686D50D2-110D-4E3E-8687-9020035232EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{686D50D2-110D-4E3E-8687-9020035232EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,5 +8,5 @@
         <ResourceDictionary Source="/CustomControls;component/Themes/SliderItem.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    
+
 </ResourceDictionary>

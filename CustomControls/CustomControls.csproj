@@ -53,9 +53,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="MultiSlider.cs" />
     <Compile Include="SliderItem.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\MultiSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\SliderItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -26,7 +26,10 @@
                        Height="25"
                        Margin="10,85,0,0"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Top" SelectionStart="3" SelectionEnd="8" Value="5" />
+                       VerticalAlignment="Top"
+                       SelectionEnd="8"
+                       SelectionStart="3"
+                       Value="5" />
 
         <TextBlock x:Name="textBlock"
                    Margin="34,155,0,0"
