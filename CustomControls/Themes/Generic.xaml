@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:LS_Designer_WPF.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <!--<ResourceDictionary Source="/ED_CustomControls;component/Themes/HslSlider.xaml"/>
+        <ResourceDictionary Source="/ED_CustomControls;component/Themes/MultiSlider.xaml"/>-->
+        <ResourceDictionary Source="/CustomControls;component/Themes/SliderItem.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    
+</ResourceDictionary>
