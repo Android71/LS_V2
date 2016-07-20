@@ -46,7 +46,7 @@ namespace LS_Designer_WPF.Controls
 
         #region Properties
 
-        public int LeftLimit { get; set; }
+        
 
         #endregion
 

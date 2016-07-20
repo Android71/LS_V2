@@ -24,11 +24,12 @@
         <cc:SliderItem x:Name="sliderItem"
                        Width="272"
                        Height="25"
-                       Margin="10,85,0,0"
+                       Margin="10,117,0,0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        SelectionEnd="8"
                        SelectionStart="3"
+                       Variant="RangeLeftLimit"
                        Value="5" />
 
         <TextBlock x:Name="textBlock"
@@ -38,5 +39,10 @@
                    Text="{Binding Value,
                                   ElementName=sliderItem}"
                    TextWrapping="Wrap" />
+        <cc:MultiSlider SliderList="{Binding SliderItems}" Width="242"
+                        Height="53"
+                        Margin="34,20,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top" />
     </Grid>
 </Window>
