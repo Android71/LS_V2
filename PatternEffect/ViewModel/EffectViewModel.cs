@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using LS_Designer_WPF.Controls;
+using LS_Library;
 using PatternEffect.Model;
 using System.Collections.ObjectModel;
 
@@ -28,6 +29,7 @@ namespace PatternEffect.ViewModel
             si.Value = 5;
             
             SliderItems.Add(si);
+            //Pattern = new PatternPoint[100];
         }
 
         ObservableCollection<SliderItem> _sliderItems = new ObservableCollection<SliderItem>();
@@ -35,6 +37,13 @@ namespace PatternEffect.ViewModel
         {
             get { return _sliderItems; }
             set { Set(ref _sliderItems, value); }
+        }
+
+        PatternPoint[] _pattern;
+        public PatternPoint[] Pattern
+        {
+            get { return _pattern; }
+            set { Set(ref _pattern, value); }
         }
     }
 }

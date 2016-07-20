@@ -133,6 +133,10 @@
       <Project>{686d50d2-110d-4e3e-8687-9020035232ea}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LS_Library\LS_Library.csproj">
+      <Project>{A8E86196-447F-454D-8FB4-FAAF0087C83B}</Project>
+      <Name>LS_Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

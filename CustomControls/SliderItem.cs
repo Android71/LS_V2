@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using LS_Library;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace LS_Designer_WPF.Controls
 {
@@ -46,7 +48,7 @@ namespace LS_Designer_WPF.Controls
 
         #region Properties
 
-        
+        public PatternPoint PatternPoint { get; set; }
 
         #endregion
 
@@ -62,5 +64,7 @@ namespace LS_Designer_WPF.Controls
                     Value = SelectionEnd;
             }
         }
+
+        
     }
 }
