@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace LS_Designer_WPF.Controls
 {
 
-    public enum SliderVariant { Gradient, RangeLeftLimit, RangeRightLimit, Lightness };
+    //public enum SliderVariant { Gradient, RangeLeft, RangeRight, Lightness };
 
     public class SliderItem : Slider
     {
@@ -32,17 +32,17 @@ namespace LS_Designer_WPF.Controls
         }
 
         // Variant = 0 GradientStop
-        // Variant = 1 Range Left Limit
-        // Variant = 2 Range Right Limit
+        // Variant = 1 RangeLeft
+        // Variant = 2 RangeRight
         // Variant = 3 Lightness control
-        public SliderVariant Variant
+        public PointVariant Variant
         {
-            get { return (SliderVariant)GetValue(VariantProperty); }
+            get { return (PointVariant)GetValue(VariantProperty); }
             set { SetValue(VariantProperty, value); }
         }
 
         public static readonly DependencyProperty VariantProperty =
-            DependencyProperty.Register("Variant", typeof(SliderVariant), typeof(SliderItem), new FrameworkPropertyMetadata(SliderVariant.Gradient));
+            DependencyProperty.Register("Variant", typeof(PointVariant), typeof(SliderItem), new FrameworkPropertyMetadata(PointVariant.Gradient));
 
         #endregion
 

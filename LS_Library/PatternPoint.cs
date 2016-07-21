@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.ComponentModel;
 
+
 namespace LS_Library
 {
+
+    public enum PointVariant { Gradient, RangeLeft, RangeRight, Lightness };
+
     public class PatternPoint : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -17,8 +21,8 @@ namespace LS_Library
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private Color _pointColor;
-        public Color PointColor
+        private System.Windows.Media.Color _pointColor;
+        public System.Windows.Media.Color PointColor
         {
             get { return _pointColor; }
             set
