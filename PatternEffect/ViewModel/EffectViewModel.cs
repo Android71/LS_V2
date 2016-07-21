@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using LS_Designer_WPF.Controls;
 using LS_Library;
 using PatternEffect.Model;
@@ -25,24 +26,19 @@ namespace PatternEffect.ViewModel
         public EffectViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            //SliderItem si = new SliderItem();
-            //si.Minimum = 0;
-            //si.Maximum = 10;
-            //si.SmallChange = 1;
-            //si.LargeChange = 1;
-            //si.SelectionEnd = 8;
-            //si.SelectionStart = 3;
-            //si.Value = 5;
+            UpdatePatternCmd = new RelayCommand<SliderItem>((si) => ExecUpdatePattern(si));
             
-            //SliderItems.Add(si);
-            //ParseProfile("Pattern.xml");
             string path = Assembly.GetExecutingAssembly().Location;
             DirectoryInfo dirInfo = new DirectoryInfo(path);
             string patternDir = dirInfo.Parent.Parent.Parent.FullName;
             string patternPath = patternDir + @"\Pattern.xml";
 
             PatternXML = File.ReadAllText(patternPath);
+
+            BuildPattern();
         }
+
+        
 
         ObservableCollection<SliderItem> _sliderItems = new ObservableCollection<SliderItem>();
         public ObservableCollection<SliderItem> SliderItems
@@ -58,12 +54,86 @@ namespace PatternEffect.ViewModel
             set { Set(ref _pattern, value); }
         }
 
+        int _maxlimit;
+        public int Maxlimit
+        {
+            get { return _maxlimit; }
+            set { Set(ref _maxlimit, value); }
+        }
+
+
 
         public string PatternXML
         {
             get { return ""; }
 
             set { ParsePatternParams(value); }
+        }
+
+        void BuildPattern()
+        {
+            SliderItem prevSlider = null;
+            if (SliderItems.Count < 1)
+            {
+                //int ix = 0;
+                foreach(SliderItem si in SliderItems)
+                {
+                    // first slider
+                    if (prevSlider == null)
+                    {
+                        prevSlider = si;
+                        continue;
+                    }
+
+                    BuildGradient(prevSlider, si);
+                    prevSlider = si;
+                }
+            }
+        }
+
+        void BuildGradient(SliderItem leftSlider, SliderItem rightSlider)
+        {
+            int leftIx = Convert.ToInt32(leftSlider.Value);
+            int rightIx = Convert.ToInt32(rightSlider.Value);
+            int stepCount = rightIx - leftIx - 1;
+            if (stepCount > 0)
+            {
+                if (leftSlider.Variant == PointVariant.RangeLeft)
+                {
+                    for (int i = leftIx + 1; i < rightIx; i++)
+                    {
+                        Pattern[i].H = leftSlider.PatternPoint.H;
+                        Pattern[i].S = leftSlider.PatternPoint.S;
+                        Pattern[i].L = leftSlider.PatternPoint.L;
+                        Pattern[i].Lightness = leftSlider.PatternPoint.Lightness;
+                        Pattern[i].PointColor = leftSlider.PatternPoint.PointColor;
+                    }
+                    return;
+                }
+
+                double deltaH = (rightSlider.PatternPoint.H - leftSlider.PatternPoint.H) / stepCount;
+                double deltaS = (rightSlider.PatternPoint.S - leftSlider.PatternPoint.S) / stepCount;
+                double deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
+                for (int i = leftIx + 1; i < rightIx; i++)
+                {
+                    Pattern[i].H = Pattern[i - 1].H + deltaH;
+                    Pattern[i].S = Pattern[i - 1].S + deltaS;
+                    Pattern[i].L = Pattern[i - 1].L + deltaL;
+                    Pattern[i].SetPointColor();
+                }
+            }
+        }
+
+        public RelayCommand<SliderItem> UpdatePatternCmd { get; private set; }
+
+        private void ExecUpdatePattern(SliderItem slider)
+        {
+            throw new NotImplementedException();
+        }
+
+private void Test(string s)
+        {
+            throw new NotImplementedException();
         }
 
         void ParsePatternParams(string profile)
@@ -77,6 +147,7 @@ namespace PatternEffect.ViewModel
 
             XElement root = XElement.Parse(xmlContent);
             int pointCount = int.Parse(root.Attribute("PointCount").Value);
+            Maxlimit = pointCount;
 
             Pattern = new PatternPoint[pointCount];
             for (int i = 0; i < pointCount; i++)

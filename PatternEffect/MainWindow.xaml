@@ -15,8 +15,8 @@
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
-        
-        
+
+
 
         <TextBlock x:Name="textBlock" Margin="34,155,0,0" HorizontalAlignment="Left"
                    VerticalAlignment="Top"
@@ -25,6 +25,7 @@
                    TextWrapping="Wrap" />
         <cc:MultiSlider Width="635" Height="69" Margin="34,46,0,0"
                         HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Maxlimit="{Binding Maxlimit}"
                         SliderList="{Binding SliderItems}" />
 
     </Grid>

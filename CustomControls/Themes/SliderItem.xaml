@@ -96,8 +96,8 @@
     <Style TargetType="{x:Type local:SliderItem}">
         <Setter Property="IsSnapToTickEnabled" Value="True" />
         <Setter Property="SmallChange" Value="1" />
-        <Setter Property="LargeChange" Value="1"/>
-        <Setter Property="Minimum" Value="1"/>
+        <Setter Property="LargeChange" Value="1" />
+        <Setter Property="Minimum" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:SliderItem">

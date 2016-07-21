@@ -12,6 +12,8 @@
   <BasePoint Pos="12" R="0" G="255" B="255"  Variant="2"/>
   <!--Blue-->
   <BasePoint Pos="16" R="0" G="0" B="255"  Variant="0"/>
+  <!--Orange-->
+  <BasePoint Pos="20" R="255" G="165" B="0"  Variant="3"/>
   <!--Magenta RangeLeft-->
   <BasePoint Pos="25" R="255" G="0" B="255"  Variant="1"/>
   <!--Magenta RangeRight-->

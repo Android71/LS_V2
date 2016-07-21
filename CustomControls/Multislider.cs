@@ -64,21 +64,158 @@ namespace LS_Designer_WPF.Controls
 
         #region DP
 
+
+        public ObservableCollection<SliderItem> SliderList
+        {
+            get { return (ObservableCollection<SliderItem>)GetValue(SliderListProperty); }
+            set { SetValue(SliderListProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SliderListProperty =
+            DependencyProperty.Register("SliderList", typeof(ObservableCollection<SliderItem>), typeof(MultiSlider), 
+                                new PropertyMetadata(null, SliderListChanged));
+
+        private static void SliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            MultiSlider ms = (MultiSlider)d;
+            if (ms.UpSliders == null || ms.DownSliders == null) return;
+               
+            ms.ReArrangeSliderItems();
+            //ms.ApplyTemplate();
+            //ms.UpSliders = ms.Template.FindName("PART_UpSliders", ms) as Grid;
+            //ms.UpSliders.Children.Add(ms.SliderList[0]);
+        }
+
+        public PatternPoint[] Pattern
+        {
+            get { return (PatternPoint[])GetValue(PatternProperty); }
+            set { SetValue(PatternProperty, value); }
+        }
+
+        public static readonly DependencyProperty PatternProperty =
+            DependencyProperty.Register("Pattern", typeof(PatternPoint[]), typeof(MultiSlider), new PropertyMetadata(null));
+
+        public int Maxlimit
+        {
+            get { return (int)GetValue(MaxlimitProperty); }
+            set { SetValue(MaxlimitProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Maxlimit.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MaxlimitProperty =
+            DependencyProperty.Register("Maxlimit", typeof(int), typeof(MultiSlider), new PropertyMetadata(0));
+
+
+
+        public ICommand UpdatePattern
+        {
+            get { return (ICommand)GetValue(UpdatePatternProperty); }
+            set { SetValue(UpdatePatternProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpdatePatternProperty =
+            DependencyProperty.Register("UpdatePattern", typeof(ICommand), typeof(MultiSlider), new PropertyMetadata(null));
+
+        #endregion
+
+        #region SliderItem Handlers
+
+        bool startMove = false;
+
         private void SliderItemGotMouseCapture(object sender, MouseEventArgs e)
         {
             if (selectedSlider != null)
+            {
                 selectedSlider.IsSelected = false;
+                
+            }
             SliderItem si = sender as SliderItem;
+            //startIx = Convert.ToInt32(si.Value);
+            //Console.WriteLine($"CurrentValue: {startIx}");
+            startMove = true;
             sliderIx = SliderList.IndexOf(si);
             //clickedIx = si.Position;
             selectedSlider = si;
             selectedSlider.IsSelected = true;
             //SelectedPoint = Pattern[si.PatternIx];
             //valueLabel.Text = ((int)selectedSliderItem.Value).ToString();
+            if (sliderIx == 0)
+            {
+                // firtst slider in list
+                si.SelectionStart = 1;
+                if (selectedSlider.Variant == PointVariant.RangeLeft)
+                    si.SelectionEnd = SliderList[sliderIx + 1].Value;
+                else
+                    si.SelectionEnd = SliderList[sliderIx + 1].Value - 1;
+                return;
+            }
+
+            if (sliderIx == SliderList.Count - 1)
+            {
+                //last slider in list
+                si.SelectionEnd = Maxlimit;
+                if (selectedSlider.Variant == PointVariant.RangeRight)
+                    si.SelectionStart = SliderList[sliderIx - 1].Value;
+                else
+                    si.SelectionStart = SliderList[sliderIx - 1].Value + 1;
+                return;
+            }
+
+            // internal slider
+            if (selectedSlider.Variant == PointVariant.RangeRight)
+            {
+                si.SelectionStart = SliderList[sliderIx - 1].Value;
+                si.SelectionEnd = SliderList[sliderIx + 1].Value - 1;
+                return;
+            }
+
+            if (selectedSlider.Variant == PointVariant.RangeLeft)
+            {
+                si.SelectionStart = SliderList[sliderIx - 1].Value + 1;
+                si.SelectionEnd = SliderList[sliderIx + 1].Value;
+                return;
+            }
+
+            if (selectedSlider.Variant != PointVariant.RangeLeft && selectedSlider.Variant != PointVariant.RangeRight)
+            {
+                si.SelectionStart = SliderList[sliderIx - 1].Value + 1;
+                si.SelectionEnd = SliderList[sliderIx + 1].Value - 1;
+                return;
+            }
+
         }
 
+        int currentIx;
         private void OnSliderItemValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            //Console.WriteLine($"OldValue: {e.OldValue}");
+            //Console.WriteLine($"NewValue: {e.NewValue}");
+            //Console.WriteLine();
+            int oldIx = Convert.ToInt32(e.OldValue);
+            int newIx = Convert.ToInt32(e.NewValue);
+            if (startMove)
+            {
+                currentIx = newIx;
+                startMove = false;
+                Console.WriteLine("Start");
+                Console.WriteLine($"OldIx: {oldIx}");
+                Console.WriteLine($"NewIx: {newIx}");
+                Console.WriteLine();
+                return;
+            }
+
+            if (currentIx != newIx)
+            {
+                currentIx = newIx;
+                Console.WriteLine($"OldIx: {oldIx}");
+                Console.WriteLine($"NewIx: {newIx}");
+                Console.WriteLine();
+            }
+
+
+            
+
             //SliderItem s = sender as SliderItem;
             //int ix = sliders.IndexOf(s);
             //if (e.NewValue > e.OldValue)
@@ -108,41 +245,6 @@ namespace LS_Designer_WPF.Controls
             //UpdateModel();
 
         }
-
-        public ObservableCollection<SliderItem> SliderList
-        {
-            get { return (ObservableCollection<SliderItem>)GetValue(SliderListProperty); }
-            set { SetValue(SliderListProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SliderListProperty =
-            DependencyProperty.Register("SliderList", typeof(ObservableCollection<SliderItem>), typeof(MultiSlider), 
-                                new PropertyMetadata(null, SliderListChanged));
-
-        private static void SliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            MultiSlider ms = (MultiSlider)d;
-            if (ms.UpSliders == null || ms.DownSliders == null) return;
-               
-            ms.ReArrangeSliderItems();
-            //ms.ApplyTemplate();
-            //ms.UpSliders = ms.Template.FindName("PART_UpSliders", ms) as Grid;
-            //ms.UpSliders.Children.Add(ms.SliderList[0]);
-        }
-
-
-
-        public PatternPoint[] Pattern
-        {
-            get { return (PatternPoint[])GetValue(PatternProperty); }
-            set { SetValue(PatternProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Pattern.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PatternProperty =
-            DependencyProperty.Register("Pattern", typeof(PatternPoint[]), typeof(MultiSlider), new PropertyMetadata(null));
-
 
         #endregion
     }
