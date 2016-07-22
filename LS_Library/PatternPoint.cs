@@ -41,8 +41,28 @@ namespace LS_Library
 
         public double L { get; set; }
 
-        public void SetPointColor()
-        { }
+        //public void SetPointColor()
+        //{ }
+
+        public void Clear()
+        {
+            SetColorFromHSL(0.0, 0.0, 0.0);
+        }
+
+        public void SetColorFromHSL(double h, double s, double l)
+        {
+            H = h;
+            S = s;
+            L = l;
+            PointColor = HSLtoRGB();
+            Lightness = Convert.ToInt32(L * 255.0);
+        }
+
+        public void UpdateColor()
+        {
+            PointColor = HSLtoRGB();
+            Lightness = Convert.ToInt32(L * 255.0);
+        }
 
         int _lightness;
         public int Lightness
@@ -58,36 +78,42 @@ namespace LS_Library
             }
         }
 
+        public void CopyTo(PatternPoint pp)
+        {
+            pp.H = H;
+            pp.S = S;
+            pp.L = L;
+            pp.Lightness = Lightness;
+            pp.PointColor = PointColor;
+        }
+
         /// <summary>
         /// Converts HSL to RGB.
         /// </summary>
         /// <param name="h">Hue, must be in [0, 360].</param>
         /// <param name="s">Saturation, must be in [0, 1].</param>
         /// <param name="l">Luminance, must be in [0, 1].</param>
-        public static Color HSLtoRGB(double h, double s, double l)
+        //public static Color HSLtoRGB(double h, double s, double l)
+        System.Windows.Media.Color HSLtoRGB(/*double h, double s, double l*/)
         {
-            if (s == 0)
+            if (S == 0)
             {
                 // achromatic color (gray scale)
-                return Color.FromArgb(
-                    //Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                    //    l * 255.0))),
-                    Convert.ToInt32(l * 255.0),
-                    Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                        l * 255.0))),
-                    Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                        l * 255.0)))
+                return System.Windows.Media.Color.FromRgb(
+                    Convert.ToByte(L * 255.0),
+                    Convert.ToByte(L * 255.0),
+                    Convert.ToByte(L * 255.0)
                     );
             }
             else
             {
-                double q = (l < 0.5) ? (l * (1.0 + s)) : (l + s - (l * s));
-                double p = (2.0 * l) - q;
+                double q = (L < 0.5) ? (L * (1.0 + S)) : (L + S - (L * S));
+                double p = (2.0 * L) - q;
 
-                double Hk = h / 360.0;
+                double Hk = H / 360.0;
                 double[] T = new double[3];
                 T[0] = Hk + (1.0 / 3.0);    // Tr
-                T[1] = Hk;                // Tb
+                T[1] = Hk;                  // Tb
                 T[2] = Hk - (1.0 / 3.0);    // Tg
 
                 for (int i = 0; i < 3; i++)
@@ -110,13 +136,16 @@ namespace LS_Library
                     else T[i] = p;
                 }
 
-                return Color.FromArgb (
-                    Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                        T[0] * 255.0))),
-                    Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                        T[1] * 255.0))),
-                    Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                        T[2] * 255.0)))
+                return System.Windows.Media.Color.FromRgb (
+                    Convert.ToByte(T[0] * 255.0),
+                    Convert.ToByte(T[1] * 255.0),
+                    Convert.ToByte(T[2] * 255.0)
+                    //Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
+                    //    T[0] * 255.0))),
+                    //Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
+                    //    T[1] * 255.0))),
+                    //Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
+                    //    T[2] * 255.0)))
                     );
             }
         }

@@ -26,7 +26,7 @@ namespace PatternEffect.ViewModel
         public EffectViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            UpdatePatternCmd = new RelayCommand<SliderItem>((si) => ExecUpdatePattern(si));
+            UpdatePatternCmd = new RelayCommand<SliderDuplet>((sd) => ExecUpdatePattern(sd));
             
             string path = Assembly.GetExecutingAssembly().Location;
             DirectoryInfo dirInfo = new DirectoryInfo(path);
@@ -73,7 +73,7 @@ namespace PatternEffect.ViewModel
         void BuildPattern()
         {
             SliderItem prevSlider = null;
-            if (SliderItems.Count < 1)
+            if (SliderItems.Count > 1)
             {
                 //int ix = 0;
                 foreach(SliderItem si in SliderItems)
@@ -91,49 +91,85 @@ namespace PatternEffect.ViewModel
             }
         }
 
-        void BuildGradient(SliderItem leftSlider, SliderItem rightSlider)
+        void BuildGradient(SliderItem leftSlider, SliderItem rightSlider, bool onlyLightness = false)
         {
+            double deltaH;
+            double deltaS;
+            double deltaL;
+
+
             int leftIx = Convert.ToInt32(leftSlider.Value);
             int rightIx = Convert.ToInt32(rightSlider.Value);
-            int stepCount = rightIx - leftIx - 1;
+            int stepCount = rightIx - leftIx;
             if (stepCount > 0)
             {
                 if (leftSlider.Variant == PointVariant.RangeLeft)
                 {
                     for (int i = leftIx + 1; i < rightIx; i++)
                     {
-                        Pattern[i].H = leftSlider.PatternPoint.H;
-                        Pattern[i].S = leftSlider.PatternPoint.S;
-                        Pattern[i].L = leftSlider.PatternPoint.L;
-                        Pattern[i].Lightness = leftSlider.PatternPoint.Lightness;
-                        Pattern[i].PointColor = leftSlider.PatternPoint.PointColor;
+                        leftSlider.PatternPoint.CopyTo(Pattern[i - 1]);
                     }
                     return;
                 }
-
-                double deltaH = (rightSlider.PatternPoint.H - leftSlider.PatternPoint.H) / stepCount;
-                double deltaS = (rightSlider.PatternPoint.S - leftSlider.PatternPoint.S) / stepCount;
-                double deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
-                for (int i = leftIx + 1; i < rightIx; i++)
+                if (onlyLightness)
                 {
-                    Pattern[i].H = Pattern[i - 1].H + deltaH;
-                    Pattern[i].S = Pattern[i - 1].S + deltaS;
-                    Pattern[i].L = Pattern[i - 1].L + deltaL;
-                    Pattern[i].SetPointColor();
+                    deltaH = 0.0;
+                    deltaS = 0.0;
+                    deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
+                    for (int i = leftIx + 1; i < rightIx; i++)
+                    {
+                        PatternPoint pp = Pattern[i - 1 - 1];
+                        Pattern[i - 1].L = pp.L + deltaL;
+                        Pattern[i - 1].UpdateColor();
+                    }
                 }
+                else
+                {
+                    deltaH = (rightSlider.PatternPoint.H - leftSlider.PatternPoint.H) / stepCount;
+                    deltaS = (rightSlider.PatternPoint.S - leftSlider.PatternPoint.S) / stepCount;
+                    deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
+                    for (int i = leftIx + 1; i < rightIx; i++)
+                    {
+                        PatternPoint pp = Pattern[i - 1 - 1];
+                        Pattern[i - 1].SetColorFromHSL(pp.H + deltaH, pp.S + deltaS, pp.L + deltaL);
+                    }
+                }
+                
             }
         }
 
-        public RelayCommand<SliderItem> UpdatePatternCmd { get; private set; }
-
-        private void ExecUpdatePattern(SliderItem slider)
+        public void ClearLeftEnd()
         {
-            throw new NotImplementedException();
+            int leftIx = (int)SliderItems[0].Value - 1;
+            for (int i = 0; i < leftIx; i++)
+                Pattern[i].Clear();
         }
 
-private void Test(string s)
+        public void ClearRightEnd()
         {
-            throw new NotImplementedException();
+            int rightIx = (int)SliderItems[SliderItems.Count - 1].Value;
+            for (int i = rightIx; i < Maxlimit; i++)
+                Pattern[i].Clear();
+        }
+
+        public RelayCommand<SliderDuplet> UpdatePatternCmd { get; private set; }
+
+        private void ExecUpdatePattern(SliderDuplet sd)
+        {
+            if (sd.LeftSlider == null)
+            {
+                ClearLeftEnd();
+                return;
+            }
+            if (sd.RightSlider == null)
+            {
+                ClearRightEnd();
+                return;
+            }
+            if (sd.OnlyLightness)
+                BuildGradient(sd.LeftSlider, sd.RightSlider, true);
+            else
+                BuildGradient(sd.LeftSlider, sd.RightSlider);
         }
 
         void ParsePatternParams(string profile)

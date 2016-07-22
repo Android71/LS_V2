@@ -131,15 +131,11 @@ namespace LS_Designer_WPF.Controls
                 
             }
             SliderItem si = sender as SliderItem;
-            //startIx = Convert.ToInt32(si.Value);
-            //Console.WriteLine($"CurrentValue: {startIx}");
             startMove = true;
+            //currentIx = 
             sliderIx = SliderList.IndexOf(si);
-            //clickedIx = si.Position;
             selectedSlider = si;
             selectedSlider.IsSelected = true;
-            //SelectedPoint = Pattern[si.PatternIx];
-            //valueLabel.Text = ((int)selectedSliderItem.Value).ToString();
             if (sliderIx == 0)
             {
                 // firtst slider in list
@@ -189,60 +185,85 @@ namespace LS_Designer_WPF.Controls
         int currentIx;
         private void OnSliderItemValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //Console.WriteLine($"OldValue: {e.OldValue}");
-            //Console.WriteLine($"NewValue: {e.NewValue}");
-            //Console.WriteLine();
+            SliderItem si = (SliderItem)sender;
             int oldIx = Convert.ToInt32(e.OldValue);
             int newIx = Convert.ToInt32(e.NewValue);
-            if (startMove)
+
+            PatternPoint pp = Pattern[newIx - 1];
+            PatternPoint sliderPoint = si.PatternPoint;
+            if (si.Variant == PointVariant.Lightness)
             {
-                currentIx = newIx;
-                startMove = false;
-                Console.WriteLine("Start");
-                Console.WriteLine($"OldIx: {oldIx}");
-                Console.WriteLine($"NewIx: {newIx}");
-                Console.WriteLine();
+                pp.L = si.PatternPoint.L;
+                pp.UpdateColor();
+                si.PatternPoint = pp;
+                UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si, true));
+                UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1], true));
+                return;
+            }
+            else
+            {
+                si.PatternPoint.CopyTo(pp);
+            }
+            si.PatternPoint = pp;
+            if (sliderIx == 0)
+            {
+                // First slider movement
+                UpdatePattern.Execute(new SliderDuplet(null, si));
+                UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
+                return;
+            }
+            if (sliderIx == SliderList.Count - 1)
+            {
+                // Last slider movement
+                UpdatePattern.Execute(new SliderDuplet(si, null));
+                UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
+                return;
+            }
+            if (si.Variant == PointVariant.RangeLeft)
+            {
+                UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
+                return;
+            }
+            if (si.Variant == PointVariant.RangeRight)
+            {
+                UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
                 return;
             }
 
-            if (currentIx != newIx)
-            {
-                currentIx = newIx;
-                Console.WriteLine($"OldIx: {oldIx}");
-                Console.WriteLine($"NewIx: {newIx}");
-                Console.WriteLine();
-            }
+            UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
+            UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
 
 
-            
 
-            //SliderItem s = sender as SliderItem;
-            //int ix = sliders.IndexOf(s);
-            //if (e.NewValue > e.OldValue)
+
+            //if (newIx > oldIx && sliderIx == 0)
+            //// first Slider move right
             //{
-            //    if (ix != sliders.Count - 1)
-            //    {
-            //        if (e.NewValue >= sliders[ix + 1].Value - 1)
-            //            s.Value = sliders[ix + 1].Value - 1;
-            //    }
+            //    si.PatternPoint.Clear();
+            //    si.PatternPoint = pp;
             //}
-            //else
+
+
+
+
+            //if (startMove)
             //{
-            //    if (ix != 0)
-            //    {
-            //        if (e.NewValue <= sliders[ix - 1].Value + 1)
-            //            s.Value = sliders[ix - 1].Value + 1;
-            //    }
+            //    currentIx = newIx;
+            //    startMove = false;
+            //    Console.WriteLine("Start");
+            //Console.WriteLine($"OldIx: {oldIx}");
+            //Console.WriteLine($"NewIx: {newIx}");
+            //Console.WriteLine();
+            //    return;
             //}
-            //valueLabel.Text = ((int)s.Value).ToString();
-            //if ((s.Variant == SliderVariant.RangeLeftLimit) || (s.Variant == SliderVariant.Gradient) || (s.Variant == SliderVariant.Lightness))
-            //    SelectedPoint.LedPos = (int)s.Value;
-            //if (s.Variant == SliderVariant.RangeLeftLimit)
-            //    SelectedPoint.LedCount = (int)(sliders[ix + 1].Value - s.Value + 1);
-            //if (s.Variant == SliderVariant.RangeRightLimit)
-            //    SelectedPoint.LedCount = (int)s.Value - (int)sliders[ix - 1].Value + 1;
-            ////Console.WriteLine("LedPos: {0}   LedCount:  {1}", SelectedPoint.LedPos, SelectedPoint.LedCount);
-            //UpdateModel();
+
+            //if (currentIx != newIx)
+            //{
+            //    currentIx = newIx;
+            //    Console.WriteLine($"OldIx: {oldIx}");
+            //    Console.WriteLine($"NewIx: {newIx}");
+            //    Console.WriteLine();
+            //}
 
         }
 

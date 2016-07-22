@@ -1,7 +1,13 @@
-﻿<Window x:Class="PatternEffect.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:cc="clr-namespace:LS_Designer_WPF.Controls;assembly=CustomControls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:ignore="http://www.galasoft.ch/ignore"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Title="MVVM Light Application" Width="703"
-        Height="300"
+﻿<Window x:Class="PatternEffect.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cc="clr-namespace:LS_Designer_WPF.Controls;assembly=CustomControls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="MVVM Light Application"
+        d:DesignHeight="465"
+        d:DesignWidth="756"
         DataContext="{Binding EffectModel,
                               Source={StaticResource Locator}}"
         mc:Ignorable="d ignore">
@@ -14,19 +20,49 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ItemsControl x:Name="patternView"
+                      Height="255"
+                      ItemsSource="{Binding Pattern}" Margin="19,0">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1" SnapsToDevicePixels="False" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Height="{Binding Lightness}" VerticalAlignment="Bottom">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{Binding PointColor}" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
 
 
-        <TextBlock x:Name="textBlock" Margin="34,155,0,0" HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Text="{Binding Value,
-                                  ElementName=sliderItem}"
-                   TextWrapping="Wrap" />
-        <cc:MultiSlider Width="635" Height="69" Margin="34,46,0,0"
-                        HorizontalAlignment="Left" VerticalAlignment="Top"
+        <cc:MultiSlider Name="multiSlider" Grid.Row="1" 
+                        Height="69"
+                        Width="1362"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        UpdatePattern="{Binding UpdatePatternCmd}"
+                        Pattern="{Binding Pattern}"
                         Maxlimit="{Binding Maxlimit}"
-                        SliderList="{Binding SliderItems}" />
+                        SliderList="{Binding SliderItems}" Margin="19,0,0,0" />
+        <TextBlock Grid.Row="2" Text="{Binding ElementName=patternView, Path=ActualWidth}" Width="100" HorizontalAlignment="Left" Margin="10,10,0,10"/>
+        <Slider Name="regulator"  Grid.Row="3" Minimum="1" Maximum="1500" Value="{Binding ElementName=multiSlider, Path=Width}"/>
+        <TextBox Grid.Row="4" Text="{Binding ElementName=regulator, Path=Value}" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10"/>
 
     </Grid>
 </Window>

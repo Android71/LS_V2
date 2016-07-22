@@ -54,7 +54,7 @@ namespace LS_Designer_WPF.Controls
 
         protected override void OnValueChanged(double oldValue, double newValue)
         {
-            if (newValue >= SelectionStart && newValue <= SelectionEnd)
+            if (newValue >= SelectionStart && newValue <= SelectionEnd && oldValue >= SelectionStart && oldValue <= SelectionEnd)
                 base.OnValueChanged(oldValue, newValue);
             else
             {
