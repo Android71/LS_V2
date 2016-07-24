@@ -4,6 +4,7 @@
         <!--<ResourceDictionary Source="/ED_CustomControls;component/Themes/HslSlider.xaml"/>-->
         <ResourceDictionary Source="/CustomControls;component/Themes/MultiSlider.xaml" />
         <ResourceDictionary Source="/CustomControls;component/Themes/SliderItem.xaml" />
+        <!--<ResourceDictionary Source="pack://application:,,,/LS_Resources;component/LS_Resources.xaml" />-->
     </ResourceDictionary.MergedDictionaries>
 
 

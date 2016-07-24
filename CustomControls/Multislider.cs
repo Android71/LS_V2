@@ -186,6 +186,7 @@ namespace LS_Designer_WPF.Controls
         private void OnSliderItemValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SliderItem si = (SliderItem)sender;
+            //si.Busy = true;
             int oldIx = Convert.ToInt32(e.OldValue);
             int newIx = Convert.ToInt32(e.NewValue);
 
@@ -219,21 +220,21 @@ namespace LS_Designer_WPF.Controls
                 UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
                 return;
             }
-            if (si.Variant == PointVariant.RangeLeft)
-            {
-                UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
-                return;
-            }
-            if (si.Variant == PointVariant.RangeRight)
-            {
-                UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
-                return;
-            }
+            //if (si.Variant == PointVariant.RangeLeft)
+            //{
+            //    UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
+            //    return;
+            //}
+            //if (si.Variant == PointVariant.RangeRight)
+            //{
+            //    UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
+            //    return;
+            //}
 
             UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
             UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
 
-
+            //si.Busy = false;
 
 
             //if (newIx > oldIx && sliderIx == 0)

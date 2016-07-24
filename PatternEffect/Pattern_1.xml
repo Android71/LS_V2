@@ -1,0 +1,13 @@
+<Params PointCount="170">
+  <BasePoint Pos="1" R="0" G="128" B="0" Variant="0" />
+  <BasePoint Pos="13" R="0" G="153" B="68" Variant="3" />
+  <BasePoint Pos="29" R="0" G="255" B="255" Variant="1" />
+  <BasePoint Pos="35" R="0" G="255" B="255" Variant="2" />
+  <BasePoint Pos="49" R="0" G="0" B="255" Variant="0" />
+  <BasePoint Pos="83" R="195" G="148" B="255" Variant="3" />
+  <BasePoint Pos="100" R="117" G="0" B="153" Variant="3" />
+  <BasePoint Pos="121" R="255" G="0" B="255" Variant="1" />
+  <BasePoint Pos="125" R="255" G="0" B="255" Variant="2" />
+  <BasePoint Pos="151" R="143" G="10" B="143" Variant="3" />
+  <BasePoint Pos="170" R="238" G="130" B="238" Variant="0" />
+</Params>

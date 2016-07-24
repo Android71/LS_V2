@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
 using System.ComponentModel;
 
 
@@ -41,8 +36,9 @@ namespace LS_Library
 
         public double L { get; set; }
 
-        //public void SetPointColor()
-        //{ }
+        public double InitialL { get; set; } //исходное значение Lightness для использования в алгоритме построения
+                                             //градиента яркости
+
 
         public void Clear()
         {
@@ -125,11 +121,11 @@ namespace LS_Library
                     {
                         T[i] = p + ((q - p) * 6.0 * T[i]);
                     }
-                    else if ((T[i] * 2.0) < 1) //(1.0/6.0)<=T[i] && T[i]<0.5
+                    else if ((T[i] * 2.0) < 1)      //(1.0/6.0)<=T[i] && T[i]<0.5
                     {
                         T[i] = q;
                     }
-                    else if ((T[i] * 3.0) < 2) // 0.5<=T[i] && T[i]<(2.0/3.0)
+                    else if ((T[i] * 3.0) < 2)      // 0.5<=T[i] && T[i]<(2.0/3.0)
                     {
                         T[i] = p + (q - p) * ((2.0 / 3.0) - T[i]) * 6.0;
                     }
@@ -140,12 +136,6 @@ namespace LS_Library
                     Convert.ToByte(T[0] * 255.0),
                     Convert.ToByte(T[1] * 255.0),
                     Convert.ToByte(T[2] * 255.0)
-                    //Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                    //    T[0] * 255.0))),
-                    //Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                    //    T[1] * 255.0))),
-                    //Convert.ToInt32(Double.Parse(String.Format("{0:0.00}",
-                    //    T[2] * 255.0)))
                     );
             }
         }

@@ -1,25 +1,25 @@
 ﻿<Application x:Class="LS_Designer_WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:LS_Designer_WPF.ViewModel"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ignore="http://www.galasoft.ch/ignore"
-             StartupUri="ScenesView.xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:LS_Designer_WPF.ViewModel"
+             StartupUri="MainWindow.xaml"
              mc:Ignorable="d ignore">
-    
-    <!--StartupUri="MainWindow.xaml"-->
-    <!--StartupUri="ScenesView.xaml"-->
+
+    <!--  StartupUri="MainWindow.xaml"  -->
+    <!--  StartupUri="ScenesView.xaml"  -->
 
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <ResourceDictionary Source="Skins/MainSkin_Old.xaml" />
                 <ResourceDictionary>
                     <!--  Global View Model Locator  -->
                     <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
                 </ResourceDictionary>
-                <!--<ResourceDictionary Source="Simple Styles.xaml"/>-->
+                <!--<ResourceDictionary Source="pack://application:,,,/LS_Resources;component/LS_Resources.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

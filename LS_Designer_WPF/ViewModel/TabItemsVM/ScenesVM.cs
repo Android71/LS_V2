@@ -1,22 +1,16 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
 using LS_Designer_WPF.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace LS_Designer_WPF.ViewModel
-{ 
+{
     public class ScenesVM : TabItemVM
     {
         public ScenesVM(IDataService dataService)
         {
             _dataService = dataService;
-            TabName = "Light Zones";
+            TabName = "Scenes";
 
             SceneAddCmd = new RelayCommand(SceneExecAdd, SceneCanExecAdd);
             SceneRemoveCmd = new RelayCommand(SceneExecRemove, SceneCanExecRemove);
@@ -24,8 +18,18 @@ namespace LS_Designer_WPF.ViewModel
             SceneCancelCmd = new RelayCommand(SceneExecCancel);
             SceneSaveCmd = new RelayCommand(SceneExecSave);
 
-            AppContext.Partition = new Partition();
-            AppContext.Partition.Id = 1;
+            CreateEffectCmd = new RelayCommand(ExecCreateEffect, CanExecCreateEffect);
+
+            TabItemEnabled = false;
+            //AppContext.Partition = new Partition();
+            //AppContext.Partition.Id = 1;
+            //Load();
+        }
+
+        public override void Refresh()
+        {
+            //MasterSelectedItem = null;
+            //DetailSelectedItem = null;
             Load();
         }
 
@@ -38,9 +42,19 @@ namespace LS_Designer_WPF.ViewModel
             });
         }
 
+        protected override void ContextChanged(string obj)
+        {
+            if (AppContext.ControlSpace != null && AppContext.Partition != null)
+            {
+                TabItemEnabled = true;
+                if (IsSelected)
+                    Refresh();
+            }
+        }
+
         /*************************************************************/
 
-        #region Scene
+        #region Scenes
 
         #region Properties
 
@@ -384,6 +398,35 @@ namespace LS_Designer_WPF.ViewModel
             get { return _sceneAccents; }
             set { Set(ref _sceneAccents, value); }
         }
+
+        #region Effect
+
+        EffectPopUpVM effectPopUpVM;
+
+        #region Commands
+
+        #region CreateEffect Command
+
+        public RelayCommand CreateEffectCmd { get; private set; }
+
+        void ExecCreateEffect()
+        {
+            //effectPopUpVM = new AttentionVM("Внимание", CancelCallbackAction, OKCallbackAction);
+            MessengerInstance.Send<EmptyPopUpVM>(effectPopUpVM, AppContext.ShowPopUpMsg);
+            //MessengerInstance.Send("", AppContext.BlockUIMsg);
+        }
+
+        bool CanExecCreateEffect()
+        {
+            return true;
+        }
+
+        #endregion
+
+
+        #endregion
+
+        #endregion
 
     }
 }

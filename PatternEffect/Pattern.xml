@@ -3,7 +3,7 @@
     Variant = 2 RangeRight
     Variant = 3 Lightness-->
   
-<Pattern PointCount="40">
+<Pattern PointCount="560">
   <!--Green-->
   <BasePoint Pos="1" R="0" G="128" B="0"  Variant="0"/>
   <!--Aqua RangeLeft-->
@@ -20,5 +20,5 @@
   <!--Magenta RangeRight-->
   <BasePoint Pos="29" R="255" G="0" B="255"  Variant="2"/>
   <!--Violet-->
-  <BasePoint Pos="40" R="238" G="130" B="238"  Variant="0"/>
+  <BasePoint Pos="560" R="238" G="130" B="238"  Variant="0"/>
 </Pattern>

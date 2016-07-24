@@ -7,7 +7,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:MultiSlider">
-                    <Grid x:Name="PART_Sliders" >
+                    <Grid x:Name="PART_Sliders">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="4" />
@@ -19,9 +19,9 @@
                             <!--  Odd SliderItem instance get inserted here  -->
                         </Grid>
                         <Border x:Name="PART_Track" Grid.Row="2" Height="6"
-                                 VerticalAlignment="Center" Background="#FF35DCDC"
-                                BorderBrush="#FF35DCDC" BorderThickness="2" />
-                        <!--Margin="3,0,0,3"-->
+                                VerticalAlignment="Center" Background="#FF35DCDC" BorderBrush="#FF35DCDC"
+                                BorderThickness="2" />
+                        <!--  Margin="3,0,0,3"  -->
                         <Grid x:Name="PART_DownSliders" Grid.Row="4">
                             <!--  Even SliderItem instance get inserted here  -->
                         </Grid>

@@ -50,12 +50,17 @@ namespace LS_Designer_WPF.Controls
 
         public PatternPoint PatternPoint { get; set; }
 
+        public bool Busy { get; set; }
+
         #endregion
 
         protected override void OnValueChanged(double oldValue, double newValue)
         {
-            if (newValue >= SelectionStart && newValue <= SelectionEnd && oldValue >= SelectionStart && oldValue <= SelectionEnd)
-                base.OnValueChanged(oldValue, newValue);
+            //if (!Busy)
+            //{
+
+                if (newValue >= SelectionStart && newValue <= SelectionEnd && oldValue >= SelectionStart && oldValue <= SelectionEnd)
+                    base.OnValueChanged(oldValue, newValue);
             else
             {
                 if (newValue < SelectionStart)
@@ -63,6 +68,8 @@ namespace LS_Designer_WPF.Controls
                 if (newValue > SelectionEnd)
                     Value = SelectionEnd;
             }
+
+            //}
         }
 
         

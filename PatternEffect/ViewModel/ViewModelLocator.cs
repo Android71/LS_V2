@@ -16,23 +16,12 @@ using PatternEffect.Model;
 
 namespace PatternEffect.ViewModel
 {
-    /// <summary>
-    /// This class contains static references to all the view models in the
-    /// application and provides an entry point for the bindings.
-    /// <para>
-    /// See http://www.mvvmlight.net
-    /// </para>
-    /// </summary>
     public class ViewModelLocator
     {
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-            
             SimpleIoc.Default.Register<IDataService, DataService>();
-            
-
             SimpleIoc.Default.Register<EffectViewModel>();
         }
 

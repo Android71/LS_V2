@@ -85,11 +85,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\PopUp\EffectPopUpUC.xaml.cs">
+      <DependentUpon>EffectPopUpUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabItemsUC\LightZonesUC.xaml.cs">
       <DependentUpon>LightZonesUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NLControlChannelUC.xaml.cs">
       <DependentUpon>NLControlChannelUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TabItemsUC\ScenesUC.xaml.cs">
+      <DependentUpon>ScenesUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="PopUpMessages\AppMessages.cs" />
     <Compile Include="Controls\AN6UControlChannelUC.xaml.cs">
@@ -147,6 +153,7 @@
       <DependentUpon>ScenesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\PopUpVM\EffectPopUpVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\LightZonesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\LE_VisualVM.cs" />
     <Compile Include="ViewModel\PopUpVM\PopupMessageVM.cs" />
@@ -179,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LE_UC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PopUp\EffectPopUpUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -230,6 +241,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TabItemsUC\ScenesUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skins\MainSkin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Skins\MainSkin_Old.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -295,6 +314,10 @@
     <ProjectReference Include="..\EFData\EFData.csproj">
       <Project>{8aa9fd1b-3f18-498f-af33-0696781f33c0}</Project>
       <Name>EFData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LS_Resources\LS_Resources.csproj">
+      <Project>{cf2e6468-880f-4032-8c18-fb4e132978f8}</Project>
+      <Name>LS_Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

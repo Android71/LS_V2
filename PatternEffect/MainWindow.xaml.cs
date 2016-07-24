@@ -16,6 +16,7 @@ namespace PatternEffect
         {
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
+            regulator.Value = 1080;
         }
     }
 }

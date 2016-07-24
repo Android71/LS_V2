@@ -1125,7 +1125,7 @@ namespace LS_Designer_WPF.Model
                         updateCount = db.SaveChanges();
                         scene.Id = dbScene.Id;
                     }
-                    catch (Exception ex) { var x = 5; }
+                    catch (Exception /*ex*/) { /*var x = 5;*/ }
                 }
                 callback(updateCount, null);
             }

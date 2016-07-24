@@ -15,7 +15,7 @@
     </Style>
 
     <ControlTemplate x:Key="Gradient" TargetType="{x:Type Thumb}">
-        <Grid Width="19" Height="19" >
+        <Grid Width="19" Height="19">
             <Border Name="MainBorder" Background="#FFBFBFBF" BorderBrush="#FF5F5F5F"
                     BorderThickness="2" />
             <Ellipse Name="CenterDot" Width="6" Height="6"
@@ -33,7 +33,7 @@
     </ControlTemplate>
 
     <ControlTemplate x:Key="LeftLimit" TargetType="{x:Type Thumb}">
-        <Grid Width="19" Height="19" >
+        <Grid Width="19" Height="19">
             <Path Name="MainBorder" Data="M159.5,79.5 L199.5,119.5 159.5,159.5 z" Fill="#FFBFBFBF"
                   Stretch="Fill" Stroke="#FF5F5F5F" StrokeThickness="2" />
             <Ellipse Name="CenterDot" Height="6" Margin="3.839,6.457,9.161,6.542"
