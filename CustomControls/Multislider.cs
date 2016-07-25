@@ -95,6 +95,32 @@ namespace LS_Designer_WPF.Controls
             //ms.UpSliders.Children.Add(ms.SliderList[0]);
         }
 
+
+
+        public int SelectedMode
+        {
+            get { return (int)GetValue(SelectedModeProperty); }
+            set { SetValue(SelectedModeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedMode.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedModeProperty =
+            DependencyProperty.Register("SelectedMode", typeof(int), typeof(MultiSlider), new PropertyMetadata(0));
+
+
+
+        public int Value
+        {
+            get { return (int)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Value.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.Register("Value", typeof(int), typeof(MultiSlider), new PropertyMetadata(0));
+
+
+
         public PatternPoint[] Pattern
         {
             get { return (PatternPoint[])GetValue(PatternProperty); }
@@ -139,11 +165,12 @@ namespace LS_Designer_WPF.Controls
                 
             }
             SliderItem si = sender as SliderItem;
-            startMove = true;
+            //startMove = true;
             //currentIx = 
             sliderIx = SliderList.IndexOf(si);
             selectedSlider = si;
             selectedSlider.IsSelected = true;
+            Value = (int)selectedSlider.Value;
             if (sliderIx == 0)
             {
                 // firtst slider in list
@@ -194,6 +221,7 @@ namespace LS_Designer_WPF.Controls
         private void OnSliderItemValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SliderItem si = (SliderItem)sender;
+            Value = (int)si.Value;
             //si.Busy = true;
             int oldIx = Convert.ToInt32(e.OldValue);
             int newIx = Convert.ToInt32(e.NewValue);
@@ -288,6 +316,7 @@ namespace LS_Designer_WPF.Controls
             Console.WriteLine($"ActualWidth + Margin {slidersArea.ActualWidth + 2 * this.Margin.Left}");
             Console.WriteLine($"ptX {pt.X}");
             Console.WriteLine($"LedPos: {siderPos}");
+            Console.WriteLine($"CurrentMode: {SelectedMode}");
             if (siderPos < 1)
                 siderPos = 1;
         }
