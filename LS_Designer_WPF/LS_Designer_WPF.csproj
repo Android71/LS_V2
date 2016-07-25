@@ -88,6 +88,9 @@
     <Compile Include="Controls\PopUp\EffectPopUpUC.xaml.cs">
       <DependentUpon>EffectPopUpUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EffectDesigner\RGB_EffectUC.xaml.cs">
+      <DependentUpon>RGB_EffectUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TabItemsUC\LightZonesUC.xaml.cs">
       <DependentUpon>LightZonesUC.xaml</DependentUpon>
     </Compile>
@@ -190,6 +193,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PopUp\EffectPopUpUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EffectDesigner\RGB_EffectUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -321,6 +328,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls\EffectDesigner\ColorPanels\" />
     <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="..\Model\Model.projitems" Label="Shared" />

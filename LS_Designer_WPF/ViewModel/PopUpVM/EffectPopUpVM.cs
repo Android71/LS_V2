@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LS_Designer_WPF.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,11 @@ namespace LS_Designer_WPF.ViewModel
 {
     public class EffectPopUpVM : EmptyPopUpVM
     {
-        public EffectPopUpVM(Action<object> okCallBackAction, Action<object> cancelCallBackAction)
+        IDataService _dataService;
+
+        public EffectPopUpVM(IDataService dataService, Action<object> okCallBackAction, Action<object> cancelCallBackAction, int effectId = -1)
         {
+            _dataService = dataService;
             CancelAction = cancelCallBackAction;
             OKAction = okCallBackAction;
         }
@@ -27,6 +31,13 @@ namespace LS_Designer_WPF.ViewModel
             // Close PoUp
             PopUpVisibility = Visibility.Collapsed;
             OKAction("OK");
+        }
+
+        object _effectVM;
+        public object EffectVM
+        {
+            get { return _effectVM; }
+            set { Set(ref _effectVM, value); }
         }
     }
 }

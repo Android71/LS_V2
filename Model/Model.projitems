@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RT\NLEventDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\NLPowerBlock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RT\NLPowerChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RT\RGB_Effect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene.cs" />
   </ItemGroup>
   <ItemGroup>

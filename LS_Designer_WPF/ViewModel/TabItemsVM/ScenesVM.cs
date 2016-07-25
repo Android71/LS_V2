@@ -411,14 +411,23 @@ namespace LS_Designer_WPF.ViewModel
 
         void ExecCreateEffect()
         {
-            //effectPopUpVM = new AttentionVM("Внимание", CancelCallbackAction, OKCallbackAction);
+            effectPopUpVM = new EffectPopUpVM(_dataService, Save, Cancel);
             MessengerInstance.Send<EmptyPopUpVM>(effectPopUpVM, AppContext.ShowPopUpMsg);
-            //MessengerInstance.Send("", AppContext.BlockUIMsg);
         }
 
         bool CanExecCreateEffect()
         {
             return true;
+        }
+
+        void Cancel(object obj)
+        {
+
+        }
+
+        void Save(object obj)
+        {
+
         }
 
         #endregion

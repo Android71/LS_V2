@@ -1,24 +1,10 @@
-﻿<!--Variant = 0 Gradient
-    Variant = 1 RangeLeft
-    Variant = 2 RangeRight
-    Variant = 3 Lightness-->
-  
-<Pattern PointCount="560">
-  <!--Green-->
-  <BasePoint Pos="1" R="0" G="128" B="0"  Variant="0"/>
-  <!--Aqua RangeLeft-->
-  <BasePoint Pos="8" R="0" G="255" B="255"  Variant="1"/>
-  <!--Aqua RangeRight-->
-  <BasePoint Pos="12" R="0" G="255" B="255"  Variant="2"/>
-  <!--Blue-->
-  <BasePoint Pos="16" R="0" G="0" B="255"  Variant="0"/>
-  <!--Orange-->
-  <!--<BasePoint Pos="20" R="255" G="165" B="0"  Variant="3"/>-->
-  <BasePoint Pos="20" R="255" G="217" B="148"  Variant="3"/>
-  <!--Magenta RangeLeft-->
-  <BasePoint Pos="25" R="255" G="0" B="255"  Variant="1"/>
-  <!--Magenta RangeRight-->
-  <BasePoint Pos="29" R="255" G="0" B="255"  Variant="2"/>
-  <!--Violet-->
-  <BasePoint Pos="560" R="238" G="130" B="238"  Variant="0"/>
-</Pattern>
+<Params PointCount="30">
+  <BasePoint Pos="1" R="0" G="128" B="0" Variant="0" />
+  <BasePoint Pos="8" R="0" G="255" B="255" Variant="1" />
+  <BasePoint Pos="8" R="0" G="255" B="255" Variant="2" />
+  <BasePoint Pos="16" R="0" G="0" B="255" Variant="0" />
+  <BasePoint Pos="20" R="196" G="148" B="255" Variant="3" />
+  <BasePoint Pos="29" R="255" G="0" B="255" Variant="1" />
+  <BasePoint Pos="29" R="255" G="0" B="255" Variant="2" />
+  <BasePoint Pos="30" R="238" G="130" B="238" Variant="0" />
+</Params>

@@ -197,7 +197,7 @@ namespace PatternEffect.ViewModel
             string path = Assembly.GetExecutingAssembly().Location;
             DirectoryInfo dirInfo = new DirectoryInfo(path);
             string patternDir = dirInfo.Parent.Parent.Parent.FullName;
-            string patternPath = patternDir + @"\Pattern_1.xml";
+            string patternPath = patternDir + @"\Pattern.xml";
 
             string xmlContent = File.ReadAllText(patternPath);
 

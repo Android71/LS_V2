@@ -17,6 +17,9 @@ namespace LS_Designer_WPF.Controls
 
         Grid UpSliders;
         Grid DownSliders;
+        Grid slidersArea;
+        Border track;
+
         SliderItem selectedSlider = null;
         int sliderIx = -1;
 
@@ -30,12 +33,17 @@ namespace LS_Designer_WPF.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
+            slidersArea = Template.FindName("PART_Sliders", this) as Grid;
+            track = Template.FindName("PART_Track", this) as Border;
             UpSliders = Template.FindName("PART_UpSliders", this) as Grid;
             DownSliders = Template.FindName("PART_DownSliders", this) as Grid;
+            slidersArea.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(OnTrackClick);
             if (SliderList != null)
                 //UpSliders.Children.Add(SliderList[0]);
                 ReArrangeSliderItems();
         }
+
+        
 
         void ReArrangeSliderItems()
         {
@@ -96,7 +104,7 @@ namespace LS_Designer_WPF.Controls
         public static readonly DependencyProperty PatternProperty =
             DependencyProperty.Register("Pattern", typeof(PatternPoint[]), typeof(MultiSlider), new PropertyMetadata(null));
 
-        public int Maxlimit
+        public int Maxlimit // PointCount
         {
             get { return (int)GetValue(MaxlimitProperty); }
             set { SetValue(MaxlimitProperty, value); }
@@ -266,6 +274,22 @@ namespace LS_Designer_WPF.Controls
             //    Console.WriteLine();
             //}
 
+        }
+
+        #endregion
+
+        #region Mouse Handlers
+
+        private void OnTrackClick(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Point pt = e.GetPosition((UIElement)sender);
+            double halfStep = (slidersArea.ActualWidth + 2 * this.Margin.Left) / this.Maxlimit;
+            int siderPos = Convert.ToInt32(pt.X / halfStep);
+            Console.WriteLine($"ActualWidth + Margin {slidersArea.ActualWidth + 2 * this.Margin.Left}");
+            Console.WriteLine($"ptX {pt.X}");
+            Console.WriteLine($"LedPos: {siderPos}");
+            if (siderPos < 1)
+                siderPos = 1;
         }
 
         #endregion
