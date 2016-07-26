@@ -4,7 +4,7 @@
         d:DesignWidth="910.672"
         DataContext="{Binding EffectModel,
                               Source={StaticResource Locator}}"
-        mc:Ignorable="d ignore">
+        mc:Ignorable="d ignore" Background="#FF3E3E3E">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <ItemsControl x:Name="patternView" Height="255" 
-                      ItemsSource="{Binding Pattern}" SizeChanged="patternView_SizeChanged" Loaded="patternView_Loaded">
+                      ItemsSource="{Binding Pattern}" SizeChanged="patternView_SizeChanged" Loaded="patternView_Loaded" Background="Black">
             <!--  ItemsSource="{Binding Pattern}"  -->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -48,7 +48,7 @@
                         Maxlimit="{Binding Maxlimit}"
                         Pattern="{Binding Pattern}"
                         SliderList="{Binding SliderItems}"
-                        UpdatePattern="{Binding UpdatePatternCmd}" />
+                        UpdatePatternCommand="{Binding UpdatePatternCmd}" />
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,0,0,0">
         <TextBlock  Width="100" Margin="10,10,0,10"
                    HorizontalAlignment="Left"
@@ -58,10 +58,9 @@
             <TextBlock Text="{Binding ElementName=multiSlider, Path=Value}" Margin="10,10,0,10"/>
             <TextBlock Text="AddMode: " Margin="20,10,0,10"/>
             <ComboBox Width="100" Margin="10,10,0,10" 
-                      SelectedIndex="{Binding ElementName=multiSlider, Path=SelectedMode}">
+                      SelectedIndex="{Binding ElementName=multiSlider, Path=AddMode}">
                 <TextBlock Text="Gradient"/>
-                <TextBlock Text="RangeLeft"/>
-                <TextBlock Text="RangeRight"/>
+                <TextBlock Text="Range"/>
                 <TextBlock Text="Lightness"/>
             </ComboBox>
         </StackPanel>
