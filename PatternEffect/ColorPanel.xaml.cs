@@ -13,40 +13,11 @@ using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LS_Library;
 
 namespace LS_Designer_WPF.Controls
 {
     
-    public class ColorRange
-    {
-        public ColorRange(Media.Color from, Media.Color to)
-        {
-            FromColor = from;
-            ToColor = to;
-            if (from == Media.Colors.Black)
-            {
-                HueMinimum = 0.0;
-                HueMaximum = 0.0;
-                HueMiddle = 0.0;
-            }
-            else
-            {
-                Color tmp = Color.FromArgb(from.R, from.G, from.B);
-                Color tmp1 = Color.FromArgb(to.R, to.G, to.B);
-                HueMinimum = Math.Round(tmp.GetHue());
-                HueMaximum = Math.Round(tmp1.GetHue());               //Math.Round(tmp1.GetHue());
-                if (HueMaximum == 0.0)
-                    HueMaximum = 360.0;
-                HueMiddle = HueMinimum + (HueMaximum - HueMinimum) / 2;
-            }
-        }
-        public double HueMinimum { get; set; }
-        public double HueMaximum { get; set; }
-        public double HueMiddle { get; set; }
-        public Media.Color FromColor { get; set; }
-        public Media.Color ToColor { get; set; }
-
-    }
 
     public partial class ColorPanel : UserControl
     {
@@ -58,16 +29,6 @@ namespace LS_Designer_WPF.Controls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //new Media.SolidColorBrush(Media.Color.FromRgb(255, 0, 128)),    /* Red */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(255, 0, 255)),    /* Magenta */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(128, 0, 255)),    /* Red */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(0, 0, 255)),      /* Blue*/
-            //new Media.SolidColorBrush(Media.Color.FromRgb(0, 128, 255)),    /* Red */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(0, 255, 255)),    /* Cyan */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(0, 255, 0)),      /* Green */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(255, 255, 0)),    /* Yellow */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(255, 128, 0)),    /* Orange */
-            //new Media.SolidColorBrush(Media.Color.FromRgb(255, 0, 0)),      /* Red */
             List<ColorRange> list = new List<ColorRange>();
             list.Add(new ColorRange(Media.Color.FromRgb(255,0,127), Media.Color.FromRgb(255,0,0)));         // 330-360
             list.Add(new ColorRange(Media.Color.FromRgb(255, 0, 255), Media.Color.FromRgb(255, 0, 128)));   // 300-330
@@ -87,6 +48,7 @@ namespace LS_Designer_WPF.Controls
             
             ColorRangeList = list;
             SelectedColorRange = ColorRangeList[ColorRangeList.Count - 1];
+            //hueSlider.ValueChanged += Slier
         }
 
         public SliderItem SelectedSlider
@@ -100,7 +62,45 @@ namespace LS_Designer_WPF.Controls
 
         private static void SelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
+            //double maxHue = 361;
+            //double minHue = -0.1;
+
+            if (d != null)
+            {
+                if (e.NewValue != null)
+                {
+                    SliderItem si = (SliderItem)e.NewValue;
+                    PatternPoint pp = si.PatternPoint;
+                    ColorPanel panel = (ColorPanel)d;
+                    foreach (ColorRange cr in panel.ColorRangeList)
+                    {
+                        if (cr.HueMinimum <= pp.H)
+                        {
+                            panel.SelectedColorRange = cr;
+                            break;
+                        }
+                    }
+
+                    panel.SetColor(si.PatternPoint);
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+        public void SetColor(PatternPoint pp)
+        {
+            hueSlider.Value = pp.H;
+            hueValue.Content = Math.Round(hueSlider.Value).ToString();
+            rValue.Content = pp.PointColor.R.ToString();
+            satSlider.Value = pp.S;
+            satValue.Content = Math.Round(satSlider.Value * 100).ToString();
+            gValue.Content = pp.PointColor.G.ToString();
+            lightSlider.Value = pp.L;
+            lightValue.Content = Math.Round(lightSlider.Value * 100).ToString();
+            bValue.Content = pp.PointColor.B.ToString();
         }
 
         public List<ColorRange> ColorRangeList
@@ -120,12 +120,18 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty SelectedColorRangeProperty =
-            DependencyProperty.Register("SelectedColorRange", typeof(ColorRange), typeof(ColorPanel), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedColorRange", typeof(ColorRange), typeof(ColorPanel), new PropertyMetadata(ColorRange.BlackRange));
+
+        
+
+        #region Mouse Input
 
         private void colorSelector_MouseDown(object sender, MouseButtonEventArgs e)
         {
             SelectedColorRange = (ColorRange)((e.OriginalSource as System.Windows.Shapes.Rectangle).DataContext);
             Console.WriteLine($"HueFrom {SelectedColorRange.HueMinimum}  HueTo {SelectedColorRange.HueMaximum}");
         }
+
+        #endregion
     }
 }
