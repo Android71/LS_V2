@@ -21,7 +21,8 @@ namespace PatternEffect.ViewModel
         public EffectViewModel(IDataService dataService)
         {
             _dataService = dataService;
-            UpdatePatternCmd = new RelayCommand<SliderDuplet>((sd) => ExecUpdatePattern(sd));
+            //UpdatePatternCmd = new RelayCommand<SliderDuplet>((sd) => ExecUpdatePattern(sd));
+            UpdatePatternCmd = new RelayCommand<SliderItem>((si) => ExecUpdatePattern(si));
             CreateProfileCmd = new RelayCommand(ExecCreateProfileCmd);
             
             string path = Assembly.GetExecutingAssembly().Location;
@@ -133,35 +134,23 @@ namespace PatternEffect.ViewModel
                 {
                     currentSlider.PatternPoint.CopyTo(prevSlider.PatternPoint);
                     BuildGradient(prevSlider, currentSlider);
-
-                    //if ((ix - 1) != 0)
-                    //{
-                    //    // Slider RangeLeft не первый Slider в SliderList
-                    //    beforeRangeLeft = SliderList[ix - 2];
-                    //    BuildGradient(beforeRangeLeft, prevSlider);
-                    //}
+                    if (nextSlider != null)
+                        BuildGradient(currentSlider, nextSlider);
+                    if ((ix - 1) != 0)
+                    {
+                        // Slider RangeLeft не первый Slider в SliderList
+                        beforeRangeLeft = SliderList[ix - 2];
+                        BuildGradient(beforeRangeLeft, prevSlider);
+                    }
                     return;
                 }
                
                 if (prevSlider != null)
                     BuildGradient(prevSlider, currentSlider);
+                if (nextSlider != null)
+                    BuildGradient(currentSlider, nextSlider);
             }
         }
-
-        //void BuildLightGradient()
-        //{
-        //    //foreach(SliderItem si in LightSliders)
-        //    //{
-        //    //    int ix = SliderItems.IndexOf(si);
-        //    //    // после построения градиента по цветности необходимо восстановить
-        //    //    // значение L 
-        //    //    si.PatternPoint.L = si.PatternPoint.InitialL;
-        //    //    si.PatternPoint.UpdateColor();
-
-        //    //    BuildGradient(SliderItems[ix - 1], si, true);
-        //    //    BuildGradient(si, SliderItems[ix + 1], true);
-        //    //}
-        //}
 
         void BuildGradient(SliderItem leftSlider, SliderItem rightSlider, bool onlyLightness = false)
         {
@@ -198,25 +187,31 @@ namespace PatternEffect.ViewModel
                 Pattern[i].Clear();
         }
 
-        public RelayCommand<SliderDuplet> UpdatePatternCmd { get; private set; }
+        //public RelayCommand<SliderDuplet> UpdatePatternCmd { get; private set; }
+        public RelayCommand<SliderItem> UpdatePatternCmd { get; private set; }
 
-        private void ExecUpdatePattern(SliderDuplet sd)
+        private void ExecUpdatePattern(SliderItem si)
         {
-            if (sd.LeftSlider == null)
-            {
-                ClearLeftEnd();
-                return;
-            }
-            if (sd.RightSlider == null)
-            {
-                ClearRightEnd();
-                return;
-            }
-            if (sd.OnlyLightness)
-                BuildGradient(sd.LeftSlider, sd.RightSlider, true);
-            else
-                BuildGradient(sd.LeftSlider, sd.RightSlider);
+            PrepareAndBuildGradient(si);
         }
+
+        //private void ExecUpdatePattern(SliderDuplet sd)
+        //{
+        //    if (sd.LeftSlider == null)
+        //    {
+        //        ClearLeftEnd();
+        //        return;
+        //    }
+        //    if (sd.RightSlider == null)
+        //    {
+        //        ClearRightEnd();
+        //        return;
+        //    }
+        //    if (sd.OnlyLightness)
+        //        BuildGradient(sd.LeftSlider, sd.RightSlider, true);
+        //    else
+        //        BuildGradient(sd.LeftSlider, sd.RightSlider);
+        //}
 
         void ParseEffectParams(string profile)
         {

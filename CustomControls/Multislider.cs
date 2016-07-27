@@ -155,7 +155,7 @@ namespace LS_Designer_WPF.Controls
 
         #region SliderItem Handlers
 
-        bool startMove = false;
+        //bool startMove = false;
 
         private void SliderItemGotMouseCapture(object sender, MouseEventArgs e)
         {
@@ -168,10 +168,12 @@ namespace LS_Designer_WPF.Controls
             sliderIx = SliderList.IndexOf(si);
             SelectedSlider = si;
             SelectedSlider.IsSelected = true;
+
             Value = (int)SelectedSlider.Value;
+
+            // firtst slider in list
             if (sliderIx == 0)
             {
-                // firtst slider in list
                 si.SelectionStart = 1;
                 if (SelectedSlider.Variant == PointVariant.RangeLeft)
                     si.SelectionEnd = SliderList[sliderIx + 1].Value;
@@ -180,9 +182,9 @@ namespace LS_Designer_WPF.Controls
                 return;
             }
 
+            //last slider in list
             if (sliderIx == SliderList.Count - 1)
             {
-                //last slider in list
                 si.SelectionEnd = Maxlimit;
                 if (SelectedSlider.Variant == PointVariant.RangeRight)
                     si.SelectionStart = SliderList[sliderIx - 1].Value;
@@ -215,91 +217,45 @@ namespace LS_Designer_WPF.Controls
 
         }
 
-        int currentIx;
+        //int currentIx;
         private void OnSliderItemValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SliderItem si = (SliderItem)sender;
             Value = (int)si.Value;
-            //si.Busy = true;
-            int oldIx = Convert.ToInt32(e.OldValue);
-            int newIx = Convert.ToInt32(e.NewValue);
+            int newValue = Convert.ToInt32(e.NewValue);
 
-            PatternPoint pp = Pattern[newIx - 1];
-            PatternPoint sliderPoint = si.PatternPoint;
+            PatternPoint pp = Pattern[newValue - 1];
+
             if (si.Variant == PointVariant.Lightness)
             {
                 pp.L = si.PatternPoint.L;
                 pp.UpdateColor();
                 si.PatternPoint = pp;
-                UpdatePatternCommand.Execute(new SliderDuplet(SliderList[sliderIx - 1], si, true));
-                UpdatePatternCommand.Execute(new SliderDuplet(si, SliderList[sliderIx + 1], true));
+                UpdatePatternCommand.Execute(si);
                 return;
             }
             else
             {
                 si.PatternPoint.CopyTo(pp);
             }
+
             si.PatternPoint = pp;
+
+            // First slider movement
             if (sliderIx == 0)
             {
-                // First slider movement
-                UpdatePatternCommand.Execute(new SliderDuplet(null, si));
-                UpdatePatternCommand.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
+                UpdatePatternCommand.Execute(si);
                 return;
             }
+
+            // Last slider movement
             if (sliderIx == SliderList.Count - 1)
             {
-                // Last slider movement
-                UpdatePatternCommand.Execute(new SliderDuplet(si, null));
-                UpdatePatternCommand.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
+                UpdatePatternCommand.Execute(si);
                 return;
             }
-            //if (si.Variant == PointVariant.RangeLeft)
-            //{
-            //    UpdatePattern.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
-            //    return;
-            //}
-            //if (si.Variant == PointVariant.RangeRight)
-            //{
-            //    UpdatePattern.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
-            //    return;
-            //}
 
-            UpdatePatternCommand.Execute(new SliderDuplet(SliderList[sliderIx - 1], si));
-            UpdatePatternCommand.Execute(new SliderDuplet(si, SliderList[sliderIx + 1]));
-
-            //si.Busy = false;
-
-
-            //if (newIx > oldIx && sliderIx == 0)
-            //// first Slider move right
-            //{
-            //    si.PatternPoint.Clear();
-            //    si.PatternPoint = pp;
-            //}
-
-
-
-
-            //if (startMove)
-            //{
-            //    currentIx = newIx;
-            //    startMove = false;
-            //    Console.WriteLine("Start");
-            //Console.WriteLine($"OldIx: {oldIx}");
-            //Console.WriteLine($"NewIx: {newIx}");
-            //Console.WriteLine();
-            //    return;
-            //}
-
-            //if (currentIx != newIx)
-            //{
-            //    currentIx = newIx;
-            //    Console.WriteLine($"OldIx: {oldIx}");
-            //    Console.WriteLine($"NewIx: {newIx}");
-            //    Console.WriteLine();
-            //}
-
+            UpdatePatternCommand.Execute(si);
         }
 
         #endregion
@@ -310,131 +266,133 @@ namespace LS_Designer_WPF.Controls
         {
             if (e.ClickCount == 2)      // DoubleClick
             {
-                System.Windows.Point pt = e.GetPosition((UIElement)sender);
-                double halfStep = (slidersArea.ActualWidth + 2 * Margin.Left) / this.Maxlimit;
-                int sliderPos = Convert.ToInt32(pt.X / halfStep) + 1;
-                Console.WriteLine($"ActualWidth + Margin {slidersArea.ActualWidth + 2 * this.Margin.Left}");
-                Console.WriteLine($"ptX {pt.X}");
-                Console.WriteLine($"LedPos: {sliderPos}");
-                Console.WriteLine($"CurrentMode: {AddMode}");
-
-                // AddMode = 0 Gradient
-                // AddMode = 1 Range
-                // AddMode = 2 Lightness
-
-                PatternPoint pp = Pattern[sliderPos - 1];
-
-                // если первая точка в Pattern
-                if (sliderPos < SliderList[0].Value)
+                if (e.Source is Border && (e.Source as Border).Name == "PART_Track")
                 {
-                    SliderItem tmpSi = SliderList[0];
-                    switch (AddMode)
+                    System.Windows.Point pt = e.GetPosition((UIElement)sender);
+                    double halfStep = (slidersArea.ActualWidth + 2 * Margin.Left) / this.Maxlimit;
+                    int sliderPos = Convert.ToInt32(pt.X / halfStep) + 1;
+                    Console.WriteLine($"ActualWidth + Margin {slidersArea.ActualWidth + 2 * this.Margin.Left}");
+                    Console.WriteLine($"ptX {pt.X}");
+                    Console.WriteLine($"LedPos: {sliderPos}");
+                    Console.WriteLine($"CurrentMode: {AddMode}");
+
+                    // AddMode = 0 Gradient
+                    // AddMode = 1 Range
+                    // AddMode = 2 Lightness
+
+                    PatternPoint pp = Pattern[sliderPos - 1];
+
+                    // если первая точка в Pattern
+                    if (sliderPos < SliderList[0].Value)
                     {
-                        case 1:   //Range
-                            SliderList[0].PatternPoint.CopyTo(pp);
-                            SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
-                            rangeLeft.Variant = PointVariant.RangeLeft;
-                            SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, pp);
-                            rangeRight.Variant = PointVariant.RangeRight;
-                            SliderList.Insert(0, rangeRight);
-                            SliderList.Insert(0, rangeLeft);
-                            ReArrangeSliderItems();
-
-                            //UpdatePatternCommand.Execute(new SliderDuplet(rangeLeft, rangeRight));
-                            UpdatePatternCommand.Execute(new SliderDuplet(rangeRight, tmpSi));
-                            break;
-                        case 2:     //Lightness
-                            break;
-                        default:    //Gradient        
-                            SliderList[0].PatternPoint.CopyTo(pp);
-                            SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
-                            SliderList.Insert(0, gradient);
-                            ReArrangeSliderItems();
-
-                            UpdatePatternCommand.Execute(new SliderDuplet(gradient, tmpSi));
-                            break;
-                    }
-                    return;
-                }
-
-                // если последняя точка в Pattern
-                if (sliderPos > SliderList[SliderList.Count - 1].Value)
-                {
-                    SliderItem lastSi = SliderList[SliderList.Count - 1];
-                    switch (AddMode)
-                    {
-                        case 1:     // Range
-                            SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp);
-                            SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
-                            rangeLeft.Variant = PointVariant.RangeLeft;
-                            SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, pp);
-                            rangeRight.Variant = PointVariant.RangeRight;
-                            SliderList.Add(rangeLeft);
-                            SliderList.Add(rangeRight);
-                            ReArrangeSliderItems();
-
-                            UpdatePatternCommand.Execute(new SliderDuplet(lastSi, rangeLeft));
-                            //UpdatePatternCommand.Execute(new SliderDuplet(rangeLeft, rangeRight));
-                            break;
-                        case 2:     //Lightness
-                            break;
-                        default:    //Gradient
-                            SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp);
-                            SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
-                            SliderList.Add(gradient);
-                            ReArrangeSliderItems();
-
-                            UpdatePatternCommand.Execute(new SliderDuplet(lastSi, gradient));
-
-                            break;
-                    }
-                    return;
-                }
-
-                // между PatternPoint
-                SliderItem prevSi = null;
-                SliderItem nextSi = null;
-                int minLeft = Maxlimit;
-                int minRight = Maxlimit;
-                foreach(SliderItem si in SliderList)
-                {
-                    if (si.Value > sliderPos)
-                    {
-                        if ((si.Value - sliderPos)< minRight)
+                        SliderItem tmpSi = SliderList[0];
+                        switch (AddMode)
                         {
-                            minRight = (int)si.Value - sliderPos;
-                            nextSi = si;
+                            case 1:   //Range
+                                SliderList[0].PatternPoint.CopyTo(pp);
+                                SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
+                                rangeLeft.Variant = PointVariant.RangeLeft;
+                                SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, pp);
+                                rangeRight.Variant = PointVariant.RangeRight;
+                                SliderList.Insert(0, rangeRight);
+                                SliderList.Insert(0, rangeLeft);
+                                ReArrangeSliderItems();
+                                UpdatePatternCommand.Execute(rangeRight);
+                                break;
+                            case 2:     //Lightness
+                                break;
+                            default:    //Gradient        
+                                SliderList[0].PatternPoint.CopyTo(pp);
+                                SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
+                                SliderList.Insert(0, gradient);
+                                ReArrangeSliderItems();
+
+                                //UpdatePatternCommand.Execute(new SliderDuplet(gradient, tmpSi));
+                                UpdatePatternCommand.Execute(gradient);
+                                break;
+                        }
+                        return;
+                    }
+
+                    // если последняя точка в Pattern
+                    if (sliderPos > SliderList[SliderList.Count - 1].Value)
+                    {
+                        SliderItem lastSi = SliderList[SliderList.Count - 1];
+                        switch (AddMode)
+                        {
+                            case 1:     // Range
+                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp);
+                                SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
+                                rangeLeft.Variant = PointVariant.RangeLeft;
+                                SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, pp);
+                                rangeRight.Variant = PointVariant.RangeRight;
+                                SliderList.Add(rangeLeft);
+                                SliderList.Add(rangeRight);
+                                ReArrangeSliderItems();
+
+                                UpdatePatternCommand.Execute(rangeLeft);
+                                //UpdatePatternCommand.Execute(new SliderDuplet(rangeLeft, rangeRight));
+                                break;
+                            case 2:     //Lightness
+                                break;
+                            default:    //Gradient
+                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp);
+                                SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
+                                SliderList.Add(gradient);
+                                ReArrangeSliderItems();
+
+                                UpdatePatternCommand.Execute(gradient);
+
+                                break;
+                        }
+                        return;
+                    }
+
+                    // между PatternPoint
+                    SliderItem prevSi = null;
+                    SliderItem nextSi = null;
+                    int minLeft = Maxlimit;
+                    int minRight = Maxlimit;
+                    foreach (SliderItem si in SliderList)
+                    {
+                        if (si.Value > sliderPos)
+                        {
+                            if ((si.Value - sliderPos) < minRight)
+                            {
+                                minRight = (int)si.Value - sliderPos;
+                                nextSi = si;
+                            }
+                        }
+
+                        if (si.Value < sliderPos)
+                        {
+                            if ((sliderPos - si.Value) < minLeft)
+                            {
+                                minLeft = sliderPos - (int)si.Value;
+                                prevSi = si;
+                            }
                         }
                     }
-
-                    if (si.Value < sliderPos)
+                    if (nextSi.Variant == PointVariant.RangeRight)
+                        // нельзя добавить точку внутри Range
+                        return;
+                    SliderItem newSlider = CreateSlider(sliderPos, Maxlimit, Pattern[sliderPos - 1]);
+                    int ix = SliderList.IndexOf(nextSi);
+                    if (AddMode == 1)
                     {
-                        if ((sliderPos - si.Value) < minLeft)
-                        {
-                            minLeft = sliderPos - (int)si.Value;
-                            prevSi = si;
-                        }
+                        newSlider.Variant = PointVariant.RangeLeft;
+                        SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, Pattern[sliderPos - 1]);
+                        rangeRight.Variant = PointVariant.RangeRight;
+                        SliderList.Insert(ix, rangeRight);
+                        SliderList.Insert(ix, newSlider);
+                        ReArrangeSliderItems();
+                        return;
                     }
-                }
-                if (nextSi.Variant == PointVariant.RangeRight)
-                    // нельзя добавить точку внутри Range
-                    return;
-                SliderItem newSlider = CreateSlider(sliderPos, Maxlimit, Pattern[sliderPos - 1]);
-                int ix = SliderList.IndexOf(nextSi);
-                if (AddMode == 1)
-                {
-                    newSlider.Variant = PointVariant.RangeLeft;
-                    SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, Pattern[sliderPos - 1]);
-                    rangeRight.Variant = PointVariant.RangeRight;
-                    SliderList.Insert(ix, rangeRight);
+                    if (AddMode == 2)
+                        newSlider.Variant = PointVariant.Lightness;
                     SliderList.Insert(ix, newSlider);
                     ReArrangeSliderItems();
-                    return;
                 }
-                if (AddMode == 2)
-                    newSlider.Variant = PointVariant.Lightness;
-                SliderList.Insert(ix, newSlider);
-                ReArrangeSliderItems();
             }
         }
 
@@ -455,7 +413,6 @@ namespace LS_Designer_WPF.Controls
             base.OnMouseWheel(e);
             if (SelectedSlider != null)
             {
-                //Console.WriteLine($"Delta: {e.Delta}");
                 if (e.Delta > 0)
                 {
                     SelectedSlider.PatternPoint.L += 0.02;
@@ -470,48 +427,7 @@ namespace LS_Designer_WPF.Controls
                 }
             }
             SelectedSlider.PatternPoint.UpdateColor();
-            UpdatePattern(SelectedSlider);
-        }
-
-        void UpdatePattern(SliderItem currentSlider)
-        {
-            SliderItem prevSlider = null;
-            SliderItem nextSlider = null;
-            SliderItem afterRangeRight = null;
-            SliderItem beforeRangeLeft = null;
-
-            if (currentSlider != null)
-            {
-                int ix = SliderList.IndexOf(currentSlider);
-                if (ix != 0)
-                    prevSlider = SliderList[ix - 1];
-                if (ix != SliderList.Count - 1)
-                    nextSlider = SliderList[ix + 1];
-
-                if (currentSlider.Variant == PointVariant.RangeLeft)
-                {
-                    currentSlider.PatternPoint.CopyTo(nextSlider.PatternPoint);
-                    if ((ix + 1) != (SliderList.Count -1))
-                    {
-                        // Slider RangeRight не последний Slider в SliderList
-                        afterRangeRight = SliderList[ix + 2];
-                        UpdatePatternCommand.Execute(new SliderDuplet(nextSlider, afterRangeRight));
-                    }
-                }
-                if (currentSlider.Variant == PointVariant.RangeRight)
-                {
-                    currentSlider.PatternPoint.CopyTo(prevSlider.PatternPoint);
-                    if ((ix - 1)!= 0)
-                    {
-                        // Slider RangeLeft не первый Slider в SliderList
-                        beforeRangeLeft = SliderList[ix - 2];
-                        UpdatePatternCommand.Execute(new SliderDuplet(beforeRangeLeft, prevSlider));
-                    }
-                }
-
-                UpdatePatternCommand.Execute(new SliderDuplet(prevSlider, currentSlider));
-                UpdatePatternCommand.Execute(new SliderDuplet(currentSlider, nextSlider));
-            }
+            UpdatePatternCommand.Execute(SelectedSlider);
         }
 
         #endregion

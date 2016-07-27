@@ -1,4 +1,6 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:LS_Designer_WPF.Controls">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:LS_Designer_WPF.Controls">
 
     <Style TargetType="{x:Type local:MultiSlider}">
         <!--<Setter Property="Background" Value="{TemplateBinding Background}" />
@@ -18,8 +20,12 @@
                         <Grid Name="PART_UpSliders" Grid.Row="0">
                             <!--  Odd SliderItem instance get inserted here  -->
                         </Grid>
-                        <Border x:Name="PART_Track" Grid.Row="2" Height="6"
-                                VerticalAlignment="Center" Background="#FF35DCDC" BorderBrush="#FF35DCDC"
+                        <Border x:Name="PART_Track"
+                                Grid.Row="2"
+                                Height="6"
+                                VerticalAlignment="Center"
+                                Background="#FF35DCDC"
+                                BorderBrush="#FF35DCDC"
                                 BorderThickness="2" />
                         <!--  Margin="3,0,0,3"  -->
                         <Grid x:Name="PART_DownSliders" Grid.Row="4">
