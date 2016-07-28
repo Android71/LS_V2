@@ -92,6 +92,13 @@ namespace LS_Library
         //public static Color HSLtoRGB(double h, double s, double l)
         System.Windows.Media.Color HSLtoRGB(/*double h, double s, double l*/)
         {
+            if (S > 1.0)
+                S = 1.0;
+            if (H > 360.0)
+                H = 360.0 - H;
+            if (L > 1.0)
+                L = 1.0;
+
             if (S == 0)
             {
                 // achromatic color (gray scale)

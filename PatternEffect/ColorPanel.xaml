@@ -16,7 +16,10 @@
         <Style x:Key="label2" TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#FF8B8989" />
+            <Setter Property="BorderBrush" Value="#FF8B8989"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
         <Style x:Key="slider" TargetType="local:HslSlider">
             <Setter Property="MinHeight" Value="255" />
@@ -71,25 +74,25 @@
             </Grid.RowDefinitions>
             <local:HslSlider x:Name="hueSlider"
                              Grid.Row="0"
-                             ColorRange="{Binding SelectedColorRange}"
                              ColorScale="H"
-                             Maximum="30"
-                             SmallChange="1"
-                             Style="{StaticResource slider}" />
+                             ValueChanged="hslSliders_ValueChanged"
+                             Style="{StaticResource slider}"  />
+            <!--SmallChange="1"-->
+            <!--Maximum="30"-->
             <!--  ValueChanged="hsb_ValuesChanged"  -->
             <Label Grid.Row="1"
                    Content="H"
                    Style="{StaticResource label1}" />
             <Label Name="hueValue"
                    Grid.Row="2"
-                   Content="240"
+                   Content="0"
                    Style="{StaticResource label2}" />
             <Label Grid.Row="3"
                    Content="R"
                    Style="{StaticResource label1}" />
             <Label Name="rValue"
                    Grid.Row="4"
-                   Content="234"
+                   Content="0"
                    Style="{StaticResource label2}" />
         </Grid>
         <Grid Name="satPart"
@@ -105,10 +108,11 @@
             <local:HslSlider x:Name="satSlider"
                              Grid.Row="0"
                              ColorScale="S"
-                             IsEnabled="True"
                              LargeChange="0.05"
                              Maximum="1.0"
                              SmallChange="0.005"
+                             ValueChanged="hslSliders_ValueChanged"
+                             HueValue="{Binding ElementName=hueSlider, Path=Value}"
                              Style="{StaticResource slider}" />
             <!--  ValueChanged="hsb_ValuesChanged"  -->
             <Label Grid.Row="1"
@@ -116,14 +120,14 @@
                    Style="{StaticResource label1}" />
             <Label Name="satValue"
                    Grid.Row="2"
-                   Content="240"
+                   Content="0"
                    Style="{StaticResource label2}" />
             <Label Grid.Row="3"
                    Content="G"
                    Style="{StaticResource label1}" />
             <Label Name="gValue"
                    Grid.Row="4"
-                   Content="234"
+                   Content="0"
                    Style="{StaticResource label2}" />
         </Grid>
         <Grid Name="lightPart"
@@ -142,6 +146,7 @@
                              LargeChange="0.05"
                              Maximum="1.0"
                              SmallChange="0.005"
+                             ValueChanged="hslSliders_ValueChanged"
                              Style="{StaticResource slider}" />
             <!--  ValueChanged="hsb_ValuesChanged"  -->
             <Label Grid.Row="1"
@@ -149,14 +154,14 @@
                    Style="{StaticResource label1}" />
             <Label Name="lightValue"
                    Grid.Row="2"
-                   Content="240"
-                   Style="{StaticResource label2}" />
+                   Content="0"
+                   Style="{StaticResource label2}"/>
             <Label Grid.Row="3"
                    Content="B"
                    Style="{StaticResource label1}" />
             <Label Name="bValue"
                    Grid.Row="4"
-                   Content="234"
+                   Content="0"
                    Style="{StaticResource label2}" />
         </Grid>
         <!--<Rectangle Grid.Column="3"

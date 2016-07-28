@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorRange.cs" />
+    <Compile Include="ColorUtilities.cs" />
     <Compile Include="PatternPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

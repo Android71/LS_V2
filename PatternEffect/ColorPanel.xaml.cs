@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LS_Library;
+using static LS_Designer_WPF.Controls.HslSlider;
+using System.ComponentModel;
 
 namespace LS_Designer_WPF.Controls
 {
@@ -41,13 +43,14 @@ namespace LS_Designer_WPF.Controls
             //list.Add(new ColorRange(Media.Color.FromRgb(128, 255, 0), Media.Color.FromRgb(0, 255, 0)));     // 90-120
             list.Add(new ColorRange(Media.Color.FromRgb(128, 255, 0), Media.Color.FromRgb(0, 255, 128)));   // 90-150
             list.Add(new ColorRange(Media.Color.FromRgb(255, 255, 0), Media.Color.FromRgb(128, 255, 0)));   // 60-90
-            list.Add(new ColorRange(Media.Color.FromRgb(255, 170, 0), Media.Color.FromRgb(255, 255, 0)));   // 40-60
+            list.Add(new ColorRange(Media.Color.FromRgb(255, 213, 0), Media.Color.FromRgb(255, 255, 0)));   // 50-60
+            list.Add(new ColorRange(Media.Color.FromRgb(255, 170, 0), Media.Color.FromRgb(255, 213, 0)));   // 40-50
             list.Add(new ColorRange(Media.Color.FromRgb(255, 85, 0), Media.Color.FromRgb(255, 170, 0)));    // 20-40
             list.Add(new ColorRange(Media.Color.FromRgb(255, 0, 0), Media.Color.FromRgb(255, 85, 0)));      // 0-20
             list.Add(new ColorRange(Media.Colors.Black, Media.Colors.Black));                                
             
             ColorRangeList = list;
-            SelectedColorRange = ColorRangeList[ColorRangeList.Count - 1];
+            //SelectedColorRange = ColorRangeList[ColorRangeList.Count - 1];
             //hueSlider.ValueChanged += Slier
         }
 
@@ -62,45 +65,100 @@ namespace LS_Designer_WPF.Controls
 
         private static void SelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //double maxHue = 361;
-            //double minHue = -0.1;
-
+            ColorPanel panel = null;
             if (d != null)
             {
+                panel = (ColorPanel)d;
                 if (e.NewValue != null)
                 {
                     SliderItem si = (SliderItem)e.NewValue;
+
+                    si.LightnessChanged += panel.UpdateLightness;
+
                     PatternPoint pp = si.PatternPoint;
-                    ColorPanel panel = (ColorPanel)d;
+                    
                     foreach (ColorRange cr in panel.ColorRangeList)
                     {
                         if (cr.HueMinimum <= pp.H)
                         {
-                            panel.SelectedColorRange = cr;
+                            //Console.WriteLine($"HueRange: {cr.HueMinimum} - {cr.HueMaximum}");
+                            panel.hueSlider.UpdateScaleGradient(cr);
                             break;
                         }
                     }
-
-                    panel.SetColor(si.PatternPoint);
+                    panel.SetSlidersValue(si.PatternPoint);
+                    if (si.Variant != PointVariant.Lightness)
+                    {
+                        panel.hueSlider.IsEnabled = true;
+                        panel.satSlider.IsEnabled = true;
+                        panel.lightSlider.IsEnabled = true;
+                    }
+                    else
+                    {
+                        panel.hueSlider.IsEnabled = false;
+                        panel.satSlider.IsEnabled = false;
+                        panel.lightSlider.IsEnabled = true;
+                    }
                 }
                 else
                 {
-
+                    panel.hueSlider.IsEnabled = false;
+                    panel.satSlider.IsEnabled = false;
+                    panel.lightSlider.IsEnabled = false;
                 }
             }
         }
 
-        public void SetColor(PatternPoint pp)
+        void UpdateLightness(object sender, EventArgs e)
         {
+            lightSlider.Value = SelectedSlider.PatternPoint.L;
+        }
+
+        public void SetSlidersValue(PatternPoint pp)
+        {
+            hueSlider.ExternalCall = true;
+            satSlider.ExternalCall = true;
+            lightSlider.ExternalCall = true;
+
             hueSlider.Value = pp.H;
-            hueValue.Content = Math.Round(hueSlider.Value).ToString();
-            rValue.Content = pp.PointColor.R.ToString();
             satSlider.Value = pp.S;
-            satValue.Content = Math.Round(satSlider.Value * 100).ToString();
-            gValue.Content = pp.PointColor.G.ToString();
             lightSlider.Value = pp.L;
+
+            UpdateColorInfo(pp.PointColor);
+
+            hueSlider.ExternalCall = false;
+            satSlider.ExternalCall = false;
+            lightSlider.ExternalCall = false;
+        }
+
+        void SetSlidersValue(double H, double S, double L)
+        {
+            Media.Color c;
+
+            hueSlider.ExternalCall = true;
+            satSlider.ExternalCall = true;
+            lightSlider.ExternalCall = true;
+
+            hueSlider.Value = H;
+            satSlider.Value = S;
+            lightSlider.Value = L;
+
+            c = ColorUtilities.Hsl2MediaColor(H, S, L);
+            UpdateColorInfo(c);
+
+            hueSlider.ExternalCall = false;
+            satSlider.ExternalCall = false;
+            lightSlider.ExternalCall = false;
+        }
+
+        void UpdateColorInfo(Media.Color c)
+        {
+            hueValue.Content = Math.Round(hueSlider.Value).ToString();
+            rValue.Content = c.R.ToString();
+            satValue.Content = Math.Round(satSlider.Value * 100).ToString();
+            gValue.Content = c.G.ToString();
             lightValue.Content = Math.Round(lightSlider.Value * 100).ToString();
-            bValue.Content = pp.PointColor.B.ToString();
+            bValue.Content = c.B.ToString();
         }
 
         public List<ColorRange> ColorRangeList
@@ -112,26 +170,43 @@ namespace LS_Designer_WPF.Controls
         public static readonly DependencyProperty ColorRangeListProperty =
             DependencyProperty.Register("ColorRangeList", typeof(List<ColorRange>), typeof(ColorPanel), new PropertyMetadata(null));
 
-
-        public ColorRange SelectedColorRange
-        {
-            get { return (ColorRange)GetValue(SelectedColorRangeProperty); }
-            set { SetValue(SelectedColorRangeProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedColorRangeProperty =
-            DependencyProperty.Register("SelectedColorRange", typeof(ColorRange), typeof(ColorPanel), new PropertyMetadata(ColorRange.BlackRange));
-
-        
-
         #region Mouse Input
 
         private void colorSelector_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            SelectedColorRange = (ColorRange)((e.OriginalSource as System.Windows.Shapes.Rectangle).DataContext);
-            Console.WriteLine($"HueFrom {SelectedColorRange.HueMinimum}  HueTo {SelectedColorRange.HueMaximum}");
+            //Media.Color color;
+            ColorRange cr = (ColorRange)((e.OriginalSource as System.Windows.Shapes.Rectangle).DataContext);
+            Console.WriteLine($"HueFrom {cr.HueMinimum}  HueTo {cr.HueMaximum}");
+            if (SelectedSlider != null)
+            {
+                if (SelectedSlider.Variant != PointVariant.Lightness)
+                {
+                    hueSlider.UpdateScaleGradient(cr);
+                    SetSlidersValue(cr.HueMiddle, 1.0, 0.5);
+                    SelectedSlider.PatternPoint.H = cr.HueMiddle;
+                    SelectedSlider.PatternPoint.S = 1.0;
+                    SelectedSlider.PatternPoint.L = 0.5;
+                    SelectedSlider.PatternPoint.UpdateColor();
+                    SelectedSlider.UpdatePattern();
+                }
+            }
         }
 
         #endregion
+
+        private void hslSliders_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            HslSlider slider = (HslSlider)sender;
+            if (slider.ColorScale == ColorScaleEnum.H)
+                SelectedSlider.PatternPoint.H = e.NewValue;
+            if (slider.ColorScale == ColorScaleEnum.S)
+                SelectedSlider.PatternPoint.S = e.NewValue;
+            if (slider.ColorScale == ColorScaleEnum.L)
+                SelectedSlider.PatternPoint.L = e.NewValue;
+            SelectedSlider.PatternPoint.UpdateColor();
+            SelectedSlider.UpdatePattern();
+            UpdateColorInfo(SelectedSlider.PatternPoint.PointColor);
+        }
+
     }
 }

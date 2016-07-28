@@ -1,4 +1,5 @@
 ﻿using LS_Library;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -44,6 +45,16 @@ namespace LS_Designer_WPF.Controls
         public static readonly DependencyProperty VariantProperty =
             DependencyProperty.Register("Variant", typeof(PointVariant), typeof(SliderItem), new FrameworkPropertyMetadata(PointVariant.Gradient));
 
+        public ICommand UpdatePatternCommand
+        {
+            get { return (ICommand)GetValue(UpdatePatternCommandProperty); }
+            set { SetValue(UpdatePatternCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpdatePatternCommandProperty =
+            DependencyProperty.Register("UpdatePatternCommand", typeof(ICommand), typeof(SliderItem), new PropertyMetadata(null));
+
+
         #endregion
 
         #region Properties
@@ -72,6 +83,18 @@ namespace LS_Designer_WPF.Controls
             //}
         }
 
-        
+        public void UpdatePattern()
+        {
+            UpdatePatternCommand.Execute(this);
+        }
+
+        public event EventHandler<EventArgs> LightnessChanged;
+
+        public void RaiseLightnessChanged()
+        {
+            if (LightnessChanged != null)
+                LightnessChanged(this, new EventArgs());
+        }
+
     }
 }

@@ -29,6 +29,7 @@ namespace PatternEffect.ViewModel
             DirectoryInfo dirInfo = new DirectoryInfo(path);
             string patternDir = dirInfo.Parent.Parent.Parent.FullName;
             string patternPath = patternDir + @"\Pattern.xml";
+            //string patternPath = patternDir + @"\Pattern_1.xml";
 
             Params = File.ReadAllText(patternPath);
 

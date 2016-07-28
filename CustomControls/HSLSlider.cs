@@ -10,15 +10,10 @@ using System.Drawing;
 
 namespace LS_Designer_WPF.Controls
 {
+    public enum ColorScaleEnum { H, S, L };
 
     public class HslSlider : Slider
     {
-        static HslSlider()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(HslSlider), new FrameworkPropertyMetadata(typeof(HslSlider)));
-        }
-
-        public enum ColorScaleEnum { H, S, L};
 
         #region Private Fields
 
@@ -28,9 +23,78 @@ namespace LS_Designer_WPF.Controls
 
         /*****************************************************************************/
 
+        #region Public Properties
+
+        public bool ExternalCall { get; set; } = true;
+
+        public bool BlockValueChanged { get; set; }
+
+        #endregion
+
+        /*****************************************************************************/
+
+        #region Public Methods
+
+        public void UpdateScaleGradient(ColorRange cr)
+        {
+            ExternalCall = true;
+            Media.LinearGradientBrush lgb = new Media.LinearGradientBrush();
+            if (ColorScale == ColorScaleEnum.H)
+            {
+                lgb.GradientStops.Add(new Media.GradientStop(cr.ToColor, 0.0));
+                lgb.GradientStops.Add(new Media.GradientStop(cr.FromColor, 1.0));
+                if (scale != null)
+                    scale.Background = lgb;
+                Minimum = cr.HueMinimum;
+                Maximum = cr.HueMaximum;
+                SmallChange = (Maximum - Minimum) / 100.0;
+                LargeChange = SmallChange * 10;
+            }
+            ExternalCall = false;
+        }
+
+        #endregion
+
+        /*****************************************************************************/
+
+        static HslSlider()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(HslSlider), new FrameworkPropertyMetadata(typeof(HslSlider)));
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            scale = Template.FindName("PART_Scale", this) as Border;
+            Media.LinearGradientBrush lgb = new Media.LinearGradientBrush();
+            lgb.StartPoint = new System.Windows.Point(0.5, 1.0);
+            lgb.EndPoint = new System.Windows.Point(0.5, 0.0);
+            if (scale != null)
+            {
+                if (ColorScale == ColorScaleEnum.L)
+                {
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 0.0));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.LightGray, 1.0));
+                    scale.Background = lgb;
+                }
+                if (ColorScale == ColorScaleEnum.H || ColorScale == ColorScaleEnum.S)
+                {
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 0.0));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 1.0));
+                    scale.Background = lgb;
+                }
+            }
+        }
+
+        protected override void OnValueChanged(double oldValue, double newValue)
+        {
+            if (!ExternalCall)
+                base.OnValueChanged(oldValue, newValue);
+        }
+
+        /*****************************************************************************/
+
         #region Dependency Properties
-
-
 
         public double HueValue
         {
@@ -43,8 +107,24 @@ namespace LS_Designer_WPF.Controls
 
         private static void OnHueValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            Media.Color color, color1;
+            Media.LinearGradientBrush lgb;
+
             HslSlider slider = d as HslSlider;
-            slider.MakeGradient();
+            if (slider.ColorScale == ColorScaleEnum.S)
+            {
+                lgb = new Media.LinearGradientBrush();
+                lgb.StartPoint = new Point(0.5, 1.0);
+                lgb.EndPoint = new Point(0.5, 0.0);
+                color = ColorUtilities.Hsl2MediaColor(slider.HueValue, 0.0, 0.5);
+                color1 = ColorUtilities.Hsl2MediaColor(slider.HueValue, 1.0, 0.5);
+
+                lgb.GradientStops.Add(new Media.GradientStop(color, 0.0));
+                lgb.GradientStops.Add(new Media.GradientStop(color1, 1.0));
+
+                if (slider.scale != null)
+                    slider.scale.Background = lgb;
+            }
         }
 
         public ColorScaleEnum ColorScale
@@ -53,166 +133,10 @@ namespace LS_Designer_WPF.Controls
             set { SetValue(ColorScaleProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ColorScale.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ColorScaleProperty =
-            DependencyProperty.Register("ColorScale", typeof(ColorScaleEnum), typeof(HslSlider), new PropertyMetadata(ColorScaleEnum.H, OnColorScaleChanged));
-
-        private static void OnColorScaleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            //HslSlider slider = d as HslSlider;
-            //slider.MakeGradient();
-        }
-
-        void MakeGradient_1(ColorRange cr)
-        {
-            Media.LinearGradientBrush lgb = new Media.LinearGradientBrush();
-            lgb.StartPoint = new System.Windows.Point(0.5, 1.0);
-            lgb.EndPoint = new System.Windows.Point(0.5, 0.0);
-            if (ColorScale == ColorScaleEnum.H)
-            {
-                lgb.GradientStops.Add(new Media.GradientStop(cr.FromColor, 0.0));
-                lgb.GradientStops.Add(new Media.GradientStop(cr.ToColor, 1.0));
-                if (scale != null)
-                    scale.Background = lgb;
-                Minimum = cr.HueMinimum;
-                Maximum = cr.HueMaximum;
-                SmallChange = (Maximum - Minimum) / 100.0;
-                LargeChange = SmallChange * 10;
-            }
-        }
-
-        private void MakeGradient()
-        {
-            //    Media.Color color, color1;
-            //    Media.LinearGradientBrush lgb = new Media.LinearGradientBrush();
-            //    lgb.StartPoint = new System.Windows.Point(0.5, 1.0);
-            //    lgb.EndPoint = new System.Windows.Point(0.5, 0.0);
-
-
-            //    if (ColorScale == ColorScaleEnum.H)
-            //    {
-            //        //color = new HslColor(ScaleRange.X, 1.0, 0.5).ToRGB().MediaColor();
-            //        //color1 = new HslColor(ScaleRange.Y, 1.0, 0.5).ToRGB().MediaColor();
-
-            //        //lgb.GradientStops.Add(new Media.GradientStop(color, 0.0));
-            //        //lgb.GradientStops.Add(new Media.GradientStop(color1, 1.0));
-
-            //        if (scale != null)
-            //            scale.Background = lgb;
-            //    }
-
-            //    if (ColorScale == ColorScaleEnum.S)
-            //    {
-            //        //color = new HslColor(HueValue, 0.0, 0.5).ToRGB().MediaColor();
-            //        //color1 = new HslColor(HueValue, 1.0, 0.5).ToRGB().MediaColor();
-
-            //        //lgb.GradientStops.Add(new Media.GradientStop(color, 0.0));
-            //        //lgb.GradientStops.Add(new Media.GradientStop(color1, 1.0));
-
-            //        if (scale != null)
-            //            scale.Background = lgb;
-            //    }
-
-            //    if (ColorScale == ColorScaleEnum.L)
-            //    {
-            //        lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 0.0));
-            //        lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.LightGray, 1.0));
-
-            //        if (scale != null)
-            //            scale.Background = lgb;
-            //    }
-        }
-
-        public System.Windows.Point ScaleRange
-        {
-            get { return (System.Windows.Point)GetValue(ScaleRangeProperty); }
-            set { SetValue(ScaleRangeProperty, value); }
-        }
-
-        public static readonly DependencyProperty ScaleRangeProperty =
-            DependencyProperty.Register("ScaleRange", typeof(System.Windows.Point), typeof(HslSlider), 
-                                        new PropertyMetadata(new System.Windows.Point(0,30), OnScaleRangeChanged));
-
-        private static void OnScaleRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            //HslSlider slider = d as HslSlider;
-            //var x = slider.ScaleRange;
-            //slider.MakeGradient();
-        }
-
-        public ColorRange ColorRange
-        {
-            get { return (ColorRange)GetValue(ColorRangeProperty); }
-            set { SetValue(ColorRangeProperty, value); }
-        }
-
-        public static readonly DependencyProperty ColorRangeProperty =
-            DependencyProperty.Register("ColorRange", typeof(ColorRange), typeof(HslSlider), new PropertyMetadata(ColorRange.BlackRange, OnColorRangeChanged));
-
-        private static void OnColorRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d != null)
-            {
-                HslSlider slider = (HslSlider)d;
-                slider.MakeGradient_1(e.NewValue as ColorRange);
-            }
-             
-            //throw new NotImplementedException();
-        }
-
-
-
-        public SliderItem SelectedSlider
-        {
-            get { return (SliderItem)GetValue(SelectedSliderProperty); }
-            set { SetValue(SelectedSliderProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedSliderProperty =
-            DependencyProperty.Register("SelectedSlider", typeof(SliderItem), typeof(HslSlider), new PropertyMetadata(null, OnSelectedSliderChanged));
-
-        private static void OnSelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-
-
-
+            DependencyProperty.Register("ColorScale", typeof(ColorScaleEnum), typeof(HslSlider), new PropertyMetadata(ColorScaleEnum.H));
 
         #endregion
-
-        /*****************************************************************************/
-
-        #region Public Properties
-
-        public bool IsActive { get; set; }
-
-        #endregion
-
-        /*****************************************************************************/
-
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            scale = Template.FindName("PART_Scale", this) as Border;
-            //var x = IsActive;
-            //MakeGradient();
-        }
-
-        protected override void OnGotMouseCapture(MouseEventArgs e)
-        {
-            //base.OnGotMouseCapture(e);
-            //IsActive = true;
-            ////Console.WriteLine("Start changing");
-        }
-
-        protected override void OnThumbDragCompleted(DragCompletedEventArgs e)
-        {
-            //base.OnThumbDragCompleted(e);
-            //IsActive = false;
-            ////Console.WriteLine("End changing");
-        }
 
     }
 }

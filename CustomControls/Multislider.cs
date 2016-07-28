@@ -47,6 +47,7 @@ namespace LS_Designer_WPF.Controls
             {
                 si.GotMouseCapture -= new MouseEventHandler(SliderItemGotMouseCapture);
                 si.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(OnSliderItemValueChanged);
+                si.UpdatePatternCommand = UpdatePatternCommand;
             }
             DownSliders.Children.Clear();
             UpSliders.Children.Clear();
@@ -232,6 +233,8 @@ namespace LS_Designer_WPF.Controls
                 pp.UpdateColor();
                 si.PatternPoint = pp;
                 UpdatePatternCommand.Execute(si);
+                SelectedSlider = null;
+                SelectedSlider = si;
                 return;
             }
             else
@@ -264,6 +267,7 @@ namespace LS_Designer_WPF.Controls
 
         private void OnTrackClick(object sender, MouseButtonEventArgs e)
         {
+            SliderItem newSlider = null;
             if (e.ClickCount == 2)      // DoubleClick
             {
                 if (e.Source is Border && (e.Source as Border).Name == "PART_Track")
@@ -292,6 +296,7 @@ namespace LS_Designer_WPF.Controls
                                 SliderList[0].PatternPoint.CopyTo(pp);
                                 SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
                                 rangeLeft.Variant = PointVariant.RangeLeft;
+                                newSlider = rangeLeft;
                                 SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, pp);
                                 rangeRight.Variant = PointVariant.RangeRight;
                                 SliderList.Insert(0, rangeRight);
@@ -304,12 +309,18 @@ namespace LS_Designer_WPF.Controls
                             default:    //Gradient        
                                 SliderList[0].PatternPoint.CopyTo(pp);
                                 SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
+                                newSlider = gradient;
                                 SliderList.Insert(0, gradient);
                                 ReArrangeSliderItems();
-
-                                //UpdatePatternCommand.Execute(new SliderDuplet(gradient, tmpSi));
                                 UpdatePatternCommand.Execute(gradient);
                                 break;
+                        }
+                        if (newSlider != null)
+                        {
+                            if (SelectedSlider != null)
+                                SelectedSlider.IsSelected = false;
+                            newSlider.IsSelected = true;
+                            SelectedSlider = newSlider;
                         }
                         return;
                     }
@@ -348,7 +359,7 @@ namespace LS_Designer_WPF.Controls
                         return;
                     }
 
-                    // между PatternPoint
+                    // точка между PatternPoint
                     SliderItem prevSi = null;
                     SliderItem nextSi = null;
                     int minLeft = Maxlimit;
@@ -373,10 +384,11 @@ namespace LS_Designer_WPF.Controls
                             }
                         }
                     }
+                    // нельзя добавить точку внутри Range
                     if (nextSi.Variant == PointVariant.RangeRight)
-                        // нельзя добавить точку внутри Range
                         return;
-                    SliderItem newSlider = CreateSlider(sliderPos, Maxlimit, Pattern[sliderPos - 1]);
+
+                    newSlider = CreateSlider(sliderPos, Maxlimit, Pattern[sliderPos - 1]);
                     int ix = SliderList.IndexOf(nextSi);
                     if (AddMode == 1)
                     {
@@ -386,12 +398,26 @@ namespace LS_Designer_WPF.Controls
                         SliderList.Insert(ix, rangeRight);
                         SliderList.Insert(ix, newSlider);
                         ReArrangeSliderItems();
+                        if (newSlider != null)
+                        {
+                            if (SelectedSlider != null)
+                                SelectedSlider.IsSelected = false;
+                            newSlider.IsSelected = true;
+                            SelectedSlider = newSlider;
+                        }
                         return;
                     }
                     if (AddMode == 2)
                         newSlider.Variant = PointVariant.Lightness;
                     SliderList.Insert(ix, newSlider);
                     ReArrangeSliderItems();
+                    if (newSlider != null)
+                    {
+                        if (SelectedSlider != null)
+                            SelectedSlider.IsSelected = false;
+                        newSlider.IsSelected = true;
+                        SelectedSlider = newSlider;
+                    }
                 }
             }
         }
@@ -426,7 +452,7 @@ namespace LS_Designer_WPF.Controls
                         SelectedSlider.PatternPoint.L = 0.0;
                 }
             }
-            SelectedSlider.PatternPoint.UpdateColor();
+            SelectedSlider.RaiseLightnessChanged();
             UpdatePatternCommand.Execute(SelectedSlider);
         }
 
