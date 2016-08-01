@@ -1,4 +1,4 @@
-<Params PointCount="3000">
+<Params PointCount="10000">
   <BasePoint Pos="1" R="0" G="128" B="0" Variant="0" />
   <BasePoint Pos="623" R="0" G="255" B="255" Variant="1" />
   <BasePoint Pos="835" R="0" G="255" B="255" Variant="2" />
@@ -6,5 +6,5 @@
   <BasePoint Pos="1753" R="90" G="0" B="194" Variant="3" />
   <BasePoint Pos="2346" R="255" G="0" B="255" Variant="1" />
   <BasePoint Pos="2521" R="255" G="0" B="255" Variant="2" />
-  <BasePoint Pos="3000" R="235" G="105" B="235" Variant="0" />
+  <BasePoint Pos="10000" R="235" G="105" B="235" Variant="0" />
 </Params>

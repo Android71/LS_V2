@@ -174,6 +174,187 @@ namespace PatternEffect.ViewModel
             }
         }
 
+        void UpdatePattern(SliderItem si)
+        {
+            SliderItem prevItem = null;
+            SliderItem nextItem = null;
+            SliderItem rangeRight = null;
+            SliderItem rangeLeft = null;
+            int rangeLeftIx;
+            int rangeRightIx;
+
+            List<SliderItem> leftLights = new List<SliderItem>();
+            List<SliderItem> rightLights = new List<SliderItem>();
+            
+            int ix;
+
+            // Для слайдера - градиента по яркости всегда есть предыдущий и последующий слайдер
+            if (si.Variant == PointVariant.Lightness)
+            {
+                ix = SliderList.IndexOf(si);
+                prevItem = SliderList[ix - 1];
+                nextItem = SliderList[ix + 1];
+                UpdateLightGradient(prevItem, si);
+                UpdateLightGradient(si, nextItem);
+                return;
+            }
+
+            ix = SliderList.IndexOf(si);
+
+            if (si.Variant == PointVariant.RangeLeft || si.Variant == PointVariant.RangeRight)
+            {
+                // Для слайдера - левой границы диапазона всегда есть слайдер правой границы диапазона
+                if (si.Variant == PointVariant.RangeLeft)
+                {
+                    rangeLeft = si;
+                    rangeLeftIx = ix;
+                    rangeRight = SliderList[ix + 1];
+                    rangeRightIx = ix + 1;
+                    for (int i = (int)rangeLeft.Value + 1; i <= (int)rangeRight.Value; i++)
+                        rangeLeft.PatternPoint.CopyTo(Pattern[i - 1]);
+                }
+                // Для слайдера - правой границы диапазона всегда есть слайдер левой границы диапазона
+                if (si.Variant == PointVariant.RangeRight)
+                {
+                    rangeRight = si;
+                    rangeRightIx = ix;
+                    rangeLeft = SliderList[ix - 1];
+                    rangeLeftIx = ix - 1;
+                    for (int i = (int)rangeRight.Value; i >= (int)rangeLeft.Value; i--)
+                    {
+                        rangeRight.PatternPoint.CopyTo(Pattern[i - 1]);
+                    }
+                }
+            }
+
+            // если слайдер - градиент
+
+            rangeLeft = si;
+            rangeLeftIx = ix;
+            rangeRight = si;
+            rangeRightIx = ix;
+
+            prevItem = PrevSliderItem(rangeLeftIx, leftLights);
+            nextItem = NextSliderItem(rangeRightIx, rightLights);
+            if (prevItem != null)
+            {
+                UpdateColorGradient(prevItem, rangeLeft);
+                UpdateLightGradient(prevItem, leftLights, rangeLeft);
+            }
+            else
+                ClearLeftEnd();
+            if (nextItem != null)
+            {
+                UpdateColorGradient(rangeRight, nextItem);
+                UpdateLightGradient(rangeRight, rightLights, nextItem);
+            }
+            else
+                ClearRightEnd();
+                return;
+        }
+
+        void UpdateLightGradient(SliderItem leftSlider, SliderItem rightSlider)
+        {
+            double deltaL;
+
+            int leftIx = Convert.ToInt32(leftSlider.Value);
+            int rightIx = Convert.ToInt32(rightSlider.Value);
+            int stepCount = rightIx - leftIx;
+
+            if (stepCount > 0)
+            {
+                //rightSlider.PatternPoint.L = rightSlider.PatternPoint.InitialL;
+                deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
+
+                for (int i = leftIx + 1; i < rightIx; i++)
+                {
+                    PatternPoint pp = Pattern[i - 1 - 1];
+                    Pattern[i - 1].SetColorFromHSL(pp.H, pp.S, pp.L + deltaL);
+                }
+            }
+        }
+
+        void UpdateColorGradient(SliderItem leftSlider, SliderItem rightSlider)
+        {
+            double deltaH, deltaS, deltaL;
+
+            int leftIx = Convert.ToInt32(leftSlider.Value);
+            int rightIx = Convert.ToInt32(rightSlider.Value);
+            int stepCount = rightIx - leftIx;
+
+            if (stepCount > 0)
+            {
+                deltaH = (rightSlider.PatternPoint.H - leftSlider.PatternPoint.H) / stepCount;
+                deltaS = (rightSlider.PatternPoint.S - leftSlider.PatternPoint.S) / stepCount;
+                deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
+                for (int i = leftIx + 1; i < rightIx; i++)
+                {
+                    PatternPoint pp = Pattern[i - 1 - 1];
+                    Pattern[i - 1].SetColorFromHSL(pp.H + deltaH, pp.S + deltaS, pp.L + deltaL);
+                }
+            }
+        }
+
+        void UpdateLightGradient(SliderItem leftItem, List<SliderItem> lightList, SliderItem rightItem)
+        {
+            SliderItem prevLight = null;
+             
+            if (lightList.Count != 0)
+            {
+                prevLight = leftItem;
+                foreach (SliderItem si in lightList)
+                {
+                    UpdateLightGradient(prevLight, si);
+                    prevLight = si;
+                }
+                UpdateLightGradient(prevLight, rightItem);
+            }
+        }
+
+        SliderItem PrevSliderItem(int sliderIx, List<SliderItem> leftLights)
+        {
+            int prevIx = sliderIx - 1;
+            SliderItem item = null;
+
+            while (prevIx >= 0)
+            {
+                if (SliderList[prevIx].Variant == PointVariant.Lightness)
+                {
+                    leftLights.Add(SliderList[prevIx]);
+                    prevIx--;
+                }
+                else
+                {
+                    item = SliderList[prevIx];
+                    break;
+                }
+            }
+            return item;
+        }
+
+        SliderItem NextSliderItem(int sliderIx, List<SliderItem> rightLights)
+        {
+            int nextIx = sliderIx + 1;
+            SliderItem item = null;
+
+            while (nextIx <= SliderList.Count - 1)
+            {
+                if (SliderList[nextIx].Variant == PointVariant.Lightness)
+                {
+                    rightLights.Add(SliderList[nextIx]);
+                    nextIx++;
+                }
+                else
+                {
+                    item = SliderList[nextIx];
+                    break;
+                }
+            }
+            return item;
+        }
+
+        
+
         public void ClearLeftEnd()
         {
             int leftIx = (int)SliderList[0].Value - 1;
@@ -193,7 +374,8 @@ namespace PatternEffect.ViewModel
 
         private void ExecUpdatePattern(SliderItem si)
         {
-            PrepareAndBuildGradient(si);
+            UpdatePattern(si);
+            //PrepareAndBuildGradient(si);
         }
 
         //private void ExecUpdatePattern(SliderDuplet sd)
@@ -228,8 +410,12 @@ namespace PatternEffect.ViewModel
             Maxlimit = pointCount;
 
             Pattern = new PatternPoint[pointCount];
+            //PatternPoint[] tmpPattern = new PatternPoint[pointCount];
+
             for (int i = 0; i < pointCount; i++)
                 Pattern[i] = new PatternPoint();
+
+            //Pattern = tmpPattern;
 
             foreach (XElement basePoint in root.Elements("BasePoint"))
             {
