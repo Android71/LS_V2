@@ -465,12 +465,16 @@ namespace LS_Designer_WPF.Controls
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            SliderItem prevSlider = null;
-            SliderItem nextSlider = null;
+            //SliderItem prevSlider = null;
+            //SliderItem nextSlider = null;
+            int prevIx = -1;
+            int nextIx = -1;
             SliderItem si = null;
+            SliderItem activeSlider = null;
             int ix = -1;
 
             base.OnKeyDown(e);
+
             if (e.Source is MultiSlider)
             {
                 if (SelectedSlider != null)
@@ -478,23 +482,85 @@ namespace LS_Designer_WPF.Controls
                     if (e.Key == Key.Delete)
                     {
                         ix = SliderList.IndexOf(SelectedSlider);
+
                         if (SelectedSlider.Variant == PointVariant.Gradient)
                         {
-                            // если слайдер не последний в списке
-                            if (ix != SliderList.Count - 1)
+                            //if (SliderList.Count == 1)
+                            //{
+                            //    // Единственный слайдер
+                            //    SliderList.Remove(SelectedSlider);
+                            //    ReArrangeSliderItems();
+                            //    SelectedSlider = null;
+                            //}
+                            if (SliderList.Count != 1)
                             {
-                                si = SliderList[ix + 1];
+                                if (ix == 0)
+                                {
+                                    // первый слайдер в списке
+                                    nextIx = 0;
+                                    do // удаляем промежуточные яркостные точки справа
+                                    {
+                                        nextIx++;
+                                        if (SliderList[nextIx].Variant == PointVariant.Lightness)
+                                            SliderList.Remove(SliderList[nextIx]);
+                                        else
+                                            break;
+                                    } while (nextIx != SliderList.Count - 1);
+                                    activeSlider = SliderList[nextIx];
+                                    goto M1;
+                                }
+
+                                if (ix == SliderList.Count - 1)
+                                {
+                                    // последний слайдер в списке
+                                    prevIx = SliderList.Count - 1;
+                                    do  // удаляем промежуточные яркостные точки слева
+                                    {
+                                        prevIx--;
+                                        if (SliderList[prevIx].Variant == PointVariant.Lightness)
+                                            SliderList.Remove(SliderList[prevIx]);
+                                        else
+                                            break;
+                                    } while (prevIx != 0);
+                                    activeSlider = SliderList[prevIx];
+                                    goto M1;
+                                }
+
+                                // слайдер в середине списка
+                                //prevIx = ix;
+                                //do  // удаляем промежуточные яркостные точки слева
+                                //{
+                                //    prevIx--;
+                                //    if (SliderList[prevIx].Variant == PointVariant.Lightness)
+                                //       // SliderList.Remove(SliderList[prevIx]);
+                                //    else
+                                //        break;
+                                //} while (prevIx != 0);
+
+                                nextIx = ix;
+                                do // удаляем промежуточные яркостные точки справа
+                                {
+                                    nextIx++;
+                                    if (SliderList[nextIx].Variant != PointVariant.Lightness)
+                                        //SliderList.Remove(SliderList[nextIx]);
+                                    //else
+                                        break;
+                                } while (nextIx != SliderList.Count - 1);
+                                activeSlider = SliderList[nextIx];
+
+                                M1:
+
+                                SliderList.Remove(SelectedSlider);
+                                SelectedSlider.IsSelected = false;
+                                ReArrangeSliderItems();
+
+                                if (activeSlider != null)
+                                {
+                                    activeSlider.IsSelected = true;
+                                    SelectedSlider = activeSlider;
+                                    UpdatePatternCommand.Execute(activeSlider);
+                                }
                             }
-                            else
-                            {
-                                si = SliderList[ix - 1];
-                            }
-                            SliderList.Remove(SelectedSlider);
-                            SelectedSlider.IsSelected = false;
-                            ReArrangeSliderItems();
-                            si.IsSelected = true;
-                            SelectedSlider = si;
-                            UpdatePatternCommand.Execute(si);
                         }
 
                         if (SelectedSlider.Variant == PointVariant.RangeLeft || SelectedSlider.Variant == PointVariant.RangeRight)
