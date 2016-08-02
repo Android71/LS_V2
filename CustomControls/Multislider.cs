@@ -230,9 +230,13 @@ namespace LS_Designer_WPF.Controls
             if (si.Variant == PointVariant.Lightness)
             {
                 pp.L = si.PatternPoint.L;
+                //pp.InitialL = pp.L;
+                pp.SaveLightness();
                 pp.UpdateColor();
                 si.PatternPoint = pp;
                 UpdatePatternCommand.Execute(si);
+
+                // для обновления ColorPanel
                 SelectedSlider = null;
                 SelectedSlider = si;
                 return;
@@ -448,12 +452,61 @@ namespace LS_Designer_WPF.Controls
                 else
                 {
                     SelectedSlider.PatternPoint.L -= 0.02;
+                    
                     if (SelectedSlider.PatternPoint.L < 0.0)
                         SelectedSlider.PatternPoint.L = 0.0;
                 }
+                SelectedSlider.PatternPoint.SaveLightness();
+                //SelectedSlider.PatternPoint.InitialL = SelectedSlider.PatternPoint.L;
             }
             SelectedSlider.RaiseLightnessChanged();
-            UpdatePatternCommand.Execute(SelectedSlider);
+            //UpdatePatternCommand.Execute(SelectedSlider);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            SliderItem prevSlider = null;
+            SliderItem nextSlider = null;
+            SliderItem si = null;
+            int ix = -1;
+
+            base.OnKeyDown(e);
+            if (e.Source is MultiSlider)
+            {
+                if (SelectedSlider != null)
+                {
+                    if (e.Key == Key.Delete)
+                    {
+                        ix = SliderList.IndexOf(SelectedSlider);
+                        if (SelectedSlider.Variant == PointVariant.Gradient)
+                        {
+                            // если слайдер не последний в списке
+                            if (ix != SliderList.Count - 1)
+                            {
+                                si = SliderList[ix + 1];
+                            }
+                            else
+                            {
+                                si = SliderList[ix - 1];
+                            }
+                            SliderList.Remove(SelectedSlider);
+                            SelectedSlider.IsSelected = false;
+                            ReArrangeSliderItems();
+                            si.IsSelected = true;
+                            SelectedSlider = si;
+                            UpdatePatternCommand.Execute(si);
+                        }
+
+                        if (SelectedSlider.Variant == PointVariant.RangeLeft || SelectedSlider.Variant == PointVariant.RangeRight)
+                        {
+                            if (SelectedSlider.Variant == PointVariant.RangeRight && ix == SliderList.Count-1)
+                            {
+                                SliderItem rangeLeft = SliderList[ix - 1];
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         #endregion

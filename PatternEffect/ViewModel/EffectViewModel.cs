@@ -30,6 +30,7 @@ namespace PatternEffect.ViewModel
             string patternDir = dirInfo.Parent.Parent.Parent.FullName;
             string patternPath = patternDir + @"\Pattern.xml";
             //string patternPath = patternDir + @"\Pattern_1.xml";
+            //string patternPath = patternDir + @"\Pattern_2.xml";
 
             Params = File.ReadAllText(patternPath);
 
@@ -180,15 +181,15 @@ namespace PatternEffect.ViewModel
             SliderItem nextItem = null;
             SliderItem rangeRight = null;
             SliderItem rangeLeft = null;
-            int rangeLeftIx;
-            int rangeRightIx;
+            int rangeLeftIx = -1;
+            int rangeRightIx = -1;
 
             List<SliderItem> leftLights = new List<SliderItem>();
             List<SliderItem> rightLights = new List<SliderItem>();
             
             int ix;
 
-            // Для слайдера - градиента по яркости всегда есть предыдущий и последующий слайдер
+            // Для слайдера - градиента по яркости всегда есть предыдущaя и последующая точка
             if (si.Variant == PointVariant.Lightness)
             {
                 ix = SliderList.IndexOf(si);
@@ -228,11 +229,13 @@ namespace PatternEffect.ViewModel
             }
 
             // если слайдер - градиент
-
-            rangeLeft = si;
-            rangeLeftIx = ix;
-            rangeRight = si;
-            rangeRightIx = ix;
+            if (si.Variant == PointVariant.Gradient)
+            {
+                rangeLeft = si;
+                rangeLeftIx = ix;
+                rangeRight = si;
+                rangeRightIx = ix;
+            }
 
             prevItem = PrevSliderItem(rangeLeftIx, leftLights);
             nextItem = NextSliderItem(rangeRightIx, rightLights);
@@ -257,19 +260,24 @@ namespace PatternEffect.ViewModel
         {
             double deltaL;
 
-            int leftIx = Convert.ToInt32(leftSlider.Value);
-            int rightIx = Convert.ToInt32(rightSlider.Value);
-            int stepCount = rightIx - leftIx;
+            int leftPointIx = Convert.ToInt32(leftSlider.Value);
+            int rightPointIx = Convert.ToInt32(rightSlider.Value);
+            int stepCount = rightPointIx - leftPointIx;
+
+            leftSlider.PatternPoint.RestoreLightness();
+            leftSlider.PatternPoint.UpdateColor();
+            rightSlider.PatternPoint.RestoreLightness();
+            rightSlider.PatternPoint.UpdateColor();
 
             if (stepCount > 0)
             {
-                //rightSlider.PatternPoint.L = rightSlider.PatternPoint.InitialL;
+                
                 deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
 
-                for (int i = leftIx + 1; i < rightIx; i++)
+                for (int i = 0; i < stepCount - 1; i++)
                 {
-                    PatternPoint pp = Pattern[i - 1 - 1];
-                    Pattern[i - 1].SetColorFromHSL(pp.H, pp.S, pp.L + deltaL);
+                    double prevLight = Pattern[leftPointIx - 1 + i].L;
+                    Pattern[leftPointIx + i].SetColorFromHSL(Pattern[leftPointIx + i].H, Pattern[leftPointIx + i].S, prevLight + deltaL);
                 }
             }
         }
@@ -320,7 +328,7 @@ namespace PatternEffect.ViewModel
             {
                 if (SliderList[prevIx].Variant == PointVariant.Lightness)
                 {
-                    leftLights.Add(SliderList[prevIx]);
+                    leftLights.Insert(0,SliderList[prevIx]);
                     prevIx--;
                 }
                 else
@@ -353,8 +361,6 @@ namespace PatternEffect.ViewModel
             return item;
         }
 
-        
-
         public void ClearLeftEnd()
         {
             int leftIx = (int)SliderList[0].Value - 1;
@@ -369,32 +375,12 @@ namespace PatternEffect.ViewModel
                 Pattern[i].Clear();
         }
 
-        //public RelayCommand<SliderDuplet> UpdatePatternCmd { get; private set; }
         public RelayCommand<SliderItem> UpdatePatternCmd { get; private set; }
 
         private void ExecUpdatePattern(SliderItem si)
         {
             UpdatePattern(si);
-            //PrepareAndBuildGradient(si);
         }
-
-        //private void ExecUpdatePattern(SliderDuplet sd)
-        //{
-        //    if (sd.LeftSlider == null)
-        //    {
-        //        ClearLeftEnd();
-        //        return;
-        //    }
-        //    if (sd.RightSlider == null)
-        //    {
-        //        ClearRightEnd();
-        //        return;
-        //    }
-        //    if (sd.OnlyLightness)
-        //        BuildGradient(sd.LeftSlider, sd.RightSlider, true);
-        //    else
-        //        BuildGradient(sd.LeftSlider, sd.RightSlider);
-        //}
 
         void ParseEffectParams(string profile)
         {
@@ -432,7 +418,8 @@ namespace PatternEffect.ViewModel
                 pp.H = color.GetHue();
                 pp.S = color.GetSaturation();
                 pp.L = color.GetBrightness();
-                pp.InitialL = pp.L;
+                pp.SaveLightness();
+                //pp.InitialL = pp.L;
                 pp.PointColor = Color.FromRgb(color.R, color.G, color.B);
                 pp.Lightness = Convert.ToInt32(pp.L * 255);
 

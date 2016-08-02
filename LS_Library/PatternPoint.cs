@@ -36,7 +36,7 @@ namespace LS_Library
 
         public double L { get; set; }
 
-        public double InitialL { get; set; } //исходное значение Lightness для использования в алгоритме построения
+        double InitialL { get; set; } //исходное значение Lightness для использования в алгоритме построения
                                              //градиента яркости
 
 
@@ -60,6 +60,16 @@ namespace LS_Library
             Lightness = Convert.ToInt32(L * 255.0);
         }
 
+        public void SaveLightness()
+        {
+            InitialL = L;
+        }
+
+        public void RestoreLightness()
+        {
+            L = InitialL;
+        }
+
         int _lightness;
         public int Lightness
         {
@@ -79,6 +89,7 @@ namespace LS_Library
             pp.H = H;
             pp.S = S;
             pp.L = L;
+            pp.InitialL = InitialL;
             pp.Lightness = Lightness;
             pp.PointColor = PointColor;
         }

@@ -186,6 +186,7 @@ namespace LS_Designer_WPF.Controls
                     SelectedSlider.PatternPoint.H = cr.HueMiddle;
                     SelectedSlider.PatternPoint.S = 1.0;
                     SelectedSlider.PatternPoint.L = 0.5;
+                    SelectedSlider.PatternPoint.SaveLightness();
                     SelectedSlider.PatternPoint.UpdateColor();
                     SelectedSlider.UpdatePattern();
                 }
@@ -202,7 +203,11 @@ namespace LS_Designer_WPF.Controls
             if (slider.ColorScale == ColorScaleEnum.S)
                 SelectedSlider.PatternPoint.S = e.NewValue;
             if (slider.ColorScale == ColorScaleEnum.L)
+            {
                 SelectedSlider.PatternPoint.L = e.NewValue;
+                SelectedSlider.PatternPoint.SaveLightness();
+                //SelectedSlider.PatternPoint.InitialL = SelectedSlider.PatternPoint.L;
+            }
             SelectedSlider.PatternPoint.UpdateColor();
             SelectedSlider.UpdatePattern();
             UpdateColorInfo(SelectedSlider.PatternPoint.PointColor);
