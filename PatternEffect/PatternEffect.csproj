@@ -85,6 +85,9 @@
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
+    <Compile Include="PatternUC.xaml.cs">
+      <DependentUpon>PatternUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RGB_PatternEffectUC.xaml.cs">
       <DependentUpon>RGB_PatternEffectUC.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PatternUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RGB_PatternEffectUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

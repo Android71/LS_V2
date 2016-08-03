@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace LS_Designer_WPF.Controls
 {
-    public enum ColorScaleEnum { H, S, L };
+    
 
     public class HslSlider : Slider
     {
@@ -39,7 +39,7 @@ namespace LS_Designer_WPF.Controls
         {
             ExternalCall = true;
             Media.LinearGradientBrush lgb = new Media.LinearGradientBrush();
-            if (ColorScale == ColorScaleEnum.H)
+            if (ColorScale == SliderScaleEnum.H)
             {
                 lgb.GradientStops.Add(new Media.GradientStop(cr.ToColor, 0.0));
                 lgb.GradientStops.Add(new Media.GradientStop(cr.FromColor, 1.0));
@@ -71,13 +71,13 @@ namespace LS_Designer_WPF.Controls
             lgb.EndPoint = new System.Windows.Point(0.5, 0.0);
             if (scale != null)
             {
-                if (ColorScale == ColorScaleEnum.L)
+                if (ColorScale == SliderScaleEnum.L)
                 {
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 0.0));
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.LightGray, 1.0));
                     scale.Background = lgb;
                 }
-                if (ColorScale == ColorScaleEnum.H || ColorScale == ColorScaleEnum.S)
+                if (ColorScale == SliderScaleEnum.H || ColorScale == SliderScaleEnum.S)
                 {
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 0.0));
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 1.0));
@@ -111,7 +111,7 @@ namespace LS_Designer_WPF.Controls
             Media.LinearGradientBrush lgb;
 
             HslSlider slider = d as HslSlider;
-            if (slider.ColorScale == ColorScaleEnum.S)
+            if (slider.ColorScale == SliderScaleEnum.S)
             {
                 lgb = new Media.LinearGradientBrush();
                 lgb.StartPoint = new Point(0.5, 1.0);
@@ -127,14 +127,14 @@ namespace LS_Designer_WPF.Controls
             }
         }
 
-        public ColorScaleEnum ColorScale
+        public SliderScaleEnum ColorScale
         {
-            get { return (ColorScaleEnum)GetValue(ColorScaleProperty); }
+            get { return (SliderScaleEnum)GetValue(ColorScaleProperty); }
             set { SetValue(ColorScaleProperty, value); }
         }
 
         public static readonly DependencyProperty ColorScaleProperty =
-            DependencyProperty.Register("ColorScale", typeof(ColorScaleEnum), typeof(HslSlider), new PropertyMetadata(ColorScaleEnum.H));
+            DependencyProperty.Register("ColorScale", typeof(SliderScaleEnum), typeof(HslSlider), new PropertyMetadata(SliderScaleEnum.H));
 
         #endregion
 

@@ -12,11 +12,11 @@
         mc:Ignorable="d ignore">
 
     <Window.Resources>
-        <ResourceDictionary>
+        <!--<ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        </ResourceDictionary>-->
     </Window.Resources>
     <Window.DataContext>
         <Binding Path="MainVM" Source="{StaticResource Locator}" />
@@ -40,6 +40,31 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <Grid x:Name="popUp"
+              Grid.Row="0"
+              Grid.RowSpan="2"
+              Grid.ColumnSpan="2"
+              Background="#3F000000"
+              Visibility="{Binding PopUpVM.PopUpVisibility}">
+            <Grid.Resources>
+                <DataTemplate DataType="{x:Type vm:AttentionVM}">
+                    <Controls:AttentionUC />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:PopUpMessageVM}">
+                    <Controls:MessageUC Width="{Binding Width}" Height="{Binding Height}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:LE_VisualVM}">
+                    <Controls:LE_VisualUC HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:EmptyPopUpVM}">
+                    <Controls:EffectPopUpUC />
+                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
+                </DataTemplate>
+            </Grid.Resources>
+
+            <ContentControl Name="popUpControl" Content="{Binding PopUpVM}" />
+        </Grid>
         <ToggleButton x:Name="Mode"
                       Grid.Row="0"
                       Grid.Column="0"
@@ -163,31 +188,6 @@
             <Grid x:Name="PanelCurtain"
                   Background="#7F000000"
                   Visibility="{Binding ContextCurtainVisibility}" />
-        </Grid>
-        <Grid x:Name="popUp"
-              Grid.Row="0"
-              Grid.RowSpan="2"
-              Grid.ColumnSpan="2"
-              Background="#3F000000"
-              Visibility="{Binding PopUpVM.PopUpVisibility}">
-            <Grid.Resources>
-                <DataTemplate DataType="{x:Type vm:AttentionVM}">
-                    <Controls:AttentionUC />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:PopUpMessageVM}">
-                    <Controls:MessageUC Width="{Binding Width}" Height="{Binding Height}" />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:LE_VisualVM}">
-                    <Controls:LE_VisualUC HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:EmptyPopUpVM}">
-                    <Controls:EffectPopUpUC />
-                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
-                </DataTemplate>
-            </Grid.Resources>
-
-            <ContentControl Name="popUpControl" Content="{Binding PopUpVM}" />
         </Grid>
 
     </Grid>

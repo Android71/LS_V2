@@ -36,8 +36,36 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <ItemsControl Name="rangeSelector" Width="20">
+
+            <!--  ItemsSource="{Binding ColorRangeList}"  -->
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="1" SnapsToDevicePixels="True" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Rectangle Width="29"
+                               HorizontalAlignment="Left"
+                               Stroke="White"
+                               StrokeThickness="1">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Offset="0" Color="{Binding ToColor}" />
+                                <GradientStop Offset="1" Color="{Binding FromColor}" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
         <ItemsControl Name="colorSelector"
+                      Grid.Column="1"
                       Width="30"
                       ItemsSource="{Binding ColorRangeList}"
                       MouseDown="colorSelector_MouseDown">
@@ -62,8 +90,9 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
         <Grid Name="huePart"
-              Grid.Column="1"
+              Grid.Column="2"
               Width="45">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -96,7 +125,7 @@
                    Style="{StaticResource label2}" />
         </Grid>
         <Grid Name="satPart"
-              Grid.Column="2"
+              Grid.Column="3"
               Width="45">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -132,7 +161,7 @@
                    Style="{StaticResource label2}" />
         </Grid>
         <Grid Name="lightPart"
-              Grid.Column="3"
+              Grid.Column="4"
               Width="45">
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -165,19 +194,6 @@
                    Content="0"
                    Style="{StaticResource label2}" />
         </Grid>
-        <!--<Rectangle Grid.Column="3"
-                   HorizontalAlignment="Left"
-                   Height="100"
-                   Margin="59,272,-114,0"
-                   Stroke="Black"
-                   VerticalAlignment="Top"
-                   Width="100">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Red" Offset="0" />
-                    <GradientStop Color="#FFFF0080" Offset="1" />
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>-->
+
     </Grid>
 </UserControl>

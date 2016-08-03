@@ -61,7 +61,9 @@ namespace LS_Designer_WPF.Controls
 
         public PatternPoint PatternPoint { get; set; }
 
-        public bool Busy { get; set; }
+        public int Pos { get { return Convert.ToInt32(Value); } }
+
+        public int Ix { get; set; }
 
         #endregion
 

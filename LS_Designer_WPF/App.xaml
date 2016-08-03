@@ -14,12 +14,13 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin_Old.xaml" />
+                <!--<ResourceDictionary Source="Skins/MainSkin_Old.xaml" />-->
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
                 <ResourceDictionary>
                     <!--  Global View Model Locator  -->
                     <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
                 </ResourceDictionary>
-                <!--<ResourceDictionary Source="pack://application:,,,/LS_Resources;component/LS_Resources.xaml" />-->
+                <ResourceDictionary Source="pack://application:,,,/LS_Resources_1;component/LS_Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -284,7 +284,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Skins\MainSkin_Old.xaml">
+    <Page Include="Skins\MainSkin_Old1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -322,9 +322,9 @@
       <Project>{8aa9fd1b-3f18-498f-af33-0696781f33c0}</Project>
       <Name>EFData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LS_Resources\LS_Resources.csproj">
-      <Project>{cf2e6468-880f-4032-8c18-fb4e132978f8}</Project>
-      <Name>LS_Resources</Name>
+    <ProjectReference Include="..\LS_Resources_1\LS_Resources_1.csproj">
+      <Project>{1c6ee582-6710-4490-9299-d11681b318f7}</Project>
+      <Name>LS_Resources_1</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

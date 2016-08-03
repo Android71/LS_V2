@@ -30,6 +30,20 @@ namespace LS_Library
             }
         }
 
+        int _white;
+        public int White
+        {
+            get { return _white; }
+            set
+            {
+                if (_white != value)
+                {
+                    _white = value;
+                    OnPropertyChanged("White");
+                }
+            }
+        }
+
         public double H { get; set; }
 
         public double S { get; set; }
