@@ -14,6 +14,17 @@ using System.Linq;
 
 namespace PatternEffect.ViewModel
 {
+
+    //public class Sliders : List<SliderItem>
+    //{
+    //    public Sliders(int PointCount)
+    //    {
+    //        SliderList = new List<SliderItem>();
+    //    }
+
+    //    public List<SliderItem> SliderList { get; set; }
+    //}
+
     public class EffectViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
