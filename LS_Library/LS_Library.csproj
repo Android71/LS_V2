@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ColorRange.cs" />
     <Compile Include="ColorUtilities.cs" />
+    <Compile Include="PatternInfoEnum.cs" />
     <Compile Include="PatternPoint.cs" />
     <Compile Include="PointTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

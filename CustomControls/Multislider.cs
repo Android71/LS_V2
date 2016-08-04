@@ -9,6 +9,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+
+//MultiSlider.OnTrackClick
+//MultiSlider.OnKeyDown
+//MultiSlider.OnApplyTemplate
+//MultiSlider.RearrangeSliderItems
+//MultiSlider.SliderItemGotMouseCapture
+//MultiSlider.OnSliderItemValueChanged
+
 namespace LS_Designer_WPF.Controls
 {
     public class MultiSlider : Control
@@ -46,7 +54,7 @@ namespace LS_Designer_WPF.Controls
             foreach (SliderItem si in SliderList)   // ??????????
             {
                 si.GotMouseCapture -= new MouseEventHandler(SliderItemGotMouseCapture);
-                si.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(OnSliderItemValueChanged);
+                si.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(OnSliderPositionChanged);
                 si.UpdatePatternCommand = UpdatePatternCommand;
             }
             DownSliders.Children.Clear();
@@ -56,7 +64,7 @@ namespace LS_Designer_WPF.Controls
             foreach (SliderItem si in SliderList)
             {
                 si.GotMouseCapture += new MouseEventHandler(SliderItemGotMouseCapture);
-                si.ValueChanged += new RoutedPropertyChangedEventHandler<double>(OnSliderItemValueChanged);
+                si.ValueChanged += new RoutedPropertyChangedEventHandler<double>(OnSliderPositionChanged);
                 if (k % 2 == 0)
                     // чётный 
                     UpSliders.Children.Add(si);
@@ -219,7 +227,7 @@ namespace LS_Designer_WPF.Controls
         }
 
         //int currentIx;
-        private void OnSliderItemValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void OnSliderPositionChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SliderItem si = (SliderItem)sender;
             Value = (int)si.Value;

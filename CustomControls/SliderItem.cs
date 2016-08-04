@@ -65,6 +65,8 @@ namespace LS_Designer_WPF.Controls
 
         public int Ix { get; set; }
 
+        public SliderTypeEnum SliderType { get; set; }
+
         #endregion
 
         protected override void OnValueChanged(double oldValue, double newValue)
