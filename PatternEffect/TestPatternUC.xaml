@@ -1,0 +1,19 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PatternEffect"
+        xmlns:Controls="clr-namespace:LS_Designer_WPF.Controls" x:Class="PatternEffect.TestPatternUC"
+        mc:Ignorable="d"
+        Title="TestPatternUC" Height="694.5" Width="1419" Background="{DynamicResource VeryDarkBrush}">
+    
+    <Window.DataContext>
+        <Binding Path="EffectModel" Source="{StaticResource Locator}" />
+    </Window.DataContext>
+    <Grid>
+
+        <Controls:PatternUC Margin="5" />
+
+    </Grid>
+</Window>

@@ -222,6 +222,17 @@ namespace LS_Designer_WPF.Controls
             lightSlider.Value = SelectedSlider.PatternPoint.L;
         }
 
+
+        private void WT_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void CW_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
         #endregion
 
         /****************************************************************************/

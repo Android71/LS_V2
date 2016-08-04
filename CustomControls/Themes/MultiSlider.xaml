@@ -11,11 +11,11 @@
                 <ControlTemplate TargetType="local:MultiSlider">
                     <Grid x:Name="PART_Sliders">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="25" />
                             <RowDefinition Height="4" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="4" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="25" />
                         </Grid.RowDefinitions>
                         <Grid Name="PART_UpSliders" Grid.Row="0">
                             <!--  Odd SliderItem instance get inserted here  -->

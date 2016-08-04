@@ -38,9 +38,13 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <ItemsControl Name="rangeSelector" Width="20">
 
+        <ItemsControl Name="rangeSelector" Width="20">
             <!--  ItemsSource="{Binding ColorRangeList}"  -->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -193,6 +197,150 @@
                    Grid.Row="4"
                    Content="0"
                    Style="{StaticResource label2}" />
+        </Grid>
+        <Grid Name="whitePart"
+              Grid.Column="5"
+              Width="45">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <local:HslSlider x:Name="whiteSlider"
+                             Grid.Row="0"
+                             ColorScale="W"
+                             LargeChange="0.05"
+                             Maximum="1.0"
+                             SmallChange="0.005"
+                             Style="{StaticResource slider}"
+                             ValueChanged="WT_ValueChanged" />
+            <!--  ValueChanged="hsb_ValuesChanged"  -->
+            <Label Grid.Row="1"
+                   Content="W"
+                   Style="{StaticResource label1}" />
+            <Label Name="whiteValue"
+                   Grid.Row="2"
+                   Content="0"
+                   Style="{StaticResource label2}" />
+            <Label Grid.Row="3"
+                   Content="B"
+                   Style="{StaticResource label1}"
+                   Visibility="Hidden" />
+            <Label Name="wValue"
+                   Grid.Row="4"
+                   Content="0"
+                   Style="{StaticResource label2}"
+                   Visibility="Hidden" />
+        </Grid>
+        <Grid Name="tempPart"
+              Grid.Column="6"
+              Width="45">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <local:HslSlider x:Name="tempSlider"
+                             Grid.Row="0"
+                             ColorScale="T"
+                             LargeChange="0.05"
+                             Maximum="1.0"
+                             SmallChange="0.005"
+                             Style="{StaticResource slider}"
+                             ValueChanged="WT_ValueChanged" />
+            <!--  ValueChanged="hsb_ValuesChanged"  -->
+            <Label Grid.Row="1"
+                   Content="T"
+                   Style="{StaticResource label1}" />
+            <Label Name="tempValue"
+                   Grid.Row="2"
+                   Content="0"
+                   Style="{StaticResource label2}" />
+            <Label Grid.Row="3"
+                   Content="B"
+                   Style="{StaticResource label1}"
+                   Visibility="Hidden" />
+            <Label Name="tValue"
+                   Grid.Row="4"
+                   Content="0"
+                   Style="{StaticResource label2}"
+                   Visibility="Hidden" />
+        </Grid>
+        <Grid Name="coldPart"
+              Grid.Column="7"
+              Width="45">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <local:HslSlider x:Name="coldSlider"
+                             Grid.Row="0"
+                             ColorScale="Cold"
+                             LargeChange="0.05"
+                             Maximum="1.0"
+                             SmallChange="0.005"
+                             Style="{StaticResource slider}"
+                             ValueChanged="CW_ValueChanged" />
+            <!--  ValueChanged="hsb_ValuesChanged"  -->
+            <Label Grid.Row="1"
+                   Content="Cold"
+                   Style="{StaticResource label1}" />
+            <Label Name="coldValue"
+                   Grid.Row="2"
+                   Content="0"
+                   Style="{StaticResource label2}" />
+            <Label Grid.Row="3"
+                   Content="B"
+                   Style="{StaticResource label1}"
+                   Visibility="Hidden" />
+            <Label Name="cValue"
+                   Grid.Row="4"
+                   Content="0"
+                   Style="{StaticResource label2}"
+                   Visibility="Hidden" />
+        </Grid>
+        <Grid Name="warmPart"
+              Grid.Column="8"
+              Width="45">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <local:HslSlider x:Name="warmSlider"
+                             Grid.Row="0"
+                             ColorScale="Warm"
+                             LargeChange="0.05"
+                             Maximum="1.0"
+                             SmallChange="0.005"
+                             Style="{StaticResource slider}"
+                             ValueChanged="CW_ValueChanged" />
+            <!--  ValueChanged="hsb_ValuesChanged"  -->
+            <Label Grid.Row="1"
+                   Content="Warm"
+                   Style="{StaticResource label1}" />
+            <Label Name="waValue"
+                   Grid.Row="2"
+                   Content="0"
+                   Style="{StaticResource label2}" />
+            <Label Grid.Row="3"
+                   Content="B"
+                   Style="{StaticResource label1}"
+                   Visibility="Hidden" />
+            <Label Name="warmValue"
+                   Grid.Row="4"
+                   Content="0"
+                   Style="{StaticResource label2}"
+                   Visibility="Hidden" />
         </Grid>
 
     </Grid>

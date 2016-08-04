@@ -75,7 +75,6 @@
 
             <cc:MultiSlider x:Name="multiSlider"
                             Grid.Row="1"
-                            Height="69"
                             VerticalAlignment="Top"
                             Maxlimit="{Binding Maxlimit}"
                             Pattern="{Binding Pattern}"
@@ -111,6 +110,7 @@
                 <TextBlock Margin="10,0,0,0" Text="FileName: " />
                 <TextBox Width="150" Text="{Binding FileName}" />
                 <Button Margin="10,0,0,0"
+                        Style="{StaticResource ButtonStyle1}"
                         Command="{Binding CreateProfileCmd}"
                         Content="Save" />
             </StackPanel>

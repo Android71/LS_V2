@@ -24,5 +24,27 @@ namespace LS_Designer_WPF.Controls
         {
             InitializeComponent();
         }
+
+        private void effectUC_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateMargin();
+        }
+
+        private void patternView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateMargin();
+        }
+
+        void UpdateMargin()
+        {
+            double width = patternView.ActualWidth;
+            int pointCount = upMultiSlider.Maxlimit;
+            if (pointCount != 0)
+            {
+                double halfPointWidth = (width / pointCount) / 2;
+                double margin = -9.5 + halfPointWidth;
+                upMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
+            }
+        }
     }
 }

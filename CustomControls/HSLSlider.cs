@@ -71,7 +71,7 @@ namespace LS_Designer_WPF.Controls
             lgb.EndPoint = new System.Windows.Point(0.5, 0.0);
             if (scale != null)
             {
-                if (ColorScale == SliderScaleEnum.L)
+                if (ColorScale == SliderScaleEnum.L || ColorScale == SliderScaleEnum.W)
                 {
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 0.0));
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.LightGray, 1.0));
@@ -83,6 +83,19 @@ namespace LS_Designer_WPF.Controls
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Black, 1.0));
                     scale.Background = lgb;
                 }
+                if (ColorScale == SliderScaleEnum.Cold)
+                {
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Blue, 0.0));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Cyan, 1.0));
+                    scale.Background = lgb;
+                }
+                if (ColorScale == SliderScaleEnum.Warm)
+                {
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.LightYellow, 0.0));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Orange, 1.0));
+                    scale.Background = lgb;
+                }
+
             }
         }
 

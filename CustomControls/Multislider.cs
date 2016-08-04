@@ -348,9 +348,7 @@ namespace LS_Designer_WPF.Controls
                                 SliderList.Add(rangeLeft);
                                 SliderList.Add(rangeRight);
                                 ReArrangeSliderItems();
-
                                 UpdatePatternCommand.Execute(rangeLeft);
-                                //UpdatePatternCommand.Execute(new SliderDuplet(rangeLeft, rangeRight));
                                 break;
                             case 2:     //Lightness
                                 break;
@@ -464,10 +462,8 @@ namespace LS_Designer_WPF.Controls
                         SelectedSlider.PatternPoint.L = 0.0;
                 }
                 SelectedSlider.PatternPoint.SaveLightness();
-                //SelectedSlider.PatternPoint.InitialL = SelectedSlider.PatternPoint.L;
             }
             SelectedSlider.RaiseLightnessChanged();
-            //UpdatePatternCommand.Execute(SelectedSlider);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

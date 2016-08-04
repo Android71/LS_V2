@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LS_Designer_WPF", "LS_Desig
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LS_Connect", "EF_Connect\LS_Connect.shproj", "{6386DE45-2C15-4D36-B630-81F375B56A63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LS_Resources_1", "LS_Resources_1\LS_Resources_1.csproj", "{1C6EE582-6710-4490-9299-D11681B318F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LS_Resources", "LS_Resources\LS_Resources.csproj", "{322E3884-D804-4C70-AD59-744C55DD53E8}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -33,10 +33,10 @@ Global
 		{B2CCF5E1-618E-429B-8F4C-31F0EDC114E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2CCF5E1-618E-429B-8F4C-31F0EDC114E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2CCF5E1-618E-429B-8F4C-31F0EDC114E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C6EE582-6710-4490-9299-D11681B318F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C6EE582-6710-4490-9299-D11681B318F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C6EE582-6710-4490-9299-D11681B318F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C6EE582-6710-4490-9299-D11681B318F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{322E3884-D804-4C70-AD59-744C55DD53E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{322E3884-D804-4C70-AD59-744C55DD53E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{322E3884-D804-4C70-AD59-744C55DD53E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{322E3884-D804-4C70-AD59-744C55DD53E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

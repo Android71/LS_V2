@@ -5,12 +5,21 @@
              xmlns:ignore="http://www.galasoft.ch/ignore"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:PatternEffect.ViewModel"
-             StartupUri="MainWindow.xaml"
+             StartupUri="TestPatternUC.xaml"
              mc:Ignorable="d ignore">
+    
+    <!--StartupUri="MainWindow.xaml"-->
 
     <Application.Resources>
-        <!--  Global View Model Locator  -->
-        <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <!--  Global View Model Locator  -->
+                    <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/LS_Resources;component/LS_Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 
 </Application>
