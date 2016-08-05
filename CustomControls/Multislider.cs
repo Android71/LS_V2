@@ -79,15 +79,15 @@ namespace LS_Designer_WPF.Controls
 
         #region SliderList
 
-        public ObservableCollection<SliderItem> SliderList
+        public List<SliderItem> SliderList
         {
-            get { return (ObservableCollection<SliderItem>)GetValue(SliderListProperty); }
+            get { return (List<SliderItem>)GetValue(SliderListProperty); }
             set { SetValue(SliderListProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SliderListProperty =
-            DependencyProperty.Register("SliderList", typeof(ObservableCollection<SliderItem>), typeof(MultiSlider), 
+            DependencyProperty.Register("SliderList", typeof(List<SliderItem>), typeof(MultiSlider), 
                                 new PropertyMetadata(null, SliderListChanged));
 
         private static void SliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

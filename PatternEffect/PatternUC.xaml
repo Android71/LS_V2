@@ -8,7 +8,30 @@
              x:Name="effectUC"
              d:DesignHeight="695.231"
              d:DesignWidth="1398.589"
-             mc:Ignorable="d" Loaded="effectUC_Loaded">
+             mc:Ignorable="d"
+             Loaded="effectUC_Loaded">
+
+    <UserControl.Resources>
+        <Style x:Key="screen" TargetType="ItemsControl">
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1" SnapsToDevicePixels="True" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Black" />
+            <Setter Property="Height" Value="255" />
+        </Style>
+        <DataTemplate x:Key="rgbScreenDT">
+            <Rectangle Height="{Binding Lightness}" VerticalAlignment="Bottom">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{Binding PointColor}" />
+                </Rectangle.Fill>
+            </Rectangle>
+        </DataTemplate>
+
+    </UserControl.Resources>
 
     <Grid x:Name="layoutRoot">
         <Grid.RowDefinitions>
@@ -17,7 +40,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TabControl Style="{StaticResource MainTabControlStyle}">
-            <TabItem Header="Pattern" Style="{StaticResource MainTabItemStyle}" >
+            <TabItem Header="Pattern" Style="{StaticResource MainTabItemStyle}">
                 <Grid x:Name="pattern">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -37,7 +60,7 @@
                         </Grid.RowDefinitions>
                         <local:ColorPanel x:Name="colorPanel"
                                           Height="400"
-                                          VerticalAlignment="Top" />
+                                          VerticalAlignment="Top"  />
                         <Border Grid.Row="1">
                             <Grid Name="controlPanel">
                                 <Grid.ColumnDefinitions>
@@ -49,20 +72,23 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
+                                <TextBlock Name="scaleTb" Grid.Row="0"
                                            Grid.Column="0"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource LightGrayBrush}"
-                                           Text="Scale" />
+                                           Text="Scale" 
+                                           Visibility="Collapsed"/>
                                 <ComboBox Name="scaleSelector"
                                           Grid.Row="0"
                                           Grid.Column="1"
-                                          Margin="0,2" />
+                                          Margin="0,2" 
+                                          Visibility="Collapsed"/>
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="0"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource LightGrayBrush}"
-                                           Text="AddMode" Margin="0,0,5,0" />
+                                           Text="AddMode"
+                                           Margin="0,0,5,0" />
                                 <ComboBox Name="addModeSelector"
                                           Grid.Row="1"
                                           Grid.Column="1"
@@ -82,50 +108,72 @@
                                          Grid.Row="2"
                                          Grid.Column="1"
                                          Margin="0,2"
-                                         IsReadOnly="True" />
+                                         IsReadOnly="True" Background="{DynamicResource DimGrayBrush}" />
                             </Grid>
                         </Border>
                     </Grid>
                     <Grid x:Name="patternView"
                           Grid.Row="0"
                           Grid.RowSpan="2"
-                          Grid.Column="1" SizeChanged="patternView_SizeChanged">
+                          Grid.Column="1"
+                          SizeChanged="patternView_SizeChanged">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ItemsControl x:Name="rgbPatternView"
+                        
+                        <ItemsControl x:Name="rgbScreen"
+                                      Style="{StaticResource screen}"
                                       Grid.Row="0"
-                                      Height="255"
-                                      ItemsSource="{Binding Pattern}"
-                                      Background="{DynamicResource BlackBrush}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Rows="1" SnapsToDevicePixels="True" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Rectangle Height="{Binding Lightness}" VerticalAlignment="Bottom">
-                                        <Rectangle.Fill>
-                                            <SolidColorBrush Color="{Binding PointColor}" />
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
+                                      ItemTemplate="{StaticResource rgbScreenDT}"/>
+                        
+                        <ItemsControl x:Name="whiteUpScreen"
+                                      Style="{StaticResource screen}"
+                                      Grid.Row="0"
+                                      ItemTemplate="{StaticResource rgbScreenDT}"
+                                      Visibility="Hidden"/>
+                        <ItemsControl x:Name="warmScreen"
+                                      Style="{StaticResource screen}"
+                                      Grid.Row="0"
+                                      ItemTemplate="{StaticResource rgbScreenDT}"
+                                      Visibility="Hidden"/>
+                        <ItemsControl x:Name="wtUpScreen"
+                                      Style="{StaticResource screen}"
+                                      Grid.Row="0"
+                                      ItemTemplate="{StaticResource rgbScreenDT}"
+                                      Visibility="Hidden"/>
+                        
                         <local1:MultiSlider x:Name="upMultiSlider"
                                             Grid.Row="1"
-                                             Maxlimit="{Binding Maxlimit}"
+                                            Maxlimit="{Binding PointCount}" 
+                                            UpdatePatternCommand="{Binding UpdatePatternCmd}"
+                                            
+                                            />
+                        <!--SelectedSlider="{Binding ElementName=effectUC, Path=SelectedSlider, Mode=TwoWay}"-->
+                        <!--
                             Pattern="{Binding Pattern}"
                             SliderList="{Binding SliderList}"
-                            UpdatePatternCommand="{Binding UpdatePatternCmd}"/>
-                        <ItemsControl x:Name="whitePatternView"
+                            UpdatePatternCommand="{Binding UpdatePatternCmd}"
+                        -->
+                        
+                        <local1:MultiSlider x:Name="downMultiSlider"
+                                            Grid.Row="1"
+                                            Maxlimit="{Binding PointCount}" 
+                                            Visibility="Hidden"/>
+                        
+                        <ItemsControl x:Name="whiteScreen"
+                                      Style="{StaticResource screen}"
                                       Grid.Row="2"
-                                      Height="255"
-                                      Background="{DynamicResource BlackBrush}" />
+                                      Visibility="Hidden"/>
+                        <ItemsControl x:Name="wtScreen"
+                                      Style="{StaticResource screen}"
+                                      Grid.Row="2"
+                                      Visibility="Hidden"/>
+                        <ItemsControl x:Name="coldScreen"
+                                      Style="{StaticResource screen}"
+                                      Grid.Row="2"
+                                      Visibility="Hidden"/>
 
                     </Grid>
                 </Grid>
