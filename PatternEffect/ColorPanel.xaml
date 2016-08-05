@@ -8,11 +8,13 @@
         <Style x:Key="label1" TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="{DynamicResource DarkBrush}"/>
         </Style>
         <Style x:Key="label2" TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#FF8B8989" />
+            <Setter Property="Foreground" Value="{DynamicResource DarkBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DarkBrush}" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Margin" Value="5,0" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -40,7 +42,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Name="rangeSelector" Width="20">
+        <ItemsControl Name="rangePointer" Width="20">
             <!--  ItemsSource="{Binding ColorRangeList}"  -->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -76,7 +78,8 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Rectangle Width="29" HorizontalAlignment="Left"
-                               Stroke="White" StrokeThickness="1">
+                               >
+                        <!--Stroke="White" StrokeThickness="1"-->
                         <Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Offset="0" Color="{Binding ToColor}" />

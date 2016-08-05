@@ -81,6 +81,7 @@ namespace LS_Designer_WPF.Controls
                     BindingOperations.SetBinding(upMultiSlider, MultiSlider.SliderListProperty, new Binding("UpSliderList") { Source = this });
                     BindingOperations.SetBinding(upMultiSlider, MultiSlider.PatternProperty, new Binding("Pattern") { Source = this });
                     BindingOperations.SetBinding(rgbScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
+                    BindingOperations.SetBinding(addModeSelector, ComboBox.SelectedIndexProperty, new Binding("AddMode") { Source = upMultiSlider });
                     BindingOperations.ClearBinding(downMultiSlider, MultiSlider.SelectedSliderProperty);
                     BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay});
                     break;
@@ -204,7 +205,7 @@ namespace LS_Designer_WPF.Controls
 
         private static void OnSelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         #endregion

@@ -60,8 +60,9 @@
                         </Grid.RowDefinitions>
                         <local:ColorPanel x:Name="colorPanel"
                                           Height="400"
-                                          VerticalAlignment="Top"  />
-                        <Border Grid.Row="1">
+                                          VerticalAlignment="Top"  
+                                          SelectedSlider="{Binding ElementName=effectUC, Path=SelectedSlider}"/>
+                        <Border Grid.Row="1" BorderBrush="{DynamicResource DimGrayBrush}" BorderThickness="1" Padding="5" Margin="10,10,10,0">
                             <Grid Name="controlPanel">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -93,12 +94,13 @@
                                           Grid.Row="1"
                                           Grid.Column="1"
                                           Margin="0,2"
-                                          SelectedIndex="{Binding AddMode,
-                                                                  ElementName=multiSlider}">
+                                          >
                                     <TextBlock Text="Gradient" />
                                     <TextBlock Text="Range" />
                                     <TextBlock Text="Lightness" />
                                 </ComboBox>
+                                <!--SelectedIndex="{Binding AddMode,
+                                                                  ElementName=multiSlider}"-->
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="0"
                                            VerticalAlignment="Center"

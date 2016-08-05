@@ -65,49 +65,28 @@ namespace LS_Designer_WPF.Controls
         public static readonly DependencyProperty SelectedSliderProperty =
             DependencyProperty.Register("SelectedSlider", typeof(SliderItem), typeof(ColorPanel), new PropertyMetadata(null, SelectedSliderChanged));
 
+
+
         private static void SelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ColorPanel panel = null;
             if (d != null)
             {
                 panel = (ColorPanel)d;
-                if (e.NewValue != null)
+                SliderItem si = (SliderItem)e.NewValue;
+                panel.SetVisualContent(si);
+                if (si != null)
                 {
-                    SliderItem si = (SliderItem)e.NewValue;
-
-                    si.LightnessChanged += panel.UpdateLightness;
-
                     PatternPoint pp = si.PatternPoint;
-                    
-                    foreach (ColorRange cr in panel.ColorRangeList)
-                    {
-                        if (cr.HueMinimum <= pp.H)
-                        {
-                            //Console.WriteLine($"HueRange: {cr.HueMinimum} - {cr.HueMaximum}");
-                            panel.hueSlider.UpdateScaleGradient(cr);
-                            break;
-                        }
-                    }
-                    panel.SetSlidersValue(si.PatternPoint);
-                    if (si.Variant != PointVariant.Lightness)
-                    {
-                        panel.hueSlider.IsEnabled = true;
-                        panel.satSlider.IsEnabled = true;
-                        panel.lightSlider.IsEnabled = true;
-                    }
-                    else
-                    {
-                        panel.hueSlider.IsEnabled = false;
-                        panel.satSlider.IsEnabled = false;
-                        panel.lightSlider.IsEnabled = true;
-                    }
+                    panel.SetSlidersValues(si);
+                    panel.TuneHandlersAndSliders(si, pp);
                 }
-                else
-                {
-                    panel.hueSlider.IsEnabled = false;
-                    panel.satSlider.IsEnabled = false;
-                    panel.lightSlider.IsEnabled = false;
-                }
+                //else
+                //{
+                //    panel.hueSlider.IsEnabled = false;
+                //    panel.satSlider.IsEnabled = false;
+                //    panel.lightSlider.IsEnabled = false;
+                //}
             }
         }
 
@@ -119,6 +98,89 @@ namespace LS_Designer_WPF.Controls
 
         public static readonly DependencyProperty ColorRangeListProperty =
             DependencyProperty.Register("ColorRangeList", typeof(List<ColorRange>), typeof(ColorPanel), new PropertyMetadata(null));
+
+
+        #region Generic methods
+
+        void SetVisualContent(SliderItem si)
+        {
+            // меняем набор слайдеров соотвествующий si.SliderType
+            if (si != null)
+            {
+                switch (si.SliderType)
+                {
+                    case SliderTypeEnum.RGB:
+                        rangePointer.Visibility = Visibility.Visible;
+                        colorSelector.Visibility = Visibility.Visible;
+                        huePart.Visibility = Visibility.Visible;
+                        satPart.Visibility = Visibility.Visible;
+                        lightPart.Visibility = Visibility.Visible;
+                        whitePart.Visibility = Visibility.Collapsed;
+                        tempPart.Visibility = Visibility.Collapsed;
+                        coldPart.Visibility = Visibility.Collapsed;
+                        warmPart.Visibility = Visibility.Collapsed;
+                        break;
+                }
+            }
+            else
+            {
+                rangePointer.Visibility = Visibility.Collapsed;
+                colorSelector.Visibility = Visibility.Collapsed;
+                huePart.Visibility = Visibility.Collapsed;
+                satPart.Visibility = Visibility.Collapsed;
+                lightPart.Visibility = Visibility.Collapsed;
+                whitePart.Visibility = Visibility.Collapsed;
+                tempPart.Visibility = Visibility.Collapsed;
+                coldPart.Visibility = Visibility.Collapsed;
+                warmPart.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        void SetSlidersValues(SliderItem si)
+        {
+            switch (si.SliderType)
+            {
+                case SliderTypeEnum.RGB:
+                    SetHSLSlidersValue(si.PatternPoint);
+                    break;
+            }
+        }
+
+        void TuneHandlersAndSliders(SliderItem si, PatternPoint pp)
+        {
+            switch (si.SliderType)
+            {
+                case SliderTypeEnum.RGB:
+                    si.LightnessChanged += UpdateLightness;
+                    foreach (ColorRange cr in ColorRangeList)
+                    {
+                        if (cr.HueMinimum <= pp.H)
+                        {
+                            //Console.WriteLine($"HueRange: {cr.HueMinimum} - {cr.HueMaximum}");
+                            hueSlider.UpdateScaleGradient(cr);
+                            break;
+                        }
+                    }
+
+                    if (si.Variant != PointVariant.Lightness)
+                    {
+                        hueSlider.IsEnabled = true;
+                        satSlider.IsEnabled = true;
+                        lightSlider.IsEnabled = true;
+                    }
+                    else
+                    {
+                        hueSlider.IsEnabled = false;
+                        satSlider.IsEnabled = false;
+                        lightSlider.IsEnabled = true;
+                    }
+                    break;
+            }
+        }
+
+        #endregion
+
 
         #endregion
 
@@ -136,7 +198,7 @@ namespace LS_Designer_WPF.Controls
                 if (SelectedSlider.Variant != PointVariant.Lightness)
                 {
                     hueSlider.UpdateScaleGradient(cr);
-                    SetSlidersValue(cr.HueMiddle, 1.0, 0.5);
+                    SetHSLSlidersValue(cr.HueMiddle, 1.0, 0.5);
                     SelectedSlider.PatternPoint.H = cr.HueMiddle;
                     SelectedSlider.PatternPoint.S = 1.0;
                     SelectedSlider.PatternPoint.L = 0.5;
@@ -151,7 +213,7 @@ namespace LS_Designer_WPF.Controls
 
         /****************************************************************************/
 
-        #region RGB PointType
+        #region SliderType RGB
 
         private void hslSliders_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -167,10 +229,10 @@ namespace LS_Designer_WPF.Controls
             }
             SelectedSlider.PatternPoint.UpdateColor();
             SelectedSlider.UpdatePattern();
-            UpdateColorInfo(SelectedSlider.PatternPoint.PointColor);
+            UpdateHSLColorInfo(SelectedSlider.PatternPoint.PointColor);
         }
 
-        void UpdateColorInfo(Media.Color c)
+        void UpdateHSLColorInfo(Media.Color c)
         {
             hueValue.Content = Math.Round(hueSlider.Value).ToString();
             rValue.Content = c.R.ToString();
@@ -180,7 +242,7 @@ namespace LS_Designer_WPF.Controls
             bValue.Content = c.B.ToString();
         }
 
-        public void SetSlidersValue(PatternPoint pp)
+        public void SetHSLSlidersValue(PatternPoint pp)
         {
             hueSlider.ExternalCall = true;
             satSlider.ExternalCall = true;
@@ -190,14 +252,14 @@ namespace LS_Designer_WPF.Controls
             satSlider.Value = pp.S;
             lightSlider.Value = pp.L;
 
-            UpdateColorInfo(pp.PointColor);
+            UpdateHSLColorInfo(pp.PointColor);
 
             hueSlider.ExternalCall = false;
             satSlider.ExternalCall = false;
             lightSlider.ExternalCall = false;
         }
 
-        void SetSlidersValue(double H, double S, double L)
+        void SetHSLSlidersValue(double H, double S, double L)
         {
             Media.Color c;
 
@@ -210,7 +272,7 @@ namespace LS_Designer_WPF.Controls
             lightSlider.Value = L;
 
             c = ColorUtilities.Hsl2MediaColor(H, S, L);
-            UpdateColorInfo(c);
+            UpdateHSLColorInfo(c);
 
             hueSlider.ExternalCall = false;
             satSlider.ExternalCall = false;

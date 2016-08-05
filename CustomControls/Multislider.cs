@@ -45,8 +45,8 @@ namespace LS_Designer_WPF.Controls
             UpSliders = Template.FindName("PART_UpSliders", this) as Grid;
             DownSliders = Template.FindName("PART_DownSliders", this) as Grid;
             slidersArea.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(OnTrackClick);
-            if (SliderList != null)
-                ReArrangeSliderItems();
+            //if (SliderList != null)
+            //    ReArrangeSliderItems();
         }
 
         void ReArrangeSliderItems()
@@ -63,6 +63,7 @@ namespace LS_Designer_WPF.Controls
             int k = 0;
             foreach (SliderItem si in SliderList)
             {
+                si.Ix = k;
                 si.GotMouseCapture += new MouseEventHandler(SliderItemGotMouseCapture);
                 si.ValueChanged += new RoutedPropertyChangedEventHandler<double>(OnSliderPositionChanged);
                 if (k % 2 == 0)
@@ -146,9 +147,13 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty UpdatePatternCommandProperty =
-            DependencyProperty.Register("UpdatePatternCommand", typeof(ICommand), typeof(MultiSlider), new PropertyMetadata(null));
+            DependencyProperty.Register("UpdatePatternCommand", typeof(ICommand), typeof(MultiSlider), new PropertyMetadata(null, OnUpdatePatternCommandChanged));
 
-
+        private static void OnUpdatePatternCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            MultiSlider ms = (MultiSlider)d;
+            ms.ReArrangeSliderItems();
+        }
 
         public SliderItem SelectedSlider
         {
