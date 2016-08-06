@@ -16,6 +16,8 @@ namespace LS_Library
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region RGB
+
         private System.Windows.Media.Color _pointColor;
         public System.Windows.Media.Color PointColor
         {
@@ -30,19 +32,7 @@ namespace LS_Library
             }
         }
 
-        int _white;
-        public int White
-        {
-            get { return _white; }
-            set
-            {
-                if (_white != value)
-                {
-                    _white = value;
-                    OnPropertyChanged("White");
-                }
-            }
-        }
+        
 
         public double H { get; set; }
 
@@ -171,6 +161,28 @@ namespace LS_Library
                     );
             }
         }
+
+        #endregion
+
+        #region White
+
+        int _white;
+        public int White
+        {
+            get { return _white; }
+            set
+            {
+                if (_white != value)
+                {
+                    _white = value;
+                    OnPropertyChanged("White");
+                }
+            }
+        }
+
+        public double WhiteD { get; set; }
+
+        #endregion
     }
 
 

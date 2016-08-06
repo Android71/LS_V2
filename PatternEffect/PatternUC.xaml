@@ -8,8 +8,8 @@
              x:Name="effectUC"
              d:DesignHeight="695.231"
              d:DesignWidth="1398.589"
-             mc:Ignorable="d"
-             Loaded="effectUC_Loaded">
+             Loaded="effectUC_Loaded"
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <Style x:Key="screen" TargetType="ItemsControl">
@@ -28,6 +28,15 @@
                 <Rectangle.Fill>
                     <SolidColorBrush Color="{Binding PointColor}" />
                 </Rectangle.Fill>
+            </Rectangle>
+        </DataTemplate>
+        <DataTemplate x:Key="whiteScreenDT">
+            <Rectangle Height="{Binding White}"
+                       VerticalAlignment="Bottom"
+                       Fill="{StaticResource GrayBrush}">
+                <!--<Rectangle.Fill>
+                    <SolidColorBrush Color="{Binding PointColor}" />
+                </Rectangle.Fill>-->
             </Rectangle>
         </DataTemplate>
 
@@ -60,9 +69,15 @@
                         </Grid.RowDefinitions>
                         <local:ColorPanel x:Name="colorPanel"
                                           Height="400"
-                                          VerticalAlignment="Top"  
-                                          SelectedSlider="{Binding ElementName=effectUC, Path=SelectedSlider}"/>
-                        <Border Grid.Row="1" BorderBrush="{DynamicResource DimGrayBrush}" BorderThickness="1" Padding="5" Margin="10,10,10,0">
+                                          VerticalAlignment="Top"
+                                          HorizontalAlignment="Center"
+                                          SelectedSlider="{Binding ElementName=effectUC,
+                                                                   Path=SelectedSlider}" />
+                        <Border Grid.Row="1"
+                                Margin="10,10,10,0"
+                                BorderBrush="{DynamicResource DimGrayBrush}"
+                                BorderThickness="1"
+                                Padding="5">
                             <Grid Name="controlPanel">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -73,34 +88,40 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Name="scaleTb" Grid.Row="0"
+                                <TextBlock Name="screenTb"
+                                           Grid.Row="0"
                                            Grid.Column="0"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource LightGrayBrush}"
-                                           Text="Scale" 
-                                           Visibility="Collapsed"/>
-                                <ComboBox Name="scaleSelector"
+                                           Text="Screen"
+                                           Visibility="Collapsed" />
+                                <ComboBox Name="screenSelector"
                                           Grid.Row="0"
                                           Grid.Column="1"
-                                          Margin="0,2" 
-                                          Visibility="Collapsed"/>
+                                          Margin="0,2"
+                                          ItemsSource="{Binding ElementName=effectUC,
+                                                                Path=ScreenList}"
+                                          SelectedIndex="{Binding ElementName=effectUC,
+                                                                  Path=SelectedScreen}"
+                                          Visibility="Collapsed" />
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="0"
+                                           Margin="0,0,5,0"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource LightGrayBrush}"
-                                           Text="AddMode"
-                                           Margin="0,0,5,0" />
+                                           Text="AddMode" />
                                 <ComboBox Name="addModeSelector"
                                           Grid.Row="1"
                                           Grid.Column="1"
-                                          Margin="0,2"
-                                          >
+                                          Margin="0,2">
                                     <TextBlock Text="Gradient" />
                                     <TextBlock Text="Range" />
                                     <TextBlock Text="Lightness" />
                                 </ComboBox>
-                                <!--SelectedIndex="{Binding AddMode,
-                                                                  ElementName=multiSlider}"-->
+                                <!--
+                                    SelectedIndex="{Binding AddMode,
+                                    ElementName=multiSlider}"
+                                -->
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="0"
                                            VerticalAlignment="Center"
@@ -110,7 +131,8 @@
                                          Grid.Row="2"
                                          Grid.Column="1"
                                          Margin="0,2"
-                                         IsReadOnly="True" Background="{DynamicResource DimGrayBrush}" />
+                                         Background="{DynamicResource DimGrayBrush}"
+                                         IsReadOnly="True" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -124,58 +146,61 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        
+
                         <ItemsControl x:Name="rgbScreen"
-                                      Style="{StaticResource screen}"
                                       Grid.Row="0"
-                                      ItemTemplate="{StaticResource rgbScreenDT}"/>
-                        
+                                      ItemTemplate="{StaticResource rgbScreenDT}"
+                                      Style="{StaticResource screen}" />
+
                         <ItemsControl x:Name="whiteUpScreen"
-                                      Style="{StaticResource screen}"
                                       Grid.Row="0"
                                       ItemTemplate="{StaticResource rgbScreenDT}"
-                                      Visibility="Hidden"/>
+                                      Style="{StaticResource screen}"
+                                      Visibility="Hidden" />
                         <ItemsControl x:Name="warmScreen"
-                                      Style="{StaticResource screen}"
                                       Grid.Row="0"
                                       ItemTemplate="{StaticResource rgbScreenDT}"
-                                      Visibility="Hidden"/>
+                                      Style="{StaticResource screen}"
+                                      Visibility="Hidden" />
                         <ItemsControl x:Name="wtUpScreen"
-                                      Style="{StaticResource screen}"
                                       Grid.Row="0"
                                       ItemTemplate="{StaticResource rgbScreenDT}"
-                                      Visibility="Hidden"/>
-                        
+                                      Style="{StaticResource screen}"
+                                      Visibility="Hidden" />
+
                         <local1:MultiSlider x:Name="upMultiSlider"
                                             Grid.Row="1"
-                                            Maxlimit="{Binding PointCount}" 
-                                            UpdatePatternCommand="{Binding UpdatePatternCmd}"
-                                            
-                                            />
-                        <!--SelectedSlider="{Binding ElementName=effectUC, Path=SelectedSlider, Mode=TwoWay}"-->
+                                            Maxlimit="{Binding PointCount}"
+                                            Pattern="{Binding Pattern}"
+                                            SliderList="{Binding UpSliderList}"
+                                            UpdatePatternCommand="{Binding UpdatePatternCmd}" />
+                        <!--  SelectedSlider="{Binding ElementName=effectUC, Path=SelectedSlider, Mode=TwoWay}"  -->
                         <!--
                             Pattern="{Binding Pattern}"
                             SliderList="{Binding SliderList}"
                             UpdatePatternCommand="{Binding UpdatePatternCmd}"
                         -->
-                        
+
                         <local1:MultiSlider x:Name="downMultiSlider"
                                             Grid.Row="1"
-                                            Maxlimit="{Binding PointCount}" 
-                                            Visibility="Hidden"/>
-                        
+                                            Maxlimit="{Binding PointCount}"
+                                            Pattern="{Binding Pattern}"
+                                            SliderList="{Binding DownSliderList}"
+                                            Visibility="Hidden" />
+
                         <ItemsControl x:Name="whiteScreen"
-                                      Style="{StaticResource screen}"
                                       Grid.Row="2"
-                                      Visibility="Hidden"/>
+                                      ItemTemplate="{StaticResource whiteScreenDT}"
+                                      Style="{StaticResource screen}"
+                                      Visibility="Hidden" />
                         <ItemsControl x:Name="wtScreen"
-                                      Style="{StaticResource screen}"
                                       Grid.Row="2"
-                                      Visibility="Hidden"/>
+                                      Style="{StaticResource screen}"
+                                      Visibility="Hidden" />
                         <ItemsControl x:Name="coldScreen"
-                                      Style="{StaticResource screen}"
                                       Grid.Row="2"
-                                      Visibility="Hidden"/>
+                                      Style="{StaticResource screen}"
+                                      Visibility="Hidden" />
 
                     </Grid>
                 </Grid>

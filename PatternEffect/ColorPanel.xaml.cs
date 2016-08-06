@@ -29,6 +29,36 @@ namespace LS_Designer_WPF.Controls
             (Content as FrameworkElement).DataContext = this;
         }
 
+        public void SetPanel(SliderTypeEnum variant)
+        {
+            switch (variant)
+            {
+                case SliderTypeEnum.RGB:
+                    rangePointer.Visibility = Visibility.Visible;
+                    colorSelector.Visibility = Visibility.Visible;
+                    huePart.Visibility = Visibility.Visible;
+                    satPart.Visibility = Visibility.Visible;
+                    lightPart.Visibility = Visibility.Visible;
+                    whitePart.Visibility = Visibility.Collapsed;
+                    tempPart.Visibility = Visibility.Collapsed;
+                    coldPart.Visibility = Visibility.Collapsed;
+                    warmPart.Visibility = Visibility.Collapsed;
+                    break;
+
+                case SliderTypeEnum.W:
+                    rangePointer.Visibility = Visibility.Collapsed;
+                    colorSelector.Visibility = Visibility.Collapsed;
+                    huePart.Visibility = Visibility.Collapsed;
+                    satPart.Visibility = Visibility.Collapsed;
+                    lightPart.Visibility = Visibility.Collapsed;
+                    whitePart.Visibility = Visibility.Visible;
+                    tempPart.Visibility = Visibility.Collapsed;
+                    coldPart.Visibility = Visibility.Collapsed;
+                    warmPart.Visibility = Visibility.Collapsed;
+                    break;
+            }
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             List<ColorRange> list = new List<ColorRange>();
@@ -74,7 +104,7 @@ namespace LS_Designer_WPF.Controls
             {
                 panel = (ColorPanel)d;
                 SliderItem si = (SliderItem)e.NewValue;
-                panel.SetVisualContent(si);
+                //panel.SetVisualContent(si);
                 if (si != null)
                 {
                     PatternPoint pp = si.PatternPoint;

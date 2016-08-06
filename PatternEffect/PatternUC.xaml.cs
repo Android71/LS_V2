@@ -28,16 +28,16 @@ namespace LS_Designer_WPF.Controls
 
         void TuneControl()
         {
-            if (PointType == PointTypeEnum.RGB)
-            {
+            //if (PointType == PointTypeEnum.RGB)
+            //{
                 ReBinding();
-                SetVisibility();
-                
-            }
+                SetVisuals();
+            //}
         }
 
-        void SetVisibility()
+        void SetVisuals()
         {
+            List<string> screenList = null;
             switch (PointType)
             {
                 case PointTypeEnum.RGB:
@@ -56,14 +56,42 @@ namespace LS_Designer_WPF.Controls
                     upMultiSlider.Visibility = Visibility.Visible;
                     downMultiSlider.Visibility = Visibility.Hidden;
 
-                    scaleTb.Visibility = Visibility.Collapsed;
-                    scaleSelector.Visibility = Visibility.Collapsed;
+                    screenTb.Visibility = Visibility.Collapsed;
+                    screenSelector.Visibility = Visibility.Collapsed;
+
+                    //ActiveSliderList = UpSliderList;
+                    SetActiveList.Execute(UpSliderList);
+
+                    break;
+
+                case PointTypeEnum.RGBW:
+                    // UpScreen
+                    rgbScreen.Visibility = Visibility.Visible;
+                    whiteUpScreen.Visibility = Visibility.Hidden;
+                    warmScreen.Visibility = Visibility.Hidden;
+                    wtUpScreen.Visibility = Visibility.Hidden;
+
+                    // DownScreen
+                    whiteScreen.Visibility = Visibility.Visible;
+                    wtScreen.Visibility = Visibility.Hidden;
+                    coldScreen.Visibility = Visibility.Hidden;
+
+                    //MultiSliders
+                    upMultiSlider.Visibility = Visibility.Visible;
+                    downMultiSlider.Visibility = Visibility.Hidden;
+
+                    screenList = new List<string>() { "RGB", "White" };
+                    screenTb.Visibility = Visibility.Visible;
+                    screenSelector.Visibility = Visibility.Visible;
+                    ScreenList = screenList;
 
                     //ActiveSliderList = UpSliderList;
                     SetActiveList.Execute(UpSliderList);
 
                     break;
             }
+
+
         }
 
         void ReBinding()
@@ -71,19 +99,21 @@ namespace LS_Designer_WPF.Controls
             switch (PointType)
             {
                 case PointTypeEnum.RGB:
-                    //BindingOperations.ClearAllBindings(whiteUpScreen);
-                    //BindingOperations.ClearAllBindings(warmScreen);
-                    //BindingOperations.ClearAllBindings(wtUpScreen);
-                    //BindingOperations.ClearAllBindings(whiteScreen);
-                    //BindingOperations.ClearAllBindings(wtScreen);
-                    //BindingOperations.ClearAllBindings(coldScreen);
-                    //upMultiSlider.SetBinding(MultiSlider.SliderListProperty, new Binding("UpSliderList") { Source = this });
-                    BindingOperations.SetBinding(upMultiSlider, MultiSlider.SliderListProperty, new Binding("UpSliderList") { Source = this });
-                    BindingOperations.SetBinding(upMultiSlider, MultiSlider.PatternProperty, new Binding("Pattern") { Source = this });
+                    
                     BindingOperations.SetBinding(rgbScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
+
                     BindingOperations.SetBinding(addModeSelector, ComboBox.SelectedIndexProperty, new Binding("AddMode") { Source = upMultiSlider });
+                    BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay });
                     BindingOperations.ClearBinding(downMultiSlider, MultiSlider.SelectedSliderProperty);
-                    BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay});
+                    
+                    break;
+                case PointTypeEnum.RGBW:
+
+                    BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay });
+                    BindingOperations.SetBinding(addModeSelector, ComboBox.SelectedIndexProperty, new Binding("AddMode") { Source = upMultiSlider });
+
+                    BindingOperations.SetBinding(rgbScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
+                    BindingOperations.SetBinding(whiteScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
                     break;
             }
         }
@@ -101,11 +131,6 @@ namespace LS_Designer_WPF.Controls
         public static readonly DependencyProperty PointTypeProperty =
             DependencyProperty.Register("PointType", typeof(PointTypeEnum), typeof(PatternUC), new PropertyMetadata(PointTypeEnum.RGB/*, OnPointTypeChanged*/));
 
-        //private static void OnPointTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-            
-        //}
-
         //******* UpSliderList ********
 
         public List<SliderItem> UpSliderList
@@ -115,13 +140,13 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty UpSliderListProperty =
-            DependencyProperty.Register("UpSliderList", typeof(List<SliderItem>), typeof(PatternUC), new PropertyMetadata(null, OnUpSliderListChanged));
+            DependencyProperty.Register("UpSliderList", typeof(List<SliderItem>), typeof(PatternUC), new PropertyMetadata(null/*, OnUpSliderListChanged*/));
 
-        private static void OnUpSliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            PatternUC uc = (PatternUC)d;
-            //uc.rgbScreen.SetValue(ItemsControl.InputScopeProperty, uc.Pattern);
-        }
+        //private static void OnUpSliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    PatternUC uc = (PatternUC)d;
+        //    //uc.rgbScreen.SetValue(ItemsControl.InputScopeProperty, uc.Pattern);
+        //}
 
         //******* DownSliderList ********
 
@@ -132,12 +157,12 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty DownSliderListProperty =
-            DependencyProperty.Register("DownSliderList", typeof(List<SliderItem>), typeof(PatternUC), new PropertyMetadata(null, OnDownSliderListChanged));
+            DependencyProperty.Register("DownSliderList", typeof(List<SliderItem>), typeof(PatternUC), new PropertyMetadata(null/*, OnDownSliderListChanged*/));
 
-        private static void OnDownSliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+        //private static void OnDownSliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+            
+        //}
 
         //******* Pattern ********
 
@@ -155,8 +180,6 @@ namespace LS_Designer_WPF.Controls
             PatternUC uc = (PatternUC)d;
             if (uc.Pattern != null)
                 uc.TuneControl(); 
-            
-            
         }
 
 
@@ -208,9 +231,61 @@ namespace LS_Designer_WPF.Controls
             //throw new NotImplementedException();
         }
 
+
+
+        public List<string> ScreenList
+        {
+            get { return (List<string>)GetValue(ScreenListProperty); }
+            set { SetValue(ScreenListProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ScreenSelector.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ScreenListProperty =
+            DependencyProperty.Register("ScreenList", typeof(List<string>), typeof(PatternUC), new PropertyMetadata(null));
+
+
+
+        public int SelectedScreen
+        {
+            get { return (int)GetValue(SelectedScreenProperty); }
+            set { SetValue(SelectedScreenProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedScreen.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedScreenProperty =
+            DependencyProperty.Register("SelectedScreen", typeof(int), typeof(PatternUC), new PropertyMetadata(0, OnSelectedScreenChanged));
+
+        private static void OnSelectedScreenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d != null)
+            {
+                PatternUC me = (PatternUC)d;
+                if (me.SelectedScreen == 0)
+                {
+                    BindingOperations.ClearBinding(me.downMultiSlider, MultiSlider.SelectedSliderProperty);
+                    me.downMultiSlider.Visibility = Visibility.Hidden;
+                    me.upMultiSlider.Visibility = Visibility.Visible;
+                    BindingOperations.SetBinding(me.upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
+                    me.SetActiveList.Execute(me.UpSliderList);
+                    if (me.UpSliderList.Count != 0)
+                        me.colorPanel.SetPanel(me.UpSliderList[0].SliderType);
+                }
+                else
+                {
+                    BindingOperations.ClearBinding(me.upMultiSlider, MultiSlider.SelectedSliderProperty);
+                    me.upMultiSlider.Visibility = Visibility.Hidden;
+                    me.downMultiSlider.Visibility = Visibility.Visible;
+                    BindingOperations.SetBinding(me.downMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
+                    me.SetActiveList.Execute(me.DownSliderList);
+                    if (me.DownSliderList != null && me.DownSliderList.Count != 0)
+                        me.colorPanel.SetPanel(me.DownSliderList[0].SliderType);
+                    //me.colorPanel.SetPanel(SliderTypeEnum.W);
+                }
+                
+            }
+        }
+
         #endregion
-
-
 
         private void effectUC_Loaded(object sender, RoutedEventArgs e)
         {
@@ -231,6 +306,7 @@ namespace LS_Designer_WPF.Controls
                 double halfPointWidth = (width / pointCount) / 2;
                 double margin = -9.5 + halfPointWidth;
                 upMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
+                downMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
             }
         }
     }

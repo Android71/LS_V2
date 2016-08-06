@@ -96,6 +96,15 @@
       <DependentUpon>TestPatternUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\EffectViewModel.cs" />
+    <Compile Include="ViewModel\EffectViewModel.Generic.cs">
+      <DependentUpon>EffectViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\EffectViewModel.RGB.cs">
+      <DependentUpon>EffectViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\EffectViewModel.RGBW.cs">
+      <DependentUpon>EffectViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="ColorPanel.xaml">
@@ -174,13 +183,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pattern.xml" />
+    <Resource Include="Pattern_RGB.xml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pattern_1.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="RGBWPattern.xml" />
+    <Resource Include="Pattern_RGBW.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

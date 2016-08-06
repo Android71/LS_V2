@@ -13,7 +13,7 @@
     </Window.DataContext>
     <Grid>
 
-        <Controls:PatternUC Margin="5" SetActiveList="{Binding SetActiveListCmd}" PointType="{Binding PointType}" UpSliderList="{Binding UpSliderList}" Pattern="{Binding Pattern}"/>
+        <Controls:PatternUC Margin="5" SetActiveList="{Binding SetActiveListCmd}" PointType="{Binding PointType}" UpSliderList="{Binding UpSliderList}" DownSliderList="{Binding DownSliderList}" Pattern="{Binding Pattern}"/>
 
     </Grid>
 </Window>

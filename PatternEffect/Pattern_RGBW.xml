@@ -15,6 +15,6 @@
     <BasePoint Pos="8" W="200" Variant="1" />
     <BasePoint Pos="10" W="200" Variant="2" />
     <BasePoint Pos="30" W="250" Variant="3" />
-    <BasePoint W="140" Variant="0" />
+    <BasePoint Pos="40" W="140" Variant="0" />
   </White>
 </Params>
