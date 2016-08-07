@@ -476,7 +476,7 @@ namespace LS_Designer_WPF.Controls
                 }
                 SelectedSlider.PatternPoint.SaveLightness();
             }
-            SelectedSlider.RaiseLightnessChanged();
+            SelectedSlider.RaiseWheelVariableChanged();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

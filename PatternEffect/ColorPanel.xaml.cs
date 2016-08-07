@@ -182,7 +182,7 @@ namespace LS_Designer_WPF.Controls
             switch (si.SliderType)
             {
                 case SliderTypeEnum.RGB:
-                    si.LightnessChanged += UpdateLightness;
+                    si.WheelVariableChanged += UpdateLightness;
                     foreach (ColorRange cr in ColorRangeList)
                     {
                         if (cr.HueMinimum <= pp.H)
@@ -227,14 +227,25 @@ namespace LS_Designer_WPF.Controls
             {
                 if (SelectedSlider.Variant != PointVariant.Lightness)
                 {
+                    SliderItem si = SelectedSlider;
+
                     hueSlider.UpdateScaleGradient(cr);
-                    SetHSLSlidersValue(cr.HueMiddle, 1.0, 0.5);
-                    SelectedSlider.PatternPoint.H = cr.HueMiddle;
-                    SelectedSlider.PatternPoint.S = 1.0;
-                    SelectedSlider.PatternPoint.L = 0.5;
-                    SelectedSlider.PatternPoint.SaveLightness();
-                    SelectedSlider.PatternPoint.UpdateColor();
-                    SelectedSlider.UpdatePattern();
+                    //SetHSLSlidersValue(cr.HueMiddle, 1.0, 0.5);
+                    SetHSLSlidersValue(cr.HueMiddle, si.PatternPoint.S, si.PatternPoint.L);
+                    si.PatternPoint.H = cr.HueMiddle;
+                    si.PatternPoint.S = si.PatternPoint.S;//= 1.0;
+                    si.PatternPoint.L = si.PatternPoint.L; //0.5;
+                    si.PatternPoint.SaveLightness();
+                    si.PatternPoint.UpdateColor();
+
+                    if (si.Variant == PointVariant.RangeLeft)
+                        si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint);
+                    if (si.Variant == PointVariant.RangeRight)
+                        si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint);
+
+                    si.PatternPoint.SaveLightness();
+                    si.PatternPoint.UpdateColor();
+                    si.UpdatePattern();
                 }
             }
         }
@@ -247,19 +258,27 @@ namespace LS_Designer_WPF.Controls
 
         private void hslSliders_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            SliderItem si = SelectedSlider;
             HslSlider slider = (HslSlider)sender;
             if (slider.ColorScale == SliderScaleEnum.H)
-                SelectedSlider.PatternPoint.H = e.NewValue;
+                si.PatternPoint.H = e.NewValue;
             if (slider.ColorScale == SliderScaleEnum.S)
-                SelectedSlider.PatternPoint.S = e.NewValue;
+                si.PatternPoint.S = e.NewValue;
             if (slider.ColorScale == SliderScaleEnum.L)
             {
-                SelectedSlider.PatternPoint.L = e.NewValue;
-                SelectedSlider.PatternPoint.SaveLightness();
+                si.PatternPoint.L = e.NewValue;
+                si.PatternPoint.SaveLightness();
             }
-            SelectedSlider.PatternPoint.UpdateColor();
-            SelectedSlider.UpdatePattern();
-            UpdateHSLColorInfo(SelectedSlider.PatternPoint.PointColor);
+
+            si.PatternPoint.UpdateColor();
+
+            if (si.Variant == PointVariant.RangeLeft)
+                si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint);
+            if (si.Variant == PointVariant.RangeRight)
+                si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint);
+
+            si.UpdatePattern();
+            UpdateHSLColorInfo(si.PatternPoint.PointColor);
         }
 
         void UpdateHSLColorInfo(Media.Color c)

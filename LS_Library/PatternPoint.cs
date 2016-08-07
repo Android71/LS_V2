@@ -44,9 +44,15 @@ namespace LS_Library
                                              //градиента яркости
 
 
-        public void Clear()
+        public void Clear_RGB()
         {
             SetColorFromHSL(0.0, 0.0, 0.0);
+        }
+
+        public void Clear_W()
+        {
+            WhiteD = 0.0;
+            White = 0;
         }
 
         public void SetColorFromHSL(double h, double s, double l)
@@ -56,6 +62,12 @@ namespace LS_Library
             L = l;
             PointColor = HSLtoRGB();
             Lightness = Convert.ToInt32(L * 255.0);
+        }
+
+        public void SetWhite(double w)
+        {
+            WhiteD = w;
+            White = Convert.ToInt32(w * 255.0);
         }
 
         public void UpdateColor()

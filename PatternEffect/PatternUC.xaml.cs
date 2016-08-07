@@ -30,7 +30,7 @@ namespace LS_Designer_WPF.Controls
         {
             //if (PointType == PointTypeEnum.RGB)
             //{
-                ReBinding();
+                SetBinding();
                 SetVisuals();
             //}
         }
@@ -94,7 +94,7 @@ namespace LS_Designer_WPF.Controls
 
         }
 
-        void ReBinding()
+        void SetBinding()
         {
             switch (PointType)
             {
@@ -104,7 +104,7 @@ namespace LS_Designer_WPF.Controls
 
                     BindingOperations.SetBinding(addModeSelector, ComboBox.SelectedIndexProperty, new Binding("AddMode") { Source = upMultiSlider });
                     BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay });
-                    BindingOperations.ClearBinding(downMultiSlider, MultiSlider.SelectedSliderProperty);
+                    
                     
                     break;
                 case PointTypeEnum.RGBW:
@@ -229,6 +229,11 @@ namespace LS_Designer_WPF.Controls
         private static void OnSelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //throw new NotImplementedException();
+            PatternUC uc = (PatternUC)d;
+            if (uc.SelectedSlider != null)
+                uc.position.Text = uc.SelectedSlider.Pos.ToString();
+            else
+                uc.position.Text = "";
         }
 
 
@@ -266,6 +271,9 @@ namespace LS_Designer_WPF.Controls
                     me.downMultiSlider.Visibility = Visibility.Hidden;
                     me.upMultiSlider.Visibility = Visibility.Visible;
                     BindingOperations.SetBinding(me.upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
+                    foreach (SliderItem si in me.UpSliderList)
+                        if (si.IsSelected)
+                            me.SelectedSlider = si;
                     me.SetActiveList.Execute(me.UpSliderList);
                     if (me.UpSliderList.Count != 0)
                         me.colorPanel.SetPanel(me.UpSliderList[0].SliderType);
@@ -276,6 +284,9 @@ namespace LS_Designer_WPF.Controls
                     me.upMultiSlider.Visibility = Visibility.Hidden;
                     me.downMultiSlider.Visibility = Visibility.Visible;
                     BindingOperations.SetBinding(me.downMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
+                    foreach (SliderItem si in me.DownSliderList)
+                        if (si.IsSelected)
+                            me.SelectedSlider = si;
                     me.SetActiveList.Execute(me.DownSliderList);
                     if (me.DownSliderList != null && me.DownSliderList.Count != 0)
                         me.colorPanel.SetPanel(me.DownSliderList[0].SliderType);

@@ -73,7 +73,7 @@ namespace PatternEffect.ViewModel
 
         private void ExecUpdatePattern(SliderItem si)
         {
-            UpdatePattern(si);
+            UpdatePattern_1(si);
         }
 
         #endregion
@@ -172,30 +172,6 @@ namespace PatternEffect.ViewModel
         }
 
 
-        void UpdateLightGradient(SliderItem leftSlider, SliderItem rightSlider)
-        {
-            double deltaL;
-
-            int leftPointIx = leftSlider.Pos;
-            int rightPointIx = rightSlider.Pos;
-            int stepCount = rightPointIx - leftPointIx;
-
-            leftSlider.PatternPoint.RestoreLightness();
-            leftSlider.PatternPoint.UpdateColor();
-            rightSlider.PatternPoint.RestoreLightness();
-            rightSlider.PatternPoint.UpdateColor();
-
-            if (stepCount > 0)
-            {
-                deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
-
-                for (int i = 0; i < stepCount - 1; i++)
-                {
-                    double prevLight = Pattern[leftPointIx - 1 + i].L;
-                    Pattern[leftPointIx + i].SetColorFromHSL(Pattern[leftPointIx + i].H, Pattern[leftPointIx + i].S, prevLight + deltaL);
-                }
-            }
-        }
 
         void UpdateColorGradient(SliderItem leftSlider, SliderItem rightSlider)
         {
@@ -218,21 +194,6 @@ namespace PatternEffect.ViewModel
             }
         }
 
-        void UpdateLightGradient(SliderItem leftItem, List<SliderItem> lightList, SliderItem rightItem)
-        {
-            SliderItem prevLight = null;
-             
-            if (lightList.Count != 0)
-            {
-                prevLight = leftItem;
-                foreach (SliderItem si in lightList)
-                {
-                    UpdateLightGradient(prevLight, si);
-                    prevLight = si;
-                }
-                UpdateLightGradient(prevLight, rightItem);
-            }
-        }
 
 
 
@@ -261,7 +222,110 @@ namespace PatternEffect.ViewModel
 
         #region Depend of SliderList
 
-        void UpdatePattern(SliderItem si)
+        void UpdatePattern_1(SliderItem si)
+        {
+            SliderItem prevItem = null;
+            SliderItem nextItem = null;
+            SliderItem rangeRight = null;
+            SliderItem rangeLeft = null;
+            List<SliderItem> leftLights = new List<SliderItem>();
+            List<SliderItem> rightLights = new List<SliderItem>();
+
+            if (si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.RGB)
+            {
+                prevItem = si.Owner[si.Ix - 1];
+                nextItem = si.Owner[si.Ix + 1];
+                UpdateLightGradient(prevItem, si);
+                UpdateLightGradient(si, nextItem);
+                return;
+            }
+
+            if (si.Variant == PointVariant.RangeLeft || si.Variant == PointVariant.RangeRight)
+            {
+                if (si.Variant == PointVariant.RangeLeft)
+                {
+                    rangeLeft = si;
+                    rangeRight = si.Owner[si.Ix + 1];
+                }else
+                {
+                    rangeRight = si;
+                    rangeLeft = si.Owner[si.Ix - 1];
+                }
+            }
+            else
+            {
+                rangeLeft = si;
+                rangeRight = si;
+            }
+            prevItem = PrevSliderItem_1(rangeLeft, leftLights);
+            nextItem = NextSliderItem_1(rangeRight, rightLights);
+
+
+            if (prevItem != null)
+                BuildGradient_1(prevItem, rangeLeft);
+            else
+                ClearLeftEnd(rangeLeft);
+
+            if (si.SliderType == SliderTypeEnum.RGB && prevItem != null)
+                UpdateLightGradient(prevItem, leftLights, rangeLeft);
+
+            BuildGradient_1(rangeLeft, rangeRight);
+
+            if (nextItem != null)
+                BuildGradient_1(rangeRight, nextItem);
+            else
+                ClearRightEnd(rangeRight);
+
+            if (si.SliderType == SliderTypeEnum.RGB && nextItem != null)
+                UpdateLightGradient(si, rightLights, nextItem);
+           
+
+        }
+
+        SliderItem PrevSliderItem_1(SliderItem si, List<SliderItem> lightsSliders)
+        {
+            int prevIx = si.Ix - 1;
+
+            SliderItem item = null;
+
+            while (prevIx >= 0)
+            {
+                if (si.Owner[prevIx].Variant == PointVariant.Lightness)
+                {
+                    lightsSliders.Insert(0, si.Owner[prevIx]);
+                    prevIx--;
+                }
+                else
+                {
+                    item = si.Owner[prevIx];
+                    break;
+                }
+            }
+            return item;
+        }
+
+        SliderItem NextSliderItem_1(SliderItem si, List<SliderItem> lightsSliders)
+        {
+            int nextIx = si.Ix + 1;
+            SliderItem item = null;
+
+            while (nextIx <= si.Owner.Count - 1)
+            {
+                if (si.Owner[nextIx].Variant == PointVariant.Lightness)
+                {
+                    lightsSliders.Add(si.Owner[nextIx]);
+                    nextIx++;
+                }
+                else
+                {
+                    item = si.Owner[nextIx];
+                    break;
+                }
+            }
+            return item;
+        }
+
+        void UpdatePattern(SliderItem si)       //UpdateGradient PrevSliderItem  NextSliderItem
         {
             SliderItem prevItem = null;
             SliderItem nextItem = null;
@@ -346,6 +410,7 @@ namespace PatternEffect.ViewModel
         SliderItem PrevSliderItem(int sliderIx, List<SliderItem> leftLights)
         {
             int prevIx = sliderIx - 1;
+            
             SliderItem item = null;
 
             while (prevIx >= 0)
@@ -385,35 +450,50 @@ namespace PatternEffect.ViewModel
             return item;
         }
 
-        void ClearLeftEnd(SliderItem si)
+        void UpdateLightGradient(SliderItem leftSlider, SliderItem rightSlider)
         {
-            int leftIx = si.Pos - 1;
-            for (int i = 0; i < leftIx; i++)
+            double deltaL;
+
+            int leftPointIx = leftSlider.Pos;
+            int rightPointIx = rightSlider.Pos;
+            int stepCount = rightPointIx - leftPointIx;
+
+            leftSlider.PatternPoint.RestoreLightness();
+            leftSlider.PatternPoint.UpdateColor();
+            rightSlider.PatternPoint.RestoreLightness();
+            rightSlider.PatternPoint.UpdateColor();
+
+            if (stepCount > 0)
             {
-                switch (si.SliderType)
+                deltaL = (rightSlider.PatternPoint.L - leftSlider.PatternPoint.L) / stepCount;
+
+                for (int i = 0; i < stepCount - 1; i++)
                 {
-                    case SliderTypeEnum.RGB:
-                        Pattern[i].Clear();
-                        break;
+                    double prevLight = Pattern[leftPointIx - 1 + i].L;
+                    Pattern[leftPointIx + i].SetColorFromHSL(Pattern[leftPointIx + i].H, Pattern[leftPointIx + i].S, prevLight + deltaL);
                 }
             }
         }
 
-        void ClearRightEnd(SliderItem si)
+        void UpdateLightGradient(SliderItem leftItem, List<SliderItem> lightList, SliderItem rightItem)
         {
-            int rightIx = si.Pos;
-            for (int i = rightIx; i < PointCount; i++)
+            SliderItem prevLight = null;
+
+            if (lightList.Count != 0)
             {
-                switch (si.SliderType)
+                prevLight = leftItem;
+                foreach (SliderItem si in lightList)
                 {
-                    case SliderTypeEnum.RGB:
-                        Pattern[i].Clear();
-                        break;
+                    UpdateLightGradient(prevLight, si);
+                    prevLight = si;
                 }
+                UpdateLightGradient(prevLight, rightItem);
             }
         }
 
-        
+
+
+
 
 
         #endregion

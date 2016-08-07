@@ -1,5 +1,6 @@
 ﻿using LS_Library;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -61,11 +62,30 @@ namespace LS_Designer_WPF.Controls
 
         public PatternPoint PatternPoint { get; set; }
 
-        public int Pos { get { return Convert.ToInt32(Value); } }
+        public int PatIx { get { return Convert.ToInt32(Value) - 1; } }
+
+        public int Pos
+        {
+            get { return Convert.ToInt32(Value); }
+        }
 
         public int Ix { get; set; }
 
         public SliderTypeEnum SliderType { get; set; }
+
+
+        WeakReference<List<SliderItem>> wr;
+        public List<SliderItem> Owner
+        {
+            get {
+                    List<SliderItem> tmp = new List<SliderItem>();
+                    if (wr.TryGetTarget(out tmp))
+                        return tmp;
+                    else
+                        return null;
+                }
+            set { wr = new WeakReference<List<SliderItem>>(value); }
+        }
 
         #endregion
 
@@ -92,12 +112,12 @@ namespace LS_Designer_WPF.Controls
             UpdatePatternCommand.Execute(this);
         }
 
-        public event EventHandler<EventArgs> LightnessChanged;
+        public event EventHandler<EventArgs> WheelVariableChanged;
 
-        public void RaiseLightnessChanged()
+        public void RaiseWheelVariableChanged()
         {
-            if (LightnessChanged != null)
-                LightnessChanged(this, new EventArgs());
+            if (WheelVariableChanged != null)
+                WheelVariableChanged(this, new EventArgs());
         }
 
     }

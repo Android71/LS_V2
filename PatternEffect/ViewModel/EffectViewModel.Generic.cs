@@ -13,23 +13,6 @@ namespace PatternEffect.ViewModel
 {
     public partial class EffectViewModel
     {
-        SliderItem CreateSlider(int ix, int pos, PointVariant pVariant, SliderTypeEnum sliderType)
-        {
-            SliderItem si = new SliderItem();
-            si.Ix = ix;
-            si.PatternPoint = Pattern[pos - 1];
-            //si.Variant = (PointVariant)int.Parse(basePoint.Attribute("Variant").Value);
-            si.Variant = pVariant;
-            si.Minimum = 1;
-            si.Maximum = PointCount;
-            si.SelectionStart = 1;
-            si.SelectionEnd = si.Maximum;
-            si.Value = pos;
-            si.SliderType = sliderType;
-            //sliderList.Add(si);
-            return si;
-        }
-
         void CreateRGBSliders(XElement root, List<SliderItem> sliderList)
         {
             int ix = 0;
@@ -52,7 +35,7 @@ namespace PatternEffect.ViewModel
                 pp.PointColor = Color.FromRgb(color.R, color.G, color.B);
                 pp.Lightness = Convert.ToInt32(pp.L * 255);
 
-                sliderList.Add(CreateSlider(ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.RGB));
+                sliderList.Add(CreateSlider(sliderList, ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.RGB));
                 ix++;
             }
         }
@@ -68,9 +51,27 @@ namespace PatternEffect.ViewModel
                 pp.White = int.Parse(basePoint.Attribute("W").Value);
                 pp.WhiteD = pp.White / 255.0;
 
-                DownSliderList.Add(CreateSlider(ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.W));
+                DownSliderList.Add(CreateSlider(sliderList,ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.W));
                 ix++;
             }
+        }
+
+        SliderItem CreateSlider(List<SliderItem> sList, int ix, int pos, PointVariant pVariant, SliderTypeEnum sliderType)
+        {
+            SliderItem si = new SliderItem();
+            si.Ix = ix;
+            si.Owner = sList;
+            si.PatternPoint = Pattern[pos - 1];
+            //si.Variant = (PointVariant)int.Parse(basePoint.Attribute("Variant").Value);
+            si.Variant = pVariant;
+            si.Minimum = 1;
+            si.Maximum = PointCount;
+            si.SelectionStart = 1;
+            si.SelectionEnd = si.Maximum;
+            si.Value = pos;
+            si.SliderType = sliderType;
+            //sliderList.Add(si);
+            return si;
         }
     }
 }
