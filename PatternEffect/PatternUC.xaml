@@ -191,6 +191,7 @@
                                             Maxlimit="{Binding PointCount}"
                                             Pattern="{Binding Pattern}"
                                             SliderList="{Binding DownSliderList}"
+                                            UpdatePatternCommand="{Binding UpdatePatternCmd}"
                                             Visibility="Hidden" />
 
                         <ItemsControl x:Name="whiteScreen"

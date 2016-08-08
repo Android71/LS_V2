@@ -42,28 +42,34 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Name="rangePointer" Width="20" >
+        <ItemsControl Name="rangePointer" Width="20" ItemsSource="{Binding ColorRangeList}">
             <!--  ItemsSource="{Binding ColorRangeList}"  -->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="1" SnapsToDevicePixels="True" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <!--<ItemsControl.ItemTemplate>
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle Width="29"
-                               HorizontalAlignment="Left"
-                               Stroke="White"
-                               StrokeThickness="1">
-                        <Rectangle.Fill>
+                    <Rectangle Name="range" Width="5"
+                               HorizontalAlignment="Center"
+                               Fill="{StaticResource DimGrayBrush}"
+                               Visibility="Hidden"
+                               >
+                        <!--<Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Offset="0" Color="{Binding ToColor}" />
                                 <GradientStop Offset="1" Color="{Binding FromColor}" />
                             </LinearGradientBrush>
-                        </Rectangle.Fill>
+                        </Rectangle.Fill>-->
                     </Rectangle>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                            <Setter TargetName="range" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>-->
+            </ItemsControl.ItemTemplate>
         </ItemsControl>
 
         <ItemsControl Name="colorSelector" Grid.Column="1"

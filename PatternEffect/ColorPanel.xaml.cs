@@ -77,8 +77,10 @@ namespace LS_Designer_WPF.Controls
             list.Add(new ColorRange(Media.Color.FromRgb(255, 170, 0), Media.Color.FromRgb(255, 213, 0)));   // 40-50
             list.Add(new ColorRange(Media.Color.FromRgb(255, 85, 0), Media.Color.FromRgb(255, 170, 0)));    // 20-40
             list.Add(new ColorRange(Media.Color.FromRgb(255, 0, 0), Media.Color.FromRgb(255, 85, 0)));      // 0-20
-            list.Add(new ColorRange(Media.Colors.Black, Media.Colors.Black));                                
-            
+            list.Add(new ColorRange(Media.Colors.Black, Media.Colors.Black));
+
+            //list[3].IsSelected = true;
+
             ColorRangeList = list;
         }
 
@@ -238,6 +240,8 @@ namespace LS_Designer_WPF.Controls
 
         /****************************************************************************/
 
+        ColorRange SelectedRange { get; set; }
+
         #region Mouse Input
 
         private void colorSelector_MouseDown(object sender, MouseButtonEventArgs e)
@@ -269,6 +273,10 @@ namespace LS_Designer_WPF.Controls
                     si.PatternPoint.UpdateColor();
                     si.UpdatePattern();
                 }
+                if (SelectedRange != null)
+                    SelectedRange.IsSelected = false;
+                cr.IsSelected = true;
+                SelectedRange = cr;
             }
         }
 
@@ -404,7 +412,7 @@ namespace LS_Designer_WPF.Controls
             {
                 case SliderTypeEnum.RGB:
                     //SelectedSlider.PatternPoint.L = (double)e.NewValue;
-                    //SelectedSlider.PatternPoint.SaveLightness();
+                    SelectedSlider.PatternPoint.SaveLightness();
                     lightSlider.Value = SelectedSlider.PatternPoint.L;
                     break;
                 case SliderTypeEnum.W:

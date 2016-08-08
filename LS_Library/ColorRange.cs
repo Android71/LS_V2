@@ -5,11 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Media = System.Windows.Media;
 using System.Drawing;
+using System.ComponentModel;
 
 namespace LS_Library
 {
-    public class ColorRange
+    public class ColorRange : INotifyPropertyChanged
     {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public ColorRange(Media.Color from, Media.Color to)
         {
             FromColor = from;
@@ -36,6 +45,13 @@ namespace LS_Library
         public double HueMiddle { get; set; }
         public Media.Color FromColor { get; set; }
         public Media.Color ToColor { get; set; }
+
+        bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { if (_isSelected != value) { _isSelected = value; OnPropertyChanged("IsSelected"); } }
+        }
 
         public static ColorRange BlackRange
         {

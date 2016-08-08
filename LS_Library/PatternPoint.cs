@@ -38,7 +38,18 @@ namespace LS_Library
 
         public double S { get; set; }
 
-        public double L { get; set; }
+        double l;
+        public double L
+        {
+            get { return l; }
+            set
+            { if (l != value)
+                {
+                    l = value;
+                    //InitialL = l;
+                }
+            }
+        }
 
         double InitialL { get; set; } //исходное значение Lightness для использования в алгоритме построения
                                              //градиента яркости

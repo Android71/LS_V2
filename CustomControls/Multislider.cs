@@ -55,7 +55,7 @@ namespace LS_Designer_WPF.Controls
             {
                 si.GotMouseCapture -= new MouseEventHandler(SliderItemGotMouseCapture);
                 si.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(OnSliderPositionChanged);
-                //si.UpdatePatternCommand = UpdatePatternCommand;
+                si.UpdatePatternCommand = UpdatePatternCommand;
             }
             DownSliders.Children.Clear();
             UpSliders.Children.Clear();
@@ -459,53 +459,98 @@ namespace LS_Designer_WPF.Controls
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
-            object newValue = null;
+            //object newValue = null;
+            double target = 0.0;
+
             if (SelectedSlider != null)
             {
                 switch (SelectedSlider.SliderType)
                 {
                     case SliderTypeEnum.RGB:
-                        if (e.Delta > 0)
-                        {
-                            newValue = SelectedSlider.PatternPoint.L + 0.02;
-                            if ((double)newValue > 1.0)
-                                newValue = 1.0;
-                        }
-                        else
-                        {
-                            newValue = SelectedSlider.PatternPoint.L - 0.02;
+                        target = SelectedSlider.PatternPoint.L;
+                        break;
+                    case SliderTypeEnum.W:
+                        target = SelectedSlider.PatternPoint.WhiteD;
+                        break;
+                }
 
-                            if ((double)newValue < 0.0)
-                                newValue = 0.0;
-                        }
-                        SelectedSlider.PatternPoint.L = (double)newValue;
+                if (e.Delta > 0)
+                {
+                    target += 0.02;
+                    if (target > 1.0)
+                        target = 1.0;
+                }
+                else
+                {
+                    target -= 0.02;
+                    if (target < 0.0)
+                        target = 0.0;
+                }
+
+
+                switch (SelectedSlider.SliderType)
+                {
+                    case SliderTypeEnum.RGB:
+                        //if (e.Delta > 0)
+                        //{
+                        //    newValue = SelectedSlider.PatternPoint.L + 0.02;
+                        //    if ((double)newValue > 1.0)
+                        //        newValue = 1.0;
+                        //}
+                        //else
+                        //{
+                        //    newValue = SelectedSlider.PatternPoint.L - 0.02;
+
+                        //    if ((double)newValue < 0.0)
+                        //        newValue = 0.0;
+                        //}
+
+                        //if (e.Delta > 0)
+                        //{
+                        //    SelectedSlider.PatternPoint.L += 0.02;
+                        //    if (SelectedSlider.PatternPoint.L > 1.0)
+                        //        SelectedSlider.PatternPoint.L = 1.0;
+                        //}
+                        //else
+                        //{
+                        //    SelectedSlider.PatternPoint.L -= 0.02;
+
+                        //    if (SelectedSlider.PatternPoint.L < 0.0)
+                        //        SelectedSlider.PatternPoint.L = 0.0;
+                        //}
+                        //SelectedSlider.PatternPoint.L = (double)newValue;
+                        SelectedSlider.PatternPoint.L = target;
                         SelectedSlider.PatternPoint.UpdateColor();
+                        SelectedSlider.PatternPoint.SaveLightness();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
                             SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
                             SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
-                        //UpdatePatternCommand.Execute(SelectedSlider);
+                        
                         break;
                     case SliderTypeEnum.W:
-                        if (e.Delta > 0)
-                        {
-                            newValue = SelectedSlider.PatternPoint.WhiteD + 0.02;
-                            if ((double)newValue > 1.0)
-                                newValue = 1.0;
-                        }
-                        else
-                        {
-                            newValue = SelectedSlider.PatternPoint.WhiteD - 0.02;
+                        //if (e.Delta > 0)
+                        //{
+                        //    newValue = SelectedSlider.PatternPoint.WhiteD + 0.02;
+                        //    if ((double)newValue > 1.0)
+                        //        newValue = 1.0;
+                        //}
+                        //else
+                        //{
+                        //    newValue = SelectedSlider.PatternPoint.WhiteD - 0.02;
 
-                            if ((double)newValue < 0.0)
-                                newValue = 0.0;
-                        }
+                        //    if ((double)newValue < 0.0)
+                        //        newValue = 0.0;
+                        //}
+                        SelectedSlider.PatternPoint.WhiteD = target;
                         break;
 
                 }
+                UpdatePatternCommand.Execute(SelectedSlider);
+                //SelectedSlider.RaiseWheelVariableChanged(newValue);
             }
-            //SelectedSlider.RaiseWheelVariableChanged(newValue);
         }
+
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
