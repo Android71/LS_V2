@@ -42,7 +42,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Name="rangePointer" Width="20">
+        <ItemsControl Name="rangePointer" Width="20" >
             <!--  ItemsSource="{Binding ColorRangeList}"  -->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -188,7 +188,7 @@
                              Style="{StaticResource slider}"
                              ValueChanged="WT_ValueChanged" />
             <!--  ValueChanged="hsb_ValuesChanged"  -->
-            <Label Grid.Row="1" Content="W"
+            <Label Grid.Row="1" Content="White"
                    Style="{StaticResource label1}" />
             <Label Name="whiteValue" Grid.Row="2"
                    Content="0"

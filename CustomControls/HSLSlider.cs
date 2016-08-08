@@ -18,6 +18,7 @@ namespace LS_Designer_WPF.Controls
         #region Private Fields
 
         Border scale;
+        bool blockChangeValue = false;
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace LS_Designer_WPF.Controls
 
         #region Public Properties
 
-        public bool ExternalCall { get; set; } = true;
+        //public bool ExternalCall { get; set; } = true;
 
         public bool BlockValueChanged { get; set; }
 
@@ -37,7 +38,8 @@ namespace LS_Designer_WPF.Controls
 
         public void UpdateScaleGradient(ColorRange cr)
         {
-            ExternalCall = true;
+            //ExternalCall = true;
+            blockChangeValue = true;
             Media.LinearGradientBrush lgb = new Media.LinearGradientBrush();
             if (ColorScale == SliderScaleEnum.H)
             {
@@ -50,7 +52,8 @@ namespace LS_Designer_WPF.Controls
                 SmallChange = (Maximum - Minimum) / 100.0;
                 LargeChange = SmallChange * 10;
             }
-            ExternalCall = false;
+            //ExternalCall = false;
+            blockChangeValue = false;
         }
 
         #endregion
@@ -101,7 +104,7 @@ namespace LS_Designer_WPF.Controls
 
         protected override void OnValueChanged(double oldValue, double newValue)
         {
-            if (!ExternalCall)
+            if (!blockChangeValue)
                 base.OnValueChanged(oldValue, newValue);
         }
 

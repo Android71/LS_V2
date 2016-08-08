@@ -11,10 +11,10 @@
     <BasePoint Pos="40" R="144" G="20" B="144" Variant="0" />
   </RGB>
   <White>
-    <BasePoint Pos="1" W="120" Variant="0" />
-    <BasePoint Pos="8" W="200" Variant="1" />
-    <BasePoint Pos="10" W="200" Variant="2" />
-    <BasePoint Pos="30" W="250" Variant="3" />
-    <BasePoint Pos="40" W="140" Variant="0" />
+    <BasePoint Pos="1" W="0,470588235294118" Variant="0" />
+    <BasePoint Pos="8" W="0,784313725490196" Variant="1" />
+    <BasePoint Pos="10" W="0,784313725490196" Variant="2" />
+    <BasePoint Pos="30" W="0,980392156862745" Variant="3" />
+    <BasePoint Pos="40" W="0,549019607843137" Variant="0" />
   </White>
 </Params>

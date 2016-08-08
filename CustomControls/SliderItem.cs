@@ -112,12 +112,12 @@ namespace LS_Designer_WPF.Controls
             UpdatePatternCommand.Execute(this);
         }
 
-        public event EventHandler<EventArgs> WheelVariableChanged;
+        public event EventHandler<WheelEventArgs> WheelVariableChanged;
 
-        public void RaiseWheelVariableChanged()
+        public void RaiseWheelVariableChanged(object newValue)
         {
             if (WheelVariableChanged != null)
-                WheelVariableChanged(this, new EventArgs());
+                WheelVariableChanged(this, new WheelEventArgs(newValue));
         }
 
     }

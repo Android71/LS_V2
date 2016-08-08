@@ -100,7 +100,7 @@ namespace LS_Library
             }
         }
 
-        public void CopyTo(PatternPoint pp)
+        public void CopyTo_RGB(PatternPoint pp)
         {
             pp.H = H;
             pp.S = S;
@@ -192,7 +192,24 @@ namespace LS_Library
             }
         }
 
-        public double WhiteD { get; set; }
+        double _whiteD;
+        public double WhiteD
+        {
+            get { return _whiteD; }
+            set
+            {
+                if (_whiteD != value)
+                {
+                    _whiteD = value;
+                    White = Convert.ToInt32(_whiteD * 255.0);
+                }
+            }
+        }
+
+        public void CopyTo_White(PatternPoint pp)
+        {
+            pp.WhiteD = WhiteD;
+        }
 
         #endregion
     }

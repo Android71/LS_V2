@@ -55,7 +55,7 @@ namespace LS_Designer_WPF.Controls
             {
                 si.GotMouseCapture -= new MouseEventHandler(SliderItemGotMouseCapture);
                 si.ValueChanged -= new RoutedPropertyChangedEventHandler<double>(OnSliderPositionChanged);
-                si.UpdatePatternCommand = UpdatePatternCommand;
+                //si.UpdatePatternCommand = UpdatePatternCommand;
             }
             DownSliders.Children.Clear();
             UpSliders.Children.Clear();
@@ -256,7 +256,7 @@ namespace LS_Designer_WPF.Controls
             }
             else
             {
-                si.PatternPoint.CopyTo(pp);
+                si.PatternPoint.CopyTo_RGB(pp);
             }
 
             si.PatternPoint = pp;
@@ -314,7 +314,7 @@ namespace LS_Designer_WPF.Controls
                         switch (AddMode)
                         {
                             case 1:   //Range
-                                SliderList[0].PatternPoint.CopyTo(pp);
+                                SliderList[0].PatternPoint.CopyTo_RGB(pp);
                                 SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
                                 rangeLeft.Variant = PointVariant.RangeLeft;
                                 newSlider = rangeLeft;
@@ -328,7 +328,7 @@ namespace LS_Designer_WPF.Controls
                             case 2:     //Lightness
                                 break;
                             default:    //Gradient        
-                                SliderList[0].PatternPoint.CopyTo(pp);
+                                SliderList[0].PatternPoint.CopyTo_RGB(pp);
                                 SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
                                 newSlider = gradient;
                                 SliderList.Insert(0, gradient);
@@ -353,7 +353,7 @@ namespace LS_Designer_WPF.Controls
                         switch (AddMode)
                         {
                             case 1:     // Range
-                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp);
+                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo_RGB(pp);
                                 SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
                                 rangeLeft.Variant = PointVariant.RangeLeft;
                                 SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, pp);
@@ -366,7 +366,7 @@ namespace LS_Designer_WPF.Controls
                             case 2:     //Lightness
                                 break;
                             default:    //Gradient
-                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp);
+                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo_RGB(pp);
                                 SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
                                 SliderList.Add(gradient);
                                 ReArrangeSliderItems();
@@ -459,24 +459,52 @@ namespace LS_Designer_WPF.Controls
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
             base.OnMouseWheel(e);
+            object newValue = null;
             if (SelectedSlider != null)
             {
-                if (e.Delta > 0)
+                switch (SelectedSlider.SliderType)
                 {
-                    SelectedSlider.PatternPoint.L += 0.02;
-                    if (SelectedSlider.PatternPoint.L > 1.0)
-                        SelectedSlider.PatternPoint.L = 1.0;
+                    case SliderTypeEnum.RGB:
+                        if (e.Delta > 0)
+                        {
+                            newValue = SelectedSlider.PatternPoint.L + 0.02;
+                            if ((double)newValue > 1.0)
+                                newValue = 1.0;
+                        }
+                        else
+                        {
+                            newValue = SelectedSlider.PatternPoint.L - 0.02;
+
+                            if ((double)newValue < 0.0)
+                                newValue = 0.0;
+                        }
+                        SelectedSlider.PatternPoint.L = (double)newValue;
+                        SelectedSlider.PatternPoint.UpdateColor();
+                        if (SelectedSlider.Variant == PointVariant.RangeLeft)
+                            SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                        if (SelectedSlider.Variant == PointVariant.RangeRight)
+                            SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                        //UpdatePatternCommand.Execute(SelectedSlider);
+                        break;
+                    case SliderTypeEnum.W:
+                        if (e.Delta > 0)
+                        {
+                            newValue = SelectedSlider.PatternPoint.WhiteD + 0.02;
+                            if ((double)newValue > 1.0)
+                                newValue = 1.0;
+                        }
+                        else
+                        {
+                            newValue = SelectedSlider.PatternPoint.WhiteD - 0.02;
+
+                            if ((double)newValue < 0.0)
+                                newValue = 0.0;
+                        }
+                        break;
+
                 }
-                else
-                {
-                    SelectedSlider.PatternPoint.L -= 0.02;
-                    
-                    if (SelectedSlider.PatternPoint.L < 0.0)
-                        SelectedSlider.PatternPoint.L = 0.0;
-                }
-                SelectedSlider.PatternPoint.SaveLightness();
             }
-            SelectedSlider.RaiseWheelVariableChanged();
+            //SelectedSlider.RaiseWheelVariableChanged(newValue);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
