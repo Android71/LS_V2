@@ -162,7 +162,8 @@ namespace PatternEffect.ViewModel
             if (si.SliderType == SliderTypeEnum.RGB && prevItem != null)
                 UpdateLightGradient(prevItem, leftLights, rangeLeft);
 
-            BuildGradient_1(rangeLeft, rangeRight);
+            if (rangeLeft != rangeRight)
+                BuildGradient_1(rangeLeft, rangeRight);
 
             if (nextItem != null)
                 BuildGradient_1(rangeRight, nextItem);
@@ -181,18 +182,28 @@ namespace PatternEffect.ViewModel
 
             SliderItem item = null;
 
-            while (prevIx >= 0)
+            if (si.SliderType == SliderTypeEnum.RGB)
             {
-                if (si.Owner[prevIx].Variant == PointVariant.Lightness)
+                while (prevIx >= 0)
                 {
-                    lightsSliders.Insert(0, si.Owner[prevIx]);
-                    prevIx--;
+                    if (si.Owner[prevIx].Variant == PointVariant.Lightness)
+                    {
+                        lightsSliders.Insert(0, si.Owner[prevIx]);
+                        prevIx--;
+                    }
+                    else
+                    {
+                        item = si.Owner[prevIx];
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                if (si.Ix == 0)
+                    return null;
                 else
-                {
-                    item = si.Owner[prevIx];
-                    break;
-                }
+                    item = si.Owner[si.Ix - 1];
             }
             return item;
         }
@@ -202,18 +213,28 @@ namespace PatternEffect.ViewModel
             int nextIx = si.Ix + 1;
             SliderItem item = null;
 
-            while (nextIx <= si.Owner.Count - 1)
+            if (si.SliderType == SliderTypeEnum.RGB)
             {
-                if (si.Owner[nextIx].Variant == PointVariant.Lightness)
+                while (nextIx <= si.Owner.Count - 1)
                 {
-                    lightsSliders.Add(si.Owner[nextIx]);
-                    nextIx++;
+                    if (si.Owner[nextIx].Variant == PointVariant.Lightness)
+                    {
+                        lightsSliders.Add(si.Owner[nextIx]);
+                        nextIx++;
+                    }
+                    else
+                    {
+                        item = si.Owner[nextIx];
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                if (si.Ix == si.Owner.Count - 1)
+                    return null;
                 else
-                {
-                    item = si.Owner[nextIx];
-                    break;
-                }
+                    item = si.Owner[si.Ix + 1];
             }
             return item;
         }

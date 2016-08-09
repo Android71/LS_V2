@@ -191,6 +191,7 @@
             <local:HslSlider x:Name="whiteSlider" Grid.Row="0"
                              ColorScale="W" LargeChange="0.05"
                              Maximum="1.0" SmallChange="0.005"
+                            
                              Style="{StaticResource slider}"
                              ValueChanged="WT_ValueChanged" />
             <!--  ValueChanged="hsb_ValuesChanged"  -->

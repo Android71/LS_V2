@@ -101,18 +101,47 @@ namespace LS_Designer_WPF.Controls
 
         private static void SelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            ColorRange rangeToSelect = null;
             ColorPanel panel = null;
             if (d != null)
             {
                 panel = (ColorPanel)d;
-                SliderItem si = (SliderItem)e.NewValue;
+                SliderItem si = panel.SelectedSlider;
+                
                 if (si != null)
                 {
+                    if (si.SliderType == SliderTypeEnum.RGB)
+                    {
+                        foreach (ColorRange cr in panel.ColorRangeList)
+                        {
+                            cr.IsSelected = false;
+                            if (cr.HueMinimum <= si.PatternPoint.H)
+                            {
+                                if (rangeToSelect == null)
+                                {
+                                    rangeToSelect = cr;
+                                    rangeToSelect.IsSelected = true;
+                                }
+                            }
+                        }
+                        panel.SelectedRange = rangeToSelect;
+                        panel.hueSlider.UpdateScaleGradient(panel.SelectedRange);
+                    }
+
                     panel.blockChangePoint = true;
-                    PatternPoint pp = si.PatternPoint;
                     panel.SetSlidersValues(si);
-                    panel.TuneHandlersAndSliders(si, pp);
+                    panel.TuneHandlersAndSliders(si);
                     panel.blockChangePoint = false;
+                }
+                else
+                {
+                    panel.hueSlider.IsEnabled = false;
+                    panel.satSlider.IsEnabled = false;
+                    panel.lightSlider.IsEnabled = false;
+                    panel.whiteSlider.IsEnabled = false;
+                    panel.tempSlider.IsEnabled = false;
+                    panel.warmSlider.IsEnabled = false;
+                    panel.coldSlider.IsEnabled = false;
                 }
             }
         }
@@ -129,92 +158,50 @@ namespace LS_Designer_WPF.Controls
 
         #region Generic methods
 
-        void SetVisualContent(SliderItem si)
-        {
-            // меняем набор слайдеров соотвествующий si.SliderType
-            if (si != null)
-            {
-                switch (si.SliderType)
-                {
-                    case SliderTypeEnum.RGB:
-                        rangePointer.Visibility = Visibility.Visible;
-                        colorSelector.Visibility = Visibility.Visible;
-                        huePart.Visibility = Visibility.Visible;
-                        satPart.Visibility = Visibility.Visible;
-                        lightPart.Visibility = Visibility.Visible;
-                        whitePart.Visibility = Visibility.Collapsed;
-                        tempPart.Visibility = Visibility.Collapsed;
-                        coldPart.Visibility = Visibility.Collapsed;
-                        warmPart.Visibility = Visibility.Collapsed;
-                        break;
-                }
-            }
-            else
-            {
-                rangePointer.Visibility = Visibility.Collapsed;
-                colorSelector.Visibility = Visibility.Collapsed;
-                huePart.Visibility = Visibility.Collapsed;
-                satPart.Visibility = Visibility.Collapsed;
-                lightPart.Visibility = Visibility.Collapsed;
-                whitePart.Visibility = Visibility.Collapsed;
-                tempPart.Visibility = Visibility.Collapsed;
-                coldPart.Visibility = Visibility.Collapsed;
-                warmPart.Visibility = Visibility.Collapsed;
-            }
-        }
-
-
         void SetSlidersValues(SliderItem si)
         {
+            
             switch (si.SliderType)
             {
                 case SliderTypeEnum.RGB:
-                    Media.Color c;
-
-                    //hueSlider.ExternalCall = true;
-                    //satSlider.ExternalCall = true;
-                    //lightSlider.ExternalCall = true;
-
                     hueSlider.Value = si.PatternPoint.H;
                     satSlider.Value = si.PatternPoint.S;
                     lightSlider.Value = si.PatternPoint.L;
-
-                    c = ColorUtilities.Hsl2MediaColor(hueSlider.Value, satSlider.Value, lightSlider.Value);
-                    UpdateHSLColorInfo(c);
-
-                   // hueSlider.ExternalCall = false;
-                    //satSlider.ExternalCall = false;
-                    //lightSlider.ExternalCall = false;
-                    //SetHSLSlidersValue(si.PatternPoint);
+                    UpdateSlidersInfo(si.PatternPoint);
                     break;
 
                 case SliderTypeEnum.W:
-                    //whiteSlider.ExternalCall = true;
                     whiteSlider.Value = si.PatternPoint.WhiteD;
-                    UpdateWhiteInfo(si.PatternPoint);
-                    //whiteSlider.ExternalCall = true;
-                    //SetWhiteSliderValue(si.PatternPoint);
+                    UpdateSlidersInfo(si.PatternPoint);
                     break;
             }
         }
 
-        void TuneHandlersAndSliders(SliderItem si, PatternPoint pp)
+        void UpdateSlidersInfo(PatternPoint pp)
+        {
+            switch (SelectedSlider.SliderType)
+            {
+                case SliderTypeEnum.RGB:
+                    hueValue.Content = Math.Round(hueSlider.Value).ToString();
+                    rValue.Content = pp.PointColor.R.ToString();
+                    satValue.Content = Math.Round(satSlider.Value * 100).ToString();
+                    gValue.Content = pp.PointColor.G.ToString();
+                    lightValue.Content = Math.Round(lightSlider.Value * 100).ToString();
+                    bValue.Content = pp.PointColor.B.ToString();
+                    break;
+                case SliderTypeEnum.W:
+                    whiteValue.Content = Convert.ToInt32(pp.WhiteD * 255.0).ToString();
+                    break;
+            }
+        }
+
+        void TuneHandlersAndSliders(SliderItem si/*, PatternPoint pp*/)
         {
             si.WheelVariableChanged += UpdateSlidersFromWheel;
+
             switch (si.SliderType)
             {
                 case SliderTypeEnum.RGB:
-                    
-                    foreach (ColorRange cr in ColorRangeList)
-                    {
-                        if (cr.HueMinimum <= pp.H)
-                        {
-                            //Console.WriteLine($"HueRange: {cr.HueMinimum} - {cr.HueMaximum}");
-                            hueSlider.UpdateScaleGradient(cr);
-                            break;
-                        }
-                    }
-
                     if (si.Variant != PointVariant.Lightness)
                     {
                         hueSlider.IsEnabled = true;
@@ -229,6 +216,7 @@ namespace LS_Designer_WPF.Controls
                     }
                     break;
                 case SliderTypeEnum.W:
+                    whiteSlider.IsEnabled = true;
                     break;
             }
         }
@@ -256,13 +244,16 @@ namespace LS_Designer_WPF.Controls
                     SliderItem si = SelectedSlider;
 
                     hueSlider.UpdateScaleGradient(cr);
-                    //SetHSLSlidersValue(cr.HueMiddle, 1.0, 0.5);
-                    SetHSLSlidersValue(cr.HueMiddle, si.PatternPoint.S, si.PatternPoint.L);
+
                     si.PatternPoint.H = cr.HueMiddle;
                     si.PatternPoint.S = si.PatternPoint.S;//= 1.0;
                     si.PatternPoint.L = si.PatternPoint.L; //0.5;
                     si.PatternPoint.SaveLightness();
                     si.PatternPoint.UpdateColor();
+
+                    blockChangePoint = true;
+                    SetSlidersValues(si);
+                    blockChangePoint = false;
 
                     if (si.Variant == PointVariant.RangeLeft)
                         si.PatternPoint.CopyTo_RGB(si.Owner[si.Ix + 1].PatternPoint);
@@ -311,7 +302,7 @@ namespace LS_Designer_WPF.Controls
 
                 si.UpdatePattern();
             }
-            UpdateHSLColorInfo(si.PatternPoint.PointColor);
+            UpdateSlidersInfo(si.PatternPoint);
         }
 
         private void WT_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -344,66 +335,12 @@ namespace LS_Designer_WPF.Controls
 
         }
 
-
-        void UpdateHSLColorInfo(Media.Color c)
-        {
-            hueValue.Content = Math.Round(hueSlider.Value).ToString();
-            rValue.Content = c.R.ToString();
-            satValue.Content = Math.Round(satSlider.Value * 100).ToString();
-            gValue.Content = c.G.ToString();
-            lightValue.Content = Math.Round(lightSlider.Value * 100).ToString();
-            bValue.Content = c.B.ToString();
-        }
-
         void UpdateWhiteInfo(PatternPoint pp)
         {
             whiteValue.Content = Convert.ToInt32(pp.WhiteD * 255.0).ToString();
         }
 
-        public void SetHSLSlidersValue(PatternPoint pp)
-        {
-            //hueSlider.ExternalCall = true;
-            //satSlider.ExternalCall = true;
-            //lightSlider.ExternalCall = true;
-
-            hueSlider.Value = pp.H;
-            satSlider.Value = pp.S;
-            lightSlider.Value = pp.L;
-
-            UpdateHSLColorInfo(pp.PointColor);
-
-            //hueSlider.ExternalCall = false;
-            //satSlider.ExternalCall = false;
-            //lightSlider.ExternalCall = false;
-        }
-
-        void SetWhiteSliderValue(PatternPoint pp)
-        {
-            //whiteSlider.ExternalCall = true;
-            whiteSlider.Value = pp.WhiteD;
-            UpdateWhiteInfo(pp);
-            //whiteSlider.ExternalCall = true;
-        }
-
-        void SetHSLSlidersValue(double H, double S, double L)
-        {
-            Media.Color c;
-
-            //hueSlider.ExternalCall = true;
-            //satSlider.ExternalCall = true;
-            //lightSlider.ExternalCall = true;
-
-            hueSlider.Value = H;
-            satSlider.Value = S;
-            lightSlider.Value = L;
-
-            c = ColorUtilities.Hsl2MediaColor(H, S, L);
-            UpdateHSLColorInfo(c);
-
-            //hueSlider.ExternalCall = false;
-            //satSlider.ExternalCall = false;
-            //lightSlider.ExternalCall = false;
-        }
+        
 
         void UpdateSlidersFromWheel(object sender, WheelEventArgs e)
         {

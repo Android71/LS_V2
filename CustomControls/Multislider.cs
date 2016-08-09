@@ -37,6 +37,8 @@ namespace LS_Designer_WPF.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MultiSlider), new FrameworkPropertyMetadata(typeof(MultiSlider)));
         }
 
+        
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -113,14 +115,14 @@ namespace LS_Designer_WPF.Controls
         public static readonly DependencyProperty AddModeProperty =
             DependencyProperty.Register("AddMode", typeof(int), typeof(MultiSlider), new PropertyMetadata(0));
 
-        public int Value
+        public int Position
         {
-            get { return (int)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get { return (int)GetValue(PositionProperty); }
+            set { SetValue(PositionProperty, value); }
         }
 
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(MultiSlider), new PropertyMetadata(0));
+        public static readonly DependencyProperty PositionProperty =
+            DependencyProperty.Register("Position", typeof(int), typeof(MultiSlider), new PropertyMetadata(0));
 
         public PatternPoint[] Pattern
         {
@@ -183,7 +185,7 @@ namespace LS_Designer_WPF.Controls
             SelectedSlider = si;
             SelectedSlider.IsSelected = true;
 
-            Value = (int)SelectedSlider.Value;
+            Position = SelectedSlider.Pos;
 
             // firtst slider in list
             if (sliderIx == 0)
@@ -235,15 +237,14 @@ namespace LS_Designer_WPF.Controls
         private void OnSliderPositionChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SliderItem si = (SliderItem)sender;
-            Value = (int)si.Value;
+            Position = si.Pos;
             int newValue = Convert.ToInt32(e.NewValue);
 
             PatternPoint pp = Pattern[newValue - 1];
 
-            if (si.Variant == PointVariant.Lightness)
+            if (si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.RGB)
             {
                 pp.L = si.PatternPoint.L;
-                //pp.InitialL = pp.L;
                 pp.SaveLightness();
                 pp.UpdateColor();
                 si.PatternPoint = pp;
@@ -256,25 +257,19 @@ namespace LS_Designer_WPF.Controls
             }
             else
             {
-                si.PatternPoint.CopyTo_RGB(pp);
+                switch (si.SliderType)
+                {
+                    case SliderTypeEnum.RGB:
+                        si.PatternPoint.CopyTo_RGB(pp);
+                        break;
+                    case SliderTypeEnum.W:
+                        si.PatternPoint.CopyTo_White(pp);
+                        break;
+                }
+                
             }
 
             si.PatternPoint = pp;
-
-            // First slider movement
-            if (sliderIx == 0)
-            {
-                UpdatePatternCommand.Execute(si);
-                return;
-            }
-
-            // Last slider movement
-            if (sliderIx == SliderList.Count - 1)
-            {
-                UpdatePatternCommand.Execute(si);
-                return;
-            }
-
             UpdatePatternCommand.Execute(si);
         }
 
@@ -543,11 +538,15 @@ namespace LS_Designer_WPF.Controls
                         //        newValue = 0.0;
                         //}
                         SelectedSlider.PatternPoint.WhiteD = target;
+                        if (SelectedSlider.Variant == PointVariant.RangeLeft)
+                            SelectedSlider.PatternPoint.CopyTo_White(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                        if (SelectedSlider.Variant == PointVariant.RangeRight)
+                            SelectedSlider.PatternPoint.CopyTo_White(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
                         break;
 
                 }
                 UpdatePatternCommand.Execute(SelectedSlider);
-                //SelectedSlider.RaiseWheelVariableChanged(newValue);
+                SelectedSlider.RaiseWheelVariableChanged(target);
             }
         }
 

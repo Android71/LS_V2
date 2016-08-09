@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace LS_Designer_WPF.Controls
 {
     /// <summary>
-    /// Interaction logic for PatternUC.xaml
+    /// Interaction logic for EffectUC.xaml
     /// </summary>
-    public partial class PatternUC : UserControl
+    public partial class EffectUC : UserControl
     {
-        public PatternUC()
+        public EffectUC()
         {
             InitializeComponent();
         }
@@ -129,7 +129,7 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty PointTypeProperty =
-            DependencyProperty.Register("PointType", typeof(PointTypeEnum), typeof(PatternUC), new PropertyMetadata(PointTypeEnum.RGB/*, OnPointTypeChanged*/));
+            DependencyProperty.Register("PointType", typeof(PointTypeEnum), typeof(EffectUC), new PropertyMetadata(PointTypeEnum.RGB/*, OnPointTypeChanged*/));
 
         //******* UpSliderList ********
 
@@ -140,11 +140,11 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty UpSliderListProperty =
-            DependencyProperty.Register("UpSliderList", typeof(List<SliderItem>), typeof(PatternUC), new PropertyMetadata(null/*, OnUpSliderListChanged*/));
+            DependencyProperty.Register("UpSliderList", typeof(List<SliderItem>), typeof(EffectUC), new PropertyMetadata(null/*, OnUpSliderListChanged*/));
 
         //private static void OnUpSliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         //{
-        //    PatternUC uc = (PatternUC)d;
+        //    EffectUC uc = (EffectUC)d;
         //    //uc.rgbScreen.SetValue(ItemsControl.InputScopeProperty, uc.Pattern);
         //}
 
@@ -157,7 +157,7 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty DownSliderListProperty =
-            DependencyProperty.Register("DownSliderList", typeof(List<SliderItem>), typeof(PatternUC), new PropertyMetadata(null/*, OnDownSliderListChanged*/));
+            DependencyProperty.Register("DownSliderList", typeof(List<SliderItem>), typeof(EffectUC), new PropertyMetadata(null/*, OnDownSliderListChanged*/));
 
         //private static void OnDownSliderListChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         //{
@@ -173,11 +173,11 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty PatternProperty =
-            DependencyProperty.Register("Pattern", typeof(PatternPoint[]), typeof(PatternUC), new PropertyMetadata(null, OnPatternChanged));
+            DependencyProperty.Register("Pattern", typeof(PatternPoint[]), typeof(EffectUC), new PropertyMetadata(null, OnPatternChanged));
 
         private static void OnPatternChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            PatternUC uc = (PatternUC)d;
+            EffectUC uc = (EffectUC)d;
             if (uc.Pattern != null)
                 uc.TuneControl(); 
         }
@@ -192,7 +192,7 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty PointCountProperty =
-            DependencyProperty.Register("PointCount", typeof(int), typeof(PatternUC), new PropertyMetadata(0));
+            DependencyProperty.Register("PointCount", typeof(int), typeof(EffectUC), new PropertyMetadata(0));
 
         //******* ActiveSliderList ********
 
@@ -203,7 +203,7 @@ namespace LS_Designer_WPF.Controls
         //}
 
         //public static readonly DependencyProperty ActiveSliderListProperty =
-        //    DependencyProperty.Register("ActiveSliderList", typeof(List<SliderItem>), typeof(PatternUC), new PropertyMetadata(null));
+        //    DependencyProperty.Register("ActiveSliderList", typeof(List<SliderItem>), typeof(EffectUC), new PropertyMetadata(null));
 
 
 
@@ -214,7 +214,7 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty SetActiveListProperty =
-            DependencyProperty.Register("SetActiveList", typeof(ICommand), typeof(PatternUC), new PropertyMetadata(null));
+            DependencyProperty.Register("SetActiveList", typeof(ICommand), typeof(EffectUC), new PropertyMetadata(null));
 
 
         public SliderItem SelectedSlider
@@ -224,16 +224,16 @@ namespace LS_Designer_WPF.Controls
         }
 
         public static readonly DependencyProperty SelectedSliderProperty =
-            DependencyProperty.Register("SelectedSlider", typeof(SliderItem), typeof(PatternUC), new PropertyMetadata(null, OnSelectedSliderChanged));
+            DependencyProperty.Register("SelectedSlider", typeof(SliderItem), typeof(EffectUC), new PropertyMetadata(null, OnSelectedSliderChanged));
 
         private static void OnSelectedSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //throw new NotImplementedException();
-            PatternUC uc = (PatternUC)d;
-            if (uc.SelectedSlider != null)
-                uc.position.Text = uc.SelectedSlider.Pos.ToString();
-            else
-                uc.position.Text = "";
+            EffectUC uc = (EffectUC)d;
+            //if (uc.SelectedSlider != null)
+            //    uc.position.Text = uc.SelectedSlider.Pos.ToString();
+            //else
+            //    uc.position.Text = "";
         }
 
 
@@ -246,7 +246,7 @@ namespace LS_Designer_WPF.Controls
 
         // Using a DependencyProperty as the backing store for ScreenSelector.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ScreenListProperty =
-            DependencyProperty.Register("ScreenList", typeof(List<string>), typeof(PatternUC), new PropertyMetadata(null));
+            DependencyProperty.Register("ScreenList", typeof(List<string>), typeof(EffectUC), new PropertyMetadata(null));
 
 
 
@@ -258,19 +258,21 @@ namespace LS_Designer_WPF.Controls
 
         // Using a DependencyProperty as the backing store for SelectedScreen.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedScreenProperty =
-            DependencyProperty.Register("SelectedScreen", typeof(int), typeof(PatternUC), new PropertyMetadata(0, OnSelectedScreenChanged));
+            DependencyProperty.Register("SelectedScreen", typeof(int), typeof(EffectUC), new PropertyMetadata(0, OnSelectedScreenChanged));
 
         private static void OnSelectedScreenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d != null)
             {
-                PatternUC me = (PatternUC)d;
+                EffectUC me = (EffectUC)d;
                 if (me.SelectedScreen == 0)
                 {
                     BindingOperations.ClearBinding(me.downMultiSlider, MultiSlider.SelectedSliderProperty);
+                    me.SelectedSlider = null;
                     me.downMultiSlider.Visibility = Visibility.Hidden;
                     me.upMultiSlider.Visibility = Visibility.Visible;
                     BindingOperations.SetBinding(me.upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
+
                     foreach (SliderItem si in me.UpSliderList)
                         if (si.IsSelected)
                             me.SelectedSlider = si;
@@ -281,16 +283,17 @@ namespace LS_Designer_WPF.Controls
                 else
                 {
                     BindingOperations.ClearBinding(me.upMultiSlider, MultiSlider.SelectedSliderProperty);
+                    me.SelectedSlider = null;
                     me.upMultiSlider.Visibility = Visibility.Hidden;
                     me.downMultiSlider.Visibility = Visibility.Visible;
                     BindingOperations.SetBinding(me.downMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
+
                     foreach (SliderItem si in me.DownSliderList)
                         if (si.IsSelected)
                             me.SelectedSlider = si;
                     me.SetActiveList.Execute(me.DownSliderList);
                     if (me.DownSliderList != null && me.DownSliderList.Count != 0)
                         me.colorPanel.SetPanel(me.DownSliderList[0].SliderType);
-                    //me.colorPanel.SetPanel(SliderTypeEnum.W);
                 }
                 
             }
