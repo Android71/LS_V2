@@ -95,6 +95,9 @@
     <Compile Include="TestPatternUC.xaml.cs">
       <DependentUpon>TestPatternUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\EffectViewModel.cs" />
     <Compile Include="ViewModel\EffectViewModel.Generic.cs">
       <DependentUpon>EffectViewModel.cs</DependentUpon>
@@ -136,6 +139,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TestPatternUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

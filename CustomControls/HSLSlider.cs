@@ -98,6 +98,19 @@ namespace LS_Designer_WPF.Controls
                     lgb.GradientStops.Add(new Media.GradientStop(Media.Colors.Orange, 1.0));
                     scale.Background = lgb;
                 }
+                if (ColorScale == SliderScaleEnum.T)
+                {
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(255, 0, 0), 0.0));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(255, 85, 0), 0.1666));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(255, 170, 0), 0.3333));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(255, 255, 0), 0.483));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(0, 255, 255), 0.5));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(0, 128, 255), 0.6666));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(0, 0, 255), 0.83333));
+                    lgb.GradientStops.Add(new Media.GradientStop(Media.Color.FromRgb(128, 0, 255), 1.0));
+
+                    scale.Background = lgb;
+                }
 
             }
         }

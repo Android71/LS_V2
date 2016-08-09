@@ -208,8 +208,9 @@
                    Style="{StaticResource label2}"
                    Visibility="Hidden" />
         </Grid>
-        <Grid Name="tempPart" Grid.Column="6"
-              Width="45" Visibility="Collapsed">
+        <Grid Name="tempPart" Grid.Column="6" 
+              Width="60" >
+            <!--Visibility="Collapsed"-->
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
@@ -226,7 +227,7 @@
             <Label Grid.Row="1" Content="T"
                    Style="{StaticResource label1}" />
             <Label Name="tempValue" Grid.Row="2"
-                   Content="0"
+                   Content="10000"
                    Style="{StaticResource label2}" />
             <Label Grid.Row="3" Content="B"
                    Style="{StaticResource label1}"
