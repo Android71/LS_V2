@@ -224,7 +224,7 @@
                              Style="{StaticResource slider}"
                              ValueChanged="WT_ValueChanged" />
             <!--  ValueChanged="hsb_ValuesChanged"  -->
-            <Label Grid.Row="1" Content="T"
+            <Label Grid.Row="1" Content="Kelvin"
                    Style="{StaticResource label1}" />
             <Label Name="tempValue" Grid.Row="2"
                    Content="10000"

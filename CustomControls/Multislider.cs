@@ -242,17 +242,31 @@ namespace LS_Designer_WPF.Controls
 
             PatternPoint pp = Pattern[newValue - 1];
 
-            if (si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.RGB)
+            if ((si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.RGB)||
+                (si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.WT))
             {
-                pp.L = si.PatternPoint.L;
-                pp.SaveLightness();
-                pp.UpdatePoint_RGB();
+                switch (si.SliderType)
+                {
+                    case SliderTypeEnum.RGB:
+                        pp.L = si.PatternPoint.L;
+                        pp.SaveLightness();
+                        pp.UpdatePoint_RGB();
+                        break;
+                    case SliderTypeEnum.WT:
+                        //pp.Temp = si.PatternPoint.Temp;
+                        pp.SaveTemp();
+                        pp.WhiteD = si.PatternPoint.WhiteD;
+                        //pp.SaveTemp
+                        break;
+                }
+
                 si.PatternPoint = pp;
                 UpdatePatternCommand.Execute(si);
 
                 // для обновления ColorPanel
                 SelectedSlider = null;
                 SelectedSlider = si;
+
                 return;
             }
             else
@@ -264,6 +278,9 @@ namespace LS_Designer_WPF.Controls
                         break;
                     case SliderTypeEnum.W:
                         si.PatternPoint.CopyTo_White(pp);
+                        break;
+                    case SliderTypeEnum.WT:
+                        si.PatternPoint.CopyTo_WT(pp);
                         break;
                 }
                 
@@ -465,6 +482,7 @@ namespace LS_Designer_WPF.Controls
                         target = SelectedSlider.PatternPoint.L;
                         break;
                     case SliderTypeEnum.W:
+                    case SliderTypeEnum.WT:
                         target = SelectedSlider.PatternPoint.WhiteD;
                         break;
                 }
@@ -523,6 +541,17 @@ namespace LS_Designer_WPF.Controls
                             SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
                         
                         break;
+
+                    case SliderTypeEnum.WT:
+                        SelectedSlider.PatternPoint.WhiteD = target;
+                        //SelectedSlider.PatternPoint.SaveTemp();
+                        if (SelectedSlider.Variant == PointVariant.RangeLeft)
+                            SelectedSlider.PatternPoint.CopyTo_WT(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                        if (SelectedSlider.Variant == PointVariant.RangeRight)
+                            SelectedSlider.PatternPoint.CopyTo_WT(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                        break;
+
+
                     case SliderTypeEnum.W:
                         //if (e.Delta > 0)
                         //{

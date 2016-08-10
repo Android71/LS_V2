@@ -50,6 +50,9 @@ namespace PatternEffect.ViewModel
                     case SliderTypeEnum.W:
                         Pattern[i].Clear_W();
                         break;
+                    case SliderTypeEnum.WT:
+                        Pattern[i].Clear_WT();
+                        break;
                 }
             }
         }
@@ -66,6 +69,9 @@ namespace PatternEffect.ViewModel
                         break;
                     case SliderTypeEnum.W:
                         Pattern[i].Clear_W();
+                        break;
+                    case SliderTypeEnum.WT:
+                        Pattern[i].Clear_WT();
                         break;
                 }
             }
@@ -112,10 +118,13 @@ namespace PatternEffect.ViewModel
                         if (stepCount > 0)
                         {
                             deltaTemp = (rightSlider.PatternPoint.Temp - leftSlider.PatternPoint.Temp) / stepCount;
+                            deltaWhite = (rightSlider.PatternPoint.WhiteD - leftSlider.PatternPoint.WhiteD) / stepCount;
+
                             for (int i = leftIx + 1; i < rightIx; i++)
                             {
                                 PatternPoint pp = Pattern[i - 1 - 1];
                                 Pattern[i - 1].Temp = pp.Temp + deltaTemp;
+                                Pattern[i - 1].WhiteD = pp.WhiteD + deltaWhite;
                             }
                         }
                     }
@@ -380,13 +389,6 @@ namespace PatternEffect.ViewModel
             return si;
         }
 
-        string RGB_SliderListToXML(List<SliderItem> sliderList)
-        {
-            return "";
-        }
-
-        #endregion
-
         XElement whitePoint(SliderItem si)
         {
 
@@ -411,5 +413,14 @@ namespace PatternEffect.ViewModel
                 );
             return xe;
         }
+
+
+        string RGB_SliderListToXML(List<SliderItem> sliderList)
+        {
+            return "";
+        }
+
+        #endregion
+
     }
 }

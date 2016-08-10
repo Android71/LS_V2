@@ -79,6 +79,7 @@ namespace LS_Library
         {
             pp.WhiteD = WhiteD;
             pp.Temp = Temp;
+            pp.InitialT = InitialT;
         }
 
 

@@ -56,6 +56,18 @@ namespace LS_Designer_WPF.Controls
                     coldPart.Visibility = Visibility.Collapsed;
                     warmPart.Visibility = Visibility.Collapsed;
                     break;
+
+                case SliderTypeEnum.WT:
+                    rangePointer.Visibility = Visibility.Collapsed;
+                    colorSelector.Visibility = Visibility.Collapsed;
+                    huePart.Visibility = Visibility.Collapsed;
+                    satPart.Visibility = Visibility.Collapsed;
+                    lightPart.Visibility = Visibility.Collapsed;
+                    whitePart.Visibility = Visibility.Visible;
+                    tempPart.Visibility = Visibility.Visible;
+                    coldPart.Visibility = Visibility.Collapsed;
+                    warmPart.Visibility = Visibility.Collapsed;
+                    break;
             }
         }
 
@@ -129,8 +141,10 @@ namespace LS_Designer_WPF.Controls
                     }
 
                     panel.blockChangePoint = true;
+
                     panel.SetSlidersValues(si);
                     panel.TuneHandlersAndSliders(si);
+
                     panel.blockChangePoint = false;
                 }
                 else
@@ -174,6 +188,11 @@ namespace LS_Designer_WPF.Controls
                     whiteSlider.Value = si.PatternPoint.WhiteD;
                     UpdateSlidersInfo(si.PatternPoint);
                     break;
+                case SliderTypeEnum.WT:
+                    whiteSlider.Value = si.PatternPoint.WhiteD;
+                    tempSlider.Value = si.PatternPoint.Temp;
+                    UpdateSlidersInfo(si.PatternPoint);
+                    break;
             }
         }
 
@@ -191,6 +210,10 @@ namespace LS_Designer_WPF.Controls
                     break;
                 case SliderTypeEnum.W:
                     whiteValue.Content = Convert.ToInt32(pp.WhiteD * 255.0).ToString();
+                    break;
+                case SliderTypeEnum.WT:
+                    whiteValue.Content = Convert.ToInt32(pp.WhiteD * 255.0).ToString();
+                    tempValue.Content = Convert.ToInt32(pp.Temp * 9000.0 + 1000.0).ToString();
                     break;
             }
         }
