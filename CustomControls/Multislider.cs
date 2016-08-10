@@ -246,7 +246,7 @@ namespace LS_Designer_WPF.Controls
             {
                 pp.L = si.PatternPoint.L;
                 pp.SaveLightness();
-                pp.UpdateColor();
+                pp.UpdatePoint_RGB();
                 si.PatternPoint = pp;
                 UpdatePatternCommand.Execute(si);
 
@@ -515,7 +515,7 @@ namespace LS_Designer_WPF.Controls
                         //}
                         //SelectedSlider.PatternPoint.L = (double)newValue;
                         SelectedSlider.PatternPoint.L = target;
-                        SelectedSlider.PatternPoint.UpdateColor();
+                        SelectedSlider.PatternPoint.UpdatePoint_RGB();
                         SelectedSlider.PatternPoint.SaveLightness();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
                             SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);

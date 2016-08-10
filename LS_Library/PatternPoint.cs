@@ -16,6 +16,74 @@ namespace LS_Library
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Point operations
+
+        public void Clear_RGB()
+        {
+            SetPoint_HSL(0.0, 0.0, 0.0);
+        }
+
+        public void Clear_W()
+        {
+            WhiteD = 0.0;
+        }
+
+        public void Clear_WT()
+        {
+            WhiteD = 0.0;
+            Temp = 0.0;
+        }
+
+        public void UpdatePoint_RGB()
+        {
+            PointColor = HSLtoRGB();
+            Lightness = Convert.ToInt32(L * 255.0);
+        }
+
+        public void SaveLightness()
+        {
+            InitialL = L;
+        }
+
+        public void SaveTemp()
+        {
+            InitialT = Temp;
+        }
+
+        public void RestoreLightness()
+        {
+            L = InitialL;
+        }
+
+        public void RestoreTemp()
+        {
+            Temp = InitialT;
+        }
+
+        public void CopyTo_RGB(PatternPoint pp)
+        {
+            pp.H = H;
+            pp.S = S;
+            pp.L = L;
+            pp.InitialL = InitialL;
+            pp.Lightness = Lightness;
+            pp.PointColor = PointColor;
+        }
+
+        public void CopyTo_White(PatternPoint pp)
+        {
+            pp.WhiteD = WhiteD;
+        }
+
+        public void CopyTo_WT(PatternPoint pp)
+        {
+            pp.WhiteD = WhiteD;
+            pp.Temp = Temp;
+        }
+
+
+        #endregion
+
         #region RGB
 
         private System.Windows.Media.Color _pointColor;
@@ -31,8 +99,6 @@ namespace LS_Library
                 }
             }
         }
-
-        
 
         public double H { get; set; }
 
@@ -51,22 +117,10 @@ namespace LS_Library
             }
         }
 
-        double InitialL { get; set; } //исходное значение Lightness для использования в алгоритме построения
-                                             //градиента яркости
+        double InitialL { get; set; } // исходное значение Lightness для использования в алгоритме построения
+                                      // градиента яркости
 
-
-        public void Clear_RGB()
-        {
-            SetColorFromHSL(0.0, 0.0, 0.0);
-        }
-
-        public void Clear_W()
-        {
-            WhiteD = 0.0;
-            White = 0;
-        }
-
-        public void SetColorFromHSL(double h, double s, double l)
+        public void SetPoint_HSL(double h, double s, double l)
         {
             H = h;
             S = s;
@@ -75,27 +129,12 @@ namespace LS_Library
             Lightness = Convert.ToInt32(L * 255.0);
         }
 
-        public void SetWhite(double w)
-        {
-            WhiteD = w;
-            White = Convert.ToInt32(w * 255.0);
-        }
+        //public void SetWhite(double w)
+        //{
+        //    WhiteD = w;
+        //    White = Convert.ToInt32(w * 255.0);
+        //}
 
-        public void UpdateColor()
-        {
-            PointColor = HSLtoRGB();
-            Lightness = Convert.ToInt32(L * 255.0);
-        }
-
-        public void SaveLightness()
-        {
-            InitialL = L;
-        }
-
-        public void RestoreLightness()
-        {
-            L = InitialL;
-        }
 
         int _lightness;
         public int Lightness
@@ -111,15 +150,6 @@ namespace LS_Library
             }
         }
 
-        public void CopyTo_RGB(PatternPoint pp)
-        {
-            pp.H = H;
-            pp.S = S;
-            pp.L = L;
-            pp.InitialL = InitialL;
-            pp.Lightness = Lightness;
-            pp.PointColor = PointColor;
-        }
 
         /// <summary>
         /// Converts HSL to RGB.
@@ -217,13 +247,52 @@ namespace LS_Library
             }
         }
 
-        public void CopyTo_White(PatternPoint pp)
+
+        #endregion
+
+        #region Temperature
+
+        System.Windows.Media.Color _colorT;
+        public System.Windows.Media.Color ColorT
         {
-            pp.WhiteD = WhiteD;
+            get { return _colorT; }
+            set
+            {
+                if (_colorT != value)
+                {
+                    _colorT = value;
+                    OnPropertyChanged("ColorT");
+                }
+            }
         }
+
+
+        double _temp;
+        public double Temp
+        {
+            get { return _temp; }
+            set
+            {
+                double hue = 0.0;
+                if (_temp != value)
+                {
+                    _temp = value;
+                    if (value < 0.5)
+                    {
+                        hue = value * 2.0 * 60.0;
+                    }
+                    if (value >= 0.5)
+                    {
+                        hue = (value - 0.5) * 90.0 * 2.0 + 180.0;
+                    }
+                    ColorT = ColorUtilities.Hsl2MediaColor(hue, 1.0, 0.5);
+                }
+            }
+        }
+
+        public double InitialT { get; set; }
 
         #endregion
     }
-
 
 }

@@ -86,8 +86,8 @@
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\IDataService.cs" />
-    <Compile Include="PatternUC.xaml.cs">
-      <DependentUpon>PatternUC.xaml</DependentUpon>
+    <Compile Include="EffectUC.xaml.cs">
+      <DependentUpon>EffectUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="RGB_PatternEffectUC.xaml.cs">
       <DependentUpon>RGB_PatternEffectUC.xaml</DependentUpon>
@@ -126,7 +126,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PatternUC.xaml">
+    <Page Include="EffectUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -197,6 +197,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pattern_RGBW.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pattern_RGBWT.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

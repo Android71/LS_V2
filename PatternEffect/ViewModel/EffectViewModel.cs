@@ -42,7 +42,8 @@ namespace PatternEffect.ViewModel
             string patternDir = dirInfo.Parent.Parent.Parent.FullName;
 
             //PointType = PointTypeEnum.RGB;
-            PointType = PointTypeEnum.RGBW;
+            //PointType = PointTypeEnum.RGBW;
+            PointType = PointTypeEnum.RGBWT;
 
             switch (PointType)
             {
@@ -53,6 +54,10 @@ namespace PatternEffect.ViewModel
                 case PointTypeEnum.RGBW:
                     ActiveSliderList = UpSliderList;
                     LoadModel_RGBW(patternDir);
+                    break;
+                case PointTypeEnum.RGBWT:
+                    ActiveSliderList = UpSliderList;
+                    LoadModel_RGBWT(patternDir);
                     break;
             }
             
@@ -105,6 +110,9 @@ namespace PatternEffect.ViewModel
                         break;
                     case PointTypeEnum.RGBW:
                         ParsePatternParams_RGBW(value);
+                        break;
+                    case PointTypeEnum.RGBWT:
+                        ParsePatternParams_RGBWT(value);
                         break;
                 }
                 

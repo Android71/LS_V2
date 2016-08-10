@@ -66,9 +66,59 @@ namespace PatternEffect.ViewModel
             return profile.ToString();
         }
 
-        
-
         #endregion
+
+        #region RGBWT
+
+        void LoadModel_RGBWT(string path)
+        {
+            FileName = "Pattern_RGBWT.xml";
+            string patternPath = path + @"\" + FileName;
+
+            Params = File.ReadAllText(patternPath);
+
+            BuildPattern(UpSliderList);
+            BuildPattern(DownSliderList);
+        }
+
+        void ParsePatternParams_RGBWT(string profile)
+        {
+            XElement root = XElement.Parse(profile);
+            PointCount = int.Parse(root.Attribute("PointCount").Value);
+
+            Pattern = new PatternPoint[PointCount];
+
+            for (int i = 0; i < PointCount; i++)
+                Pattern[i] = new PatternPoint();
+
+            XElement rgbPoints = root.Elements().First(p => p.Name == "RGB");
+
+            XElement whitePoints = root.Elements().First(p => p.Name == "White");
+
+            Create_RGB_SliderList(rgbPoints, UpSliderList);
+            Create_WT_SliderList(whitePoints, DownSliderList);
+        }
+
+        string CreatePatternParams_RGBWT()
+        {
+            XElement profile = new XElement("Params", new XAttribute("PointCount", PointCount));
+
+            XElement rgb = new XElement("RGB");
+            XElement white = new XElement("White");
+            profile.Add(rgb);
+            profile.Add(white);
+            foreach (SliderItem si in UpSliderList)
+            {
+                rgb.Add(rgbPoint(si));
+            }
+            foreach (SliderItem si in DownSliderList)
+            {
+                white.Add(whitePoint(si));
+            }
+            return profile.ToString();
+        }
+
+        #endregion RGBWT
 
     }
 }

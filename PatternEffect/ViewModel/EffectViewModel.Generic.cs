@@ -88,7 +88,7 @@ namespace PatternEffect.ViewModel
                         for (int i = leftIx + 1; i < rightIx; i++)
                         {
                             PatternPoint pp = Pattern[i - 1 - 1];
-                            Pattern[i - 1].SetColorFromHSL(pp.H + deltaH, pp.S + deltaS, pp.L + deltaL);
+                            Pattern[i - 1].SetPoint_HSL(pp.H + deltaH, pp.S + deltaS, pp.L + deltaL);
                         }
                     }
                     break;
@@ -101,7 +101,21 @@ namespace PatternEffect.ViewModel
                             for (int i = leftIx + 1; i < rightIx; i++)
                             {
                                 PatternPoint pp = Pattern[i - 1 - 1];
-                                Pattern[i - 1].SetWhite(pp.WhiteD + deltaWhite);
+                                Pattern[i - 1].WhiteD = pp.WhiteD + deltaWhite;
+                            }
+                        }
+                    }
+                    break;
+                case SliderTypeEnum.WT:
+                    double deltaTemp;
+                    {
+                        if (stepCount > 0)
+                        {
+                            deltaTemp = (rightSlider.PatternPoint.Temp - leftSlider.PatternPoint.Temp) / stepCount;
+                            for (int i = leftIx + 1; i < rightIx; i++)
+                            {
+                                PatternPoint pp = Pattern[i - 1 - 1];
+                                Pattern[i - 1].Temp = pp.Temp + deltaTemp;
                             }
                         }
                     }
@@ -248,9 +262,9 @@ namespace PatternEffect.ViewModel
             int stepCount = rightPointIx - leftPointIx;
 
             leftSlider.PatternPoint.RestoreLightness();
-            leftSlider.PatternPoint.UpdateColor();
+            leftSlider.PatternPoint.UpdatePoint_RGB();
             rightSlider.PatternPoint.RestoreLightness();
-            rightSlider.PatternPoint.UpdateColor();
+            rightSlider.PatternPoint.UpdatePoint_RGB();
 
             if (stepCount > 0)
             {
@@ -259,7 +273,7 @@ namespace PatternEffect.ViewModel
                 for (int i = 0; i < stepCount - 1; i++)
                 {
                     double prevLight = Pattern[leftPointIx - 1 + i].L;
-                    Pattern[leftPointIx + i].SetColorFromHSL(Pattern[leftPointIx + i].H, Pattern[leftPointIx + i].S, prevLight + deltaL);
+                    Pattern[leftPointIx + i].SetPoint_HSL(Pattern[leftPointIx + i].H, Pattern[leftPointIx + i].S, prevLight + deltaL);
                 }
             }
         }
@@ -326,6 +340,26 @@ namespace PatternEffect.ViewModel
                 pp.White = Convert.ToInt32(pp.WhiteD * 255.0);
 
                 DownSliderList.Add(CreateSlider(sliderList,ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.W));
+                ix++;
+            }
+        }
+
+        void Create_WT_SliderList(XElement root, List<SliderItem> sliderList)
+        {
+            int ix = 0;
+            foreach (XElement basePoint in root.Elements("BasePoint"))
+            {
+                int Pos = int.Parse(basePoint.Attribute("Pos").Value);
+                PatternPoint pp = Pattern[Pos - 1];
+
+                //pp.White = int.Parse(basePoint.Attribute("W").Value);
+                //pp.WhiteD = pp.White / 255.0;
+
+                pp.WhiteD = double.Parse(basePoint.Attribute("W").Value);
+                pp.Temp = double.Parse(basePoint.Attribute("T").Value);
+                //pp.White = Convert.ToInt32(pp.WhiteD * 255.0);
+
+                DownSliderList.Add(CreateSlider(sliderList, ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.WT));
                 ix++;
             }
         }

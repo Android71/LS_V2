@@ -89,6 +89,32 @@ namespace LS_Designer_WPF.Controls
                     SetActiveList.Execute(UpSliderList);
 
                     break;
+
+                case PointTypeEnum.RGBWT:
+                    // UpScreen
+                    rgbScreen.Visibility = Visibility.Visible;
+                    whiteUpScreen.Visibility = Visibility.Hidden;
+                    warmScreen.Visibility = Visibility.Hidden;
+                    wtUpScreen.Visibility = Visibility.Hidden;
+
+                    // DownScreen
+                    whiteScreen.Visibility = Visibility.Hidden;
+                    wtScreen.Visibility = Visibility.Visible;
+                    coldScreen.Visibility = Visibility.Hidden;
+
+                    //MultiSliders
+                    upMultiSlider.Visibility = Visibility.Visible;
+                    downMultiSlider.Visibility = Visibility.Hidden;
+
+                    screenList = new List<string>() { "RGB", "WT" };
+                    screenTb.Visibility = Visibility.Visible;
+                    screenSelector.Visibility = Visibility.Visible;
+                    ScreenList = screenList;
+
+                    //ActiveSliderList = UpSliderList;
+                    SetActiveList.Execute(UpSliderList);
+
+                    break;
             }
 
 
@@ -104,9 +130,8 @@ namespace LS_Designer_WPF.Controls
 
                     BindingOperations.SetBinding(addModeSelector, ComboBox.SelectedIndexProperty, new Binding("AddMode") { Source = upMultiSlider });
                     BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay });
-                    
-                    
                     break;
+
                 case PointTypeEnum.RGBW:
 
                     BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay });
@@ -114,6 +139,15 @@ namespace LS_Designer_WPF.Controls
 
                     BindingOperations.SetBinding(rgbScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
                     BindingOperations.SetBinding(whiteScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
+                    break;
+
+                case PointTypeEnum.RGBWT:
+
+                    BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay });
+                    BindingOperations.SetBinding(addModeSelector, ComboBox.SelectedIndexProperty, new Binding("AddMode") { Source = upMultiSlider });
+
+                    BindingOperations.SetBinding(rgbScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
+                    BindingOperations.SetBinding(wtScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
                     break;
             }
         }
