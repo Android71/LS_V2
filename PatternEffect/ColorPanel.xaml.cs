@@ -339,7 +339,7 @@ namespace LS_Designer_WPF.Controls
                     if (slider.ColorScale == SliderScaleEnum.W)
                     {
                         si.PatternPoint.WhiteD = e.NewValue;
-
+                        si.PatternPoint.InitialWhiteD = e.NewValue;
 
                         if (si.Variant == PointVariant.RangeLeft)
                             si.PatternPoint.CopyTo_White(si.Owner[si.Ix + 1].PatternPoint);

@@ -77,7 +77,7 @@ namespace PatternEffect.ViewModel
 
         private void ExecUpdatePattern(SliderItem si)
         {
-            UpdatePattern_1(si);
+            UpdatePattern(si);
         }
 
         #endregion
@@ -96,6 +96,9 @@ namespace PatternEffect.ViewModel
                         break;
                     case PointTypeEnum.RGBW:
                         s = CreatePatternParams_RGBW();
+                        break;
+                    case PointTypeEnum.RGBWT:
+                        s = CreatePatternParams_RGBWT();
                         break;
                 }
                 return s;

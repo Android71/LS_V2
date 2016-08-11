@@ -113,7 +113,7 @@ namespace PatternEffect.ViewModel
             }
             foreach (SliderItem si in DownSliderList)
             {
-                white.Add(whitePoint(si));
+                white.Add(wtPoint(si));
             }
             return profile.ToString();
         }

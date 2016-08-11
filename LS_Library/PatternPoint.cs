@@ -50,14 +50,24 @@ namespace LS_Library
             InitialT = Temp;
         }
 
+        public void SaveWhiteD()
+        {
+            InitialWhiteD = WhiteD;
+        }
+
         public void RestoreLightness()
         {
             L = InitialL;
         }
 
-        public void RestoreTemp()
+        //public void RestoreTemp()
+        //{
+        //    Temp = InitialT;
+        //}
+
+        public void RestoreWhiteD()
         {
-            Temp = InitialT;
+            WhiteD = InitialWhiteD;
         }
 
         public void CopyTo_RGB(PatternPoint pp)
@@ -73,13 +83,14 @@ namespace LS_Library
         public void CopyTo_White(PatternPoint pp)
         {
             pp.WhiteD = WhiteD;
+            pp.InitialWhiteD = InitialWhiteD;
         }
 
         public void CopyTo_WT(PatternPoint pp)
         {
             pp.WhiteD = WhiteD;
+            pp.InitialWhiteD = InitialWhiteD;
             pp.Temp = Temp;
-            pp.InitialT = InitialT;
         }
 
 
@@ -248,6 +259,7 @@ namespace LS_Library
             }
         }
 
+        public double InitialWhiteD { get; set; }
 
         #endregion
 

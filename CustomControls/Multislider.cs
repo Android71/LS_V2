@@ -242,8 +242,9 @@ namespace LS_Designer_WPF.Controls
 
             PatternPoint pp = Pattern[newValue - 1];
 
-            if ((si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.RGB)||
-                (si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.WT))
+            //if ((si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.RGB)||
+            //    (si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.WT))
+            if (si.Variant == PointVariant.Lightness)
             {
                 switch (si.SliderType)
                 {
@@ -252,13 +253,15 @@ namespace LS_Designer_WPF.Controls
                         pp.SaveLightness();
                         pp.UpdatePoint_RGB();
                         break;
+
+                    case SliderTypeEnum.W:
                     case SliderTypeEnum.WT:
-                        //pp.Temp = si.PatternPoint.Temp;
-                        pp.SaveTemp();
                         pp.WhiteD = si.PatternPoint.WhiteD;
-                        //pp.SaveTemp
+                        pp.SaveWhiteD();
                         break;
                 }
+
+                //Console.WriteLine($"DeltaT: {pp.Temp - si.PatternPoint.Temp}");
 
                 si.PatternPoint = pp;
                 UpdatePatternCommand.Execute(si);
@@ -504,34 +507,7 @@ namespace LS_Designer_WPF.Controls
                 switch (SelectedSlider.SliderType)
                 {
                     case SliderTypeEnum.RGB:
-                        //if (e.Delta > 0)
-                        //{
-                        //    newValue = SelectedSlider.PatternPoint.L + 0.02;
-                        //    if ((double)newValue > 1.0)
-                        //        newValue = 1.0;
-                        //}
-                        //else
-                        //{
-                        //    newValue = SelectedSlider.PatternPoint.L - 0.02;
-
-                        //    if ((double)newValue < 0.0)
-                        //        newValue = 0.0;
-                        //}
-
-                        //if (e.Delta > 0)
-                        //{
-                        //    SelectedSlider.PatternPoint.L += 0.02;
-                        //    if (SelectedSlider.PatternPoint.L > 1.0)
-                        //        SelectedSlider.PatternPoint.L = 1.0;
-                        //}
-                        //else
-                        //{
-                        //    SelectedSlider.PatternPoint.L -= 0.02;
-
-                        //    if (SelectedSlider.PatternPoint.L < 0.0)
-                        //        SelectedSlider.PatternPoint.L = 0.0;
-                        //}
-                        //SelectedSlider.PatternPoint.L = (double)newValue;
+                        
                         SelectedSlider.PatternPoint.L = target;
                         SelectedSlider.PatternPoint.UpdatePoint_RGB();
                         SelectedSlider.PatternPoint.SaveLightness();
@@ -544,7 +520,8 @@ namespace LS_Designer_WPF.Controls
 
                     case SliderTypeEnum.WT:
                         SelectedSlider.PatternPoint.WhiteD = target;
-                        //SelectedSlider.PatternPoint.SaveTemp();
+                        SelectedSlider.PatternPoint.InitialWhiteD = target;
+                        SelectedSlider.PatternPoint.SaveWhiteD();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
                             SelectedSlider.PatternPoint.CopyTo_WT(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
@@ -553,20 +530,10 @@ namespace LS_Designer_WPF.Controls
 
 
                     case SliderTypeEnum.W:
-                        //if (e.Delta > 0)
-                        //{
-                        //    newValue = SelectedSlider.PatternPoint.WhiteD + 0.02;
-                        //    if ((double)newValue > 1.0)
-                        //        newValue = 1.0;
-                        //}
-                        //else
-                        //{
-                        //    newValue = SelectedSlider.PatternPoint.WhiteD - 0.02;
-
-                        //    if ((double)newValue < 0.0)
-                        //        newValue = 0.0;
-                        //}
+                        
                         SelectedSlider.PatternPoint.WhiteD = target;
+                        SelectedSlider.PatternPoint.InitialWhiteD = target;
+                        SelectedSlider.PatternPoint.SaveWhiteD();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
                             SelectedSlider.PatternPoint.CopyTo_White(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
