@@ -183,7 +183,7 @@ namespace PatternEffect.ViewModel
             else
             {
                 BuildGradient(prevItem, rangeLeft);
-                ProcessingLightList(prevItem, leftLights, rangeLeft);
+                LightListHandler(prevItem, leftLights, rangeLeft);
             }
 
             if (rangeLeft != rangeRight)
@@ -194,7 +194,7 @@ namespace PatternEffect.ViewModel
             else
             {
                 BuildGradient(rangeRight, nextItem);
-                ProcessingLightList(rangeRight, rightLights, nextItem);
+                LightListHandler(rangeRight, rightLights, nextItem);
             }
 
         }
@@ -244,7 +244,7 @@ namespace PatternEffect.ViewModel
         }
 
 
-        void ProcessingLightList(SliderItem leftItem, List<SliderItem> lightList, SliderItem rightItem)
+        void LightListHandler(SliderItem leftItem, List<SliderItem> lightList, SliderItem rightItem)
         {
             SliderItem prevLight = null;
 
