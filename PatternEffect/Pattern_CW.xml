@@ -1,0 +1,16 @@
+<Params PointCount="40">
+  <Warm>
+    <BasePoint Pos="1" W="0,470588235294118" Variant="0" />
+    <BasePoint Pos="8" W="0,784313725490196" Variant="1" />
+    <BasePoint Pos="10" W="0,784313725490196" Variant="2" />
+    <BasePoint Pos="30" W="0,980392156862745" Variant="3" />
+    <BasePoint Pos="40" W="0,549019607843137" Variant="0" />
+  </Warm>
+  <Cold>
+    <BasePoint Pos="2" W="0,470588235294118" Variant="0" />
+    <BasePoint Pos="6" W="0,784313725490196" Variant="1" />
+    <BasePoint Pos="12" W="0,784313725490196" Variant="2" />
+    <BasePoint Pos="22" W="0,980392156862745" Variant="3" />
+    <BasePoint Pos="38" W="0,549019607843137" Variant="0" />
+  </Cold>
+</Params>

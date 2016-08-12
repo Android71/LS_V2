@@ -8,12 +8,12 @@
         <Style x:Key="label1" TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="{DynamicResource DarkBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource DarkBrush}" />
         </Style>
         <Style x:Key="label2" TargetType="Label">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Foreground" Value="{DynamicResource DarkBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource DarkBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource DarkBrush}" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Margin" Value="5,0" />
@@ -42,7 +42,8 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Name="rangePointer" Width="20" ItemsSource="{Binding ColorRangeList}">
+        <ItemsControl Name="rangePointer" Width="20"
+                      ItemsSource="{Binding ColorRangeList}">
             <!--  ItemsSource="{Binding ColorRangeList}"  -->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -54,8 +55,7 @@
                     <Rectangle Name="range" Width="5"
                                HorizontalAlignment="Center"
                                Fill="{StaticResource DimGrayBrush}"
-                               Visibility="Hidden"
-                               >
+                               Visibility="Hidden">
                         <!--<Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Offset="0" Color="{Binding ToColor}" />
@@ -65,7 +65,7 @@
                     </Rectangle>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                            <Setter TargetName="range" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="range" Property="Visibility" Value="Visible" />
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>
@@ -83,9 +83,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Rectangle Width="29" HorizontalAlignment="Left"
-                               >
-                        <!--Stroke="White" StrokeThickness="1"-->
+                    <Rectangle Width="29" HorizontalAlignment="Left">
+                        <!--  Stroke="White" StrokeThickness="1"  -->
                         <Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Offset="0" Color="{Binding ToColor}" />
@@ -191,7 +190,6 @@
             <local:HslSlider x:Name="whiteSlider" Grid.Row="0"
                              ColorScale="W" LargeChange="0.05"
                              Maximum="1.0" SmallChange="0.005"
-                            
                              Style="{StaticResource slider}"
                              ValueChanged="WT_ValueChanged" />
             <!--  ValueChanged="hsb_ValuesChanged"  -->
@@ -208,9 +206,9 @@
                    Style="{StaticResource label2}"
                    Visibility="Hidden" />
         </Grid>
-        <Grid Name="tempPart" Grid.Column="6" 
-              Width="60" >
-            <!--Visibility="Collapsed"-->
+        <Grid Name="tempPart" Grid.Column="6"
+              Width="60">
+            <!--  Visibility="Collapsed"  -->
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />

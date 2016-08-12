@@ -40,6 +40,14 @@
                 </Rectangle.Fill>-->
             </Rectangle>
         </DataTemplate>
+        <DataTemplate x:Key="warmScreenDT">
+            <Rectangle Height="{Binding Warm}"
+                       VerticalAlignment="Bottom" Fill="Orange" />
+        </DataTemplate>
+        <DataTemplate x:Key="coldScreenDT">
+            <Rectangle Height="{Binding Cold}"
+                       VerticalAlignment="Bottom" Fill="Blue" />
+        </DataTemplate>
 
     </UserControl.Resources>
 
@@ -152,7 +160,7 @@
                                       Style="{StaticResource screen}"
                                       Visibility="Hidden" />
                         <ItemsControl x:Name="warmScreen" Grid.Row="0"
-                                      ItemTemplate="{StaticResource rgbScreenDT}"
+                                      ItemTemplate="{StaticResource warmScreenDT}"
                                       Style="{StaticResource screen}"
                                       Visibility="Hidden" />
                         <ItemsControl x:Name="wtUpScreen" Grid.Row="0"
@@ -189,6 +197,7 @@
                                       Visibility="Hidden" />
                         <ItemsControl x:Name="coldScreen" Grid.Row="2"
                                       Style="{StaticResource screen}"
+                                      ItemTemplate="{StaticResource coldScreenDT}"
                                       Visibility="Hidden" />
 
                     </Grid>

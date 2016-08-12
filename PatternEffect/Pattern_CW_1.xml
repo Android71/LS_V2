@@ -1,0 +1,10 @@
+<Params PointCount="40">
+  <Warm>
+    <BasePoint Pos="2" W="0" Variant="0" />
+    <BasePoint Pos="6" W="0" Variant="1" />
+    <BasePoint Pos="12" W="0" Variant="2" />
+    <BasePoint Pos="22" W="0" Variant="3" />
+    <BasePoint Pos="38" W="0" Variant="0" />
+  </Warm>
+  <Cold />
+</Params>

@@ -53,6 +53,12 @@ namespace PatternEffect.ViewModel
                     case SliderTypeEnum.WT:
                         Pattern[i].Clear_WT();
                         break;
+                    case SliderTypeEnum.Cold:
+                        Pattern[i].Clear_Cold();
+                        break;
+                    case SliderTypeEnum.Warm:
+                        Pattern[i].Clear_Warm();
+                        break;
                 }
             }
         }
@@ -72,6 +78,12 @@ namespace PatternEffect.ViewModel
                         break;
                     case SliderTypeEnum.WT:
                         Pattern[i].Clear_WT();
+                        break;
+                    case SliderTypeEnum.Cold:
+                        Pattern[i].Clear_Cold();
+                        break;
+                    case SliderTypeEnum.Warm:
+                        Pattern[i].Clear_Warm();
                         break;
                 }
             }
@@ -130,6 +142,35 @@ namespace PatternEffect.ViewModel
                         }
                     }
                     break;
+                case SliderTypeEnum.Cold:
+                    double deltaCold;
+                    {
+                        if (stepCount > 0)
+                        {
+                            deltaCold = (rightSlider.PatternPoint.ColdD - leftSlider.PatternPoint.ColdD) / stepCount;
+                            for (int i = leftIx + 1; i < rightIx; i++)
+                            {
+                                PatternPoint pp = Pattern[i - 1 - 1];
+                                Pattern[i - 1].ColdD = pp.ColdD + deltaCold;
+                            }
+                        }
+                    }
+                    break;
+                case SliderTypeEnum.Warm:
+                    double deltaWarm;
+                    {
+                        if (stepCount > 0)
+                        {
+                            deltaWarm = (rightSlider.PatternPoint.WarmD - leftSlider.PatternPoint.WarmD) / stepCount;
+                            for (int i = leftIx + 1; i < rightIx; i++)
+                            {
+                                PatternPoint pp = Pattern[i - 1 - 1];
+                                Pattern[i - 1].WarmD = pp.WarmD + deltaWarm;
+                            }
+                        }
+                    }
+                    break;
+
             }
 
         }
@@ -284,6 +325,14 @@ namespace PatternEffect.ViewModel
                     leftSlider.PatternPoint.RestoreWhiteD();
                     rightSlider.PatternPoint.RestoreWhiteD();
                     break;
+                case SliderTypeEnum.Cold:
+                    leftSlider.PatternPoint.RestoreColdD();
+                    rightSlider.PatternPoint.RestoreColdD();
+                    break;
+                case SliderTypeEnum.Warm:
+                    leftSlider.PatternPoint.RestoreWarmD();
+                    rightSlider.PatternPoint.RestoreWarmD();
+                    break;
             }
 
             if (stepCount > 0)
@@ -311,132 +360,6 @@ namespace PatternEffect.ViewModel
             }
         }
 
-
-        #endregion
-
-        #region Parse Related
-
-        void Create_RGB_SliderList(XElement root, List<SliderItem> sliderList)
-        {
-            int ix = 0;
-            foreach (XElement basePoint in root.Elements("BasePoint"))
-            {
-                int Pos = int.Parse(basePoint.Attribute("Pos").Value);
-
-                System.Drawing.Color color = System.Drawing.Color.FromArgb
-                                    (0,
-                                     int.Parse(basePoint.Attribute("R").Value),
-                                     int.Parse(basePoint.Attribute("G").Value),
-                                     int.Parse(basePoint.Attribute("B").Value)
-                                    );
-
-                PatternPoint pp = Pattern[Pos - 1];
-                pp.H = color.GetHue();
-                pp.S = color.GetSaturation();
-                pp.L = color.GetBrightness();
-                pp.SaveLightness();
-                pp.PointColor = Color.FromRgb(color.R, color.G, color.B);
-                pp.Lightness = Convert.ToInt32(pp.L * 255);
-
-                sliderList.Add(CreateSlider(sliderList, ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.RGB));
-                ix++;
-            }
-        }
-
-        void Create_W_SliderList(XElement root, List<SliderItem> sliderList)
-        {
-            int ix = 0;
-            foreach (XElement basePoint in root.Elements("BasePoint"))
-            {
-                int Pos = int.Parse(basePoint.Attribute("Pos").Value);
-                PatternPoint pp = Pattern[Pos - 1];
-
-                //pp.White = int.Parse(basePoint.Attribute("W").Value);
-                //pp.WhiteD = pp.White / 255.0;
-
-                pp.WhiteD = double.Parse(basePoint.Attribute("W").Value);
-                pp.SaveWhiteD();
-                pp.White = Convert.ToInt32(pp.WhiteD * 255.0);
-
-                DownSliderList.Add(CreateSlider(sliderList,ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.W));
-                ix++;
-            }
-        }
-
-        void Create_WT_SliderList(XElement root, List<SliderItem> sliderList)
-        {
-            int ix = 0;
-            foreach (XElement basePoint in root.Elements("BasePoint"))
-            {
-                int Pos = int.Parse(basePoint.Attribute("Pos").Value);
-                PatternPoint pp = Pattern[Pos - 1];
-
-                //pp.White = int.Parse(basePoint.Attribute("W").Value);
-                //pp.WhiteD = pp.White / 255.0;
-
-                pp.WhiteD = double.Parse(basePoint.Attribute("W").Value);
-                pp.SaveWhiteD();
-                pp.Temp = double.Parse(basePoint.Attribute("T").Value);
-                //pp.White = Convert.ToInt32(pp.WhiteD * 255.0);
-
-                DownSliderList.Add(CreateSlider(sliderList, ix, Pos, (PointVariant)int.Parse(basePoint.Attribute("Variant").Value), SliderTypeEnum.WT));
-                ix++;
-            }
-        }
-
-        SliderItem CreateSlider(List<SliderItem> sList, int ix, int pos, PointVariant pVariant, SliderTypeEnum sliderType)
-        {
-            SliderItem si = new SliderItem();
-            si.Ix = ix;
-            si.Owner = sList;
-            si.PatternPoint = Pattern[pos - 1];
-            si.Variant = pVariant;
-            si.Minimum = 1;
-            si.Maximum = PointCount;
-            si.SelectionStart = 1;
-            si.SelectionEnd = si.Maximum;
-            si.Value = pos;
-            si.SliderType = sliderType;
-            return si;
-        }
-
-        XElement whitePoint(SliderItem si)
-        {
-
-            //< BasePoint Pos = "1" W = "0"  Variant = "0" />
-            XElement xe = new XElement("BasePoint",
-                    new XAttribute("Pos", ((int)si.Value).ToString()),
-                    new XAttribute("W", (si.PatternPoint.WhiteD).ToString()),
-                    new XAttribute("Variant", ((int)si.Variant).ToString())
-                );
-            return xe;
-        }
-
-        XElement wtPoint(SliderItem si)
-        {
-
-            //< BasePoint Pos = "1" W = "0" T = "0"  Variant = "0" />
-            XElement xe = new XElement("BasePoint",
-                    new XAttribute("Pos", ((int)si.Value).ToString()),
-                    new XAttribute("W", (si.PatternPoint.WhiteD).ToString()),
-                    new XAttribute("T", (si.PatternPoint.Temp).ToString()),
-                    new XAttribute("Variant", ((int)si.Variant).ToString())
-                );
-            return xe;
-        }
-
-        XElement rgbPoint(SliderItem si)
-        {
-            //< BasePoint Pos = "1" R = "0" G = "128" B = "0"  Variant = "0" />
-            XElement xe = new XElement("BasePoint",
-                    new XAttribute("Pos", ((int)si.Value).ToString()),
-                    new XAttribute("R", (si.PatternPoint.PointColor.R).ToString()),
-                    new XAttribute("G", (si.PatternPoint.PointColor.G).ToString()),
-                    new XAttribute("B", (si.PatternPoint.PointColor.B).ToString()),
-                    new XAttribute("Variant", ((int)si.Variant).ToString())
-                );
-            return xe;
-        }
 
         #endregion
 

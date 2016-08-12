@@ -102,10 +102,7 @@
     <Compile Include="ViewModel\EffectViewModel.Generic.cs">
       <DependentUpon>EffectViewModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\EffectViewModel.RGB.cs">
-      <DependentUpon>EffectViewModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModel\EffectViewModel.RGBW.cs">
+    <Compile Include="ViewModel\EffectViewModel.Parser.cs">
       <DependentUpon>EffectViewModel.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainVM.cs" />
@@ -200,6 +197,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Pattern_RGBWT.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pattern_CW.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

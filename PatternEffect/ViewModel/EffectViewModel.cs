@@ -43,24 +43,23 @@ namespace PatternEffect.ViewModel
 
             //PointType = PointTypeEnum.RGB;
             //PointType = PointTypeEnum.RGBW;
-            PointType = PointTypeEnum.RGBWT;
+            //PointType = PointTypeEnum.RGBWT;
+            PointType = PointTypeEnum.CW;
 
-            switch (PointType)
-            {
-                case PointTypeEnum.RGB:
-                    ActiveSliderList = UpSliderList;
-                    LoadModel_RGB(patternDir);
-                    break;
-                case PointTypeEnum.RGBW:
-                    ActiveSliderList = UpSliderList;
-                    LoadModel_RGBW(patternDir);
-                    break;
-                case PointTypeEnum.RGBWT:
-                    ActiveSliderList = UpSliderList;
-                    LoadModel_RGBWT(patternDir);
-                    break;
-            }
-            
+            //switch (PointType)
+            //{
+            //    case PointTypeEnum.RGB:
+            //        LoadModel(PointType, patternDir);
+            //        break;
+            //    case PointTypeEnum.RGBW:
+            //        LoadModel(PointType, patternDir);
+            //        break;
+            //    case PointTypeEnum.RGBWT:
+            //        LoadModel(PointType, patternDir);
+            //        break;
+            //}
+            LoadModel(PointType, patternDir);
+            ActiveSliderList = UpSliderList;
         }
 
 
@@ -86,40 +85,9 @@ namespace PatternEffect.ViewModel
 
         public string Params
         {
-            get
-            {
-                string s = "";
-                switch (PointType)
-                {
-                    case PointTypeEnum.RGB:
-                        s = CreatePatternParams_RGB();
-                        break;
-                    case PointTypeEnum.RGBW:
-                        s = CreatePatternParams_RGBW();
-                        break;
-                    case PointTypeEnum.RGBWT:
-                        s = CreatePatternParams_RGBWT();
-                        break;
-                }
-                return s;
-            }
+            get { return CreatePatternParams(); }
 
-            set
-            {
-                switch (PointType)
-                {
-                    case PointTypeEnum.RGB:
-                        ParsePatternParams_RGB(value);
-                        break;
-                    case PointTypeEnum.RGBW:
-                        ParsePatternParams_RGBW(value);
-                        break;
-                    case PointTypeEnum.RGBWT:
-                        ParsePatternParams_RGBWT(value);
-                        break;
-                }
-                
-            }
+            set { ParsePatternParams(PointType, value); }
         }
 
         PointTypeEnum _pointType = PointTypeEnum.RGB;

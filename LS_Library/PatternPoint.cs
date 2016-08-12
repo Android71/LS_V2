@@ -28,6 +28,16 @@ namespace LS_Library
             WhiteD = 0.0;
         }
 
+        public void Clear_Warm()
+        {
+            WarmD = 0.0;
+        }
+
+        public void Clear_Cold()
+        {
+            ColdD = 0.0;
+        }
+
         public void Clear_WT()
         {
             WhiteD = 0.0;
@@ -45,11 +55,6 @@ namespace LS_Library
             InitialL = L;
         }
 
-        public void SaveTemp()
-        {
-            InitialT = Temp;
-        }
-
         public void SaveWhiteD()
         {
             InitialWhiteD = WhiteD;
@@ -60,14 +65,19 @@ namespace LS_Library
             L = InitialL;
         }
 
-        //public void RestoreTemp()
-        //{
-        //    Temp = InitialT;
-        //}
-
         public void RestoreWhiteD()
         {
             WhiteD = InitialWhiteD;
+        }
+
+        public void RestoreColdD()
+        {
+            ColdD = InitialColdD;
+        }
+
+        public void RestoreWarmD()
+        {
+            WarmD = InitialWarmD;
         }
 
         public void CopyTo_RGB(PatternPoint pp)
@@ -306,6 +316,75 @@ namespace LS_Library
         public double InitialT { get; set; }
 
         #endregion
+
+        #region Cold
+
+        int _cold;
+        public int Cold
+        {
+            get { return _cold; }
+            set
+            {
+                if (_cold != value)
+                {
+                    _cold = value;
+                    OnPropertyChanged("Cold");
+                }
+            }
+        }
+
+        double _coldD;
+        public double ColdD
+        {
+            get { return _coldD; }
+            set
+            {
+                if (_coldD != value)
+                {
+                    _coldD = value;
+                    Cold = Convert.ToInt32(_coldD * 255.0);
+                }
+            }
+        }
+
+        public double InitialColdD { get; set; }
+
+        #endregion
+
+        #region Warm
+
+        int _warm;
+        public int Warm
+        {
+            get { return _warm; }
+            set
+            {
+                if (_warm != value)
+                {
+                    _warm = value;
+                    OnPropertyChanged("Warm");
+                }
+            }
+        }
+
+        double _warmD;
+        public double WarmD
+        {
+            get { return _warmD; }
+            set
+            {
+                if (_warmD != value)
+                {
+                    _warmD = value;
+                    Warm = Convert.ToInt32(_warmD * 255.0);
+                }
+            }
+        }
+
+        public double InitialWarmD { get; set; }
+
+        #endregion
+
     }
 
 }
