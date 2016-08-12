@@ -46,18 +46,7 @@ namespace PatternEffect.ViewModel
             //PointType = PointTypeEnum.RGBWT;
             PointType = PointTypeEnum.CW;
 
-            //switch (PointType)
-            //{
-            //    case PointTypeEnum.RGB:
-            //        LoadModel(PointType, patternDir);
-            //        break;
-            //    case PointTypeEnum.RGBW:
-            //        LoadModel(PointType, patternDir);
-            //        break;
-            //    case PointTypeEnum.RGBWT:
-            //        LoadModel(PointType, patternDir);
-            //        break;
-            //}
+
             LoadModel(PointType, patternDir);
             ActiveSliderList = UpSliderList;
         }

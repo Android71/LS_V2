@@ -44,6 +44,21 @@ namespace LS_Library
             Temp = 0.0;
         }
 
+        public void UpdateBaseProperty(SliderTypeEnum sliderType, double value)
+        {
+            switch (sliderType)
+            {
+                case SliderTypeEnum.Warm:
+                    WarmD = value;
+                    InitialWarmD = value;
+                    break;
+                case SliderTypeEnum.Cold:
+                    ColdD = value;
+                    InitialColdD = value;
+                    break;
+            }
+        }
+
         public void UpdatePoint_RGB()
         {
             PointColor = HSLtoRGB();
@@ -103,6 +118,17 @@ namespace LS_Library
             pp.Temp = Temp;
         }
 
+        public void CopyTo_Warm(PatternPoint pp)
+        {
+            pp.WarmD = WarmD;
+            pp.InitialWarmD = InitialWarmD;
+        }
+
+        public void CopyTo_Cold(PatternPoint pp)
+        {
+            pp.ColdD = ColdD;
+            pp.InitialColdD = InitialColdD;
+        }
 
         #endregion
 

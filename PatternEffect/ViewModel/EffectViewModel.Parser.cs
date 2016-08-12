@@ -126,7 +126,7 @@ namespace PatternEffect.ViewModel
                     break;
                 case PointTypeEnum.CW:
                     basePoints1 = root.Elements().First(p => p.Name == "Warm");
-                    basePoints1 = root.Elements().First(p => p.Name == "Cold");
+                    basePoints2 = root.Elements().First(p => p.Name == "Cold");
                     break;
             }
 

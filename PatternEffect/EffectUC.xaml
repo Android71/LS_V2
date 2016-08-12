@@ -42,7 +42,7 @@
         </DataTemplate>
         <DataTemplate x:Key="warmScreenDT">
             <Rectangle Height="{Binding Warm}"
-                       VerticalAlignment="Bottom" Fill="Orange" />
+                       VerticalAlignment="Bottom" Fill="#AD3D00" />
         </DataTemplate>
         <DataTemplate x:Key="coldScreenDT">
             <Rectangle Height="{Binding Cold}"

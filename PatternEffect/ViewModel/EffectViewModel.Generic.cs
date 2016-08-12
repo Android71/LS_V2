@@ -125,6 +125,7 @@ namespace PatternEffect.ViewModel
                         }
                     }
                     break;
+
                 case SliderTypeEnum.WT:
                     double deltaTemp;
                     {
@@ -304,12 +305,7 @@ namespace PatternEffect.ViewModel
         void UpdateLuminosityGradient(SliderItem leftSlider, SliderItem rightSlider)
         {
             double delta;
-
-            //int leftPointIx = leftSlider.Pos;
-            //int rightPointIx = rightSlider.Pos;
-            //int stepCount = rightPointIx - leftPointIx;
             int stepCount = rightSlider.Pos - leftSlider.Pos;
-
 
             switch (leftSlider.SliderType)
             {
@@ -354,6 +350,22 @@ namespace PatternEffect.ViewModel
                         {
                             double prevWhiteD = Pattern[leftSlider.Pos - 1 + i].WhiteD;
                             Pattern[leftSlider.Pos + i].WhiteD = prevWhiteD + delta;
+                        }
+                        break;
+                    case SliderTypeEnum.Warm:
+                        delta = (rightSlider.PatternPoint.WarmD - leftSlider.PatternPoint.WarmD) / stepCount;
+                        for (int i = 0; i < stepCount - 1; i++)
+                        {
+                            double prevWarmD = Pattern[leftSlider.Pos - 1 + i].WarmD;
+                            Pattern[leftSlider.Pos + i].WarmD = prevWarmD + delta;
+                        }
+                        break;
+                    case SliderTypeEnum.Cold:
+                        delta = (rightSlider.PatternPoint.ColdD - leftSlider.PatternPoint.ColdD) / stepCount;
+                        for (int i = 0; i < stepCount - 1; i++)
+                        {
+                            double prevColdD = Pattern[leftSlider.Pos - 1 + i].ColdD;
+                            Pattern[leftSlider.Pos + i].ColdD = prevColdD + delta;
                         }
                         break;
                 }

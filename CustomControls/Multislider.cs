@@ -488,6 +488,12 @@ namespace LS_Designer_WPF.Controls
                     case SliderTypeEnum.WT:
                         target = SelectedSlider.PatternPoint.WhiteD;
                         break;
+                    case SliderTypeEnum.Warm:
+                        target = SelectedSlider.PatternPoint.WarmD;
+                        break;
+                    case SliderTypeEnum.Cold:
+                        target = SelectedSlider.PatternPoint.ColdD;
+                        break;
                 }
 
                 if (e.Delta > 0)
@@ -521,7 +527,7 @@ namespace LS_Designer_WPF.Controls
                     case SliderTypeEnum.WT:
                         SelectedSlider.PatternPoint.WhiteD = target;
                         SelectedSlider.PatternPoint.InitialWhiteD = target;
-                        SelectedSlider.PatternPoint.SaveWhiteD();
+                        //SelectedSlider.PatternPoint.SaveWhiteD();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
                             SelectedSlider.PatternPoint.CopyTo_WT(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
@@ -533,15 +539,35 @@ namespace LS_Designer_WPF.Controls
                         
                         SelectedSlider.PatternPoint.WhiteD = target;
                         SelectedSlider.PatternPoint.InitialWhiteD = target;
-                        SelectedSlider.PatternPoint.SaveWhiteD();
+                        //SelectedSlider.PatternPoint.SaveWhiteD();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
                             SelectedSlider.PatternPoint.CopyTo_White(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
                             SelectedSlider.PatternPoint.CopyTo_White(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
                         break;
 
+                    case SliderTypeEnum.Warm:
+
+                        SelectedSlider.PatternPoint.WarmD = target;
+                        SelectedSlider.PatternPoint.InitialWarmD = target;
+                        if (SelectedSlider.Variant == PointVariant.RangeLeft)
+                            SelectedSlider.PatternPoint.CopyTo_Warm(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                        if (SelectedSlider.Variant == PointVariant.RangeRight)
+                            SelectedSlider.PatternPoint.CopyTo_Warm(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                        break;
+
+                    case SliderTypeEnum.Cold:
+
+                        SelectedSlider.PatternPoint.ColdD = target;
+                        SelectedSlider.PatternPoint.InitialColdD = target;
+                        if (SelectedSlider.Variant == PointVariant.RangeLeft)
+                            SelectedSlider.PatternPoint.CopyTo_Cold(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                        if (SelectedSlider.Variant == PointVariant.RangeRight)
+                            SelectedSlider.PatternPoint.CopyTo_Cold(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                        break;
+
                 }
-                UpdatePatternCommand.Execute(SelectedSlider);
+                //UpdatePatternCommand.Execute(SelectedSlider);
                 SelectedSlider.RaiseWheelVariableChanged(target);
             }
         }

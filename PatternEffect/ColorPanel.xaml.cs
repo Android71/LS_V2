@@ -210,6 +210,28 @@ namespace LS_Designer_WPF.Controls
                     coldPart.Visibility = Visibility.Collapsed;
                     warmPart.Visibility = Visibility.Collapsed;
                     break;
+                case SliderTypeEnum.Cold:
+                    rangePointer.Visibility = Visibility.Collapsed;
+                    colorSelector.Visibility = Visibility.Collapsed;
+                    huePart.Visibility = Visibility.Collapsed;
+                    satPart.Visibility = Visibility.Collapsed;
+                    lightPart.Visibility = Visibility.Collapsed;
+                    whitePart.Visibility = Visibility.Collapsed;
+                    tempPart.Visibility = Visibility.Collapsed;
+                    coldPart.Visibility = Visibility.Visible;
+                    warmPart.Visibility = Visibility.Collapsed;
+                    break;
+                case SliderTypeEnum.Warm:
+                    rangePointer.Visibility = Visibility.Collapsed;
+                    colorSelector.Visibility = Visibility.Collapsed;
+                    huePart.Visibility = Visibility.Collapsed;
+                    satPart.Visibility = Visibility.Collapsed;
+                    lightPart.Visibility = Visibility.Collapsed;
+                    whitePart.Visibility = Visibility.Collapsed;
+                    tempPart.Visibility = Visibility.Collapsed;
+                    coldPart.Visibility = Visibility.Collapsed;
+                    warmPart.Visibility = Visibility.Visible;
+                    break;
             }
         }
 

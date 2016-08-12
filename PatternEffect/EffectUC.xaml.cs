@@ -245,7 +245,8 @@ namespace LS_Designer_WPF.Controls
         {
             EffectUC uc = (EffectUC)d;
             if (uc.Pattern != null)
-                uc.TuneControl(); 
+                uc.TuneControl();
+            uc.colorPanel.SetPanel(uc.UpSliderList[0].SliderType); 
         }
 
 
