@@ -1,0 +1,7 @@
+<Params PointCount="3">
+  <RGB>
+    <BasePoint Pos="1" R="0" G="138" B="68" Variant="0" />
+    <BasePoint Pos="2" R="0" G="255" B="255" Variant="0" />
+    <BasePoint Pos="3" R="0" G="255" B="255" Variant="0" />
+  </RGB>
+</Params>

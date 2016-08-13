@@ -18,43 +18,25 @@ namespace LS_Library
 
         #region Point operations
 
-        public void Clear_RGB()
-        {
-            SetPoint_HSL(0.0, 0.0, 0.0);
-        }
-
-        public void Clear_W()
-        {
-            WhiteD = 0.0;
-        }
-
-        public void Clear_Warm()
-        {
-            WarmD = 0.0;
-        }
-
-        public void Clear_Cold()
-        {
-            ColdD = 0.0;
-        }
-
-        public void Clear_WT()
-        {
-            WhiteD = 0.0;
-            Temp = 0.0;
-        }
-
-        public void UpdateBaseProperty(SliderTypeEnum sliderType, double value)
+        public void ClearPoint(SliderTypeEnum sliderType)
         {
             switch (sliderType)
             {
+                case SliderTypeEnum.RGB:
+                    SetPoint_HSL(0.0, 0.0, 0.0);
+                    break;
+                case SliderTypeEnum.WT:
+                    WhiteD = 0.0;
+                    Temp = 0.0;
+                    break;
+                case SliderTypeEnum.W:
+                    WhiteD = 0.0;
+                    break;
                 case SliderTypeEnum.Warm:
-                    WarmD = value;
-                    InitialWarmD = value;
+                    WarmD = 0.0;
                     break;
                 case SliderTypeEnum.Cold:
-                    ColdD = value;
-                    InitialColdD = value;
+                    ColdD = 0.0;
                     break;
             }
         }
@@ -70,64 +52,56 @@ namespace LS_Library
             InitialL = L;
         }
 
-        public void SaveWhiteD()
+        public void RestorePoint(SliderTypeEnum sliderType)
         {
-            InitialWhiteD = WhiteD;
+            switch (sliderType)
+            {
+                case SliderTypeEnum.RGB:
+                    L = InitialL;
+                    break;
+                case SliderTypeEnum.WT:
+                case SliderTypeEnum.W:
+                    WhiteD = InitialWhiteD;
+                    break;
+                case SliderTypeEnum.Warm:
+                    WarmD = InitialWarmD;
+                    break;
+                case SliderTypeEnum.Cold:
+                    ColdD = InitialColdD;
+                    break;
+            }
         }
 
-        public void RestoreLightness()
+        public void CopyTo(PatternPoint pp, SliderTypeEnum sliderType)
         {
-            L = InitialL;
-        }
-
-        public void RestoreWhiteD()
-        {
-            WhiteD = InitialWhiteD;
-        }
-
-        public void RestoreColdD()
-        {
-            ColdD = InitialColdD;
-        }
-
-        public void RestoreWarmD()
-        {
-            WarmD = InitialWarmD;
-        }
-
-        public void CopyTo_RGB(PatternPoint pp)
-        {
-            pp.H = H;
-            pp.S = S;
-            pp.L = L;
-            pp.InitialL = InitialL;
-            pp.Lightness = Lightness;
-            pp.PointColor = PointColor;
-        }
-
-        public void CopyTo_White(PatternPoint pp)
-        {
-            pp.WhiteD = WhiteD;
-            pp.InitialWhiteD = InitialWhiteD;
-        }
-
-        public void CopyTo_WT(PatternPoint pp)
-        {
-            pp.WhiteD = WhiteD;
-            pp.InitialWhiteD = InitialWhiteD;
-            pp.Temp = Temp;
-        }
-
-        public void CopyTo_Warm(PatternPoint pp)
-        {
-            pp.WarmD = WarmD;
-            pp.InitialWarmD = InitialWarmD;
-        }
-
-        public void CopyTo_Cold(PatternPoint pp)
-        {
-            pp.ColdD = ColdD;
-            pp.InitialColdD = InitialColdD;
+            switch (sliderType)
+            {
+                case SliderTypeEnum.RGB:
+                    pp.H = H;
+                    pp.S = S;
+                    pp.L = L;
+                    pp.InitialL = InitialL;
+                    pp.Lightness = Lightness;
+                    pp.PointColor = PointColor;
+                    break;
+                case SliderTypeEnum.WT:
+                    pp.WhiteD = WhiteD;
+                    pp.InitialWhiteD = InitialWhiteD;
+                    pp.Temp = Temp;
+                    break;
+                case SliderTypeEnum.W:
+                    pp.WhiteD = WhiteD;
+                    pp.InitialWhiteD = InitialWhiteD;
+                    break;
+                case SliderTypeEnum.Warm:
+                    pp.WarmD = WarmD;
+                    pp.InitialWarmD = InitialWarmD;
+                    break;
+                case SliderTypeEnum.Cold:
+                    pp.ColdD = ColdD;
+                    pp.InitialColdD = InitialColdD;
+                    break;
+            }
         }
 
         #endregion

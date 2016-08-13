@@ -164,7 +164,7 @@
                                       Style="{StaticResource screen}"
                                       Visibility="Hidden" />
                         <ItemsControl x:Name="wtUpScreen" Grid.Row="0"
-                                      ItemTemplate="{StaticResource rgbScreenDT}"
+                                      ItemTemplate="{StaticResource wtScreenDT}"
                                       Style="{StaticResource screen}"
                                       Visibility="Hidden" />
 

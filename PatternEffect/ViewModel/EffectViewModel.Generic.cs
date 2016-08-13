@@ -39,54 +39,14 @@ namespace PatternEffect.ViewModel
 
         void ClearLeftEnd(SliderItem si)
         {
-            //int leftIx = si.Pos - 1;
             for (int i = 0; i < si.PatIx; i++)
-            {
-                switch (si.SliderType)
-                {
-                    case SliderTypeEnum.RGB:
-                        Pattern[i].Clear_RGB();
-                        break;
-                    case SliderTypeEnum.W:
-                        Pattern[i].Clear_W();
-                        break;
-                    case SliderTypeEnum.WT:
-                        Pattern[i].Clear_WT();
-                        break;
-                    case SliderTypeEnum.Cold:
-                        Pattern[i].Clear_Cold();
-                        break;
-                    case SliderTypeEnum.Warm:
-                        Pattern[i].Clear_Warm();
-                        break;
-                }
-            }
+                Pattern[i].ClearPoint(si.SliderType);
         }
 
         void ClearRightEnd(SliderItem si)
         {
-            //int rightIx = si.Pos;
             for (int i = si.PatIx + 1; i < PointCount; i++)
-            {
-                switch (si.SliderType)
-                {
-                    case SliderTypeEnum.RGB:
-                        Pattern[i].Clear_RGB();
-                        break;
-                    case SliderTypeEnum.W:
-                        Pattern[i].Clear_W();
-                        break;
-                    case SliderTypeEnum.WT:
-                        Pattern[i].Clear_WT();
-                        break;
-                    case SliderTypeEnum.Cold:
-                        Pattern[i].Clear_Cold();
-                        break;
-                    case SliderTypeEnum.Warm:
-                        Pattern[i].Clear_Warm();
-                        break;
-                }
-            }
+                Pattern[i].ClearPoint(si.SliderType);
         }
 
         void BuildGradient(SliderItem leftSlider, SliderItem rightSlider)
@@ -305,30 +265,35 @@ namespace PatternEffect.ViewModel
         void UpdateLuminosityGradient(SliderItem leftSlider, SliderItem rightSlider)
         {
             double delta;
+            SliderTypeEnum sliderType = leftSlider.SliderType;
             int stepCount = rightSlider.Pos - leftSlider.Pos;
 
             switch (leftSlider.SliderType)
             {
                 case SliderTypeEnum.RGB:
-                    leftSlider.PatternPoint.RestoreLightness();
+                    leftSlider.PatternPoint.RestorePoint(sliderType);
                     leftSlider.PatternPoint.UpdatePoint_RGB();
-                    rightSlider.PatternPoint.RestoreLightness();
+                    rightSlider.PatternPoint.RestorePoint(sliderType);
                     rightSlider.PatternPoint.UpdatePoint_RGB();
                     break;
 
-                case SliderTypeEnum.WT:
-                case SliderTypeEnum.W:
-                    leftSlider.PatternPoint.RestoreWhiteD();
-                    rightSlider.PatternPoint.RestoreWhiteD();
+                default:
+                    leftSlider.PatternPoint.RestorePoint(sliderType);
+                    rightSlider.PatternPoint.RestorePoint(sliderType);
                     break;
-                case SliderTypeEnum.Cold:
-                    leftSlider.PatternPoint.RestoreColdD();
-                    rightSlider.PatternPoint.RestoreColdD();
-                    break;
-                case SliderTypeEnum.Warm:
-                    leftSlider.PatternPoint.RestoreWarmD();
-                    rightSlider.PatternPoint.RestoreWarmD();
-                    break;
+                //case SliderTypeEnum.WT:
+                //case SliderTypeEnum.W:
+                //    leftSlider.PatternPoint.RestorePoint(sliderType);
+                //    rightSlider.PatternPoint.RestorePoint(sliderType);
+                //    break;
+                //case SliderTypeEnum.Cold:
+                //    leftSlider.PatternPoint.RestorePoint(sliderType);
+                //    rightSlider.PatternPoint.RestorePoint(sliderType);
+                //    break;
+                //case SliderTypeEnum.Warm:
+                //    leftSlider.PatternPoint.RestorePoint(sliderType);
+                //    rightSlider.PatternPoint.RestorePoint(sliderType);
+                //    break;
             }
 
             if (stepCount > 0)

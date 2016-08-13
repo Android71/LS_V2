@@ -69,6 +69,7 @@ namespace LS_Designer_WPF.Controls
                 
                 if (si != null)
                 {
+
                     if (si.SliderType == SliderTypeEnum.RGB)
                     {   // Установка указателя на цветовой диапазоно
                         foreach (ColorRange cr in panel.ColorRangeList)
@@ -148,9 +149,9 @@ namespace LS_Designer_WPF.Controls
                     blockChangePoint = false;
 
                     if (si.Variant == PointVariant.RangeLeft)
-                        si.PatternPoint.CopyTo_RGB(si.Owner[si.Ix + 1].PatternPoint);
+                        si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint, si.SliderType);
                     if (si.Variant == PointVariant.RangeRight)
-                        si.PatternPoint.CopyTo_RGB(si.Owner[si.Ix - 1].PatternPoint);
+                        si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint, si.SliderType);
 
                     si.PatternPoint.SaveLightness();
                     si.PatternPoint.UpdatePoint_RGB();
@@ -246,8 +247,13 @@ namespace LS_Designer_WPF.Controls
                     lightSlider.Value = SelectedSlider.PatternPoint.L;
                     break;
                 case SliderTypeEnum.W:
-                    //SelectedSlider.PatternPoint.WhiteD = (double)e.NewValue;
                     whiteSlider.Value = SelectedSlider.PatternPoint.WhiteD;
+                    break;
+                case SliderTypeEnum.Warm:
+                    warmSlider.Value = SelectedSlider.PatternPoint.WarmD;
+                    break;
+                case SliderTypeEnum.Cold:
+                    coldSlider.Value = SelectedSlider.PatternPoint.ColdD;
                     break;
             }
             blockChangePoint = false;
@@ -274,6 +280,14 @@ namespace LS_Designer_WPF.Controls
                     tempSlider.Value = si.PatternPoint.Temp;
                     UpdateSlidersInfo(si.PatternPoint);
                     break;
+                case SliderTypeEnum.Warm:
+                    warmSlider.Value = si.PatternPoint.WarmD;
+                    UpdateSlidersInfo(si.PatternPoint);
+                    break;
+                case SliderTypeEnum.Cold:
+                    coldSlider.Value = si.PatternPoint.ColdD;
+                    UpdateSlidersInfo(si.PatternPoint);
+                    break;
             }
         }
 
@@ -296,10 +310,16 @@ namespace LS_Designer_WPF.Controls
                     whiteValue.Content = Convert.ToInt32(pp.WhiteD * 255.0).ToString();
                     tempValue.Content = Convert.ToInt32(pp.Temp * 9000.0 + 1000.0).ToString();
                     break;
+                case SliderTypeEnum.Warm:
+                    warmValue.Content = Convert.ToInt32(pp.WarmD * 255.0).ToString();
+                    break;
+                case SliderTypeEnum.Cold:
+                    coldValue.Content = Convert.ToInt32(pp.ColdD * 255.0).ToString();
+                    break;
             }
         }
 
-        void PrepareSliderBehaviors(SliderItem si/*, PatternPoint pp*/)
+        void PrepareSliderBehaviors(SliderItem si)
         {
             si.WheelVariableChanged += UpdateSlidersFromWheel;
 
@@ -334,6 +354,14 @@ namespace LS_Designer_WPF.Controls
                         tempSlider.IsEnabled = false;
                     }
                     break;
+                case SliderTypeEnum.Cold:
+                    coldSlider.IsEnabled = true;
+                    warmSlider.IsEnabled = false;
+                    break;
+                case SliderTypeEnum.Warm:
+                    warmSlider.IsEnabled = true;
+                    coldSlider.IsEnabled = false;
+                    break;
             }
         }
 
@@ -362,9 +390,9 @@ namespace LS_Designer_WPF.Controls
                 si.PatternPoint.UpdatePoint_RGB();
 
                 if (si.Variant == PointVariant.RangeLeft)
-                    si.PatternPoint.CopyTo_RGB(si.Owner[si.Ix + 1].PatternPoint);
+                    si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint, si.SliderType);
                 if (si.Variant == PointVariant.RangeRight)
-                    si.PatternPoint.CopyTo_RGB(si.Owner[si.Ix - 1].PatternPoint);
+                    si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint, si.SliderType);
 
                 si.UpdatePattern();
             }
@@ -386,17 +414,17 @@ namespace LS_Designer_WPF.Controls
                             si.PatternPoint.InitialWhiteD = e.NewValue;
 
                             if (si.Variant == PointVariant.RangeLeft)
-                                si.PatternPoint.CopyTo_White(si.Owner[si.Ix + 1].PatternPoint);
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint, si.SliderType);
                             if (si.Variant == PointVariant.RangeRight)
-                                si.PatternPoint.CopyTo_White(si.Owner[si.Ix - 1].PatternPoint);
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint, si.SliderType);
                             break;
 
                         case SliderScaleEnum.T:
                             si.PatternPoint.Temp = e.NewValue;
                             if (si.Variant == PointVariant.RangeLeft)
-                                si.PatternPoint.CopyTo_WT(si.Owner[si.Ix + 1].PatternPoint);
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint, si.SliderType);
                             if (si.Variant == PointVariant.RangeRight)
-                                si.PatternPoint.CopyTo_WT(si.Owner[si.Ix - 1].PatternPoint);
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint, si.SliderType);
                             break;
                     }
 
@@ -408,7 +436,39 @@ namespace LS_Designer_WPF.Controls
 
         private void CW_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            SliderItem si = SelectedSlider;
+            if (!blockChangePoint)
+            {
+                if (si != null)
+                {
+                    HslSlider slider = (HslSlider)sender;
+                    switch (slider.ColorScale)
+                    {
+                        case SliderScaleEnum.Warm:
+                            si.PatternPoint.WarmD = e.NewValue;
+                            si.PatternPoint.InitialWarmD = e.NewValue;
 
+                            if (si.Variant == PointVariant.RangeLeft)
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint, si.SliderType);
+                            if (si.Variant == PointVariant.RangeRight)
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint, si.SliderType);
+                            break;
+
+                        case SliderScaleEnum.Cold:
+                            si.PatternPoint.ColdD = e.NewValue;
+                            si.PatternPoint.InitialColdD = e.NewValue;
+
+                            if (si.Variant == PointVariant.RangeLeft)
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix + 1].PatternPoint, si.SliderType);
+                            if (si.Variant == PointVariant.RangeRight)
+                                si.PatternPoint.CopyTo(si.Owner[si.Ix - 1].PatternPoint, si.SliderType);
+                            break;
+                    }
+
+                    si.UpdatePattern();
+                }
+            }
+            UpdateSlidersInfo(si.PatternPoint);
         }
 
         #endregion

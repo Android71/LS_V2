@@ -141,6 +141,28 @@ namespace LS_Designer_WPF.Controls
                     SetActiveList.Execute(UpSliderList);
 
                     break;
+                case PointTypeEnum.WT:
+                    // UpScreen
+                    rgbScreen.Visibility = Visibility.Hidden;
+                    whiteUpScreen.Visibility = Visibility.Hidden;
+                    warmScreen.Visibility = Visibility.Hidden;
+                    wtUpScreen.Visibility = Visibility.Visible;
+
+                    // DownScreen
+                    whiteScreen.Visibility = Visibility.Hidden;
+                    wtScreen.Visibility = Visibility.Hidden;
+                    coldScreen.Visibility = Visibility.Hidden;
+
+                    //MultiSliders
+                    upMultiSlider.Visibility = Visibility.Visible;
+                    downMultiSlider.Visibility = Visibility.Hidden;
+
+                    screenTb.Visibility = Visibility.Collapsed;
+                    screenSelector.Visibility = Visibility.Collapsed;
+
+                    SetActiveList.Execute(UpSliderList);
+
+                    break;
             }
 
 
@@ -180,6 +202,13 @@ namespace LS_Designer_WPF.Controls
 
                     BindingOperations.SetBinding(warmScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
                     BindingOperations.SetBinding(coldScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
+                    break;
+                case PointTypeEnum.WT:
+                    BindingOperations.SetBinding(upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = this, Mode = BindingMode.TwoWay });
+                    BindingOperations.SetBinding(addModeSelector, ComboBox.SelectedIndexProperty, new Binding("AddMode") { Source = upMultiSlider });
+
+                    BindingOperations.SetBinding(wtUpScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
+                    //BindingOperations.SetBinding(coldScreen, ItemsControl.ItemsSourceProperty, new Binding("Pattern") { Source = this });
                     break;
             }
         }
@@ -380,14 +409,30 @@ namespace LS_Designer_WPF.Controls
 
         void UpdateMargin()
         {
+            double halfPointWidth = 15.0;
+            double margin = 5.5;
+            bool skipNext = false;
+
             double width = patternView.ActualWidth;
             int pointCount = upMultiSlider.Maxlimit;
             if (pointCount != 0)
             {
-                double halfPointWidth = (width / pointCount) / 2;
-                double margin = -9.5 + halfPointWidth;
-                upMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
-                downMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
+                // default halfPointWidth = 15.0
+                if (pointCount < 40)
+                {
+                    skipNext = true;
+                    patternView.Width = halfPointWidth * 2 * pointCount;
+                    patternView.HorizontalAlignment = HorizontalAlignment.Left;
+                    upMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
+                    downMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
+                }
+                else
+                {
+                    halfPointWidth = (width / pointCount) / 2;
+                    margin = -9.5 + halfPointWidth;
+                    upMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
+                    downMultiSlider.Margin = new Thickness(margin, 0, margin, 0);
+                }
             }
         }
     }

@@ -242,8 +242,6 @@ namespace LS_Designer_WPF.Controls
 
             PatternPoint pp = Pattern[newValue - 1];
 
-            //if ((si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.RGB)||
-            //    (si.Variant == PointVariant.Lightness && si.SliderType == SliderTypeEnum.WT))
             if (si.Variant == PointVariant.Lightness)
             {
                 switch (si.SliderType)
@@ -257,7 +255,15 @@ namespace LS_Designer_WPF.Controls
                     case SliderTypeEnum.W:
                     case SliderTypeEnum.WT:
                         pp.WhiteD = si.PatternPoint.WhiteD;
-                        pp.SaveWhiteD();
+                        pp.InitialWhiteD = pp.WhiteD;
+                        break;
+                    case SliderTypeEnum.Warm:
+                        pp.WarmD = si.PatternPoint.WarmD;
+                        pp.InitialWarmD = pp.WarmD;
+                        break;
+                    case SliderTypeEnum.Cold:
+                        pp.ColdD = si.PatternPoint.ColdD;
+                        pp.InitialColdD = pp.ColdD;
                         break;
                 }
 
@@ -277,13 +283,19 @@ namespace LS_Designer_WPF.Controls
                 switch (si.SliderType)
                 {
                     case SliderTypeEnum.RGB:
-                        si.PatternPoint.CopyTo_RGB(pp);
+                        si.PatternPoint.CopyTo(pp, si.SliderType);
                         break;
                     case SliderTypeEnum.W:
-                        si.PatternPoint.CopyTo_White(pp);
+                        si.PatternPoint.CopyTo(pp, si.SliderType);
                         break;
                     case SliderTypeEnum.WT:
-                        si.PatternPoint.CopyTo_WT(pp);
+                        si.PatternPoint.CopyTo(pp, si.SliderType);
+                        break;
+                    case SliderTypeEnum.Warm:
+                        si.PatternPoint.CopyTo(pp, si.SliderType);
+                        break;
+                    case SliderTypeEnum.Cold:
+                        si.PatternPoint.CopyTo(pp, si.SliderType);
                         break;
                 }
                 
@@ -307,10 +319,10 @@ namespace LS_Designer_WPF.Controls
                     System.Windows.Point pt = e.GetPosition((UIElement)sender);
                     double halfStep = (slidersArea.ActualWidth + 2 * Margin.Left) / this.Maxlimit;
                     int sliderPos = Convert.ToInt32(pt.X / halfStep) + 1;
-                    Console.WriteLine($"ActualWidth + Margin {slidersArea.ActualWidth + 2 * this.Margin.Left}");
-                    Console.WriteLine($"ptX {pt.X}");
-                    Console.WriteLine($"LedPos: {sliderPos}");
-                    Console.WriteLine($"CurrentMode: {AddMode}");
+                    //Console.WriteLine($"ActualWidth + Margin {slidersArea.ActualWidth + 2 * this.Margin.Left}");
+                    //Console.WriteLine($"ptX {pt.X}");
+                    //Console.WriteLine($"LedPos: {sliderPos}");
+                    //Console.WriteLine($"CurrentMode: {AddMode}");
 
                     // AddMode = 0 Gradient
                     // AddMode = 1 Range
@@ -329,7 +341,7 @@ namespace LS_Designer_WPF.Controls
                         switch (AddMode)
                         {
                             case 1:   //Range
-                                SliderList[0].PatternPoint.CopyTo_RGB(pp);
+                                SliderList[0].PatternPoint.CopyTo(pp, SliderList[0].SliderType);
                                 SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
                                 rangeLeft.Variant = PointVariant.RangeLeft;
                                 newSlider = rangeLeft;
@@ -340,10 +352,12 @@ namespace LS_Designer_WPF.Controls
                                 ReArrangeSliderItems();
                                 UpdatePatternCommand.Execute(rangeRight);
                                 break;
+
                             case 2:     //Lightness
                                 break;
+
                             default:    //Gradient        
-                                SliderList[0].PatternPoint.CopyTo_RGB(pp);
+                                SliderList[0].PatternPoint.CopyTo(pp, SliderList[0].SliderType);
                                 SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
                                 newSlider = gradient;
                                 SliderList.Insert(0, gradient);
@@ -368,7 +382,7 @@ namespace LS_Designer_WPF.Controls
                         switch (AddMode)
                         {
                             case 1:     // Range
-                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo_RGB(pp);
+                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp, SliderList[0].SliderType);
                                 SliderItem rangeLeft = CreateSlider(sliderPos, Maxlimit, pp);
                                 rangeLeft.Variant = PointVariant.RangeLeft;
                                 SliderItem rangeRight = CreateSlider(sliderPos, Maxlimit, pp);
@@ -381,7 +395,7 @@ namespace LS_Designer_WPF.Controls
                             case 2:     //Lightness
                                 break;
                             default:    //Gradient
-                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo_RGB(pp);
+                                SliderList[SliderList.Count - 1].PatternPoint.CopyTo(pp, SliderList[0].SliderType);
                                 SliderItem gradient = CreateSlider(sliderPos, Maxlimit, pp);
                                 SliderList.Add(gradient);
                                 ReArrangeSliderItems();
@@ -518,9 +532,9 @@ namespace LS_Designer_WPF.Controls
                         SelectedSlider.PatternPoint.UpdatePoint_RGB();
                         SelectedSlider.PatternPoint.SaveLightness();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
-                            SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint, SelectedSlider.SliderType);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
-                            SelectedSlider.PatternPoint.CopyTo_RGB(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint, SelectedSlider.SliderType);
                         
                         break;
 
@@ -529,9 +543,9 @@ namespace LS_Designer_WPF.Controls
                         SelectedSlider.PatternPoint.InitialWhiteD = target;
                         //SelectedSlider.PatternPoint.SaveWhiteD();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
-                            SelectedSlider.PatternPoint.CopyTo_WT(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint, SelectedSlider.SliderType);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
-                            SelectedSlider.PatternPoint.CopyTo_WT(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint, SelectedSlider.SliderType);
                         break;
 
 
@@ -541,9 +555,9 @@ namespace LS_Designer_WPF.Controls
                         SelectedSlider.PatternPoint.InitialWhiteD = target;
                         //SelectedSlider.PatternPoint.SaveWhiteD();
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
-                            SelectedSlider.PatternPoint.CopyTo_White(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint, SelectedSlider.SliderType);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
-                            SelectedSlider.PatternPoint.CopyTo_White(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint, SelectedSlider.SliderType);
                         break;
 
                     case SliderTypeEnum.Warm:
@@ -551,9 +565,9 @@ namespace LS_Designer_WPF.Controls
                         SelectedSlider.PatternPoint.WarmD = target;
                         SelectedSlider.PatternPoint.InitialWarmD = target;
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
-                            SelectedSlider.PatternPoint.CopyTo_Warm(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint, SelectedSlider.SliderType);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
-                            SelectedSlider.PatternPoint.CopyTo_Warm(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint, SelectedSlider.SliderType);
                         break;
 
                     case SliderTypeEnum.Cold:
@@ -561,13 +575,13 @@ namespace LS_Designer_WPF.Controls
                         SelectedSlider.PatternPoint.ColdD = target;
                         SelectedSlider.PatternPoint.InitialColdD = target;
                         if (SelectedSlider.Variant == PointVariant.RangeLeft)
-                            SelectedSlider.PatternPoint.CopyTo_Cold(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix + 1].PatternPoint, SelectedSlider.SliderType);
                         if (SelectedSlider.Variant == PointVariant.RangeRight)
-                            SelectedSlider.PatternPoint.CopyTo_Cold(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint);
+                            SelectedSlider.PatternPoint.CopyTo(SelectedSlider.Owner[SelectedSlider.Ix - 1].PatternPoint, SelectedSlider.SliderType);
                         break;
 
                 }
-                //UpdatePatternCommand.Execute(SelectedSlider);
+                UpdatePatternCommand.Execute(SelectedSlider);
                 SelectedSlider.RaiseWheelVariableChanged(target);
             }
         }

@@ -341,7 +341,7 @@
             <Label Grid.Row="1"
                    Content="Warm"
                    Style="{StaticResource label1}" />
-            <Label Name="waValue"
+            <Label Name="warmValue"
                    Grid.Row="2"
                    Content="0"
                    Style="{StaticResource label2}" />
@@ -349,7 +349,7 @@
                    Content="B"
                    Style="{StaticResource label1}"
                    Visibility="Hidden" />
-            <Label Name="warmValue"
+            <Label Name="waValue"
                    Grid.Row="4"
                    Content="0"
                    Style="{StaticResource label2}"

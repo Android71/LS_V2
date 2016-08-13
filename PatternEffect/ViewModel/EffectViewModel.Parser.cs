@@ -20,6 +20,7 @@ namespace PatternEffect.ViewModel
             {
                 case PointTypeEnum.RGB:
                     FileName = "Pattern_RGB.xml";
+                    //FileName = "Pattern_RGB_3.xml";
                     break;
                 case PointTypeEnum.RGBW:
                     FileName = "Pattern_RGBW.xml";
@@ -29,6 +30,9 @@ namespace PatternEffect.ViewModel
                     break;
                 case PointTypeEnum.CW:
                     FileName = "Pattern_CW.xml";
+                    break;
+                case PointTypeEnum.WT:
+                    FileName = "Pattern_WT.xml";
                     break;
             }
 
@@ -82,12 +86,12 @@ namespace PatternEffect.ViewModel
                             break;
                         case "Warm":
                             pp.WarmD = double.Parse(basePoint.Attribute("W").Value);
-                            pp.InitialWarmD = pp.WhiteD;
+                            pp.InitialWarmD = pp.WarmD;
                             sliderType = SliderTypeEnum.Warm;
                             break;
                         case "Cold":
                             pp.ColdD = double.Parse(basePoint.Attribute("W").Value);
-                            pp.InitialColdD = pp.WhiteD;
+                            pp.InitialColdD = pp.ColdD;
                             sliderType = SliderTypeEnum.Cold;
                             break;
                     }
@@ -128,6 +132,12 @@ namespace PatternEffect.ViewModel
                     basePoints1 = root.Elements().First(p => p.Name == "Warm");
                     basePoints2 = root.Elements().First(p => p.Name == "Cold");
                     break;
+                case PointTypeEnum.WT:
+                    basePoints1 = root.Elements().First(p => p.Name == "WhiteTemp");
+                    break;
+                case PointTypeEnum.W:
+                    basePoints1 = root.Elements().First(p => p.Name == "White");
+                    break;
             }
 
             CreateSliderList(basePoints1, UpSliderList);
@@ -163,6 +173,14 @@ namespace PatternEffect.ViewModel
                     profile.Add(part1);
                     part2 = new XElement("Cold");
                     profile.Add(part2);
+                    break;
+                case PointTypeEnum.WT:
+                    part1 = new XElement("WarmTemp");
+                    profile.Add(part1);
+                    break;
+                case PointTypeEnum.W:
+                    part1 = new XElement("White");
+                    profile.Add(part1);
                     break;
             }
 

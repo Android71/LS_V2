@@ -1,0 +1,10 @@
+<Params PointCount="40">
+  <WhiteTemp>
+    <BasePoint Pos="1" W="0,470588235294118" T="0,2" Variant="0" />
+    <BasePoint Pos="8" W="0,784313725490196" T="0,3" Variant="1" />
+    <BasePoint Pos="12" W="0,784313725490196" T="0,3" Variant="2" />
+    <BasePoint Pos="21" W="0,360392156862744" T="0,492857142857143" Variant="3" />
+    <BasePoint Pos="30" W="0,86" T="0,685714285714286" Variant="3" />
+    <BasePoint Pos="40" W="0,489019607843137" T="0,9" Variant="0" />
+  </WhiteTemp>
+</Params>
