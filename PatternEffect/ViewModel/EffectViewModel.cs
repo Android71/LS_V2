@@ -43,9 +43,9 @@ namespace PatternEffect.ViewModel
 
             //PointType = PointTypeEnum.RGB;
             //PointType = PointTypeEnum.RGBW;
-            //PointType = PointTypeEnum.RGBWT;
+            PointType = PointTypeEnum.RGBWT;
             //PointType = PointTypeEnum.CW;
-            PointType = PointTypeEnum.WT;
+            //PointType = PointTypeEnum.WT;
 
 
             LoadModel(PointType, patternDir);

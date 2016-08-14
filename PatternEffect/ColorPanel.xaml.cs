@@ -247,6 +247,7 @@ namespace LS_Designer_WPF.Controls
                     lightSlider.Value = SelectedSlider.PatternPoint.L;
                     break;
                 case SliderTypeEnum.W:
+                case SliderTypeEnum.WT:
                     whiteSlider.Value = SelectedSlider.PatternPoint.WhiteD;
                     break;
                 case SliderTypeEnum.Warm:

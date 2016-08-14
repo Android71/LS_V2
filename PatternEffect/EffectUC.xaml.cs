@@ -358,39 +358,71 @@ namespace LS_Designer_WPF.Controls
 
         private static void OnSelectedScreenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            List<SliderItem> activeSliderList = null;
+            MultiSlider activeMultiSlider = null;
+            MultiSlider passiveMultiSlider = null;
+
             if (d != null)
             {
-                EffectUC me = (EffectUC)d;
-                if (me.SelectedScreen == 0)
-                {
-                    BindingOperations.ClearBinding(me.downMultiSlider, MultiSlider.SelectedSliderProperty);
-                    me.SelectedSlider = null;
-                    me.downMultiSlider.Visibility = Visibility.Hidden;
-                    me.upMultiSlider.Visibility = Visibility.Visible;
-                    BindingOperations.SetBinding(me.upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
+                EffectUC uc = (EffectUC)d;
+                uc.SelectedSlider = null;
 
-                    foreach (SliderItem si in me.UpSliderList)
-                        if (si.IsSelected)
-                            me.SelectedSlider = si;
-                    me.SetActiveList.Execute(me.UpSliderList);
-                    if (me.UpSliderList.Count != 0)
-                        me.colorPanel.SetPanel(me.UpSliderList[0].SliderType);
+                if (uc.SelectedScreen == 0)
+                {
+                    activeSliderList = uc.UpSliderList;
+                    activeMultiSlider = uc.upMultiSlider;
+                    passiveMultiSlider = uc.downMultiSlider;
+                    uc.upMultiSlider.Visibility = Visibility.Visible;
+                    uc.downMultiSlider.Visibility = Visibility.Hidden;
                 }
                 else
                 {
-                    BindingOperations.ClearBinding(me.upMultiSlider, MultiSlider.SelectedSliderProperty);
-                    me.SelectedSlider = null;
-                    me.upMultiSlider.Visibility = Visibility.Hidden;
-                    me.downMultiSlider.Visibility = Visibility.Visible;
-                    BindingOperations.SetBinding(me.downMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = me, Mode = BindingMode.TwoWay });
-
-                    foreach (SliderItem si in me.DownSliderList)
-                        if (si.IsSelected)
-                            me.SelectedSlider = si;
-                    me.SetActiveList.Execute(me.DownSliderList);
-                    if (me.DownSliderList != null && me.DownSliderList.Count != 0)
-                        me.colorPanel.SetPanel(me.DownSliderList[0].SliderType);
+                    activeSliderList = uc.DownSliderList;
+                    activeMultiSlider = uc.downMultiSlider;
+                    passiveMultiSlider = uc.upMultiSlider;
+                    uc.upMultiSlider.Visibility = Visibility.Hidden;
+                    uc.downMultiSlider.Visibility = Visibility.Visible;
                 }
+
+                BindingOperations.ClearBinding(passiveMultiSlider, MultiSlider.SelectedSliderProperty);
+                BindingOperations.SetBinding(activeMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = uc, Mode = BindingMode.TwoWay });
+
+                foreach (SliderItem si in activeSliderList)
+                    if (si.IsSelected)
+                        uc.SelectedSlider = si;
+
+                uc.SetActiveList.Execute(activeSliderList);
+                uc.colorPanel.SetPanel(activeSliderList[0].SliderType);
+
+                //if (uc.SelectedScreen == 0)
+                //{
+                //    BindingOperations.ClearBinding(uc.downMultiSlider, MultiSlider.SelectedSliderProperty);
+                    
+                //    uc.downMultiSlider.Visibility = Visibility.Hidden;
+                //    uc.upMultiSlider.Visibility = Visibility.Visible;
+                //    BindingOperations.SetBinding(uc.upMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = uc, Mode = BindingMode.TwoWay });
+
+                //    foreach (SliderItem si in uc.UpSliderList)
+                //        if (si.IsSelected)
+                //            uc.SelectedSlider = si;
+
+                //    uc.SetActiveList.Execute(uc.UpSliderList);
+                //    uc.colorPanel.SetPanel(uc.UpSliderList[0].SliderType);
+                //}
+                //else
+                //{
+                //    BindingOperations.ClearBinding(uc.upMultiSlider, MultiSlider.SelectedSliderProperty);
+                //    uc.SelectedSlider = null;
+                //    uc.upMultiSlider.Visibility = Visibility.Hidden;
+                //    uc.downMultiSlider.Visibility = Visibility.Visible;
+                //    BindingOperations.SetBinding(uc.downMultiSlider, MultiSlider.SelectedSliderProperty, new Binding("SelectedSlider") { Source = uc, Mode = BindingMode.TwoWay });
+
+                //    foreach (SliderItem si in uc.DownSliderList)
+                //        if (si.IsSelected)
+                //            uc.SelectedSlider = si;
+                //    uc.SetActiveList.Execute(uc.DownSliderList);
+                //    uc.colorPanel.SetPanel(uc.DownSliderList[0].SliderType);
+                //}
                 
             }
         }

@@ -89,14 +89,8 @@
     <Compile Include="EffectUC.xaml.cs">
       <DependentUpon>EffectUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RGB_PatternEffectUC.xaml.cs">
-      <DependentUpon>RGB_PatternEffectUC.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TestPatternUC.xaml.cs">
       <DependentUpon>TestPatternUC.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\EffectViewModel.cs" />
     <Compile Include="ViewModel\EffectViewModel.Generic.cs">
@@ -127,19 +121,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RGB_PatternEffectUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Skins\MainSkin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TestPatternUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
