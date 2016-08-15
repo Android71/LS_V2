@@ -1,11 +1,7 @@
-﻿<Application x:Class="LS_Designer_WPF.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ignore="http://www.galasoft.ch/ignore"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:LS_Designer_WPF.ViewModel"
-             StartupUri="MainWindow.xaml"
+﻿<Application x:Class="LS_Designer_WPF.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ignore="http://www.galasoft.ch/ignore" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:LS_Designer_WPF.ViewModel" StartupUri="MainWindow.xaml"
              mc:Ignorable="d ignore">
 
     <!--  StartupUri="MainWindow.xaml"  -->

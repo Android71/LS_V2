@@ -1,0 +1,68 @@
+﻿<Params>
+  <Mode Value="1">
+    <EventSource ChannelNo="1">
+      <Event Name="DimIn"/>
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="2">
+      <Event Name="DimOut"/>
+      <Event Name="Off"/>
+    </EventSource>
+    <EventSource ChannelNo="3">
+      <Event Name="DimIn"/>
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="4">
+      <Event Name="DimOut"/>
+      <Event Name="Off"/>
+    </EventSource>
+  </Mode>
+  <Mode Value="2">
+    <EventSource ChannelNo="1">
+      <Event Name="On/Off Trigger"/>
+      <Event Name="Dim In/Out"/>
+    </EventSource>
+    <EventSource ChannelNo="2">
+      <Event Name="On/Off Trigger"/>
+      <Event Name="Dim In/Out"/>
+    </EventSource>
+    <EventSource ChannelNo="3">
+      <Event Name="On/Off Trigger"/>
+      <Event Name="Dim In/Out"/>
+    </EventSource>
+    <EventSource ChannelNo="4">
+      <Event Name="On/Off Trigger"/>
+      <Event Name="Dim In/Out"/>
+    </EventSource>
+  </Mode>
+  <Mode Value="3">
+    <EventSource ChannelNo="1">
+      <Event Name="Dim In/Out"/>
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="2">
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="3">
+      <Event Name="Dim In/Out"/>
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="4">
+      <Event Name="On"/>
+    </EventSource>
+  </Mode>
+  <Mode Value="3">
+    <EventSource ChannelNo="1">
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="2">
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="3">
+      <Event Name="On"/>
+    </EventSource>
+    <EventSource ChannelNo="4">
+      <Event Name="On"/>
+    </EventSource>
+  </Mode>
+</Params>

@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using LS_Designer_WPF.ViewModel;
+using LS_Library;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -54,22 +55,22 @@ namespace LS_Designer_WPF.Model
 
         public int EndPoint { get { return StartPoint + PointCount - 1; } }
 
-        public int StartDMX
+        public int StartDMX     // 1 - 512
         {
             get { return (StartPoint - 1) * AppContext.CountByType[PointType] + 1; }
         }
 
-        public int StartDMX_511
+        public int StartDMX_511     // 0 - 511
         {
             get { return StartDMX - 1; }
         }
 
-        public int EndDMX
+        public int EndDMX   // 1 - 512
         {
             get { return StartDMX + PointCount * AppContext.CountByType[PointType] - 1; }
         }
 
-        public int EndDMX_511
+        public int EndDMX_511   // 0 - 511
         {
             get { return EndDMX - 1; }
         }

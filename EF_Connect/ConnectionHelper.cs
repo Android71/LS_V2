@@ -32,7 +32,10 @@ namespace EF_Connect
             SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
 
             sqlBuilder.DataSource = dataSource;
-            sqlBuilder.InitialCatalog = initialCatalog;
+            //sqlBuilder.InitialCatalog = initialCatalog;
+            //sqlBuilder.AttachDBFilename = @"D:\Repos\LS_V2\EFData\RestoreData\LightSystemV1.mdf";
+            sqlBuilder.AttachDBFilename = @"D:\Repos\LS_V2\LS_Designer_WPF\SQLDataBase\LightSystemV1.mdf";
+            sqlBuilder.InitialCatalog = initialCatalog;  // без этого оператора имя базы - имя файла
             sqlBuilder.MultipleActiveResultSets = true;
             sqlBuilder.IntegratedSecurity = true;
             sqlBuilder.ApplicationName = appName;

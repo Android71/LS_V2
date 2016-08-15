@@ -1,7 +1,9 @@
-﻿<UserControl x:Class="LS_Designer_WPF.Controls.ControlDevicesUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Custom="http://www.galasoft.ch/mvvmlight" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:local="clr-namespace:LS_Designer_WPF.Controls" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="clr-namespace:LS_Designer_WPF.Model"
-             d:DesignHeight="300" d:DesignWidth="480.451" Loaded="UserControl_Loaded"
+﻿<UserControl x:Class="LS_Designer_WPF.Controls.ControlDevicesUC" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Custom="http://www.galasoft.ch/mvvmlight"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:LS_Designer_WPF.Controls" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:LS_Designer_WPF.Model" d:DesignHeight="300"
+             d:DesignWidth="480.451" Loaded="UserControl_Loaded"
              mc:Ignorable="d">
     <Grid Name="layoutRoot">
         <Grid.ColumnDefinitions>
@@ -19,17 +21,21 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <DockPanel x:Name="masterListButtons" Grid.Row="0" Margin="0,0,0,10"
+                <DockPanel x:Name="masterListButtons" Grid.Row="0"
+                           Margin="0,0,0,10"
                            Background="{StaticResource DarkBrush}"
                            Visibility="{Binding MasterListButtonsVisibility}">
-                    <Button x:Name="masterRemoveButton" Margin="1" HorizontalAlignment="Left"
+                    <Button x:Name="masterRemoveButton" Margin="1"
+                            HorizontalAlignment="Left"
                             Command="{Binding MasterRemoveCmd}"
-                            Content="Remove" DockPanel.Dock="Left" Padding="3,1"
+                            Content="Remove" DockPanel.Dock="Left"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
-                    <Button x:Name="masterAddButton" Margin="1" HorizontalAlignment="Right"
-                            Background="DimGray"
+                    <Button x:Name="masterAddButton" Margin="1"
+                            HorizontalAlignment="Right" Background="DimGray"
                             Command="{Binding MasterAddCmd}"
-                            Content="Add" DockPanel.Dock="Right" Padding="3,1"
+                            Content="Add" DockPanel.Dock="Right"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
                 <Grid Name="lisLayout" Grid.Row="1">
@@ -55,9 +61,11 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <Grid x:Name="masterListCurtain" Grid.RowSpan="2" Background="#334F4F4F"
+                    <Grid x:Name="masterListCurtain" Grid.RowSpan="2"
+                          Background="#334F4F4F"
                           Visibility="{Binding MasterListCurtainVisibility}" />
-                    <ComboBox Name="masterSelector" Grid.Row="0" DisplayMemberPath="Model"
+                    <ComboBox Name="masterSelector" Grid.Row="0"
+                              DisplayMemberPath="Model"
                               IsDropDownOpen="{Binding IsMasterSelectorOpen}"
                               ItemsSource="{Binding MasterSelectorList}"
                               SelectedItem="{Binding MasterSelectorSelectedItem}"
@@ -70,7 +78,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <StackPanel x:Name="masterObjectButtons" Grid.Row="0" Margin="0,10,0,0"
+                <StackPanel x:Name="masterObjectButtons" Grid.Row="0"
+                            Margin="0,10,0,0"
                             Background="{DynamicResource DarkBrush}"
                             FlowDirection="RightToLeft" Orientation="Horizontal"
                             Visibility="{Binding MasterObjectButtonsVisibility}">
@@ -83,16 +92,17 @@
                             Content="Cancel"
                             Style="{StaticResource ButtonStyle1}" />
                 </StackPanel>
-                <Border Name="masterObjectPanel" Grid.Row="1" Margin="0,10,0,0"
+                <Border Name="masterObjectPanel" Grid.Row="1"
+                        Margin="0,10,0,0"
                         Background="{StaticResource VeryDarkBrush}"
                         BorderBrush="{DynamicResource PlumbumBrush}"
                         BorderThickness="1" Padding="10"
                         Visibility="{Binding MasterObjectPanelVisibility}">
                     <Border.Resources>
                         <DataTemplate DataType="{x:Type model:AN6USPI}">
-                            <local:AN6USPI_UC IsEditMode="{Binding IsEditMode}"/>
+                            <local:AN6USPI_UC IsEditMode="{Binding IsEditMode}" />
                         </DataTemplate>
-                        <!--IsEditMode="{Binding IsEditMode}"-->
+                        <!--  IsEditMode="{Binding IsEditMode}"  -->
                         <DataTemplate DataType="{x:Type model:NLPowerBlock}">
                             <local:NLPowerBlockUC />
                         </DataTemplate>
@@ -100,8 +110,8 @@
                     <ContentControl Name="masterCurrentObject" Margin="0,5,0,0"
                                     Content="{Binding MasterCurrentObject}" />
                 </Border>
-                <Grid x:Name="masterObjectCurtain" Grid.Row="1" Margin="0,10,0,0"
-                      Background="Transparent"
+                <Grid x:Name="masterObjectCurtain" Grid.Row="1"
+                      Margin="0,10,0,0" Background="Transparent"
                       Visibility="{Binding MasterObjectCurtainVisibility}" />
             </Grid>
         </Grid>
@@ -117,17 +127,21 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <DockPanel x:Name="detailListButtons" Grid.Row="0" Margin="0,0,0,10"
+                <DockPanel x:Name="detailListButtons" Grid.Row="0"
+                           Margin="0,0,0,10"
                            Background="{StaticResource DarkBrush}"
                            Visibility="{Binding DetailListButtonsVisibility}">
-                    <Button x:Name="detailRemoveButton" Margin="1" HorizontalAlignment="Left"
+                    <Button x:Name="detailRemoveButton" Margin="1"
+                            HorizontalAlignment="Left"
                             Command="{Binding DetailRemoveCmd}"
-                            Content="Remove" DockPanel.Dock="Left" Padding="3,1"
+                            Content="Remove" DockPanel.Dock="Left"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
-                    <Button x:Name="detailAddButton" Margin="1" HorizontalAlignment="Right"
-                            Background="DimGray"
+                    <Button x:Name="detailAddButton" Margin="1"
+                            HorizontalAlignment="Right" Background="DimGray"
                             Command="{Binding DetailAddCmd}"
-                            Content="Add" DockPanel.Dock="Right" Padding="3,1"
+                            Content="Add" DockPanel.Dock="Right"
+                            Padding="3,1"
                             Style="{StaticResource ButtonStyle1}" />
                 </DockPanel>
                 <ListBox Grid.Row="1"
@@ -146,7 +160,8 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Grid x:Name="detailListCurtain" Grid.Row="1" Background="#334F4F4F"
+                <Grid x:Name="detailListCurtain" Grid.Row="1"
+                      Background="#334F4F4F"
                       Visibility="{Binding DetailListCurtainVisibility}" />
             </Grid>
             <Grid x:Name="detailObject" Grid.Row="1">
@@ -154,7 +169,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <StackPanel x:Name="detailObjectButtons" Grid.Row="0" Margin="0,10,0,0"
+                <StackPanel x:Name="detailObjectButtons" Grid.Row="0"
+                            Margin="0,10,0,0"
                             Background="{DynamicResource DarkBrush}"
                             FlowDirection="RightToLeft" Orientation="Horizontal"
                             Visibility="{Binding DetailObjectButtonsVisibility}">
@@ -167,7 +183,8 @@
                             Content="Cancel"
                             Style="{StaticResource ButtonStyle1}" />
                 </StackPanel>
-                <Border Name="detailObjectPanel" Grid.Row="1" Margin="0,10,0,0"
+                <Border Name="detailObjectPanel" Grid.Row="1"
+                        Margin="0,10,0,0"
                         Background="{StaticResource VeryDarkBrush}"
                         BorderBrush="{DynamicResource PlumbumBrush}"
                         BorderThickness="1" Padding="10"
@@ -180,11 +197,11 @@
                     <ContentControl Name="detailCurrentObject" Margin="0,5,0,0"
                                     Content="{Binding DetailCurrentObject}" />
                 </Border>
-                <Grid x:Name="detailObjectCurtain" Grid.Row="1" Margin="0,10,0,0"
-                      Background="Transparent"
+                <Grid x:Name="detailObjectCurtain" Grid.Row="1"
+                      Margin="0,10,0,0" Background="Transparent"
                       Visibility="{Binding DetailObjectCurtainVisibility}" />
             </Grid>
         </Grid>
-        
+
     </Grid>
 </UserControl>

@@ -13,6 +13,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LS_Connect", "EF_Connect\LS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LS_Resources", "LS_Resources\LS_Resources.csproj", "{322E3884-D804-4C70-AD59-744C55DD53E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LS_Library", "LS_Library\LS_Library.csproj", "{A8E86196-447F-454D-8FB4-FAAF0087C83B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Model\Model.projitems*{608d7607-3b9d-45d1-a1ca-05f110866515}*SharedItemsImports = 13
@@ -37,6 +39,10 @@ Global
 		{322E3884-D804-4C70-AD59-744C55DD53E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{322E3884-D804-4C70-AD59-744C55DD53E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{322E3884-D804-4C70-AD59-744C55DD53E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E86196-447F-454D-8FB4-FAAF0087C83B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

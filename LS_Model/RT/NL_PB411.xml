@@ -1,0 +1,94 @@
+﻿<Params>
+  
+  <Mode Value="0">
+    <Channel ChannelNo="0">
+      <Event Name="StartDimIn"/>
+      <Event Name="StopRegulation"/>
+      <Event Name="On"/>
+    </Channel>
+    <Channel ChannelNo="1">
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+      <Event Name="Off"/>
+    </Channel>
+    <Channel ChannelNo="2">
+      <Event Name="StartDimIn"/>
+      <Event Name="StopRegulation"/>
+      <Event Name="On"/>
+    </Channel>
+    <Channel ChannelNo="3">
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+      <Event Name="Off"/>
+    </Channel>
+  </Mode>
+  
+  <Mode Value="1">
+    <Channel ChannelNo="0">
+      <Event Name="On"/>
+      <Event Name="Off"/>
+      <Event Name="StartDimIn"/>
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+    </Channel>
+    <Channel ChannelNo="1">
+      <Event Name="On"/>
+      <Event Name="Off"/>
+      <Event Name="StartDimIn"/>
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+    </Channel>
+    <Channel ChannelNo="2">
+      <Event Name="On"/>
+      <Event Name="Off"/>
+      <Event Name="StartDimIn"/>
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+    </Channel>
+    <Channel ChannelNo="3">
+      <Event Name="On"/>
+      <Event Name="Off"/>
+      <Event Name="StartDimIn"/>
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+    </Channel>
+  </Mode>
+  
+  <Mode Value="2">
+    <Channel ChannelNo="0">
+      <Event Name="On"/>
+      <Event Name="Off"/>
+      <Event Name="StartDimIn"/>
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+    </Channel>
+    <Channel ChannelNo="1">
+      <Event Name="Script"/>
+    </Channel>
+    <Channel ChannelNo="2">
+      <Event Name="On"/>
+      <Event Name="Off"/>
+      <Event Name="StartDimIn"/>
+      <Event Name="StartDimOut"/>
+      <Event Name="StopRegulation"/>
+    </Channel>
+    <Channel ChannelNo="3">
+      <Event Name="Script"/>
+    </Channel>
+  </Mode>
+  
+  <Mode Value="3">
+    <Channel ChannelNo="0">
+      <Event Name="Script"/>
+    </Channel>
+    <Channel ChannelNo="1">
+      <Event Name="Script"/>
+    </Channel>
+    <Channel ChannelNo="2">
+      <Event Name="Script"/>
+    </Channel>
+    <Channel ChannelNo="3">
+      <Event Name="Script"/>
+    </Channel>
+  </Mode>
+</Params>
