@@ -171,6 +171,7 @@
       <DependentUpon>ScenesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
+    <Compile Include="ViewModel\DataViewModel\ControlChannelVM.cs" />
     <Compile Include="ViewModel\PopUpVM\EffectPopUpVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\LightZonesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\LE_VisualVM.cs" />
@@ -349,10 +350,13 @@
   <ItemGroup>
     <Folder Include="Controls\EffectDesigner\ColorPanel\" />
     <Folder Include="Model\" />
-    <Folder Include="ViewModel\DataViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SQLDataBase\LightSystemV1.mdf" />
+    <Content Include="SQLDataBase\LightSystemV1_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>LightSystemV1.mdf</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

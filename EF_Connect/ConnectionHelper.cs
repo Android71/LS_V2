@@ -16,17 +16,22 @@ namespace EF_Connect
         {
             string hostName;
             string dataSource;
+            string dbName;
 
             const string appName = "EntityFramework";
             const string providerName = "System.Data.SqlClient";
             const string metaData = @"res://*/LSModel.csdl|res://*/LSModel.ssdl|res://*/LSModel.msl";
             hostName = Dns.GetHostName();
             dataSource = Dns.GetHostName();
+            dbName = @"D:\Repos\LS_V2\LS_Designer_WPF\SQLDataBase\LightSystemV1.mdf";
             if (hostName == "ak")
                 dataSource = @"AK\SQLEXPRESS";
             if (hostName == "LSWB")
-                //dataSource = @"LSWB\SQLEXPRESS";
-                dataSource = @"(localdb)\MSSQLLocalDB";
+            {
+                dataSource = @".\SQLEXPRESS";
+                dbName = @"C:\Repos\LS_V2\LS_Designer_WPF\SQLDataBase\LightSystemV1.mdf";
+            }
+                //dataSource = @"(localdb)\MSSQLLocalDB";
             const string initialCatalog = "LightSystemV1";
 
             SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
@@ -34,7 +39,8 @@ namespace EF_Connect
             sqlBuilder.DataSource = dataSource;
             //sqlBuilder.InitialCatalog = initialCatalog;
             //sqlBuilder.AttachDBFilename = @"D:\Repos\LS_V2\EFData\RestoreData\LightSystemV1.mdf";
-            sqlBuilder.AttachDBFilename = @"D:\Repos\LS_V2\LS_Designer_WPF\SQLDataBase\LightSystemV1.mdf";
+            //sqlBuilder.AttachDBFilename = @"D:\Repos\LS_V2\LS_Designer_WPF\SQLDataBase\LightSystemV1.mdf";
+            sqlBuilder.AttachDBFilename = dbName;
             sqlBuilder.InitialCatalog = initialCatalog;  // без этого оператора имя базы - имя файла
             sqlBuilder.MultipleActiveResultSets = true;
             sqlBuilder.IntegratedSecurity = true;

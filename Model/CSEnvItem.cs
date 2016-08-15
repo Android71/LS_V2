@@ -10,6 +10,7 @@ namespace Model
         public int Id { get; set; }
 
         public virtual EnvironmentItem EnvironmentItem { get; set; }
+
         public virtual ControlSpace ControlSpace { get; set; }
     }
 }
