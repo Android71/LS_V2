@@ -1,15 +1,9 @@
-﻿<Window x:Class="LS_Designer_WPF.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Controls="clr-namespace:LS_Designer_WPF.Controls"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:ignore="http://www.galasoft.ch/ignore"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:LS_Designer_WPF.ViewModel"
-        Title="MVVM Light Application"
-        Width="1360"
-        Height="760"
-        mc:Ignorable="d ignore">
+﻿<Window x:Class="LS_Designer_WPF.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="clr-namespace:LS_Designer_WPF.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:LS_Designer_WPF.ViewModel"
+        Title="MVVM Light Application" Width="1360"
+        Height="760" mc:Ignorable="d ignore">
 
     <Window.Resources>
         <!--<ResourceDictionary>
@@ -40,54 +34,23 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid x:Name="popUp"
-              Grid.Row="0"
-              Grid.RowSpan="2"
-              Grid.ColumnSpan="2"
-              Background="#3F000000"
-              Visibility="{Binding PopUpVM.PopUpVisibility}">
-            <Grid.Resources>
-                <DataTemplate DataType="{x:Type vm:AttentionVM}">
-                    <Controls:AttentionUC />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:PopUpMessageVM}">
-                    <Controls:MessageUC Width="{Binding Width}" Height="{Binding Height}" />
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:LE_VisualVM}">
-                    <Controls:LE_VisualUC HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:EmptyPopUpVM}">
-                    <Controls:EffectPopUpUC />
-                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
-                </DataTemplate>
-            </Grid.Resources>
 
-            <ContentControl Name="popUpControl" Content="{Binding PopUpVM}" />
-        </Grid>
-        <ToggleButton x:Name="Mode"
-                      Grid.Row="0"
-                      Grid.Column="0"
-                      Margin="0,2,5,0"
-                      Background="#FF1A5525"
-                      Content="Design" />
-        <TabControl x:Name="tabControl"
-                    Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Grid.Column="1"
+        <ToggleButton x:Name="Mode" Grid.Row="0"
+                      Grid.Column="0" Margin="0,2,5,0"
+                      Background="#FF1A5525" Content="Design" />
+        <TabControl x:Name="tabControl" Grid.Row="0"
+                    Grid.RowSpan="2" Grid.Column="1"
                     ItemContainerStyle="{StaticResource MainTabItemStyle}"
                     ItemsSource="{Binding TabItems}"
                     SelectedItem="{Binding SelectedTabItem}"
                     Style="{StaticResource MainTabControlStyle}">
             <TabControl.Resources>
                 <DataTemplate DataType="{x:Type vm:ControlSpacesVM}">
-                    <Controls:ControlSpacesUC MinWidth="200"
-                                              Margin="40,40,0,40"
+                    <Controls:ControlSpacesUC MinWidth="200" Margin="40,40,0,40"
                                               HorizontalAlignment="Left" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:PartitionsVM}">
-                    <Controls:PartitionsUC MinWidth="200"
-                                           Margin="40,40,0,40"
+                    <Controls:PartitionsUC MinWidth="200" Margin="40,40,0,40"
                                            HorizontalAlignment="Left" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:ControlDevicesVM}">
@@ -138,10 +101,8 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        <Grid x:Name="ControlPanels"
-              Grid.Row="1"
-              Grid.Column="0"
-              Margin="0,0,5,0">
+        <Grid x:Name="ControlPanels" Grid.Row="1"
+              Grid.Column="0" Margin="0,0,5,0">
             <Grid x:Name="Panel1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -149,12 +110,10 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0"
-                       Margin="0,2"
+                <Label Grid.Row="0" Margin="0,2"
                        Content="Partitions"
                        Style="{StaticResource ControlPanelLabel}" />
-                <ListBox x:Name="partitions"
-                         Grid.Row="1"
+                <ListBox x:Name="partitions" Grid.Row="1"
                          Margin="0,0,0,4"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                          ItemsSource="{Binding Partitions}"
@@ -166,12 +125,10 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Label Grid.Row="2"
-                       Margin="0,0,0,2"
+                <Label Grid.Row="2" Margin="0,0,0,2"
                        Content="Control Spaces"
                        Style="{StaticResource ControlPanelLabel}" />
-                <ListBox x:Name="controlSpaces"
-                         Grid.Row="3"
+                <ListBox x:Name="controlSpaces" Grid.Row="3"
                          ItemContainerStyle="{StaticResource ListBoxItemStyle1}"
                          ItemsSource="{Binding ControlSpaces}"
                          SelectedItem="{Binding SelectedSpace}"
@@ -185,10 +142,31 @@
                 </ListBox>
             </Grid>
             <!--<Grid x:Name="Panel2" />-->
-            <Grid x:Name="PanelCurtain"
-                  Background="#7F000000"
+            <Grid x:Name="PanelCurtain" Background="#7F000000"
                   Visibility="{Binding ContextCurtainVisibility}" />
         </Grid>
+        <Grid x:Name="popUp" Grid.Row="0"
+              Grid.RowSpan="2" Grid.ColumnSpan="2"
+              Background="#3F000000"
+              Visibility="{Binding PopUpVM.PopUpVisibility}">
+            <Grid.Resources>
+                <DataTemplate DataType="{x:Type vm:AttentionVM}">
+                    <Controls:AttentionUC />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:PopUpMessageVM}">
+                    <Controls:MessageUC Width="{Binding Width}" Height="{Binding Height}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:LE_VisualVM}">
+                    <Controls:LE_VisualUC HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:EmptyPopUpVM}">
+                    <Controls:EffectPopUpUC />
+                    <!--  Width="{Binding Width}" Height="{Binding Height}"  -->
+                </DataTemplate>
+            </Grid.Resources>
 
+            <ContentControl Name="popUpControl" Content="{Binding PopUpVM}" />
+        </Grid>
     </Grid>
 </Window>

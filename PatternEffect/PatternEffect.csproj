@@ -92,12 +92,12 @@
     <Compile Include="TestPatternUC.xaml.cs">
       <DependentUpon>TestPatternUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\EffectViewModel.cs" />
+    <Compile Include="ViewModel\Effect.cs" />
     <Compile Include="ViewModel\EffectViewModel.Generic.cs">
-      <DependentUpon>EffectViewModel.cs</DependentUpon>
+      <DependentUpon>Effect.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\EffectViewModel.Parser.cs">
-      <DependentUpon>EffectViewModel.cs</DependentUpon>
+      <DependentUpon>Effect.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

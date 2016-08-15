@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace PatternEffect.ViewModel
+namespace LS_Designer_WPF.Model
+//namespace PatternEffect.ViewModel
 {
-    public partial class EffectViewModel
+    public partial class Effect
     {
 
         #region Pattern Related

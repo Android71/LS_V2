@@ -11,6 +11,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using LS_Designer_WPF.Model;
 using Microsoft.Practices.ServiceLocation;
 using PatternEffect.Model;
 
@@ -22,7 +23,7 @@ namespace PatternEffect.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<IDataService, DataService>();
-            SimpleIoc.Default.Register<EffectViewModel>();
+            SimpleIoc.Default.Register<Effect>();
         }
 
         /// <summary>
@@ -31,11 +32,11 @@ namespace PatternEffect.ViewModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
             "CA1822:MarkMembersAsStatic",
             Justification = "This non-static member is needed for data binding purposes.")]
-        public EffectViewModel EffectModel
+        public Effect EffectModel
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<EffectViewModel>();
+                return ServiceLocator.Current.GetInstance<Effect>();
             }
         }
 

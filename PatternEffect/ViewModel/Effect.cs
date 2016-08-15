@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using System.Linq;
 
-namespace PatternEffect.ViewModel
+namespace LS_Designer_WPF.Model
+
+//namespace PatternEffect.ViewModel
 {
     // | PointType      |  UpView     |  DownView |  UpSliderType | DownSliderType | PatternInfo
     //************************************************************************************** 
@@ -26,11 +28,11 @@ namespace PatternEffect.ViewModel
     // | CW             |  Warm       | Cold      |  Warm         | Cold           | None
     
 
-    public partial class EffectViewModel : ViewModelBase
+    public partial class Effect : ViewModelBase
     {
         private readonly IDataService _dataService;
 
-        public EffectViewModel(IDataService dataService)
+        public Effect(IDataService dataService)
         {
             _dataService = dataService;
             UpdatePatternCmd = new RelayCommand<SliderItem>((si) => ExecUpdatePattern(si));
