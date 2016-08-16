@@ -312,7 +312,7 @@
 
     <!--  TextBoxInList  -->
 
-    <SolidColorBrush x:Key="TextBoxInList.Edit.Background" Color="{StaticResource Gray}" />
+    <!--<SolidColorBrush x:Key="TextBoxInList.Edit.Background" Color="{StaticResource Gray}" />
 
     <Style x:Key="TextBoxInList" TargetType="{x:Type TextBox}">
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
@@ -326,7 +326,7 @@
                         <Border x:Name="Border" Background="Gray" BorderBrush="Green"
                                 BorderThickness="1" CornerRadius="2" Padding="2">
 
-                            <!--  The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function  -->
+                            --><!--  The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function  --><!--
                             <ScrollViewer x:Name="PART_ContentHost" Margin="0"
                                           Background="{TemplateBinding Background}"
                                           Style="{DynamicResource SimpleScrollViewer}" />
@@ -344,7 +344,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <!--  Button1  -->
 

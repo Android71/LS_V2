@@ -132,7 +132,12 @@ namespace LS_Designer_WPF.Model
 
         public Direction Direction { get; set; } = Direction.Up;
 
-        public string ColorSequence { get; set; }
+        string _colorSequence;
+        public string ColorSequence
+        {
+            get { return _colorSequence; }
+            set { Set(ref _colorSequence, value); }
+        }
 
         public string Remark { get; set; }
 

@@ -94,10 +94,14 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="ColorSeq" />
-                <ComboBox Grid.Column="1" Margin="0,2,0,2"
+                <ComboBox Grid.Column="1" Margin="0,2,0,2" Name="colorSeqCb"
                           Style="{StaticResource ComboBoxFlatStyle}"
                           ItemsSource="{Binding ColorSequenceList}"
-                          SelectedItem="{Binding ColorSequence}" />
+                          SelectedItem="{Binding ColorSequence, Mode=TwoWay}" Visibility="Visible"/>
+                            <!--Style="{StaticResource ComboBoxFlatStyle}"-->
+                <TextBox Name="colorSeqTb" Grid.Column="1" Margin="0,2,0,2" Style="{StaticResource TextBoxStyle1}"
+                         
+                         Text="{Binding ColorSequence}" Visibility="Collapsed"/>
             </Grid>
 
         </Grid>

@@ -5,6 +5,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ColorsAndBrushes.xaml" />
+        
+        <ResourceDictionary Source="FlatComboBox.xaml" />
         <ResourceDictionary Source="Controls.xaml" />
     </ResourceDictionary.MergedDictionaries>
 

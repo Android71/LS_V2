@@ -279,7 +279,7 @@
 
     <!--  TextBoxInList  -->
 
-    <SolidColorBrush x:Key="TextBoxInList.Edit.Background" Color="{StaticResource Gray}" />
+    <!--<SolidColorBrush x:Key="TextBoxInList.Edit.Background" Color="{StaticResource Gray}" />
 
     <Style x:Key="TextBoxInList" TargetType="{x:Type TextBox}">
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
@@ -294,7 +294,7 @@
                                 BorderBrush="Green" BorderThickness="1"
                                 CornerRadius="2" Padding="2">
 
-                            <!--  The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function  -->
+                            --><!--  The implementation places the Content into the ScrollViewer. It must be named PART_ContentHost for the control to function  --><!--
                             <ScrollViewer x:Name="PART_ContentHost" Margin="0"
                                           Background="{TemplateBinding Background}"
                                           Style="{DynamicResource SimpleScrollViewer}" />
@@ -312,9 +312,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
-    <!--  Button1  -->
+    <!--  ButtonStyle11  -->
 
     <SolidColorBrush x:Key="Button1.Static.Background" Color="{StaticResource DimGray}" />
     <SolidColorBrush x:Key="Button1.Static.Border" Color="{StaticResource DimGray}" />
@@ -328,6 +328,7 @@
     <SolidColorBrush x:Key="Button.Disabled.Background" Color="Transparent" />
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="{StaticResource Plumbum}" />
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="{StaticResource DimGray}" />
+    
     <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
         <Setter Property="Margin" Value="1" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
@@ -810,7 +811,7 @@
     <!--  Flat ComboBox  -->
     <!--  https://gist.github.com/hansmaad/9187633#file-gistfile1-xml  -->
 
-    <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{StaticResource LightGray}" />
+    <!--<SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="{StaticResource LightGray}" />
     <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="{StaticResource Dark}" />
 
     <SolidColorBrush x:Key="ComboBox.MouseOverBrush" Color="{StaticResource BlueAccent}" />
@@ -876,13 +877,13 @@
                     <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource ComboBox.MouseOverBrush}" />
                 </MultiTrigger.Setters>
             </MultiTrigger>
-            <!--<Trigger Property="UIElement.IsMouseOver" Value="True">
+            --><!--<Trigger Property="UIElement.IsMouseOver" Value="True">
                     <Setter TargetName="ButtonBorder" Property="Panel.Background" Value="WhiteSmoke" />
                 </Trigger>-->
             <!--<Trigger Property="ToggleButton.IsChecked" Value="True">
                     <Setter TargetName="ButtonBorder" Property="Panel.Background" Value="WhiteSmoke" />
                     <Setter TargetName="Arrow" Property="Shape.Fill" Value="#FF8D979E" />
-                </Trigger>-->
+                </Trigger>--><!--
             <Trigger Property="UIElement.IsEnabled" Value="False">
                 <Setter TargetName="Border" Property="Panel.Background" Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
                 <Setter TargetName="ButtonBorder" Property="Panel.Background" Value="{StaticResource ComboBoxDisabledBackgroundBrush}" />
@@ -924,7 +925,7 @@
                                 </ControlTemplate>
                             </TextBox.Template>
                         </TextBox>
-                        <!--  Popup showing items  -->
+                        --><!--  Popup showing items  --><!--
                         <Popup Name="Popup" AllowsTransparency="True"
                                Focusable="False"
                                IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}"
@@ -969,7 +970,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <!--  End of Flat ComboBox  -->
 
