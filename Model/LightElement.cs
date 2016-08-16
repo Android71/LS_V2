@@ -38,6 +38,9 @@ namespace LS_Designer_WPF.Model
             Name = string.Format($"{ControlSpace.Prefix}_{pointType}_");
         }
 
+
+#region Entity Properties
+
         public int Id { get; set; }
 
         string _name;
@@ -52,6 +55,48 @@ namespace LS_Designer_WPF.Model
         public int StartPoint { get; set; } = 1;
 
         public int PointCount { get; set; } = 1;
+
+        public Direction Direction { get; set; } = Direction.Up;
+
+        string _colorSequence;
+        public string ColorSequence
+        {
+            get { return _colorSequence; }
+            set { Set(ref _colorSequence, value); }
+        }
+
+        public string Remark { get; set; }
+
+        Partition _partition;
+        public Partition Partition //{ get; set; }
+        {
+            get { return _partition; }
+            set { Set(ref _partition, value); }
+        }
+        public ControlSpace ControlSpace { get; set; }
+
+        public ControlChannel ControlChannel { get; set; }
+
+        Gamma _gamma;
+        public Gamma Gamma //{ get; set; }
+        {
+            get { return _gamma; }
+            set { Set(ref _gamma, value); }
+        }
+
+        public CustomGamma CustomGamma { get; set; }
+
+        List<LE_Proxy> _le_Proxies;
+        public List<LE_Proxy> LE_Proxies
+        {
+            get { return _le_Proxies; }
+            set { Set(ref _le_Proxies, value); }
+        }
+
+        #endregion
+
+        #region Auxiliary properties
+
 
         public int EndPoint { get { return StartPoint + PointCount - 1; } }
 
@@ -84,6 +129,8 @@ namespace LS_Designer_WPF.Model
         {
             get { return string.Format($"{Name}   StartPoint: {StartPoint}   EndPoint: {EndPoint}   PointCount: {PointCount}"); }
         }
+
+        #endregion
 
         public bool Validate()
         {
@@ -130,41 +177,18 @@ namespace LS_Designer_WPF.Model
         }
 
 
-        public Direction Direction { get; set; } = Direction.Up;
+        
 
-        string _colorSequence;
-        public string ColorSequence
-        {
-            get { return _colorSequence; }
-            set { Set(ref _colorSequence, value); }
-        }
+        
 
-        public string Remark { get; set; }
 
-        Partition _partition;
-        public Partition Partition //{ get; set; }
-        {
-            get { return _partition; }
-            set { Set(ref _partition, value); }
-        }
-        public ControlSpace ControlSpace { get; set; }
-
-        public ControlChannel ControlChannel { get; set; }
-
-        Gamma _gamma;
-        public Gamma Gamma //{ get; set; }
-        {
-            get { return _gamma; }
-            set { Set(ref _gamma, value); }
-        }
-
-        public CustomGamma CustomGamma { get; set; }
 
 
         /*********************************************************************/
         //UI related
         /*********************************************************************/
 
+        // LightElementsVM and LightZonesVM
         List<Partition> _partitions;
         public List<Partition> Partitions //{ get; set; }
         {
@@ -172,13 +196,46 @@ namespace LS_Designer_WPF.Model
             set { Set(ref _partitions, value); }
         }
 
-        List<Gamma> _gammas;
-        public List<Gamma> Gammas //{ get; set; }
+        //List<Gamma> _gammas;
+        //public List<Gamma> Gammas //{ get; set; }
+        //{
+        //    get { return _gammas; }
+        //    set { Set(ref _gammas, value); }
+        //}
+
+        // LightElementsVM and LightZonesVM
+        bool _isLinked = false;
+        public bool IsLinked
         {
-            get { return _gammas; }
-            set { Set(ref _gammas, value); }
+            //get { return _isLinked; }
+            get { return ControlChannel != null; }
+            set
+            {
+                Set(ref _isLinked, value);
+                if ((value && ControlChannel == null) || (!value && ControlChannel != null))
+                    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
+            }
         }
 
+        // LightElementsVM and LightZonesVM
+        bool _canChangeLink = false;
+        public bool ChangeLinkEnable
+        {
+            get { return _canChangeLink; }
+            set { Set(ref _canChangeLink, value); }
+        }
+
+        // LightElementsVM and LightZonesVM
+        bool _directChild = false;
+        public bool DirectChild
+        {
+            get { return _directChild; }
+            set { Set(ref _directChild, value); }
+        }
+
+        /**********************************************************/
+
+        //LightElementsVM
         List<string> _colorSequenceList;
         public List<string> ColorSequenceList //{ get; set; }
         {
@@ -186,6 +243,7 @@ namespace LS_Designer_WPF.Model
             set { Set(ref _colorSequenceList, value); }
         }
 
+        //LightElementsVM
         bool _isEditMode = false;
         public bool IsEditMode
         {
@@ -200,46 +258,13 @@ namespace LS_Designer_WPF.Model
             set { Set(ref _isAddMode, value); }
         }
 
-        public bool IsLinkedBeforeAction;
-
-        bool _isLinked = false;
-        public bool IsLinked
-        {
-            //get { return _isLinked; }
-            get { return ControlChannel != null; }
-            set
-            {
-                //IsLinkedBeforeAction = _isLinked;
-
-                Set(ref _isLinked, value);
-
-                //if (value != IsLinkedBeforeAction)
-                //{
-                if ((value && ControlChannel == null) || (!value && ControlChannel != null))
-                    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
-                //}
-            }
-        }
-
+        // LightElementsVM
         public void RaiseIsLinkedChanged()
         {
             RaisePropertyChanged("IsLinked");
         }
 
-        bool _canChangeLink = false;
-        public bool ChangeLinkEnable
-        {
-            get { return _canChangeLink; }
-            set { Set(ref _canChangeLink, value); }
-        }
-
-        bool _directChild = false;
-        public bool DirectChild
-        {
-            get { return _directChild; }
-            set { Set(ref _directChild, value); }
-        }
-
+        // LightElementsVM
         public void SetSilentIsLinked(bool val, bool raisePropertyChanged = false)
         {
             _isLinked = val;
@@ -247,17 +272,19 @@ namespace LS_Designer_WPF.Model
                 RaisePropertyChanged("IsLinked");
         }
 
+        // LightElementsVM
         public bool InConflict { get; set; }
 
-        List<LE_Proxy> _proxies;
-        public List<LE_Proxy> Proxies
+        // LightZonesVM
+        public LE_Proxy  LE_Proxy {get; set;}
+
+        // LightZonesVM
+        public void RaiseLinkedToZoneChanged()
         {
-            get { return _proxies; }
-            set { Set(ref _proxies, value); }
+            RaisePropertyChanged("LinkedToZone");
         }
 
-        //LE_Proxy _proxy;
-        public LE_Proxy  LE_Proxy {get; set;}
+        /**********************************************************/
 
         bool _linkedToZone = false;
         public bool LinkedToZone
@@ -269,11 +296,6 @@ namespace LS_Designer_WPF.Model
                 if ((value && LE_Proxy == null) || (!value && LE_Proxy != null))
                     MessengerInstance.Send("", AppContext.LE_LinkToZoneChangedMsg);
             }
-        }
-
-        public void RaiseLinkedToZoneChanged()
-        {
-            RaisePropertyChanged("LinkedToZone");
         }
     }
 }

@@ -45,7 +45,7 @@
                     Converter={StaticResource HiddenIfFalse}}"
                 -->
                 <TextBlock Grid.Column="1" Margin="10,0,0,0"
-                           Text="{Binding Name}" />
+                           Text="{Binding Model.Name}" />
             </Grid>
             <DataTemplate.Triggers>
                 <!--<Trigger SourceName="text" Property="IsMouseOver" Value="True">

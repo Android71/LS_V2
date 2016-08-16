@@ -16,7 +16,7 @@ namespace LS_Designer_WPF.ViewModel
         public LightElementVM(LightElement model)
         {
             Model = model;
-            _dataService = ViewModelLocator.DataService;
+            //_dataService = ViewModelLocator.DataService;
         }
 
         LightElement _model;
@@ -69,7 +69,6 @@ namespace LS_Designer_WPF.ViewModel
             get { return Model.ControlChannel != null; }
             set
             {
-
                 Set(ref _isLinked, value);
 
                 if ((value && Model.ControlChannel == null) || (!value && Model.ControlChannel != null))
@@ -104,33 +103,6 @@ namespace LS_Designer_WPF.ViewModel
         }
 
         public bool InConflict { get; set; }
-
-        List<LE_Proxy> _proxies;
-        public List<LE_Proxy> Proxies
-        {
-            get { return _proxies; }
-            set { Set(ref _proxies, value); }
-        }
-
-        //LE_Proxy _proxy;
-        public LE_Proxy LE_Proxy { get; set; }
-
-        bool _linkedToZone = false;
-        public bool LinkedToZone
-        {
-            get { return LE_Proxy != null; }
-            set
-            {
-                Set(ref _linkedToZone, value);
-                if ((value && LE_Proxy == null) || (!value && LE_Proxy != null))
-                    MessengerInstance.Send("", AppContext.LE_LinkToZoneChangedMsg);
-            }
-        }
-
-        public void RaiseLinkedToZoneChanged()
-        {
-            RaisePropertyChanged("LinkedToZone");
-        }
 
     }
 }

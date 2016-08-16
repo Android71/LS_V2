@@ -305,13 +305,13 @@ namespace LS_Designer_WPF.Model
                 obj.ControlChannel = cCh;
             }
 
-            if (obj.ControlSpace.Prefix == "AN" || obj.ControlSpace.Prefix == "DX")
-            {
-                if (obj.PointType == LS_Library.PointTypeEnum.RGB)
-                    obj.ColorSequenceList = LightElement.ColorSequenseRGB;
-                if (obj.PointType == LS_Library.PointTypeEnum.RGBW)
-                    obj.ColorSequenceList = LightElement.ColorSequenseRGBW;
-            }
+            //if (obj.ControlSpace.Prefix == "AN" || obj.ControlSpace.Prefix == "DX")
+            //{
+            //    if (obj.PointType == LS_Library.PointTypeEnum.RGB)
+            //        obj.ColorSequenceList = LightElement.ColorSequenseRGB;
+            //    if (obj.PointType == LS_Library.PointTypeEnum.RGBW)
+            //        obj.ColorSequenceList = LightElement.ColorSequenseRGBW;
+            //}
 
         }
 

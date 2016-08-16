@@ -172,6 +172,7 @@
     </Compile>
     <Compile Include="ViewModel\AppContext.cs" />
     <Compile Include="ViewModel\DataViewModel\ControlChannelVM.cs" />
+    <Compile Include="ViewModel\DataViewModel\LightElementVM.cs" />
     <Compile Include="ViewModel\PopUpVM\EffectPopUpVM.cs" />
     <Compile Include="ViewModel\TabItemsVM\LightZonesVM.cs" />
     <Compile Include="ViewModel\PopUpVM\LE_VisualVM.cs" />
