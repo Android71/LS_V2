@@ -8,6 +8,7 @@ using System.Windows;
 using LS_Designer_WPF.PopUpMessages;
 using System;
 using System.ComponentModel;
+using LS_Library;
 
 namespace LS_Designer_WPF.ViewModel
 {
@@ -27,12 +28,8 @@ namespace LS_Designer_WPF.ViewModel
 
             ViewCmd = new RelayCommand(ExecViewCmd, CanExecViewCmd);
 
-            MessengerInstance.Register<string>(this, AppContext.LE_LinkChangedMsg, LE_LinkChanged);
-
             TabItemEnabled = false;
         }
-
-        
 
         public override void Refresh()
         {
@@ -60,13 +57,13 @@ namespace LS_Designer_WPF.ViewModel
                 _dataService.GetLightElements(AppContext.ControlSpace, AppContext.Partition, (data, error) =>
                 {
                     if (error != null) { return; } // Report error here
-                    foreach (LightElement li in data)
+                    foreach (LightElement le in data)
                     {
-                        LightElementVM leVM = new LightElementVM(li);
-                        leVM.PropertyChanged += Le_VmPropertyChanged;
-                        MasterList.Add(new LightElementVM(li));
+                        LightElementVM leVM = new LightElementVM(le);
+                        leVM.IsLinked = le.ControlChannel != null;
+                        leVM.IsLinkedChanged = LinkingLogic;
+                        MasterList.Add(leVM);
                     }
-                    //MasterList = data;
                 });
 
                 _dataService.GetControlChannelList(AppContext.ControlSpace, AppContext.Partition, (data, error) =>
@@ -74,59 +71,9 @@ namespace LS_Designer_WPF.ViewModel
                     if (error != null) { return; } // Report error here
                     DetailList = data;
                 });
-                //DetailContentVisibility = Visibility.Hidden;
                 MasterObjectPanelVisibility = Visibility.Collapsed;
             }
         }
-
-        private void Le_VmPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        void UpdateChangeLinkEnable()
-        {
-            //if (MasterSelectedItem != null && DetailSelectedItem != null)
-            //{
-            //    if (!MasterSelectedItem.IsLinked)
-            //    {
-            //        if (DetailSelectedItem != null)
-            //        {
-            //            if (DetailSelectedItem.HasChildren)
-            //            {
-            //                if (DetailSelectedItem.Multilink)
-            //                {
-            //                    MasterSelectedItem.ChangeLinkEnable = true;
-            //                    return;
-            //                }
-            //                else
-            //                {
-            //                    MasterSelectedItem.ChangeLinkEnable = false;
-            //                    return;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                MasterSelectedItem.ChangeLinkEnable = true;
-            //                return;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        MasterSelectedItem.ChangeLinkEnable = true;
-            //        return;
-            //    }
-            //}
-            //if (MasterSelectedItem != null && DetailSelectedItem == null)
-            //{
-            //    MasterSelectedItem.ChangeLinkEnable = false;
-            //    return;
-            //}
-        }
-
-
-        #region Message Handlers
 
         protected override void ContextChanged(string obj)
         {
@@ -139,65 +86,131 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
-        private void LE_LinkChanged(string obj)
+        #region Link/Unlink 
+
+        void LinkingLogic(bool value)
         {
-            //bool leConflict = false;
-            //if (MasterSelectedItem.ControlChannel == null)
-            //{
-            //    // Try Link
-            //    PopUpMessageVM popupVM = new PopUpMessageVM();
-            //    if (DetailSelectedItem.CanLinkLE(MasterSelectedItem, popupVM))
-            //    {
-            //        if (MasterSelectedItem.ControlSpace.Prefix == "AN" || MasterSelectedItem.ControlSpace.Prefix == "DX")
-            //            leConflict = CheckIntersectionLE();
-
-            //        if (!leConflict)
-            //        {
-            //            _dataService.LinkToChannel(MasterSelectedItem, DetailSelectedItem, (updatesCount, error) =>
-            //                {
-            //                    if (error != null) { return; } // Report error here
-            //                    int uc = updatesCount;
-            //                });
-
-            //            DetailSelectedItem.LE_Count++;
-            //            DetailSelectedItem.HasChildren = true;
-            //            DetailSelectedItem.DirectParent = true;
-                        
-
-            //            MasterSelectedItem.DirectChild = true;
-            //            MasterSelectedItem.ControlChannel = DetailSelectedItem;
-            //            MasterCurrentObject.ControlChannel = DetailSelectedItem;
-            //            DetailSelectedItem.PointType = MasterSelectedItem.PointType;
-            //            MasterSelectedItem.RaiseIsLinkedChanged();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        MasterSelectedItem.SetSilentIsLinked(false, true);
-            //        MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
-            //    }
-            //}
-            //else
-            //{
-            //    //Unlink
-            //    _dataService.UnlinkFromChannel(MasterSelectedItem, (updatesCount, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        int uc = updatesCount;
-            //    });
-            //    DetailSelectedItem.LE_Count--;
-            //    MasterSelectedItem.DirectChild = false;
-            //    MasterSelectedItem.ControlChannel = null;
-            //    MasterCurrentObject.ControlChannel = null;
-            //    MasterSelectedItem.RaiseIsLinkedChanged();
-            //    if (DetailSelectedItem.LE_Count == 0)
-            //    {
-            //        DetailSelectedItem.HasChildren = false;
-            //        DetailSelectedItem.DirectParent = false;
-            //    }
-            //}
-            //ViewCmd.RaiseCanExecuteChanged();
+            bool x;
+            if (value)
+            {
+                //Link
+                if (MasterSelectedItem.Model.ControlChannel == null)
+                {
+                    _dataService.LinkToChannel(MasterSelectedItem.Model, DetailSelectedItem, (updatesCount, error) =>
+                    {
+                        if (error != null) { return; } // Report error here
+                        int uc = updatesCount;
+                    });
+                    MasterSelectedItem.Model.ControlChannel = DetailSelectedItem;
+                    MasterSelectedItem.DirectChild = true;
+                    DetailSelectedItem.DirectParent = true;
+                    if (DetailSelectedItem.LE_Count == 0)
+                        DetailSelectedItem.PointType = MasterSelectedItem.Model.PointType;
+                    DetailSelectedItem.LE_Count++;
+                }
+            }
+            else
+            {
+                //Unlink
+                if (MasterSelectedItem.Model.ControlChannel != null)
+                {
+                    _dataService.UnlinkFromChannel(MasterSelectedItem.Model, (updatesCount, error) =>
+                    {
+                        if (error != null) { return; } // Report error here
+                        int uc = updatesCount;
+                    });
+                    MasterSelectedItem.Model.ControlChannel = null;
+                    MasterSelectedItem.DirectChild = false;
+                    DetailSelectedItem.LE_Count--;
+                    if (DetailSelectedItem.LE_Count == 0)
+                    {
+                        DetailSelectedItem.DirectParent = false;
+                    }
+                }
+            }
         }
+
+        void MarkDirectInDetail()
+        {
+            if (DetailList != null)
+            {
+                foreach (ControlChannel ch in DetailList)
+                {
+                    if (MasterSelectedItem.Model.ControlChannel != null)
+                        if (ch.Id == MasterSelectedItem.Model.ControlChannel.Id)
+                            ch.DirectParent = true;
+                        else
+                            ch.DirectParent = false;
+                    else
+                        ch.DirectParent = false;
+                }
+            }
+        }
+
+        void MarkDirectInMaster()
+        {
+            if (MasterList != null)
+            {
+                foreach (LightElementVM leVM in MasterList)
+                {
+                    if (leVM.Model.ControlChannel != null)
+                    {
+                        if (leVM.Model.ControlChannel.Id == DetailSelectedItem.Id)
+                            leVM.DirectChild = true;
+                        else
+                            leVM.DirectChild = false;
+                    }
+                }
+            }
+        }
+
+        void UpdateChangeLinkEnable()
+        {
+            LightElementVM master = MasterSelectedItem;
+            ControlChannel detail = DetailSelectedItem;
+
+            if (master != null && DetailSelectedItem != null)
+            {
+                if (master.DirectChild)
+                {
+                    master.ChangeLinkEnable = true;
+                    return;
+                }
+
+                if (!master.IsLinked && detail.LE_Count == 0)
+                {
+                    master.ChangeLinkEnable = true;
+                    return;
+                }
+
+                if (!master.IsLinked &&
+                      detail.LE_Count > 0 &&
+                      detail.Multilink &&
+                      master.Model.PointType == detail.PointType)
+                {
+                    master.ChangeLinkEnable = true;
+                    return;
+                }
+
+                if (master.IsLinked && !detail.DirectParent)
+                {
+                    master.ChangeLinkEnable = false;
+                    return;
+                }
+            }
+            else
+            {
+                if (master != null)
+                    master.ChangeLinkEnable = false;
+            }
+        }
+
+        #endregion
+
+        #region Message Handlers
+
+        
+
 
         bool CheckIntersectionLE()
         {
@@ -256,9 +269,21 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _partitions, value); }
         }
 
-        bool MasterAddMode { get; set; } = false;
+        
 
-        public bool MasterEditMode { get; set; } = false;
+        bool _masterAddMode = false;
+        public bool MasterAddMode
+        {
+            get { return _masterAddMode; }
+            set { Set(ref _masterAddMode, value); }
+        }
+
+        bool _masterEditMode = false;
+        public bool MasterEditMode
+        {
+            get { return _masterEditMode; }
+            set { Set(ref _masterEditMode, value); }
+        }
 
         List<LightElementVM> _masterList = new List<LightElementVM>();
         public List<LightElementVM> MasterList
@@ -267,9 +292,7 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _masterList, value); }
         }
 
-        int msix = -1; //MasterSelectedItem ix;
-
-        bool selectionFromDetail = false;
+        int msix = -1; //MasterSelectedItem ix
 
         LightElementVM _masterSelectedItem;
         public LightElementVM MasterSelectedItem
@@ -279,20 +302,34 @@ namespace LS_Designer_WPF.ViewModel
             {
                 Set(ref _masterSelectedItem, value);
 
+                MarkDirectInDetail();
+
                 UpdateChangeLinkEnable();
 
-                //if(MasterSelectedItem != null)
-                //{
-                //    MasterObjectPanelVisibility = Visibility.Visible;
-                //    MasterObjectCurtainVisibility = Visibility.Visible;
+                if (MasterSelectedItem != null)
+                {
+                    
 
-                //    msix = MasterList.IndexOf(value);
-                //    _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
-                //     {
-                //         if (error != null) { return; } // Report error here
-                //         MasterCurrentObject = data;
-                //     });
-                //}
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectCurtainVisibility = Visibility.Visible;
+
+                    msix = MasterList.IndexOf(value);
+
+                    _dataService.GetLightElement(MasterSelectedItem.Model.Id, (data, error) =>
+                     {
+                         if (error != null) { return; } // Report error here
+                         MasterCurrentObject = new LightElementVM(data);
+                     });
+
+                    if (MasterCurrentObject.Model.ControlSpace.Prefix == "AN" || MasterSelectedItem.Model.ControlSpace.Prefix == "DX")
+                    {
+                        if (MasterCurrentObject.Model.PointType == LS_Library.PointTypeEnum.RGB)
+                            MasterCurrentObject.ColorSequenceList = LightElement.ColorSequenseRGB;
+                        if (MasterCurrentObject.Model.PointType == LS_Library.PointTypeEnum.RGBW)
+                            MasterCurrentObject.ColorSequenceList = LightElement.ColorSequenseRGBW;
+                    }
+                }
+
                 //else
                 //{
                 //    msix = -1;
@@ -342,6 +379,7 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
+        
 
         LightElementVM _masterCurrentObject;
         public LightElementVM MasterCurrentObject
@@ -349,6 +387,36 @@ namespace LS_Designer_WPF.ViewModel
             get { return _masterCurrentObject; }
             set { Set(ref _masterCurrentObject, value); }
         }
+
+        #region Add LightElement
+
+        #region Master Add Command
+
+        public RelayCommand MasterAddCmd { get; private set; }
+
+        void MasterExecAdd()
+        {
+            MasterListButtonsVisibility = Visibility.Collapsed;
+            MasterListVisibility = Visibility.Hidden;
+            MasterSelectorVisibility = Visibility.Visible;
+            MasterObjectPanelVisibility = Visibility.Hidden;
+            IsMasterSelectorOpen = true;
+
+            DetailListCurtainVisibility = Visibility.Visible;
+
+            MasterAddMode = true;
+            ViewCmd.RaiseCanExecuteChanged();
+
+            MessengerInstance.Send("", AppContext.BlockUIMsg);
+        }
+
+        bool MasterCanExecAdd()
+        {
+            return !MasterAddMode && !MasterEditMode;
+        }
+
+        #endregion
+
 
         object _masterSelectorList;
         public object MasterSelectorList
@@ -371,56 +439,84 @@ namespace LS_Designer_WPF.ViewModel
             set
             {
                 Set(ref _isMasterSelectorOpen, value);
-                //if (!IsMasterSelectorOpen && MasterSelectorSelectedItem != null)
-                //{
-                //    LE_Type leType = (LE_Type)MasterSelectorSelectedItem;
-                //    MasterCurrentObject = new LightElement(leType.PointType, AppContext.ControlSpace);
-                //    MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
-                //    MasterCurrentObject.Partitions = Partitions;
+                if (!IsMasterSelectorOpen && MasterSelectorSelectedItem != null)
+                {
+                    LE_Type leType = (LE_Type)MasterSelectorSelectedItem;
+                    //MasterCurrentObject = new LightElement(leType.PointType, AppContext.ControlSpace);
+                    MasterCurrentObject = CreateLightElementVM(leType.PointType);
+                    MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
+                    MasterCurrentObject.Partitions = Partitions;
 
-                //    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectPanelVisibility = Visibility.Visible;
 
-                //    MasterAddMode = true;
-                //    MasterCurrentObject.IsAddMode = true;
-                //    MasterAddCmd.RaiseCanExecuteChanged();
-                //    MasterRemoveCmd.RaiseCanExecuteChanged();
-                //    ViewCmd.RaiseCanExecuteChanged();
+                    MasterAddMode = true;
+                    MasterCurrentObject.IsAddMode = true;
+                    MasterAddCmd.RaiseCanExecuteChanged();
+                    MasterRemoveCmd.RaiseCanExecuteChanged();
+                    ViewCmd.RaiseCanExecuteChanged();
 
-                //    MasterSelectorVisibility = Visibility.Hidden;
-                //    MasterSelectorSelectedItem = null;
-                //    MasterListVisibility = Visibility.Hidden;
-                //    MasterListButtonsVisibility = Visibility.Visible;
+                    MasterSelectorVisibility = Visibility.Hidden;
+                    MasterSelectorSelectedItem = null;
+                    MasterListVisibility = Visibility.Hidden;
+                    MasterListButtonsVisibility = Visibility.Visible;
 
-                //    MasterObjectPanelVisibility = Visibility.Visible;
-                //    MasterObjectButtonsVisibility = Visibility.Visible;
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectButtonsVisibility = Visibility.Visible;
 
-                //    MasterListCurtainVisibility = Visibility.Visible;
-                //    //DetailListCurtainVisibility = Visibility.Visible;
-                //    MasterObjectCurtainVisibility = Visibility.Collapsed;
+                    MasterListCurtainVisibility = Visibility.Visible;
+                    //DetailListCurtainVisibility = Visibility.Visible;
+                    MasterObjectCurtainVisibility = Visibility.Collapsed;
 
-                //    return;
-                //}
-                //if (!IsMasterSelectorOpen)
-                //{
-                //    MasterListButtonsVisibility = Visibility.Visible;
-                //    MasterSelectorVisibility = Visibility.Hidden;
-                //    MasterListVisibility = Visibility.Visible;
+                    return;
+                }
+                if (!IsMasterSelectorOpen)
+                {
+                    MasterListButtonsVisibility = Visibility.Visible;
+                    MasterSelectorVisibility = Visibility.Hidden;
+                    MasterListVisibility = Visibility.Visible;
 
-                //    MasterAddMode = false;
-                //    ViewCmd.RaiseCanExecuteChanged();
+                    MasterAddMode = false;
+                    ViewCmd.RaiseCanExecuteChanged();
 
-                //    DetailListCurtainVisibility = Visibility.Collapsed;
+                    DetailListCurtainVisibility = Visibility.Collapsed;
 
-                //    if (MasterSelectedItem != null)
-                //    {
-                //        MasterObjectPanelVisibility = Visibility.Visible;
-                //    }
-                //    else
-                //        MasterObjectPanelVisibility = Visibility.Collapsed;
-                //    MessengerInstance.Send("", AppContext.UnBlockUIMsg);
-                //}
+                    if (MasterSelectedItem != null)
+                    {
+                        MasterObjectPanelVisibility = Visibility.Visible;
+                    }
+                    else
+                        MasterObjectPanelVisibility = Visibility.Collapsed;
+                    MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+                }
             }
         }
+
+        LightElementVM CreateLightElementVM(PointTypeEnum pointType)
+        {
+            LightElementVM leVM = null;
+            LightElement le = new LightElement(pointType, AppContext.ControlSpace);
+            le.Partition = AppContext.Partition;
+            
+            leVM = new LightElementVM(le);
+
+            if (leVM.Model.ControlSpace.Prefix == "AN" || leVM.Model.ControlSpace.Prefix == "DX")
+            {
+                if (leVM.Model.PointType == PointTypeEnum.RGB)
+                    leVM.ColorSequenceList = LightElement.ColorSequenseRGB;
+                if (leVM.Model.PointType == PointTypeEnum.RGBW)
+                    leVM.ColorSequenceList = LightElement.ColorSequenseRGBW;
+            }
+
+            return leVM;
+        }
+
+        #endregion
+
+        #region Edit LightElement
+
+
+
+        #endregion
 
         #endregion
 
@@ -445,6 +541,8 @@ namespace LS_Designer_WPF.ViewModel
             set
             {
                 Set(ref _detailSelectedItem, value);
+
+                MarkDirectInMaster();
 
                 UpdateChangeLinkEnable();
                 ViewCmd.RaiseCanExecuteChanged();
@@ -513,6 +611,8 @@ namespace LS_Designer_WPF.ViewModel
                 }
             }
         }
+
+        
 
         ControlChannel _detailCurrentObject;
         public ControlChannel DetailCurrentObject
@@ -770,32 +870,6 @@ namespace LS_Designer_WPF.ViewModel
 
         #endregion
 
-        #region Master Add Command
-
-        public RelayCommand MasterAddCmd { get; private set; }
-
-        void MasterExecAdd()
-        {
-            MasterListButtonsVisibility = Visibility.Collapsed;
-            MasterListVisibility = Visibility.Hidden;
-            MasterSelectorVisibility = Visibility.Visible;
-            MasterObjectPanelVisibility = Visibility.Hidden;
-            IsMasterSelectorOpen = true;
-
-            DetailListCurtainVisibility = Visibility.Visible;
-
-            MasterAddMode = true;
-            ViewCmd.RaiseCanExecuteChanged();
-
-            MessengerInstance.Send("", AppContext.BlockUIMsg);
-        }
-
-        bool MasterCanExecAdd()
-        {
-            return !MasterAddMode && !MasterEditMode;
-        }
-
-        #endregion
 
         #region Master Remove Command
 

@@ -372,7 +372,6 @@ namespace LS_Designer_WPF.Model
                     conttrolChannel.ControlSpace = new ControlSpace();
                     Mapper.Db2O(dbControlChannel.ControlSpace, conttrolChannel.ControlSpace);
                     conttrolChannel.LE_Count = dbControlChannel.LightElements.Count;
-                    //conttrolChannel.HasChildren = conttrolChannel.LE_Count != 0;
                     chList.Add(conttrolChannel);
                 }
             }

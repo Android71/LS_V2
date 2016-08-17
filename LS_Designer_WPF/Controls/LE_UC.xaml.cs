@@ -97,6 +97,7 @@ namespace LS_Designer_WPF.Controls
             if (d != null)
             {
                 LE_UC uc = (LE_UC)d;
+                var x = uc.colorSeqCb;
                 PointTypeEnum pt = (PointTypeEnum)e.NewValue;
                 string prefix = uc.CSprefix;
                 if (pt != PointTypeEnum.W && pt != PointTypeEnum.WT && pt != PointTypeEnum.CW)

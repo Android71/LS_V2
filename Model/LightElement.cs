@@ -24,17 +24,17 @@ namespace LS_Designer_WPF.Model
         public LightElement(PointTypeEnum pointType, ControlSpace space) : this()
         {
             ControlSpace = space;
-            PointType = pointType;
-            if (pointType == PointTypeEnum.RGB && space.Id == 1)
-            {
-                ColorSequenceList = LightElement.ColorSequenseRGB;
-                ColorSequence = ColorSequenceList[0];
-            }
-            if (pointType == PointTypeEnum.RGBW && space.Id == 1)
-            {
-                ColorSequenceList = LightElement.ColorSequenseRGBW;
-                ColorSequence = ColorSequenceList[0];
-            }
+            //PointType = pointType;
+            //if (pointType == PointTypeEnum.RGB && space.Id == 1)
+            //{
+            //    ColorSequenceList = LightElement.ColorSequenseRGB;
+            //    ColorSequence = ColorSequenceList[0];
+            //}
+            //if (pointType == PointTypeEnum.RGBW && space.Id == 1)
+            //{
+            //    ColorSequenceList = LightElement.ColorSequenseRGBW;
+            //    ColorSequence = ColorSequenceList[0];
+            //}
             Name = string.Format($"{ControlSpace.Prefix}_{pointType}_");
         }
 
@@ -212,8 +212,8 @@ namespace LS_Designer_WPF.Model
             set
             {
                 Set(ref _isLinked, value);
-                if ((value && ControlChannel == null) || (!value && ControlChannel != null))
-                    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
+                //if ((value && ControlChannel == null) || (!value && ControlChannel != null))
+                //    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
             }
         }
 

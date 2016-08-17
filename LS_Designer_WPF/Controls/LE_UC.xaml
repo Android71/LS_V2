@@ -34,7 +34,7 @@
             <ComboBox Grid.Column="1" Margin="0,2,0,2"
                       Style="{StaticResource ComboBoxFlatStyle}"
                       ItemsSource="{Binding Partitions}"
-                      SelectedItem="{Binding Partition}"
+                      SelectedItem="{Binding Model.Partition}"
                       DisplayMemberPath="Name" />
         </Grid>
         <Label Grid.Row="1" Grid.Column="0"
@@ -43,13 +43,13 @@
                  Grid.Column="1" Margin="0,2,0,2"
                  VerticalAlignment="Center"
                  Style="{StaticResource TextBoxStyle1}"
-                 Text="{Binding Name}" />
+                 Text="{Binding Model.Name}" />
         <Label Grid.Row="2" Grid.Column="0"
                Content="PointType" />
         <TextBox Grid.Row="2" Grid.Column="1"
                  Margin="0,2,0,2" VerticalAlignment="Center"
                  Style="{StaticResource TextBoxStyle1}"
-                 Text="{Binding PointType}"
+                 Text="{Binding Model.PointType}"
                  IsReadOnly="True" />
         <Grid Name="lsProps" Grid.Row="3"
               Grid.ColumnSpan="2">
@@ -68,13 +68,13 @@
             <TextBox Grid.Row="0" Grid.Column="1"
                      Margin="0,2,0,2" VerticalAlignment="Center"
                      Style="{StaticResource TextBoxStyle1}"
-                     Text="{Binding StartPoint}" />
+                     Text="{Binding Model.StartPoint}" />
             <Label Grid.Row="1" Grid.Column="0"
                    Content="PointCount" />
             <TextBox Grid.Row="1" Grid.Column="1"
                      Margin="0,2,0,2" VerticalAlignment="Center"
                      Style="{StaticResource TextBoxStyle1}"
-                     Text="{Binding PointCount}" />
+                     Text="{Binding Model.PointCount}" />
             <Grid Name="direction" Grid.Row="2"
                   Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
@@ -85,7 +85,7 @@
                 <ComboBox Grid.Column="1" Margin="0,2,0,2"
                           Style="{StaticResource ComboBoxFlatStyle}"
                           ItemsSource="{wpfex:EnumValues {x:Type model:Direction}}"
-                          SelectedItem="{Binding Direction}" />
+                          SelectedItem="{Binding Model.Direction}" />
             </Grid>
             <Grid Name="colorSeq" Grid.Row="3"
                   Grid.ColumnSpan="2">
@@ -94,14 +94,18 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="ColorSeq" />
-                <ComboBox Grid.Column="1" Margin="0,2,0,2" Name="colorSeqCb"
+                <ComboBox Grid.Column="1" Margin="0,2,0,2"
+                          Name="colorSeqCb"
                           Style="{StaticResource ComboBoxFlatStyle}"
-                          ItemsSource="{Binding ColorSequenceList}"
-                          SelectedItem="{Binding ColorSequence, Mode=TwoWay}" Visibility="Visible"/>
-                            <!--Style="{StaticResource ComboBoxFlatStyle}"-->
-                <TextBox Name="colorSeqTb" Grid.Column="1" Margin="0,2,0,2" Style="{StaticResource TextBoxStyle1}"
-                         
-                         Text="{Binding ColorSequence}" Visibility="Collapsed"/>
+                          ItemsSource="{Binding ColorSequenceList, Mode=TwoWay}"
+                          SelectedItem="{Binding Model.ColorSequence}"
+                          Visibility="Visible" />
+                <!--  Style="{StaticResource ComboBoxFlatStyle}"  -->
+                <TextBox Name="colorSeqTb" Grid.Column="1"
+                         Margin="0,2,0,2"
+                         Style="{StaticResource TextBoxStyle1}"
+                         Text="{Binding Model.ColorSequence}"
+                         Visibility="Collapsed" />
             </Grid>
 
         </Grid>
@@ -158,6 +162,6 @@
                  Margin="0,2,0,2" VerticalAlignment="Center"
                  TextWrapping="Wrap" AcceptsReturn="True"
                  Style="{StaticResource TextBoxStyle1}"
-                 Text="{Binding Remark}" />
+                 Text="{Binding Model.Remark}" />
     </Grid>
 </UserControl>

@@ -16,7 +16,7 @@ namespace LS_Designer_WPF.ViewModel
         public LightElementVM(LightElement model)
         {
             Model = model;
-            //_dataService = ViewModelLocator.DataService;
+            _dataService = ViewModelLocator.DataService;
         }
 
         LightElement _model;
@@ -61,26 +61,6 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _isAddMode, value); }
         }
 
-        public bool IsLinkedBeforeAction;
-
-        bool _isLinked = false;
-        public bool IsLinked
-        {
-            get { return Model.ControlChannel != null; }
-            set
-            {
-                Set(ref _isLinked, value);
-
-                if ((value && Model.ControlChannel == null) || (!value && Model.ControlChannel != null))
-                    MessengerInstance.Send("", AppContext.LE_LinkChangedMsg);
-            }
-        }
-
-        public void RaiseIsLinkedChanged()
-        {
-            RaisePropertyChanged("IsLinked");
-        }
-
         bool _canChangeLink = false;
         public bool ChangeLinkEnable
         {
@@ -88,18 +68,27 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _canChangeLink, value); }
         }
 
+        public Action<bool> IsLinkedChanged;
+
+        bool _isLinked = false;
+        public bool IsLinked
+        {
+            
+            get { return _isLinked; }
+            set
+            {
+                bool tmp = value;
+                Set(ref _isLinked, value);
+                if (IsLinkedChanged != null)
+                    IsLinkedChanged(tmp);
+            }
+        }
+
         bool _directChild = false;
         public bool DirectChild
         {
             get { return _directChild; }
             set { Set(ref _directChild, value); }
-        }
-
-        public void SetSilentIsLinked(bool val, bool raisePropertyChanged = false)
-        {
-            _isLinked = val;
-            if (raisePropertyChanged)
-                RaisePropertyChanged("IsLinked");
         }
 
         public bool InConflict { get; set; }

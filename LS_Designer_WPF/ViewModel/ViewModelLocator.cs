@@ -52,6 +52,11 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
+        public static IDataService DataService
+        {
+            get { return ServiceLocator.Current.GetInstance<IDataService>(); }
+        }
+
         /// <summary>
         /// Cleans up all the resources.
         /// </summary>

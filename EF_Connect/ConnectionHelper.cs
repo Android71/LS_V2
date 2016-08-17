@@ -25,6 +25,7 @@ namespace EF_Connect
             hostName = Dns.GetHostName();
             dataSource = Dns.GetHostName();
             dataSource = @".\SQLEXPRESS";
+            dataSource = @"(localdb)\ProjectsV13";
 
             dbName = @"D:\Repos\LS_V2\LS_Designer_WPF\SQLDataBase\LightSystemV1.mdf";
             if (hostName == "ak")

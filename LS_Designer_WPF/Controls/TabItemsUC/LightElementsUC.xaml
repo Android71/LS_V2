@@ -7,6 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Custom="http://www.galasoft.ch/mvvmlight"
              xmlns:model="clr-namespace:LS_Designer_WPF.Model"
+             xmlns:viewModel="clr-namespace:LS_Designer_WPF.ViewModel" 
              d:DesignHeight="300"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -241,11 +242,11 @@
                         BorderThickness="1" Padding="10"
                         Visibility="{Binding MasterObjectPanelVisibility}">
                     <Border.Resources>
-                        <DataTemplate DataType="{x:Type model:LightElement}">
+                        <DataTemplate DataType="{x:Type viewModel:LightElementVM}">
                             <local:LE_UC IsEditMode="{Binding IsEditMode}"
                                          IsAddMode="{Binding IsAddMode}"
-                                         PointType="{Binding PointType}"
-                                         CSprefix="{Binding ControlSpace.Prefix}" />
+                                         PointType="{Binding Model.PointType}"
+                                         CSprefix="{Binding Model.ControlSpace.Prefix}" />
                         </DataTemplate>
                     </Border.Resources>
                     <ContentControl Name="masterCurrentObject" Margin="0,5,0,0"
