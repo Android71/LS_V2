@@ -24,17 +24,15 @@ namespace LS_Designer_WPF.Model
         public LightElement(PointTypeEnum pointType, ControlSpace space) : this()
         {
             ControlSpace = space;
-            //PointType = pointType;
-            //if (pointType == PointTypeEnum.RGB && space.Id == 1)
-            //{
-            //    ColorSequenceList = LightElement.ColorSequenseRGB;
-            //    ColorSequence = ColorSequenceList[0];
-            //}
-            //if (pointType == PointTypeEnum.RGBW && space.Id == 1)
-            //{
-            //    ColorSequenceList = LightElement.ColorSequenseRGBW;
-            //    ColorSequence = ColorSequenceList[0];
-            //}
+            PointType = pointType;
+
+            if (space.Prefix == "AN" || space.Prefix == "DX")
+            {
+                if (pointType == PointTypeEnum.RGB)
+                    ColorSequence = "RGB";
+                if (pointType == PointTypeEnum.RGBW)
+                    ColorSequence = "RGBW";
+            }
             Name = string.Format($"{ControlSpace.Prefix}_{pointType}_");
         }
 
@@ -132,49 +130,6 @@ namespace LS_Designer_WPF.Model
 
         #endregion
 
-        public bool Validate()
-        {
-            int maxCount = 512 / AppContext.CountByType[PointType];
-            StringBuilder sb = new StringBuilder();
-            //info = new PopUpMessageVM("");
-            bool result = true;
-            bool rule1 = true, rule2 = true, rule3 = true;
-
-            // Validade fields
-
-            if (StartPoint < 1)
-            {
-                sb.AppendLine("StartPoint не может быть меньше 1");
-                rule1 = false;
-            }
-
-            if (PointCount < 1)
-            {
-                sb.AppendLine("PointCount не может быть меньше 1");
-                rule2 = false;
-            }
-
-            if (rule1 & rule2)
-            {
-                int tmp = (StartPoint - 1) * AppContext.CountByType[PointType] + PointCount * AppContext.CountByType[PointType];
-                if (tmp > 512)
-                {
-                    sb.AppendLine("LightStrip выходит за границы Universe");
-                    sb.AppendLine("Измените либо StartPoint либо PointCount");
-                    rule3 = false;
-                }
-            }
-
-            result = rule1 & rule2 & rule3;
-
-            if (!result)
-            {
-                PopUpMessageVM info = new PopUpMessageVM(sb.ToString());
-                MessengerInstance.Send<EmptyPopUpVM>(info, AppContext.ShowPopUpMsg);
-            }
-
-            return result;
-        }
 
 
         

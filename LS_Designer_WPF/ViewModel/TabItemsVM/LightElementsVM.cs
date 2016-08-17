@@ -75,6 +75,9 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
+        #region Message Handlers
+
+
         protected override void ContextChanged(string obj)
         {
             if (AppContext.ControlSpace != null && AppContext.Partition != null)
@@ -85,6 +88,10 @@ namespace LS_Designer_WPF.ViewModel
 
             }
         }
+
+        #endregion
+
+        /*************************************************************/
 
         #region Link/Unlink 
 
@@ -205,13 +212,6 @@ namespace LS_Designer_WPF.ViewModel
             }
         }
 
-        #endregion
-
-        #region Message Handlers
-
-        
-
-
         bool CheckIntersectionLE()
         {
             bool result = false;
@@ -237,7 +237,302 @@ namespace LS_Designer_WPF.ViewModel
 
         #endregion
 
-        #region View Command
+        /*************************************************************/
+
+        #region Add/Edit LightElement
+
+        #region Add Command
+
+        public RelayCommand MasterAddCmd { get; private set; }
+
+        void MasterExecAdd()
+        {
+            MasterListButtonsVisibility = Visibility.Collapsed;
+            MasterListVisibility = Visibility.Hidden;
+            MasterSelectorVisibility = Visibility.Visible;
+            MasterObjectPanelVisibility = Visibility.Hidden;
+            IsMasterSelectorOpen = true;
+
+            DetailListCurtainVisibility = Visibility.Visible;
+
+            MasterAddMode = true;
+            ViewCmd.RaiseCanExecuteChanged();
+
+            MessengerInstance.Send("", AppContext.BlockUIMsg);
+        }
+
+        bool MasterCanExecAdd()
+        {
+            return !MasterAddMode && !MasterEditMode;
+        }
+
+        #endregion
+
+        #region Master Edit Command
+
+        public RelayCommand MasterEditCmd { get; private set; }
+
+        void MasterExecEdit()
+        {
+            // Если LightElement IsLinked, то редактирование возможно только если он первый в ControlChannel
+            //if (MasterSelectedItem.IsLinked)
+            //{
+            //    ControlChannel ch = DetailList.FirstOrDefault(p => p.Id == MasterSelectedItem.ControlChannel.Id);
+            //    if (ch.LE_Count != 1)
+            //    {
+            //        PopUpMessageVM popupVM = new PopUpMessageVM(AppMessages.LE_EditingMsg());
+            //        MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
+            //        return;
+            //    }
+            //}
+
+
+            //MasterEditMode = true;
+
+            //DetailListCurtainVisibility = Visibility.Visible;
+
+            //MasterCurrentObject.IsEditMode = true;
+            //MasterCurrentObject.Partitions = Partitions;
+            //MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
+
+            //MasterAddCmd.RaiseCanExecuteChanged();
+            //MasterRemoveCmd.RaiseCanExecuteChanged();
+            ////MainSwitchCmd.RaiseCanExecuteChanged();
+
+            //MasterListCurtainVisibility = Visibility.Visible;
+            //MasterObjectButtonsVisibility = Visibility.Visible;
+            //MasterObjectCurtainVisibility = Visibility.Collapsed;
+            //MessengerInstance.Send("", AppContext.BlockUIMsg);
+        }
+
+        #endregion
+
+        #region Cancel Command
+
+        public RelayCommand MasterCancelCmd { get; private set; }
+
+        void MasterExecCancel()
+        {
+            //if (MasterEditMode)
+            //{
+            //    _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
+            //         {
+            //             if (error != null) { return; } // Report error here
+            //             MasterCurrentObject = data;
+            //         });
+            //}
+            //MasterAddMode = false;
+            //MasterEditMode = false;
+            //MasterCurrentObject.IsEditMode = false;
+            //MasterCurrentObject.IsAddMode = false;
+            //MasterAddCmd.RaiseCanExecuteChanged();
+            //MasterRemoveCmd.RaiseCanExecuteChanged();
+
+            //DetailListCurtainVisibility = Visibility.Collapsed;
+
+            //MasterListCurtainVisibility = Visibility.Collapsed;
+            //MasterObjectCurtainVisibility = Visibility.Visible;
+
+            //MasterObjectButtonsVisibility = Visibility.Collapsed;
+            //MasterListVisibility = Visibility.Visible;
+
+            //if (MasterSelectedItem != null)
+            //{
+            //    _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
+            //    {
+            //        if (error != null) { return; } // Report error here
+            //        MasterCurrentObject = data;
+            //    });
+            //}
+            //else
+            //    MasterObjectPanelVisibility = Visibility.Collapsed;
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+        }
+
+        #endregion
+
+        #region Save Command
+
+        public RelayCommand MasterSaveCmd { get; private set; }
+
+        void MasterExecSave()
+        {
+            if (MasterCurrentObject.Validate())
+            {
+
+                //if (MasterCurrentObject.Validate())
+                //{
+                //    int i = -1;
+                //    bool partitionChanged = false;
+                //    if (MasterEditMode)
+                //    {
+                //        if (MasterCurrentObject.Partition.Id != MasterSelectedItem.Partition.Id)
+                //        {
+                //            partitionChanged = true;
+                //        }
+                //    }
+                //    _dataService.UpdateLightElement(MasterCurrentObject, (updatedCount, error) =>
+                //    {
+                //        if (error != null) { return; } // Report error here
+                //        i = updatedCount;
+                //    });
+
+                //    MasterObjectButtonsVisibility = Visibility.Collapsed;
+                //    MasterListCurtainVisibility = Visibility.Collapsed;
+                //    DetailListCurtainVisibility = Visibility.Collapsed;
+
+
+                //    if (MasterAddMode)
+                //    {
+                //        MasterSelectorSelectedItem = null;
+
+                //        MasterList.Add(MasterCurrentObject);
+                //        MasterSelectedItem = MasterCurrentObject;
+                //        MasterListVisibility = Visibility.Visible;
+                //    }
+                //    if (MasterEditMode) //in EditMode MasterSelectedItem always not null
+                //    {
+                //        if (!partitionChanged)
+                //        {
+                //            MasterList[msix] = MasterCurrentObject;
+                //            //MasterSelectedItem.RaiseIsLinkedChanged();
+                //            MasterSelectedItem = MasterCurrentObject;
+                //            //if (savedDsix != -1)
+                //            //    DetailSelectedItem = DetailList[savedDsix];
+                //        }
+                //        else
+                //        {
+                //            MasterList.Remove(MasterSelectedItem);
+                //            //DetailContentVisibility = Visibility.Hidden;
+                //            partitionChanged = false;
+                //        }
+                //    }
+
+                //    MasterAddMode = false;
+                //    MasterEditMode = false;
+                //    MasterCurrentObject.IsEditMode = false;
+                //    MasterCurrentObject.IsAddMode = false;
+                //    MasterRemoveCmd.RaiseCanExecuteChanged();
+                //    MasterAddCmd.RaiseCanExecuteChanged();
+                //    //MainSwitchCmd.RaiseCanExecuteChanged();
+
+                //    //if (DetailSelectedItem != null)
+                //    //{
+                //    //    // при выполнении Save происходит замена .net объекта в MasterList
+                //    //    // необходимо восстановить Visual State
+                //    //    LightElement letmp = MasterSelectedItem;
+                //    //    ControlChannel tmp = DetailSelectedItem;
+                //    //    DetailSelectedItem = null;
+                //    //    DetailSelectedItem = tmp;
+                //    //    MasterSelectedItem = letmp;
+                //    //}
+            }
+            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+        }
+
+        #endregion
+
+
+        // Список допустимых PointType при выполнении Add LightElement
+        object _masterSelectorList;
+        public object MasterSelectorList
+        {
+            get { return _masterSelectorList; }
+            set { Set(ref _masterSelectorList, value); }
+        }
+
+        // Выбранный PointType
+        object _masterSelectorSelectedItem;
+        public object MasterSelectorSelectedItem
+        {
+            get { return _masterSelectorSelectedItem; }
+            set { Set(ref _masterSelectorSelectedItem, value); }
+        }
+
+        // Обработка закрытия ComboBox
+        bool _isMasterSelectorOpen = false;
+        public bool IsMasterSelectorOpen
+        {
+            get { return _isMasterSelectorOpen; }
+            set
+            {
+                Set(ref _isMasterSelectorOpen, value);
+                if (!IsMasterSelectorOpen && MasterSelectorSelectedItem != null)
+                {
+                    LE_Type leType = (LE_Type)MasterSelectorSelectedItem;
+                    MasterCurrentObject = CreateLightElementVM(leType.PointType);
+                    MasterCurrentObject.Model.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
+                    MasterCurrentObject.Partitions = Partitions;
+
+                    MasterObjectPanelVisibility = Visibility.Visible;
+
+                    MasterAddMode = true;
+                    MasterCurrentObject.IsAddMode = true;
+                    MasterAddCmd.RaiseCanExecuteChanged();
+                    MasterRemoveCmd.RaiseCanExecuteChanged();
+                    ViewCmd.RaiseCanExecuteChanged();
+
+                    MasterSelectorVisibility = Visibility.Hidden;
+                    MasterSelectorSelectedItem = null;
+                    MasterListVisibility = Visibility.Hidden;
+                    MasterListButtonsVisibility = Visibility.Visible;
+
+                    MasterObjectPanelVisibility = Visibility.Visible;
+                    MasterObjectButtonsVisibility = Visibility.Visible;
+
+                    MasterListCurtainVisibility = Visibility.Visible;
+                    MasterObjectCurtainVisibility = Visibility.Collapsed;
+
+                    return;
+                }
+
+                // Не было сделано выбора PointType - отмена операции Add
+                if (!IsMasterSelectorOpen)
+                {
+                    MasterListButtonsVisibility = Visibility.Visible;
+                    MasterSelectorVisibility = Visibility.Hidden;
+                    MasterListVisibility = Visibility.Visible;
+
+                    MasterAddMode = false;
+                    ViewCmd.RaiseCanExecuteChanged();
+
+                    DetailListCurtainVisibility = Visibility.Collapsed;
+
+                    if (MasterSelectedItem != null)
+                    {
+                        MasterObjectPanelVisibility = Visibility.Visible;
+                    }
+                    else
+                        MasterObjectPanelVisibility = Visibility.Collapsed;
+                    MessengerInstance.Send("", AppContext.UnBlockUIMsg);
+                }
+            }
+        }
+
+        LightElementVM CreateLightElementVM(PointTypeEnum pointType)
+        {
+            LightElementVM leVM = null;
+            LightElement le = new LightElement(pointType, AppContext.ControlSpace);
+            le.Partition = AppContext.Partition;
+            
+            leVM = new LightElementVM(le);
+
+            if (leVM.Model.ControlSpace.Prefix == "AN" || leVM.Model.ControlSpace.Prefix == "DX")
+            {
+                if (leVM.Model.PointType == PointTypeEnum.RGB)
+                    leVM.ColorSequenceList = LightElement.ColorSequenseRGB;
+                if (leVM.Model.PointType == PointTypeEnum.RGBW)
+                    leVM.ColorSequenceList = LightElement.ColorSequenseRGBW;
+            }
+
+            return leVM;
+        }
+
+        #endregion
+
+        /*************************************************************/
+
+        #region View Universe Map
 
         public RelayCommand ViewCmd { get; private set; }
 
@@ -255,8 +550,6 @@ namespace LS_Designer_WPF.ViewModel
         }
 
         #endregion
-
-        
 
         /*************************************************************/
 
@@ -388,129 +681,6 @@ namespace LS_Designer_WPF.ViewModel
             set { Set(ref _masterCurrentObject, value); }
         }
 
-        #region Add LightElement
-
-        #region Master Add Command
-
-        public RelayCommand MasterAddCmd { get; private set; }
-
-        void MasterExecAdd()
-        {
-            MasterListButtonsVisibility = Visibility.Collapsed;
-            MasterListVisibility = Visibility.Hidden;
-            MasterSelectorVisibility = Visibility.Visible;
-            MasterObjectPanelVisibility = Visibility.Hidden;
-            IsMasterSelectorOpen = true;
-
-            DetailListCurtainVisibility = Visibility.Visible;
-
-            MasterAddMode = true;
-            ViewCmd.RaiseCanExecuteChanged();
-
-            MessengerInstance.Send("", AppContext.BlockUIMsg);
-        }
-
-        bool MasterCanExecAdd()
-        {
-            return !MasterAddMode && !MasterEditMode;
-        }
-
-        #endregion
-
-
-        object _masterSelectorList;
-        public object MasterSelectorList
-        {
-            get { return _masterSelectorList; }
-            set { Set(ref _masterSelectorList, value); }
-        }
-
-        object _masterSelectorSelectedItem;
-        public object MasterSelectorSelectedItem
-        {
-            get { return _masterSelectorSelectedItem; }
-            set { Set(ref _masterSelectorSelectedItem, value); }
-        }
-
-        bool _isMasterSelectorOpen = false;
-        public bool IsMasterSelectorOpen
-        {
-            get { return _isMasterSelectorOpen; }
-            set
-            {
-                Set(ref _isMasterSelectorOpen, value);
-                if (!IsMasterSelectorOpen && MasterSelectorSelectedItem != null)
-                {
-                    LE_Type leType = (LE_Type)MasterSelectorSelectedItem;
-                    //MasterCurrentObject = new LightElement(leType.PointType, AppContext.ControlSpace);
-                    MasterCurrentObject = CreateLightElementVM(leType.PointType);
-                    MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
-                    MasterCurrentObject.Partitions = Partitions;
-
-                    MasterObjectPanelVisibility = Visibility.Visible;
-
-                    MasterAddMode = true;
-                    MasterCurrentObject.IsAddMode = true;
-                    MasterAddCmd.RaiseCanExecuteChanged();
-                    MasterRemoveCmd.RaiseCanExecuteChanged();
-                    ViewCmd.RaiseCanExecuteChanged();
-
-                    MasterSelectorVisibility = Visibility.Hidden;
-                    MasterSelectorSelectedItem = null;
-                    MasterListVisibility = Visibility.Hidden;
-                    MasterListButtonsVisibility = Visibility.Visible;
-
-                    MasterObjectPanelVisibility = Visibility.Visible;
-                    MasterObjectButtonsVisibility = Visibility.Visible;
-
-                    MasterListCurtainVisibility = Visibility.Visible;
-                    //DetailListCurtainVisibility = Visibility.Visible;
-                    MasterObjectCurtainVisibility = Visibility.Collapsed;
-
-                    return;
-                }
-                if (!IsMasterSelectorOpen)
-                {
-                    MasterListButtonsVisibility = Visibility.Visible;
-                    MasterSelectorVisibility = Visibility.Hidden;
-                    MasterListVisibility = Visibility.Visible;
-
-                    MasterAddMode = false;
-                    ViewCmd.RaiseCanExecuteChanged();
-
-                    DetailListCurtainVisibility = Visibility.Collapsed;
-
-                    if (MasterSelectedItem != null)
-                    {
-                        MasterObjectPanelVisibility = Visibility.Visible;
-                    }
-                    else
-                        MasterObjectPanelVisibility = Visibility.Collapsed;
-                    MessengerInstance.Send("", AppContext.UnBlockUIMsg);
-                }
-            }
-        }
-
-        LightElementVM CreateLightElementVM(PointTypeEnum pointType)
-        {
-            LightElementVM leVM = null;
-            LightElement le = new LightElement(pointType, AppContext.ControlSpace);
-            le.Partition = AppContext.Partition;
-            
-            leVM = new LightElementVM(le);
-
-            if (leVM.Model.ControlSpace.Prefix == "AN" || leVM.Model.ControlSpace.Prefix == "DX")
-            {
-                if (leVM.Model.PointType == PointTypeEnum.RGB)
-                    leVM.ColorSequenceList = LightElement.ColorSequenseRGB;
-                if (leVM.Model.PointType == PointTypeEnum.RGBW)
-                    leVM.ColorSequenceList = LightElement.ColorSequenseRGBW;
-            }
-
-            return leVM;
-        }
-
-        #endregion
 
         #region Edit LightElement
 
@@ -692,81 +862,6 @@ namespace LS_Designer_WPF.ViewModel
 
         #region Master Save Command
 
-        public RelayCommand MasterSaveCmd { get; private set; }
-
-        void MasterExecSave()
-        {
-            //if (MasterCurrentObject.Validate())
-            //{
-            //    int i = -1;
-            //    bool partitionChanged = false;
-            //    if (MasterEditMode)
-            //    {
-            //        if (MasterCurrentObject.Partition.Id != MasterSelectedItem.Partition.Id)
-            //        {
-            //            partitionChanged = true;
-            //        }
-            //    }
-            //    _dataService.UpdateLightElement(MasterCurrentObject, (updatedCount, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        i = updatedCount;
-            //    });
-
-            //    MasterObjectButtonsVisibility = Visibility.Collapsed;
-            //    MasterListCurtainVisibility = Visibility.Collapsed;
-            //    DetailListCurtainVisibility = Visibility.Collapsed;
-
-
-            //    if (MasterAddMode)
-            //    {
-            //        MasterSelectorSelectedItem = null;
-
-            //        MasterList.Add(MasterCurrentObject);
-            //        MasterSelectedItem = MasterCurrentObject;
-            //        MasterListVisibility = Visibility.Visible;
-            //    }
-            //    if (MasterEditMode) //in EditMode MasterSelectedItem always not null
-            //    {
-            //        if (!partitionChanged)
-            //        {
-            //            MasterList[msix] = MasterCurrentObject;
-            //            //MasterSelectedItem.RaiseIsLinkedChanged();
-            //            MasterSelectedItem = MasterCurrentObject;
-            //            //if (savedDsix != -1)
-            //            //    DetailSelectedItem = DetailList[savedDsix];
-            //        }
-            //        else
-            //        {
-            //            MasterList.Remove(MasterSelectedItem);
-            //            //DetailContentVisibility = Visibility.Hidden;
-            //            partitionChanged = false;
-            //        }
-            //    }
-
-            //    MasterAddMode = false;
-            //    MasterEditMode = false;
-            //    MasterCurrentObject.IsEditMode = false;
-            //    MasterCurrentObject.IsAddMode = false;
-            //    MasterRemoveCmd.RaiseCanExecuteChanged();
-            //    MasterAddCmd.RaiseCanExecuteChanged();
-            //    //MainSwitchCmd.RaiseCanExecuteChanged();
-
-            //    //if (DetailSelectedItem != null)
-            //    //{
-            //    //    // при выполнении Save происходит замена .net объекта в MasterList
-            //    //    // необходимо восстановить Visual State
-            //    //    LightElement letmp = MasterSelectedItem;
-            //    //    ControlChannel tmp = DetailSelectedItem;
-            //    //    DetailSelectedItem = null;
-            //    //    DetailSelectedItem = tmp;
-            //    //    MasterSelectedItem = letmp;
-            //    //}
-            //}
-
-            
-            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
-        }
 
         //AttentionVM attentionVM;
 
@@ -787,88 +882,7 @@ namespace LS_Designer_WPF.ViewModel
 
         #endregion
 
-        #region Master Cancel Command
 
-        public RelayCommand MasterCancelCmd { get; private set; }
-
-        void MasterExecCancel()
-        {
-            //if (MasterEditMode)
-            //{
-            //    _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
-            //         {
-            //             if (error != null) { return; } // Report error here
-            //             MasterCurrentObject = data;
-            //         });
-            //}
-            //MasterAddMode = false;
-            //MasterEditMode = false;
-            //MasterCurrentObject.IsEditMode = false;
-            //MasterCurrentObject.IsAddMode = false;
-            //MasterAddCmd.RaiseCanExecuteChanged();
-            //MasterRemoveCmd.RaiseCanExecuteChanged();
-
-            //DetailListCurtainVisibility = Visibility.Collapsed;
-
-            //MasterListCurtainVisibility = Visibility.Collapsed;
-            //MasterObjectCurtainVisibility = Visibility.Visible;
-
-            //MasterObjectButtonsVisibility = Visibility.Collapsed;
-            //MasterListVisibility = Visibility.Visible;
-
-            //if (MasterSelectedItem != null)
-            //{
-            //    _dataService.GetLightElement(MasterSelectedItem.Id, (data, error) =>
-            //    {
-            //        if (error != null) { return; } // Report error here
-            //        MasterCurrentObject = data;
-            //    });
-            //}
-            //else
-            //    MasterObjectPanelVisibility = Visibility.Collapsed;
-            MessengerInstance.Send("", AppContext.UnBlockUIMsg);
-        }
-
-        #endregion
-
-        #region Master Edit Command
-
-        public RelayCommand MasterEditCmd { get; private set; }
-
-        void MasterExecEdit()
-        {
-            // Если LightElement IsLinked, то редактирование возможно только если он первый в ControlChannel
-            //if (MasterSelectedItem.IsLinked)
-            //{
-            //    ControlChannel ch = DetailList.FirstOrDefault(p => p.Id == MasterSelectedItem.ControlChannel.Id);
-            //    if (ch.LE_Count != 1)
-            //    {
-            //        PopUpMessageVM popupVM = new PopUpMessageVM(AppMessages.LE_EditingMsg());
-            //        MessengerInstance.Send<EmptyPopUpVM>(popupVM, AppContext.ShowPopUpMsg);
-            //        return;
-            //    }
-            //}
-
-
-            //MasterEditMode = true;
-
-            //DetailListCurtainVisibility = Visibility.Visible;
-
-            //MasterCurrentObject.IsEditMode = true;
-            //MasterCurrentObject.Partitions = Partitions;
-            //MasterCurrentObject.Partition = Partitions.Find(p => p.Id == AppContext.Partition.Id);
-
-            //MasterAddCmd.RaiseCanExecuteChanged();
-            //MasterRemoveCmd.RaiseCanExecuteChanged();
-            ////MainSwitchCmd.RaiseCanExecuteChanged();
-
-            //MasterListCurtainVisibility = Visibility.Visible;
-            //MasterObjectButtonsVisibility = Visibility.Visible;
-            //MasterObjectCurtainVisibility = Visibility.Collapsed;
-            //MessengerInstance.Send("", AppContext.BlockUIMsg);
-        }
-
-        #endregion
 
 
         #region Master Remove Command

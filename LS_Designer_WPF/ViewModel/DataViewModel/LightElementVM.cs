@@ -93,5 +93,49 @@ namespace LS_Designer_WPF.ViewModel
 
         public bool InConflict { get; set; }
 
+        public bool Validate()
+        {
+            int maxCount = 512 / AppContext.CountByType[Model.PointType];
+            StringBuilder sb = new StringBuilder();
+            bool result = true;
+            bool rule1 = true, rule2 = true, rule3 = true;
+
+            // Validade fields
+
+            if (Model.StartPoint < 1)
+            {
+                sb.AppendLine("StartPoint не может быть меньше 1");
+                rule1 = false;
+            }
+
+            if (Model.PointCount < 1)
+            {
+                sb.AppendLine("PointCount не может быть меньше 1");
+                rule2 = false;
+            }
+
+            if (rule1 & rule2)
+            {
+                int tmp = (Model.StartPoint - 1) * AppContext.CountByType[Model.PointType] + Model.PointCount * AppContext.CountByType[Model.PointType];
+                if (tmp > 512)
+                {
+                    sb.AppendLine("LightStrip выходит за границы Universe");
+                    sb.AppendLine("Измените либо StartPoint либо PointCount");
+                    rule3 = false;
+                }
+            }
+
+            result = rule1 & rule2 & rule3;
+
+            if (!result)
+            {
+                PopUpMessageVM info = new PopUpMessageVM(sb.ToString());
+                MessengerInstance.Send<EmptyPopUpVM>(info, AppContext.ShowPopUpMsg);
+            }
+
+            return result;
+        }
+
+
     }
 }
